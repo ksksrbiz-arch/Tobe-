@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
+import LoadingScreen from "@/components/LoadingScreen";
+import CozyAmbience from "@/components/CozyAmbience";
+import PageTransition from "@/components/PageTransition";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tobereadbooks.com"),
@@ -115,7 +118,11 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {children}
+        <LoadingScreen />
+        <CozyAmbience />
+        <div className="relative z-[2]">
+          <PageTransition>{children}</PageTransition>
+        </div>
         <Toaster
           position="bottom-center"
           richColors
