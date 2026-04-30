@@ -54,8 +54,11 @@ export default function VisitPage() {
 
       {/* Getting here */}
       <section
-        className="px-4 py-24 sm:px-6 lg:px-8"
-        style={{ background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)" }}
+        className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
+        style={{
+          background:
+            "radial-gradient(ellipse at 80% 0%, rgba(241,187,26,0.10) 0%, transparent 45%), linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
+        }}
       >
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-12 text-center">
@@ -119,7 +122,13 @@ export default function VisitPage() {
       </section>
 
       {/* Make a day of it */}
-      <section className="px-4 py-24 sm:px-6 lg:px-8" style={{ background: "white" }}>
+      <section
+        className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
+        style={{
+          background:
+            "radial-gradient(ellipse at 12% 100%, rgba(107,28,111,0.08) 0%, transparent 45%), white",
+        }}
+      >
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-10 text-center">
             <span
@@ -167,23 +176,23 @@ export default function VisitPage() {
 
           <Reveal>
             <div
-              className="mt-12 flex flex-col items-center gap-3 rounded-2xl p-6 text-center sm:flex-row sm:justify-between sm:gap-6 sm:text-left"
+              className="mt-10 flex flex-col items-stretch gap-4 rounded-2xl p-5 text-center sm:mt-12 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-6 sm:text-left"
               style={{
                 background: "linear-gradient(135deg, #6B1C6F 0%, #4A1350 100%)",
                 color: "white",
                 boxShadow: "0 18px 40px rgba(107,28,111,0.20)",
               }}
             >
-              <div className="flex items-center gap-3">
-                <MapPin size={22} style={{ color: "#F1BB1A" }} />
-                <div>
-                  <p className="text-sm font-semibold">7931 SE King Rd, Milwaukie, OR 97222</p>
+              <div className="flex items-center justify-center gap-3 sm:justify-start">
+                <MapPin size={22} style={{ color: "#F1BB1A" }} className="flex-shrink-0" />
+                <div className="text-left">
+                  <p className="text-sm font-semibold leading-snug">7931 SE King Rd, Milwaukie, OR 97222</p>
                   <p className="text-xs opacity-80">Open Mon–Sat · 10am – 5pm</p>
                 </div>
               </div>
               <a
                 href="tel:503-659-2559"
-                className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all hover:scale-105"
+                className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-[0.98] sm:w-auto"
                 style={{ background: "#F1BB1A", color: "#1a1a1a" }}
               >
                 Call 503-659-2559
