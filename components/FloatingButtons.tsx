@@ -8,9 +8,10 @@ export default function FloatingButtons() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setShowTop(window.scrollY > 400);
+      setShowTop(window.scrollY > 480);
     };
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -20,35 +21,43 @@ export default function FloatingButtons() {
 
   const handleTrade = () => {
     const el = document.querySelector("#trade");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // If trade section isn't on this page, navigate
+      window.location.href = "/trade";
+    }
   };
 
   return (
-    <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-40">
-      {/* Trade Now button */}
+    <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3 sm:bottom-7 sm:right-7">
       <button
         onClick={handleTrade}
-        className="flex items-center gap-2 px-4 py-3 rounded-full text-sm font-semibold text-white shadow-xl transition-all hover:scale-105 hover:shadow-2xl"
-        style={{ background: "#6B1C6F" }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#F1BB1A"; (e.currentTarget as HTMLButtonElement).style.color = "#1a1a1a"; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#6B1C6F"; (e.currentTarget as HTMLButtonElement).style.color = "white"; }}
+        className="btn-shine animate-pulse-glow group flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-white shadow-2xl transition-all hover:scale-105"
+        style={{
+          background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
+        }}
         aria-label="Trade books with us"
       >
-        <BookOpen size={16} />
+        <BookOpen size={16} className="transition-transform group-hover:rotate-[-8deg]" />
         Trade Now
       </button>
 
-      {/* Back to top */}
-      {showTop && (
-        <button
-          onClick={scrollToTop}
-          className="w-11 h-11 rounded-full flex items-center justify-center text-white shadow-xl transition-all hover:scale-110"
-          style={{ background: "#6B1C6F" }}
-          aria-label="Scroll to top"
-        >
-          <ArrowUp size={18} />
-        </button>
-      )}
+      <button
+        onClick={scrollToTop}
+        aria-label="Scroll to top"
+        aria-hidden={!showTop}
+        tabIndex={showTop ? 0 : -1}
+        className="flex h-11 w-11 items-center justify-center rounded-full text-white shadow-xl transition-all duration-300"
+        style={{
+          background: "linear-gradient(135deg, #6B1C6F 0%, #4A1350 100%)",
+          opacity: showTop ? 1 : 0,
+          transform: showTop ? "translateY(0) scale(1)" : "translateY(12px) scale(0.85)",
+          pointerEvents: showTop ? "auto" : "none",
+        }}
+      >
+        <ArrowUp size={18} />
+      </button>
     </div>
   );
 }
