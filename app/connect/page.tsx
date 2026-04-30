@@ -43,8 +43,8 @@ export default function ConnectPage() {
               <div className="w-12 h-1 mx-auto rounded-full" style={{ background: "#F1BB1A" }} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
-              {tiktokVideos.map((v, i) => (
-                <TikTokEmbed key={i} videoId={v.videoId} username={v.username} />
+              {tiktokVideos.map((video) => (
+                <TikTokEmbed key={video.videoId} videoId={video.videoId} username={video.username} />
               ))}
             </div>
             <p className="text-center text-xs italic mt-6" style={{ color: "#9CA3AF" }}>

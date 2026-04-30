@@ -9,14 +9,15 @@ interface TikTokEmbedProps {
 
 export default function TikTokEmbed({ videoId, username }: TikTokEmbedProps) {
   useEffect(() => {
-    const existing = document.querySelector('script[src="https://www.tiktok.com/embed.js"]');
-    if (existing) return;
+    if (document.querySelector('script[src="https://www.tiktok.com/embed.js"]')) return;
     const script = document.createElement("script");
     script.src = "https://www.tiktok.com/embed.js";
     script.async = true;
     document.body.appendChild(script);
     return () => {
-      document.body.removeChild(script);
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
     };
   }, []);
 
