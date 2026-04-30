@@ -87,7 +87,7 @@ function SectionSkeleton({
           ))}
         </div>
         <p className="mt-6 text-center text-sm" style={{ color: "#6B7280" }}>
-          {title}
+          {eyebrow} · {title}
         </p>
       </div>
     </section>
