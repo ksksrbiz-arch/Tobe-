@@ -8,6 +8,7 @@ import HeroSection from "@/components/HeroSection";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
+import DustMotes from "@/components/DustMotes";
 import {
   Award,
   BookMarked,
@@ -207,7 +208,7 @@ export default function Home() {
   return (
     <main
       id="main"
-      className="min-h-screen overflow-x-hidden"
+      className="min-h-screen overflow-x-hidden animate-page-enter"
       style={{
         background:
           "radial-gradient(circle at top left, rgba(241,187,26,0.10), transparent 28%), radial-gradient(circle at top right, rgba(107,28,111,0.10), transparent 24%), linear-gradient(180deg, #FDF8F0 0%, #FFFDF9 35%, #F8F2FF 100%)",
@@ -282,12 +283,13 @@ export default function Home() {
 
       {/* Explore grid */}
       <section
-        className="px-4 py-24 sm:px-6 lg:px-8"
+        className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8"
         style={{
           background: "linear-gradient(180deg, rgba(255,255,255,0.46) 0%, rgba(253,248,240,0.86) 100%)",
         }}
       >
-        <div className="mx-auto max-w-6xl">
+        <DustMotes />
+        <div className="relative z-10 mx-auto max-w-6xl">
           <Reveal className="mb-12 text-center">
             <span
               className="inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"

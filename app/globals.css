@@ -172,12 +172,38 @@ h1, h2, h3, .font-serif {
   75% { transform: rotate(1.5deg); }
 }
 
+/* ───────── Candle-warm glow ───────── */
+@keyframes candleGlow {
+  0%, 100% {
+    box-shadow: 0 20px 50px rgba(107,28,111,0.08),
+                0 4px 14px rgba(241,187,26,0.06);
+  }
+  50% {
+    box-shadow: 0 24px 58px rgba(107,28,111,0.13),
+                0 6px 18px rgba(241,187,26,0.14);
+  }
+}
+
+/* ───────── Soft page-entrance ───────── */
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ───────── Warm shimmer sweep ───────── */
+@keyframes warmSweep {
+  0%   { transform: translateX(-100%) skewX(-18deg); }
+  100% { transform: translateX(200%) skewX(-18deg); }
+}
+
 .fade-in-up { animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 .fade-in { animation: fadeIn 0.7s ease-out forwards; }
 .animate-float { animation: float 6s ease-in-out infinite; }
 .animate-float-slow { animation: floatSlow 9s ease-in-out infinite; }
 .animate-pulse-glow { animation: pulseGlow 2.4s ease-in-out infinite; }
 .animate-wiggle { animation: wiggle 2.4s ease-in-out infinite; }
+.animate-candle-glow { animation: candleGlow 4.5s ease-in-out infinite; }
+.animate-page-enter { animation: pageEnter 0.65s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
 /* Reveal-on-scroll helper (used with IntersectionObserver) */
 .reveal {
@@ -261,6 +287,70 @@ h1, h2, h3, .font-serif {
 /* TikTok embed safety: keep the embed contained */
 .tiktok-embed {
   margin: 0 auto !important;
+}
+
+/* ───── Cozy card warm-glow ───── */
+/* Apply .card-cozy to any card to get a subtle candle-light hover glow */
+.card-cozy {
+  transition: box-shadow 0.4s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card-cozy:hover {
+  box-shadow:
+    0 28px 64px rgba(107,28,111,0.13),
+    0 8px 20px rgba(241,187,26,0.12);
+  transform: translateY(-3px);
+}
+
+/* ───── Warm sweep (replaces btn-shine on primary buttons) ───── */
+.btn-warm {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-warm::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.38), transparent);
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+  transition: none;
+}
+.btn-warm:hover::after {
+  animation: warmSweep 0.7s ease forwards;
+}
+
+/* ───── Vignette overlay helper ───── */
+.vignette {
+  position: relative;
+}
+.vignette::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(253,248,240,0.55) 100%);
+  z-index: 1;
+  border-radius: inherit;
+}
+
+/* ───── Warm paper grain texture overlay ───── */
+.paper-warm {
+  position: relative;
+}
+.paper-warm::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.018;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  z-index: 0;
+  border-radius: inherit;
+  mix-blend-mode: multiply;
 }
 
 /* Reduced motion */
