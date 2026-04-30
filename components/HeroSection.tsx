@@ -3,6 +3,7 @@
 import React from "react";
 import { ArrowRight, ShoppingBag, Sparkles, Star } from "lucide-react";
 import BookLogo from "./BookLogo";
+import DustMotes from "./DustMotes";
 
 interface HeroSectionProps {
   onConfetti?: () => void;
@@ -21,7 +22,7 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
 
   return (
     <section
-      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pt-24 pb-12"
+      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pt-24 pb-12 paper-warm"
       style={{
         background:
           "radial-gradient(circle at 12% 18%, rgba(241,187,26,0.22), transparent 32%), radial-gradient(circle at 82% 22%, rgba(107,28,111,0.20), transparent 30%), radial-gradient(circle at 50% 90%, rgba(241,187,26,0.10), transparent 50%), linear-gradient(135deg, #FDF8F0 0%, #FFF7EC 36%, #F7F0FF 100%)",
@@ -50,6 +51,11 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
         <div
           className="animate-float absolute left-[40%] top-[6%] h-32 w-32 rounded-full blur-2xl"
           style={{ background: "rgba(139,46,144,0.18)", animationDelay: "1.4s" }}
+        />
+        {/* Warm extra glow that slowly breathes */}
+        <div
+          className="animate-candle-glow absolute left-[24%] bottom-[22%] h-56 w-56 rounded-full blur-3xl pointer-events-none"
+          style={{ background: "rgba(241,187,26,0.16)" }}
         />
 
         {/* Decorative dashed arcs */}
@@ -96,13 +102,16 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
           className="animate-float absolute right-[12%] bottom-[28%]"
           style={{ color: "#8B2E90", animationDelay: "1.8s" }}
         />
+
+        {/* Ambient dust motes */}
+        <DustMotes />
       </div>
 
       {/* Hero card */}
       <div
-        className="relative z-10 mx-auto max-w-4xl rounded-[40px] border px-6 py-12 text-center shadow-[0_40px_120px_rgba(107,28,111,0.18)] backdrop-blur-md md:px-12 md:py-14"
+        className="card-cozy relative z-10 mx-auto max-w-4xl rounded-[40px] border px-6 py-12 text-center shadow-[0_40px_120px_rgba(107,28,111,0.18)] backdrop-blur-md md:px-12 md:py-14"
         style={{
-          background: "rgba(255,255,255,0.74)",
+          background: "rgba(255,255,255,0.76)",
           borderColor: "rgba(107,28,111,0.10)",
         }}
       >
