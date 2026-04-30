@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Check, X as XIcon, AlertTriangle } from "lucide-react";
+import { Check, X as XIcon, AlertTriangle, Receipt } from "lucide-react";
 
 const acceptItems = [
   "Fiction & literary novels",
@@ -86,6 +86,74 @@ export default function TradeSection() {
               We operate on a trade credit system. Bring your books in and receive store credit toward any purchase!
             </p>
           </div>
+        </div>
+
+        {/* Book Exchange Policy (real policy from store) */}
+        <div
+          className="p-7 rounded-2xl mb-10 relative overflow-hidden"
+          style={{
+            background: "white",
+            boxShadow: "0 4px 20px rgba(107,28,111,0.08)",
+            border: "2px solid #6B1C6F",
+          }}
+        >
+          <div className="flex items-center gap-3 mb-5">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ background: "#6B1C6F" }}
+            >
+              <Receipt size={18} className="text-white" />
+            </div>
+            <h3
+              className="font-bold"
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                color: "#6B1C6F",
+                fontSize: "clamp(1.25rem, 3vw, 1.6rem)",
+                letterSpacing: "0.02em",
+              }}
+            >
+              Book Exchange Policy
+            </h3>
+          </div>
+
+          <div className="space-y-4 text-base leading-relaxed" style={{ color: "#374151" }}>
+            <p>
+              You will receive <strong style={{ color: "#6B1C6F" }}>25% of the book&apos;s original list price</strong> in store credit on any book we are able to take.
+            </p>
+            <p>
+              <strong style={{ color: "#6B1C6F" }}>50% of the book&apos;s list price</strong> will be deducted from your credit on any book you are purchasing.
+            </p>
+            <div>
+              <p className="mb-3">
+                A <strong style={{ color: "#6B1C6F" }}>swap fee</strong> per book applies as follows, based on the book&apos;s list price:
+              </p>
+              <div
+                className="grid grid-cols-3 gap-2 sm:gap-4 max-w-md rounded-xl p-4"
+                style={{ background: "#FDF8F0" }}
+              >
+                <div className="text-center">
+                  <div className="text-xs uppercase tracking-wider mb-1" style={{ color: "#6B7280" }}>$10 or under</div>
+                  <div className="font-bold text-2xl" style={{ color: "#F1BB1A", fontFamily: "'Playfair Display', Georgia, serif" }}>$1</div>
+                </div>
+                <div className="text-center" style={{ borderLeft: "1px solid #E5E0D5", borderRight: "1px solid #E5E0D5" }}>
+                  <div className="text-xs uppercase tracking-wider mb-1" style={{ color: "#6B7280" }}>$11 to $19</div>
+                  <div className="font-bold text-2xl" style={{ color: "#F1BB1A", fontFamily: "'Playfair Display', Georgia, serif" }}>$2</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs uppercase tracking-wider mb-1" style={{ color: "#6B7280" }}>$20 and up</div>
+                  <div className="font-bold text-2xl" style={{ color: "#F1BB1A", fontFamily: "'Playfair Display', Georgia, serif" }}>$3</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p
+            className="mt-6 pt-4 text-sm italic text-center"
+            style={{ color: "#6B7280", borderTop: "1px dashed #E5E0D5" }}
+          >
+            Without credit, books are priced at 50% of the list price unless otherwise marked with our store&apos;s sticker.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">

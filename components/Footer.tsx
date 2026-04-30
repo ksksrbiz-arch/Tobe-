@@ -24,7 +24,7 @@ const FacebookIcon = () => (
 );
 
 const footerSocials = [
-  { name: "Instagram", icon: InstagramIcon, href: "https://instagram.com/ToBeRead_clackamas" },
+  { name: "Instagram", icon: InstagramIcon, href: "https://instagram.com/toberead_clackamas" },
   { name: "TikTok", icon: TikTokIcon, href: "https://tiktok.com/@clackamas.book.ex" },
   { name: "Facebook", icon: FacebookIcon, href: "https://facebook.com/ClackamasBookExchange" },
 ];

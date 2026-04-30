@@ -65,7 +65,7 @@ const jsonLd = {
     },
   ],
   sameAs: [
-    "https://instagram.com/ToBeRead_clackamas",
+    "https://instagram.com/toberead_clackamas",
     "https://tiktok.com/@clackamas.book.ex",
     "https://facebook.com/ClackamasBookExchange",
     "https://www.pangobooks.com/seller/cltoberread2024",

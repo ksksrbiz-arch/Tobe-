@@ -24,9 +24,9 @@ const FacebookIcon = () => (
 const socials = [
   {
     name: "Instagram",
-    handle: "@ToBeRead_clackamas",
+    handle: "@toberead_clackamas",
     icon: InstagramIcon,
-    href: "https://instagram.com/ToBeRead_clackamas",
+    href: "https://instagram.com/toberead_clackamas",
     color: "#E1306C",
   },
   {
