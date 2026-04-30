@@ -14,9 +14,12 @@ export default function TikTokEmbed({ videoId, username }: TikTokEmbedProps) {
     script.src = "https://www.tiktok.com/embed.js";
     script.async = true;
     document.body.appendChild(script);
+    let appended = true;
+    // Only clean up the script this instance added
     return () => {
-      if (document.body.contains(script)) {
+      if (appended && document.body.contains(script)) {
         document.body.removeChild(script);
+        appended = false;
       }
     };
   }, []);
