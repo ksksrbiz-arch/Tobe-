@@ -97,9 +97,9 @@ export default function Home() {
             <div className="w-16 h-1 mx-auto rounded-full" style={{ background: "#F1BB1A" }} />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {exploreCards.map((card, i) => (
+            {exploreCards.map((card) => (
               <Link
-                key={i}
+                key={card.title}
                 href={card.href}
                 className="group flex flex-col items-center text-center p-8 rounded-2xl transition-all hover:-translate-y-2 hover:shadow-xl"
                 style={{ background: "white", boxShadow: "0 4px 20px rgba(107,28,111,0.08)" }}
@@ -172,8 +172,8 @@ export default function Home() {
       <section style={{ background: "#6B1C6F" }} className="py-10 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, i) => (
-              <div key={i} className="flex flex-col items-center text-center gap-2">
+            {stats.map((stat) => (
+              <div key={stat.label} className="flex flex-col items-center text-center gap-2">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center"
                   style={{ background: "rgba(241,187,26,0.2)" }}

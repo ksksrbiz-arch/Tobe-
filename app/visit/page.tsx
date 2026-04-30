@@ -58,9 +58,9 @@ export default function VisitPage() {
               <div className="w-12 h-1 mx-auto rounded-full" style={{ background: "#F1BB1A" }} />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {gettingHereCards.map((card, i) => (
+              {gettingHereCards.map((card) => (
                 <div
-                  key={i}
+                  key={card.title}
                   className="p-7 rounded-2xl"
                   style={{ background: "white", boxShadow: "0 4px 20px rgba(107,28,111,0.08)" }}
                 >

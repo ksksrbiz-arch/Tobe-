@@ -51,8 +51,8 @@ export default function AboutPage() {
               <div className="w-12 h-1 mx-auto rounded-full" style={{ background: "#F1BB1A" }} />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {galleryItems.map((item, i) => (
-                <div key={i} className="rounded-2xl overflow-hidden shadow-md group">
+              {galleryItems.map((item) => (
+                <div key={item.caption} className="rounded-2xl overflow-hidden shadow-md group">
                   <div className="overflow-hidden" style={{ height: "220px" }}>
                     <img
                       src={item.url}

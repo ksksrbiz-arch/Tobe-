@@ -58,9 +58,9 @@ export default function TradePage() {
               <div className="w-12 h-1 mx-auto rounded-full" style={{ background: "#F1BB1A" }} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {tradeTips.map((tip, i) => (
+              {tradeTips.map((tip) => (
                 <div
-                  key={i}
+                  key={tip.title}
                   className="flex flex-col items-center text-center p-7 rounded-2xl transition-transform hover:-translate-y-1"
                   style={{ background: "#FDF8F0", boxShadow: "0 4px 20px rgba(107,28,111,0.08)" }}
                 >

@@ -71,9 +71,9 @@ export default function ShopPage() {
               <div className="w-12 h-1 mx-auto rounded-full mb-2" style={{ background: "#F1BB1A" }} />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {featuredBooks.map((book, i) => (
+              {featuredBooks.map((book) => (
                 <div
-                  key={i}
+                  key={book.title}
                   className="rounded-2xl overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-lg"
                   style={{ background: "white", boxShadow: "0 4px 20px rgba(107,28,111,0.08)" }}
                 >
