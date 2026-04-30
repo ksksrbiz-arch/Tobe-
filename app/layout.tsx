@@ -1,17 +1,28 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tobereadbooks.com"),
-  title: "To Be Read (TBR) | Clackamas Book Exchange – Milwaukie, OR",
+  title: {
+    default: "To Be Read (TBR) | Clackamas Book Exchange – Milwaukie, OR",
+    template: "%s · To Be Read",
+  },
   description:
     "Your neighborhood used bookstore in Milwaukie, Oregon. Trade books, browse thousands of titles, shop online on PangoBooks and Bookshop.org. Under new ownership since 2024, rebranding to TBR in 2026!",
   keywords: [
-    "used bookstore", "Milwaukie Oregon", "Clackamas Book Exchange",
-    "To Be Read", "TBR", "trade books", "PangoBooks", "Bookshop.org",
-    "used books Portland", "book exchange"
+    "used bookstore",
+    "Milwaukie Oregon",
+    "Clackamas Book Exchange",
+    "To Be Read",
+    "TBR",
+    "trade books",
+    "PangoBooks",
+    "Bookshop.org",
+    "used books Portland",
+    "book exchange",
   ],
+  authors: [{ name: "To Be Read" }],
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -38,6 +49,15 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FFFDF9" },
+    { media: "(prefers-color-scheme: dark)", color: "#4A1350" },
+  ],
+  width: "device-width",
+  initialScale: 1,
 };
 
 const jsonLd = {

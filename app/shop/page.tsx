@@ -5,6 +5,9 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import ShopSection from "@/components/ShopSection";
 import Footer from "@/components/Footer";
+import FloatingButtons from "@/components/FloatingButtons";
+import Reveal from "@/components/Reveal";
+import { Star, Tag } from "lucide-react";
 
 const featuredBooks = [
   {
@@ -12,114 +15,229 @@ const featuredBooks = [
     author: "Matt Haig",
     genre: "Fiction",
     price: "$6",
-    bgColor: "#6B1C6F20",
-    accentColor: "#6B1C6F",
+    accentFrom: "#6B1C6F",
+    accentTo: "#8B2E90",
   },
   {
     title: "Educated",
     author: "Tara Westover",
     genre: "Memoir",
     price: "$5",
-    bgColor: "#1a6b1c20",
-    accentColor: "#1a6b1c",
+    accentFrom: "#1a6b1c",
+    accentTo: "#16a34a",
   },
   {
     title: "Piranesi",
     author: "Susanna Clarke",
     genre: "Fantasy",
     price: "$7",
-    bgColor: "#1e3a8a20",
-    accentColor: "#1e3a8a",
+    accentFrom: "#1e3a8a",
+    accentTo: "#3b82f6",
   },
   {
     title: "A Gentleman in Moscow",
     author: "Amor Towles",
     genre: "Historical",
     price: "$8",
-    bgColor: "#b4530920",
-    accentColor: "#b45309",
+    accentFrom: "#b45309",
+    accentTo: "#F1BB1A",
   },
+  {
+    title: "Tomorrow x3",
+    author: "Gabrielle Zevin",
+    genre: "Fiction",
+    price: "$7",
+    accentFrom: "#6B1C6F",
+    accentTo: "#F1BB1A",
+  },
+  {
+    title: "Project Hail Mary",
+    author: "Andy Weir",
+    genre: "Sci-Fi",
+    price: "$8",
+    accentFrom: "#0f766e",
+    accentTo: "#14b8a6",
+  },
+  {
+    title: "Lessons in Chemistry",
+    author: "Bonnie Garmus",
+    genre: "Fiction",
+    price: "$6",
+    accentFrom: "#9a3412",
+    accentTo: "#f97316",
+  },
+  {
+    title: "The Covenant of Water",
+    author: "Abraham Verghese",
+    genre: "Literary",
+    price: "$9",
+    accentFrom: "#4c1d95",
+    accentTo: "#7c3aed",
+  },
+];
+
+const genreChips = [
+  "Fiction",
+  "Mystery",
+  "Sci-Fi & Fantasy",
+  "Romance",
+  "Memoir",
+  "History",
+  "Self-Help",
+  "Cookbooks",
+  "Children's",
+  "YA",
+  "Poetry",
+  "Travel",
 ];
 
 export default function ShopPage() {
   return (
-    <main className="min-h-screen bg-white">
+    <main id="main" className="min-h-screen bg-white">
       <Navbar />
-      <div className="pt-16">
-        <PageHero
-          title="Shop Our Collection"
-          subtitle="Browse thousands of titles online or visit us in person"
-          badge="Shop"
-          imageUrl="https://images.unsplash.com/photo-1589998059171-988d887df646?w=1600&q=80"
-        />
-        <ShopSection />
+      <PageHero
+        title="Shop Our Collection"
+        subtitle="Browse thousands of titles online or visit us in person."
+        badge="Shop"
+        imageUrl="https://images.unsplash.com/photo-1589998059171-988d887df646?w=1600&q=80"
+        scrollTargetId="shop"
+      />
+      <ShopSection />
 
-        {/* New & Notable */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8" style={{ background: "#FDF8F0" }}>
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-10">
-              <h2
-                className="font-bold mb-2"
-                style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  color: "#6B1C6F",
-                  fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-                }}
-              >
-                New &amp; Notable
-              </h2>
-              <div className="w-12 h-1 mx-auto rounded-full mb-2" style={{ background: "#F1BB1A" }} />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {featuredBooks.map((book) => (
-                <div
-                  key={book.title}
-                  className="rounded-2xl overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-lg"
-                  style={{ background: "white", boxShadow: "0 4px 20px rgba(107,28,111,0.08)" }}
+      {/* Genre quick filters */}
+      <section
+        className="px-4 py-16 sm:px-6 lg:px-8"
+        style={{ background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)" }}
+      >
+        <div className="mx-auto max-w-5xl">
+          <Reveal className="mb-8 text-center">
+            <span
+              className="mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+            >
+              <Tag size={12} />
+              What we stock
+            </span>
+            <h2
+              className="font-bold"
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                color: "#6B1C6F",
+                fontSize: "clamp(1.7rem, 3.5vw, 2.2rem)",
+              }}
+            >
+              Every <span className="underline-accent">genre</span>, always rotating
+            </h2>
+          </Reveal>
+
+          <Reveal>
+            <div className="flex flex-wrap justify-center gap-2.5">
+              {genreChips.map((g) => (
+                <span
+                  key={g}
+                  className="rounded-full border px-4 py-2 text-sm font-medium transition-all hover:-translate-y-0.5 hover:shadow-md"
+                  style={{
+                    background: "white",
+                    borderColor: "rgba(107,28,111,0.14)",
+                    color: "#6B1C6F",
+                  }}
                 >
-                  {/* Book illustration placeholder */}
+                  {g}
+                </span>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Featured */}
+      <section
+        className="px-4 py-24 sm:px-6 lg:px-8"
+        style={{ background: "white" }}
+      >
+        <div className="mx-auto max-w-6xl">
+          <Reveal className="mb-12 text-center">
+            <span
+              className="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+            >
+              <Star size={12} />
+              New &amp; Notable
+            </span>
+            <h2
+              className="mb-3 font-bold"
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                color: "#6B1C6F",
+                fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
+              }}
+            >
+              On the table this <span className="underline-accent">week</span>
+            </h2>
+            <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+            <p className="mx-auto mt-4 max-w-xl text-sm" style={{ color: "#6B7280" }}>
+              Examples only — our shelves change daily, so come hunt for something you didn&apos;t expect.
+            </p>
+          </Reveal>
+
+          <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
+            {featuredBooks.map((book, i) => (
+              <Reveal key={book.title} delay={i * 60}>
+                <article
+                  className="group h-full overflow-hidden rounded-2xl border bg-white transition-all hover:-translate-y-1 hover:shadow-xl"
+                  style={{ borderColor: "rgba(107,28,111,0.08)", boxShadow: "0 8px 22px rgba(107,28,111,0.06)" }}
+                >
+                  {/* Faux book cover */}
                   <div
-                    className="flex items-center justify-center"
-                    style={{ height: "140px", background: book.bgColor }}
+                    className="relative flex h-40 items-end justify-start p-4 transition-transform duration-500 group-hover:scale-[1.02]"
+                    style={{
+                      background: `linear-gradient(135deg, ${book.accentFrom} 0%, ${book.accentTo} 100%)`,
+                    }}
                   >
                     <div
-                      className="text-4xl font-bold font-serif"
-                      style={{ color: book.accentColor, opacity: 0.4 }}
+                      aria-hidden="true"
+                      className="absolute right-2 top-2 h-12 w-12 rounded-full opacity-30 blur-2xl"
+                      style={{ background: "white" }}
+                    />
+                    <p
+                      className="relative text-base font-bold leading-tight text-white"
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                     >
-                      📖
-                    </div>
+                      {book.title}
+                    </p>
                   </div>
                   <div className="p-4">
                     <span
-                      className="text-xs font-semibold px-2 py-0.5 rounded-full"
-                      style={{ background: book.bgColor, color: book.accentColor }}
+                      className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
+                      style={{
+                        background: book.accentFrom + "18",
+                        color: book.accentFrom,
+                      }}
                     >
                       {book.genre}
                     </span>
-                    <h3
-                      className="font-bold mt-2 text-sm leading-tight"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#1a1a1a" }}
-                    >
-                      {book.title}
-                    </h3>
-                    <p className="text-xs mt-0.5" style={{ color: "#6B7280" }}>{book.author}</p>
+                    <p className="mt-2.5 text-xs" style={{ color: "#6B7280" }}>
+                      by {book.author}
+                    </p>
                     <p
-                      className="font-bold mt-3 text-base"
-                      style={{ color: book.accentColor }}
+                      className="mt-3 text-lg font-bold"
+                      style={{
+                        color: book.accentFrom,
+                        fontFamily: "'Playfair Display', Georgia, serif",
+                      }}
                     >
                       {book.price}
                     </p>
                   </div>
-                </div>
-              ))}
-            </div>
-            <p className="text-center text-sm italic mt-6" style={{ color: "#9CA3AF" }}>
-              *Inventory changes daily — these are examples only
-            </p>
+                </article>
+              </Reveal>
+            ))}
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
+
       <Footer />
+      <FloatingButtons />
     </main>
   );
 }
