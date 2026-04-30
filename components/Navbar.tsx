@@ -89,7 +89,22 @@ export default function Navbar() {
           <div className="flex h-16 items-center justify-between md:h-[68px]">
             {/* Logo */}
             <Link href="/" className="group flex items-center gap-2.5" aria-label="To Be Read home">
-              <BookLogo size={40} showText={false} className="transition-transform duration-300 group-hover:rotate-[-4deg] group-hover:scale-110" />
+              <span className="relative inline-flex items-center justify-center">
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 -m-1.5 rounded-full opacity-70"
+                  style={{
+                    background:
+                      "radial-gradient(circle, rgba(241,187,26,0.45) 0%, rgba(241,187,26,0.10) 50%, transparent 75%)",
+                    animation: "candleGlow 5s ease-in-out infinite",
+                  }}
+                />
+                <BookLogo
+                  size={40}
+                  showText={false}
+                  className="relative transition-transform duration-300 group-hover:rotate-[-4deg] group-hover:scale-110"
+                />
+              </span>
               <div className="hidden sm:block">
                 <div
                   style={{
@@ -183,13 +198,24 @@ export default function Navbar() {
         {/* Scroll Progress */}
         <div className="absolute bottom-0 left-0 right-0 h-[2px]" style={{ background: "rgba(107,28,111,0.06)" }}>
           <div
-            className="h-full transition-[width] duration-150 ease-out"
+            className="relative h-full transition-[width] duration-150 ease-out"
             style={{
               width: `${progress}%`,
               background: "linear-gradient(90deg, #6B1C6F 0%, #F1BB1A 100%)",
+              boxShadow: "0 0 12px rgba(241,187,26,0.55)",
             }}
             aria-hidden="true"
-          />
+          >
+            <span
+              className="absolute right-0 top-1/2 h-2 w-2 -translate-y-1/2 translate-x-1/2 rounded-full"
+              style={{
+                background: "#F1BB1A",
+                boxShadow: "0 0 10px rgba(241,187,26,0.85)",
+                opacity: progress > 0.5 ? 1 : 0,
+                transition: "opacity 200ms ease-out",
+              }}
+            />
+          </div>
         </div>
       </header>
 

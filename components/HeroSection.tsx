@@ -130,8 +130,12 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
 
         {/* Logo */}
         <div className="fade-in-up mb-6 flex justify-center" style={{ animationDelay: "100ms" }}>
-          <div className="relative">
-            <BookLogo size={170} showText={false} className="drop-shadow-[0_18px_28px_rgba(107,28,111,0.18)]" />
+          <div className="relative lamp-glow">
+            <BookLogo
+              size={170}
+              showText={false}
+              className="animate-float-slow drop-shadow-[0_18px_28px_rgba(107,28,111,0.18)]"
+            />
             <span
               className="absolute -right-3 -top-2 inline-flex h-7 items-center rounded-full px-2.5 text-[10px] font-bold uppercase tracking-widest text-white animate-wiggle"
               style={{ background: "#F1BB1A", color: "#1a1a1a", boxShadow: "0 8px 20px rgba(241,187,26,0.35)" }}
@@ -143,7 +147,7 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
 
         {/* Title */}
         <h1
-          className="fade-in-up mb-3 font-bold"
+          className="animate-ink-settle mb-3 font-bold"
           style={{
             fontFamily: "'Playfair Display', Georgia, serif",
             color: "#6B1C6F",

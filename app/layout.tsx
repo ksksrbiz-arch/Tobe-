@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
-import RootClientWrapper from "@/components/RootClientWrapper";
+import LoadingScreen from "@/components/LoadingScreen";
+import CozyAmbience from "@/components/CozyAmbience";
+import PageTransition from "@/components/PageTransition";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tobereadbooks.com"),
@@ -116,18 +118,20 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <RootClientWrapper>
-          {children}
-          <Toaster
-            position="bottom-center"
-            richColors
-            toastOptions={{
-              style: {
-                fontFamily: "'Inter', sans-serif",
-              },
-            }}
-          />
-        </RootClientWrapper>
+        <LoadingScreen />
+        <CozyAmbience />
+        <div className="relative z-[2]">
+          <PageTransition>{children}</PageTransition>
+        </div>
+        <Toaster
+          position="bottom-center"
+          richColors
+          toastOptions={{
+            style: {
+              fontFamily: "'Inter', sans-serif",
+            },
+          }}
+        />
       </body>
     </html>
   );

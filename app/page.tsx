@@ -141,6 +141,12 @@ const EventsSection = dynamic(() => import("@/components/EventsSection"), {
   loading: () => <SectionSkeleton eyebrow="Events" title="Marking the calendar..." />,
 });
 
+const LemmyFeatureSection = dynamic(() => import("@/components/LemmyFeatureSection"), {
+  loading: () => (
+    <SectionSkeleton eyebrow="Featured" title="Following Lemmy's footprints..." muted />
+  ),
+});
+
 const FAQSection = dynamic(() => import("@/components/FAQSection"), {
   loading: () => <SectionSkeleton eyebrow="FAQ" title="Gathering common questions..." muted />,
 });
@@ -446,6 +452,7 @@ export default function Home() {
       </section>
 
       <EventsSection />
+      <LemmyFeatureSection />
       <ConnectSection />
       <FAQSection />
       <NewsletterCTA />
