@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
+import RootClientWrapper from "@/components/RootClientWrapper";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tobereadbooks.com"),
@@ -115,16 +116,18 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {children}
-        <Toaster
-          position="bottom-center"
-          richColors
-          toastOptions={{
-            style: {
-              fontFamily: "'Inter', sans-serif",
-            },
-          }}
-        />
+        <RootClientWrapper>
+          {children}
+          <Toaster
+            position="bottom-center"
+            richColors
+            toastOptions={{
+              style: {
+                fontFamily: "'Inter', sans-serif",
+              },
+            }}
+          />
+        </RootClientWrapper>
       </body>
     </html>
   );
