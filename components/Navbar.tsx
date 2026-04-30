@@ -2,21 +2,24 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import BookLogo from "./BookLogo";
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Visit", href: "#visit" },
-  { label: "Trade", href: "#trade" },
-  { label: "Shop", href: "#shop" },
-  { label: "Connect", href: "#connect" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Visit", href: "/visit" },
+  { label: "Trade", href: "/trade" },
+  { label: "Shop", href: "/shop" },
+  { label: "Connect", href: "/connect" },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,14 +35,6 @@ export default function Navbar() {
       "_blank"
     );
     toast.success("Opening directions in Google Maps!");
-  };
-
-  const handleNavClick = (href: string) => {
-    setIsOpen(false);
-    const el = document.querySelector(href);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
   return (
@@ -67,16 +62,23 @@ export default function Navbar() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
-            {navLinks.map((link) => (
-              <button
-                key={link.href}
-                onClick={() => handleNavClick(link.href)}
-                className="px-3 py-2 text-sm font-medium rounded-md transition-colors hover:text-purple-700"
-                style={{ color: "#374151" }}
-              >
-                {link.label}
-              </button>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="px-3 py-2 text-sm font-medium rounded-md transition-colors hover:text-purple-700"
+                  style={{
+                    color: isActive ? "#6B1C6F" : "#374151",
+                    fontWeight: isActive ? 700 : 500,
+                    borderBottom: isActive ? "2px solid #F1BB1A" : "2px solid transparent",
+                  }}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* CTA + Mobile Toggle */}
@@ -109,16 +111,24 @@ export default function Navbar() {
         {isOpen && (
           <div className="md:hidden border-t py-4" style={{ borderColor: "#e5e7eb" }}>
             <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
-              {navLinks.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => handleNavClick(link.href)}
-                  className="w-full text-left px-4 py-3 text-base font-medium rounded-lg transition-colors"
-                  style={{ color: "#374151" }}
-                >
-                  {link.label}
-                </button>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="w-full text-left px-4 py-3 text-base font-medium rounded-lg transition-colors"
+                    style={{
+                      color: isActive ? "#6B1C6F" : "#374151",
+                      background: isActive ? "#6B1C6F10" : "transparent",
+                      fontWeight: isActive ? 700 : 500,
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
               <button
                 onClick={handleDirections}
                 className="flex items-center gap-2 mt-2 mx-2 px-4 py-3 rounded-lg text-sm font-semibold text-white"
