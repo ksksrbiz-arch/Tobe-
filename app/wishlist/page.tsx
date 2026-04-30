@@ -45,7 +45,13 @@ export default function WishlistPage() {
       />
 
       {/* Feature pills */}
-      <section className="px-4 py-16 sm:px-6 lg:px-8" style={{ background: "white" }}>
+      <section
+        className="px-4 py-16 sm:px-6 lg:px-8"
+        style={{
+          background:
+            "radial-gradient(ellipse at 100% 0%, rgba(107,28,111,0.07) 0%, transparent 50%), radial-gradient(ellipse at 0% 100%, rgba(241,187,26,0.08) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+        }}
+      >
         <div className="mx-auto max-w-5xl">
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {features.map((f, i) => (

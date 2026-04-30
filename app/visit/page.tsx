@@ -40,7 +40,11 @@ const nearbyTreats = [
 
 export default function VisitPage() {
   return (
-    <main id="main" className="min-h-screen bg-white">
+    <main
+      id="main"
+      className="min-h-screen"
+      style={{ background: "var(--background)" }}
+    >
       <Navbar />
       <PageHero
         title="Find Us"

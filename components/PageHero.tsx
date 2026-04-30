@@ -26,7 +26,17 @@ export default function PageHero({
         minHeight: "360px",
       }}
     >
-      {/* Background image */}
+      {/* Deep purple base — sits beneath everything so we never see white flash */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at 30% 20%, #8B2E90 0%, #6B1C6F 35%, #4A1350 70%, #2A0930 100%)",
+        }}
+      />
+
+      {/* Background image — heavily desaturated and softened so faces/people read as texture, not portraits */}
       <div
         aria-hidden="true"
         className="absolute inset-0"
@@ -34,17 +44,30 @@ export default function PageHero({
           backgroundImage: `url(${imageUrl})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          transform: "scale(1.05)",
+          transform: "scale(1.08)",
+          filter: "saturate(0.55) brightness(0.7) contrast(1.05) blur(2px)",
+          mixBlendMode: "overlay",
+          opacity: 0.55,
         }}
       />
 
-      {/* Gradient overlay */}
+      {/* Primary purple gradient overlay — opaque enough to dominate any underlying photo */}
       <div
         aria-hidden="true"
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(135deg, rgba(74,19,80,0.92) 0%, rgba(107,28,111,0.78) 45%, rgba(107,28,111,0.88) 100%)",
+            "linear-gradient(135deg, rgba(42,9,48,0.95) 0%, rgba(74,19,80,0.92) 35%, rgba(107,28,111,0.88) 70%, rgba(139,46,144,0.88) 100%)",
+        }}
+      />
+
+      {/* Warm gold-on-purple glow for depth */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at 80% 110%, rgba(241,187,26,0.18) 0%, transparent 55%), radial-gradient(ellipse at 0% 0%, rgba(241,187,26,0.10) 0%, transparent 50%)",
         }}
       />
 

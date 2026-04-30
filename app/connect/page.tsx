@@ -48,7 +48,13 @@ export default function ConnectPage() {
       />
 
       {/* TikTok showcase */}
-      <section className="px-4 py-24 sm:px-6 lg:px-8" style={{ background: "white" }}>
+      <section
+        className="px-4 py-24 sm:px-6 lg:px-8"
+        style={{
+          background:
+            "radial-gradient(ellipse at 100% 0%, rgba(107,28,111,0.07) 0%, transparent 50%), radial-gradient(ellipse at 0% 100%, rgba(241,187,26,0.08) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+        }}
+      >
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-12 text-center">
             <span
