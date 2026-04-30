@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { toast } from "sonner";
 import BookLogo from "./BookLogo";
@@ -79,17 +80,20 @@ export default function Footer() {
               Quick Links
             </h4>
             <ul className="space-y-2">
-              {["About", "Visit", "Trade", "Shop", "Connect"].map((item) => (
-                <li key={item}>
-                  <button
-                    onClick={() => {
-                      const el = document.querySelector(`#${item.toLowerCase()}`);
-                      if (el) el.scrollIntoView({ behavior: "smooth" });
-                    }}
+              {[
+                { label: "About", href: "/about" },
+                { label: "Visit", href: "/visit" },
+                { label: "Trade", href: "/trade" },
+                { label: "Shop", href: "/shop" },
+                { label: "Connect", href: "/connect" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
                     className="text-sm opacity-70 hover:opacity-100 hover:text-yellow-300 transition-all"
                   >
-                    {item}
-                  </button>
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
