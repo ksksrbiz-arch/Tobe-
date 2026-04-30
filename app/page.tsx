@@ -123,6 +123,16 @@ const ShopSection = dynamic(() => import("@/components/ShopSection"), {
   loading: () => <SectionSkeleton id="shop" eyebrow="Shop" title="Curating online picks..." />,
 });
 
+const JustShelvedSection = dynamic(
+  () => import("@/components/JustShelvedFeed").then((m) => ({ default: m.JustShelvedSection })),
+  { loading: () => <SectionSkeleton eyebrow="Just Shelved" title="Loading live arrivals..." muted /> },
+);
+
+const NextReadSection = dynamic(
+  () => import("@/components/NextReadMatchmaker").then((m) => ({ default: m.NextReadSection })),
+  { loading: () => <SectionSkeleton eyebrow="AI Matchmaker" title="Warming up the recommendation engine..." /> },
+);
+
 const ConnectSection = dynamic(() => import("@/components/ConnectSection"), {
   loading: () => <SectionSkeleton id="connect" eyebrow="Connect" title="Pulling in the community shelf..." muted />,
 });
@@ -374,6 +384,8 @@ export default function Home() {
       <VisitSection />
       <TradeSection />
       <ShopSection />
+      <JustShelvedSection />
+      <NextReadSection />
 
       {/* TikTok spotlight */}
       <section

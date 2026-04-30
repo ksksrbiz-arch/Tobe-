@@ -4,6 +4,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import TradeSection from "@/components/TradeSection";
+import TradeCreditEstimator from "@/components/TradeCreditEstimator";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
@@ -137,6 +138,42 @@ export default function TradePage() {
       </section>
 
       <TradeSection />
+
+      {/* Trade Credit Estimator */}
+      <section
+        id="estimator"
+        className="px-4 py-24 sm:px-6 lg:px-8"
+        style={{
+          background:
+            "radial-gradient(circle at 90% 10%, rgba(241,187,26,0.10), transparent 40%), linear-gradient(180deg, white 0%, #FDF8F0 100%)",
+        }}
+      >
+        <div className="mx-auto max-w-5xl">
+          <Reveal className="mb-10 text-center">
+            <span
+              className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+            >
+              Instant estimate
+            </span>
+            <h2
+              className="mb-3 font-bold"
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                color: "#6B1C6F",
+                fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
+              }}
+            >
+              How much credit will I <span className="underline-accent">earn?</span>
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-6" style={{ color: "#6B7280" }}>
+              Enter a list price or scan an ISBN to instantly see your estimated store credit and swap fee — before you even walk in.
+            </p>
+            <div className="mx-auto mt-4 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          </Reveal>
+          <TradeCreditEstimator />
+        </div>
+      </section>
 
       {/* Tips */}
       <section className="px-4 py-24 sm:px-6 lg:px-8" style={{ background: "white" }}>
