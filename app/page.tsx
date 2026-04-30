@@ -365,7 +365,7 @@ export default function Home() {
               A little motion and personality for the homepage.
             </h2>
             <p className="mt-4 text-sm leading-7" style={{ color: "#4B5563" }}>
-              The embed now loads behind a styled placeholder so the page feels intentional instead of empty while third-party content catches up.
+              The embed now loads behind a styled placeholder, so the page feels intentional rather than empty while third-party content loads.
             </p>
             <div
               className="mt-6 rounded-[28px] border p-5"
