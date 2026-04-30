@@ -93,7 +93,11 @@ const genreChips = [
 
 export default function ShopPage() {
   return (
-    <main id="main" className="min-h-screen bg-white">
+    <main
+      id="main"
+      className="min-h-screen"
+      style={{ background: "var(--background)" }}
+    >
       <Navbar />
       <PageHero
         title="Shop Our Collection"
@@ -153,7 +157,10 @@ export default function ShopPage() {
       {/* Featured */}
       <section
         className="px-4 py-24 sm:px-6 lg:px-8"
-        style={{ background: "white" }}
+        style={{
+          background:
+            "radial-gradient(ellipse at 0% 0%, rgba(107,28,111,0.07) 0%, transparent 50%), radial-gradient(ellipse at 100% 100%, rgba(241,187,26,0.10) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+        }}
       >
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-12 text-center">

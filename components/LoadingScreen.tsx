@@ -81,7 +81,7 @@ export default function LoadingScreen() {
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
       style={{
         background:
-          "radial-gradient(circle at 30% 25%, rgba(241,187,26,0.22), transparent 45%), radial-gradient(circle at 75% 75%, rgba(107,28,111,0.32), transparent 50%), linear-gradient(135deg, #FDF8F0 0%, #FFF7EC 40%, #F5EAFB 100%)",
+          "radial-gradient(circle at 25% 20%, rgba(241,187,26,0.28), transparent 50%), radial-gradient(circle at 80% 80%, rgba(107,28,111,0.38), transparent 55%), radial-gradient(circle at 50% 50%, rgba(139,46,144,0.10), transparent 70%), linear-gradient(135deg, #FDF8F0 0%, #FFF7EC 25%, #F5EAFB 65%, #E8D5F0 100%)",
         opacity: leaving ? 0 : 1,
         transition: "opacity 600ms cubic-bezier(0.22, 1, 0.36, 1)",
         pointerEvents: leaving ? "none" : "auto",

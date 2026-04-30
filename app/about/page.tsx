@@ -49,14 +49,20 @@ export default function AboutPage() {
         title="Our Story"
         subtitle="45 years of stories, one chapter at a time."
         badge="About Us"
-        imageUrl="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1600&q=80"
+        imageUrl="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1600&q=80"
         scrollTargetId="about"
       />
 
       <StorySection />
 
       {/* Values */}
-      <section className="px-4 py-24 sm:px-6 lg:px-8" style={{ background: "white" }}>
+      <section
+        className="px-4 py-24 sm:px-6 lg:px-8"
+        style={{
+          background:
+            "radial-gradient(ellipse at 0% 0%, rgba(107,28,111,0.06) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(241,187,26,0.08) 0%, transparent 45%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+        }}
+      >
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-14 text-center">
             <span
@@ -171,7 +177,13 @@ export default function AboutPage() {
       </section>
 
       {/* Owner letter */}
-      <section className="px-4 py-24 sm:px-6 lg:px-8" style={{ background: "white" }}>
+      <section
+        className="px-4 py-24 sm:px-6 lg:px-8"
+        style={{
+          background:
+            "radial-gradient(ellipse at 80% 0%, rgba(241,187,26,0.10) 0%, transparent 50%), radial-gradient(ellipse at 20% 100%, rgba(107,28,111,0.07) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 60%, #F5EAFB 100%)",
+        }}
+      >
         <div className="mx-auto max-w-3xl">
           <Reveal>
             <div

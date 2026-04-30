@@ -74,7 +74,13 @@ export default function TradePage() {
       />
 
       {/* How it works */}
-      <section className="px-4 py-24 sm:px-6 lg:px-8" style={{ background: "white" }}>
+      <section
+        className="px-4 py-24 sm:px-6 lg:px-8"
+        style={{
+          background:
+            "radial-gradient(ellipse at 0% 0%, rgba(107,28,111,0.06) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(241,187,26,0.08) 0%, transparent 45%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+        }}
+      >
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-12 text-center">
             <span
@@ -176,7 +182,13 @@ export default function TradePage() {
       </section>
 
       {/* Tips */}
-      <section className="px-4 py-24 sm:px-6 lg:px-8" style={{ background: "white" }}>
+      <section
+        className="px-4 py-24 sm:px-6 lg:px-8"
+        style={{
+          background:
+            "radial-gradient(ellipse at 100% 0%, rgba(241,187,26,0.10) 0%, transparent 45%), radial-gradient(ellipse at 0% 100%, rgba(107,28,111,0.07) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 60%, #F5EAFB 100%)",
+        }}
+      >
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-12 text-center">
             <span
