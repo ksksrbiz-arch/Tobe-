@@ -9,7 +9,9 @@ const ADMIN_EMAILS: string[] = (process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? "").spli
 
 function isAdmin(user: User | null): boolean {
   if (!user?.email) return false;
-  if (ADMIN_EMAILS.length === 0) return true; // open if not configured
+  // Fail closed: if ADMIN_EMAILS is not configured, no one is an admin.
+  // Set NEXT_PUBLIC_ADMIN_EMAILS to a comma-separated list of staff emails.
+  if (ADMIN_EMAILS.length === 0) return false;
   return ADMIN_EMAILS.includes(user.email);
 }
 

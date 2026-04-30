@@ -13,9 +13,11 @@ function AuthPanel({ onAuth }: { onAuth: (u: User) => void }) {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const sendMagicLink = async () => {
     const trimmed = email.trim();
-    if (!trimmed.includes("@")) {
+    if (!EMAIL_RE.test(trimmed)) {
       setError("Please enter a valid email address.");
       return;
     }
@@ -220,7 +222,7 @@ function AddBookPanel({ userId, onAdded }: { userId: string; onAdded: () => void
         >
           {preview.cover_url && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={preview.cover_url} alt={preview.title} className="h-14 w-10 rounded object-cover flex-shrink-0" />
+            <img src={preview.cover_url} alt={preview.title || "Book cover"} className="h-14 w-10 rounded object-cover flex-shrink-0" />
           )}
           <div className="min-w-0 flex-1">
             <p className="font-bold text-sm truncate" style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}>{preview.title}</p>

@@ -4,6 +4,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { Sparkles, BookOpen } from "lucide-react";
 import { supabase, type RecentArrival } from "@/lib/supabase";
 
+const NEW_ITEM_HIGHLIGHT_DURATION_MS = 8_000;
+
 function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
   return (
     <div
@@ -92,11 +94,11 @@ export default function JustShelvedFeed() {
           const next = new Set(newIdsRef.current).add(newBook.id);
           newIdsRef.current = next;
           setNewIds(new Set(next));
-          // Remove "new" highlight after 8 s
+          // Remove "new" highlight after the configured duration
           setTimeout(() => {
             newIdsRef.current.delete(newBook.id);
             setNewIds(new Set(newIdsRef.current));
-          }, 8000);
+          }, NEW_ITEM_HIGHLIGHT_DURATION_MS);
         },
       )
       .subscribe((status) => {

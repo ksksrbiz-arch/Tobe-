@@ -44,7 +44,7 @@ export default function TradeCreditEstimator() {
   const lookupISBN = useCallback(async (isbn: string) => {
     const clean = isbn.replace(/[-\s]/g, "");
     if (!/^\d{10}(\d{3})?$/.test(clean)) {
-      setError("Please enter a valid 10- or 13-digit ISBN.");
+      setError("Please enter a valid ISBN — 10 or 13 digits (hyphens are OK, e.g. 978-0-06-112008-4).");
       return;
     }
     setLoading(true);
