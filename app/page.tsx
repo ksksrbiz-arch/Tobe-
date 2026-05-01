@@ -107,6 +107,11 @@ function TikTokSkeleton() {
   );
 }
 
+const TBRLoopEmbed = dynamic(
+  () => import("@/components/TBRLoop").then((m) => ({ default: m.TBRLoopEmbed })),
+  { ssr: false },
+);
+
 const StorySection = dynamic(() => import("@/components/StorySection"), {
   loading: () => <SectionSkeleton id="about" eyebrow="Our Story" title="Opening the next chapter..." muted />,
 });
@@ -232,6 +237,66 @@ export default function Home() {
     >
       <Navbar />
       <HeroSection onConfetti={fireConfetti} />
+
+      {/* TBR Loop preview section */}
+      <section
+        className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(253,248,240,0.60) 0%, rgba(255,253,249,0.90) 100%)",
+        }}
+      >
+        <DustMotes />
+        <div className="relative z-10 mx-auto max-w-5xl">
+          <Reveal className="mb-10 text-center">
+            <span
+              className="inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+            >
+              Swap · Read · Repeat
+            </span>
+            <h2
+              className="mt-4 font-bold"
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                color: "#6B1C6F",
+                fontSize: "clamp(2rem, 5vw, 2.8rem)",
+              }}
+            >
+              The TBR Loop
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-6" style={{ color: "#6B7280" }}>
+              Bring a book, earn credit, pick something new. That&apos;s the loop — and it never gets old.
+            </p>
+            <div className="mx-auto mt-4 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          </Reveal>
+
+          <Reveal delay={100}>
+            {/* 1:1 aspect-ratio container for the animation */}
+            <div
+              className="relative mx-auto overflow-hidden rounded-[28px]"
+              style={{
+                maxWidth: 520,
+                aspectRatio: "1 / 1",
+                boxShadow: "0 36px 90px rgba(107,28,111,0.18), 0 8px 20px rgba(241,187,26,0.10)",
+                border: "1px solid rgba(107,28,111,0.10)",
+              }}
+            >
+              <TBRLoopEmbed />
+            </div>
+          </Reveal>
+
+          <Reveal delay={180} className="mt-8 text-center">
+            <Link
+              href="/loop"
+              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:scale-105"
+              style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+            >
+              Open full-screen loop
+            </Link>
+          </Reveal>
+        </div>
+      </section>
 
       {/* Stats strip */}
       <section className="relative z-10 -mt-16 px-4 pb-10 sm:px-6 lg:px-8">

@@ -15,6 +15,7 @@ const navLinks = [
   { label: "Shop", href: "/shop" },
   { label: "Wishlist", href: "/wishlist" },
   { label: "Connect", href: "/connect" },
+  { label: "TBR Loop", href: "/loop" },
 ];
 
 export default function Navbar() {
