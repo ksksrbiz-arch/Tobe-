@@ -20,7 +20,7 @@ import {
   MapPin,
   Phone,
   Mail,
-  Instagram,
+  AtSign,
 } from "lucide-react";
 
 const chapters = [
@@ -748,7 +748,7 @@ export default function HowItWorksPage() {
                   className="flex items-center gap-2 italic"
                   style={{ color: "var(--gold)" }}
                 >
-                  <Instagram size={16} aria-hidden /> @tobereadbooks
+                  <AtSign size={16} aria-hidden /> @tobereadbooks
                 </div>
               </div>
             </VisitBlock>
