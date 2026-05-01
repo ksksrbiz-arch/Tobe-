@@ -36,7 +36,8 @@ const cozyHighlights = [
 ];
 
 /**
- * Whimsical author spotlight — Lemmy the Leprechaun & "Beowolfs of the Webs."
+ * Whimsical author spotlight — Lemmy the Leprechaun (from "Enchanted Bookstore")
+ * and the local anthology "Beowolfs of the Webs."
  * Includes a tiny clover easter egg that reveals a quiet "Lemmy was here." note.
  */
 export default function LemmyFeatureSection() {
@@ -114,8 +115,8 @@ export default function LemmyFeatureSection() {
           >
             There&apos;s a little mischief in the air, and if you listen closely, you just might hear
             the soft footfall of <strong style={{ color: "#6B1C6F" }}>Lemmy the Leprechaun</strong> —
-            that bright-hearted wanderer from the lore of{" "}
-            <em>Beowolfs of the Webs</em>. With a wink, a story, and maybe a secret or two tucked
+            the bright-hearted wanderer who first stepped onto the page in our own story inside{" "}
+            <em>Enchanted Bookstore</em>. With a wink, a story, and maybe a secret or two tucked
             beneath his cap, Lemmy reminds us that the best places are full of wonder, warmth, and
             the occasional hidden treasure.
           </p>
@@ -138,11 +139,13 @@ export default function LemmyFeatureSection() {
                   That spirit feels right at home here.
                 </p>
                 <p className="mt-4 text-sm leading-7" style={{ color: "#4B5563" }}>
-                  We&apos;re proud to support local authors and celebrate the storytellers who keep
-                  imagination alive — including the marvelous anthology{" "}
-                  <strong style={{ color: "#6B1C6F" }}>Beowolfs of the Webs</strong>. It&apos;s the
-                  kind of collection that invites curious readers to look twice, smile knowingly, and
-                  catch a few clever hat tips and easter eggs along the way.
+                  Lemmy first wandered onto the page in our own story inside{" "}
+                  <strong style={{ color: "#6B1C6F" }}>Enchanted Bookstore</strong> — a small bit of
+                  shop lore made literal. We&apos;re also proud to celebrate the local storytellers
+                  in the marvelous anthology{" "}
+                  <strong style={{ color: "#6B1C6F" }}>Beowolfs of the Webs</strong>: a collection
+                  that invites curious readers to look twice, smile knowingly, and catch a few
+                  clever hat tips along the way.
                 </p>
                 <p className="mt-4 text-sm leading-7" style={{ color: "#4B5563" }}>
                   And if you&apos;re new here, all the better — we love meeting new faces. Around
@@ -189,8 +192,9 @@ export default function LemmyFeatureSection() {
                     Beowolfs of the Webs
                   </h3>
                   <p className="mt-3 text-sm leading-6 text-white/80">
-                    A marvelous anthology full of clever hat tips and easter eggs — including a
-                    leprechaun named Lemmy who has rather strong opinions about good bookstores.
+                    A marvelous local anthology full of clever hat tips and easter eggs — the kind
+                    of collection that rewards a slow second read. (Lemmy himself lives next door,
+                    in our story inside <em>Enchanted Bookstore</em>.)
                   </p>
 
                   <div className="mt-5">
