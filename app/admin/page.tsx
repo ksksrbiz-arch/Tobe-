@@ -9,9 +9,11 @@ const ADMIN_EMAILS: string[] = (process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? "").spli
 
 function isAdmin(user: User | null): boolean {
   if (!user?.email) return false;
-  // Fail closed: if ADMIN_EMAILS is not configured, no one is an admin.
-  // Set NEXT_PUBLIC_ADMIN_EMAILS to a comma-separated list of staff emails.
-  if (ADMIN_EMAILS.length === 0) return false;
+  // Client-side gate is for UX only — the /api/admin/shelve route enforces
+  // admin status server-side using ADMIN_EMAILS (server env). If
+  // NEXT_PUBLIC_ADMIN_EMAILS isn't set we still let the user reach the form so
+  // server-only deploys work; the API call will reject non-admins.
+  if (ADMIN_EMAILS.length === 0) return true;
   return ADMIN_EMAILS.includes(user.email);
 }
 
@@ -25,23 +27,22 @@ interface ScanEntry {
   errorMsg?: string;
 }
 
-async function lookupBook(isbn: string) {
-  const clean = isbn.replace(/[-\s]/g, "");
-  const res = await fetch(
-    `https://www.googleapis.com/books/v1/volumes?q=isbn:${clean}&maxResults=1`,
-  );
-  if (!res.ok) throw new Error("Google Books API error");
-  const data = await res.json();
-  const item = data.items?.[0];
-  if (!item) throw new Error("Book not found");
-  const info = item.volumeInfo ?? {};
-  const saleInfo = item.saleInfo ?? {};
-  return {
-    title: info.title ?? "Unknown",
-    author: (info.authors ?? []).join(", "),
-    cover_url: info.imageLinks?.thumbnail?.replace("http://", "https://") ?? "",
-    list_price: saleInfo.retailPrice?.amount ?? saleInfo.listPrice?.amount ?? 0,
-  };
+async function shelveISBN(isbn: string) {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const token = sessionData.session?.access_token;
+  if (!token) throw new Error("Session expired. Sign in again.");
+
+  const res = await fetch("/api/admin/shelve", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ isbn }),
+  });
+  const payload = await res.json();
+  if (!res.ok) throw new Error(payload?.error ?? "Failed to shelve book.");
+  return payload.book as { title: string; author: string; cover_url: string; list_price: number };
 }
 
 export default function AdminPage() {
@@ -85,23 +86,14 @@ export default function AdminPage() {
     setQueue((prev) => [entry, ...prev]);
 
     try {
-      const book = await lookupBook(clean);
-      const { error: dbError } = await supabase.from("recent_arrivals").insert({
-        isbn: clean,
-        title: book.title,
-        author: book.author,
-        cover_url: book.cover_url,
-        list_price: book.list_price,
-        added_at: new Date().toISOString(),
-      });
-      if (dbError) throw new Error(dbError.message);
-
+      const book = await shelveISBN(clean);
       setQueue((prev) =>
         prev.map((e, i) => i === 0 ? { ...e, ...book, status: "saved" } : e),
       );
     } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
       setQueue((prev) =>
-        prev.map((e, i) => i === 0 ? { ...e, status: "error", errorMsg: String(err) } : e),
+        prev.map((e, i) => i === 0 ? { ...e, status: "error", errorMsg: msg } : e),
       );
     } finally {
       setProcessing(false);
