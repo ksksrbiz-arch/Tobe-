@@ -26,6 +26,11 @@ interface BookInfo {
   listPrice: number;
   coverUrl?: string;
   source: "isbn" | "manual";
+  // Server-computed values; absent for manual entries (computed client-side from listPrice).
+  credit?: number;
+  swapFee?: number;
+  swapTierLabel?: string;
+  netCredit?: number;
 }
 
 export default function TradeCreditEstimator() {
@@ -51,39 +56,25 @@ export default function TradeCreditEstimator() {
     setError("");
     setBook(null);
     try {
-      const res = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=isbn:${clean}&maxResults=1`,
-      );
-      if (!res.ok) throw new Error("Google Books API error");
+      const res = await fetch(`/api/credit-estimate?isbn=${encodeURIComponent(clean)}`);
       const data = await res.json();
-      const item = data.items?.[0];
-      if (!item) {
-        setError("No book found for that ISBN. Try entering the list price manually.");
+      if (!res.ok) {
+        setError(data?.error ?? "Couldn't estimate credit for that ISBN.");
         return;
       }
-      const info = item.volumeInfo ?? {};
-      const saleInfo = item.saleInfo ?? {};
-      const retailPrice =
-        saleInfo.retailPrice?.amount ??
-        saleInfo.listPrice?.amount ??
-        null;
-
-      if (!retailPrice) {
-        setError(
-          "We found the book but couldn't retrieve a list price from Google Books. Try entering it manually.",
-        );
-        return;
-      }
-
       setBook({
-        title: info.title ?? "Unknown Title",
-        author: (info.authors ?? []).join(", ") || "Unknown Author",
-        listPrice: Number(retailPrice),
-        coverUrl: info.imageLinks?.thumbnail?.replace("http://", "https://"),
+        title: data.title,
+        author: data.author,
+        listPrice: data.listPrice,
+        coverUrl: data.coverUrl ?? undefined,
         source: "isbn",
+        credit: data.credit,
+        swapFee: data.swapFee,
+        swapTierLabel: data.swapTierLabel,
+        netCredit: data.netCredit,
       });
     } catch {
-      setError("Couldn't reach Google Books. Check your connection and try again.");
+      setError("Couldn't reach the estimator. Check your connection and try again.");
     } finally {
       setLoading(false);
     }
@@ -104,13 +95,11 @@ export default function TradeCreditEstimator() {
     });
   }, [priceInput]);
 
-  const result =
-    book
-      ? {
-          credit: book.listPrice * 0.25,
-          ...getSwapFee(book.listPrice),
-        }
-      : null;
+  const result = book
+    ? book.credit != null && book.swapFee != null && book.swapTierLabel != null
+      ? { credit: book.credit, fee: book.swapFee, label: book.swapTierLabel }
+      : { credit: book.listPrice * 0.25, ...getSwapFee(book.listPrice) }
+    : null;
 
   return (
     <div
