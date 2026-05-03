@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 import { BookOpen, Send, Sparkles, RefreshCw, ArrowRight } from "lucide-react";
 
-const N8N_WEBHOOK_URL = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL ?? "";
-
 interface BookRecommendation {
   title: string;
   author: string;
@@ -12,10 +10,12 @@ interface BookRecommendation {
   cover_url?: string;
   pango_url?: string;
   reason?: string;
+  in_stock?: boolean;
 }
 
-interface N8nResponse {
+interface RecommendResponse {
   recommendations: BookRecommendation[];
+  error?: string;
 }
 
 const EXAMPLE_PROMPTS = [
@@ -54,12 +54,22 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
       )}
 
       <div className="min-w-0 flex-1">
-        <p
-          className="font-bold leading-tight"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F", fontSize: "1rem" }}
-        >
-          {rec.title}
-        </p>
+        <div className="flex items-start gap-2">
+          <p
+            className="flex-1 font-bold leading-tight"
+            style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F", fontSize: "1rem" }}
+          >
+            {rec.title}
+          </p>
+          {rec.in_stock && (
+            <span
+              className="flex-shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
+              style={{ background: "rgba(34,197,94,0.15)", color: "#16a34a" }}
+            >
+              On the shelf
+            </span>
+          )}
+        </div>
         <p className="mt-0.5 text-xs font-medium" style={{ color: "#6B7280" }}>
           {rec.author}
         </p>
@@ -76,7 +86,7 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
             {rec.description}
           </p>
         )}
-        {rec.pango_url && (
+        {rec.pango_url && !rec.in_stock && (
           <a
             href={rec.pango_url}
             target="_blank"
@@ -84,7 +94,7 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
             className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider transition-all hover:gap-1.5"
             style={{ color: "#F1BB1A" }}
           >
-            Check our shelf <ArrowRight size={10} />
+            Search PangoBooks <ArrowRight size={10} />
           </a>
         )}
       </div>
@@ -102,10 +112,6 @@ export default function NextReadMatchmaker() {
   const submit = async () => {
     const trimmed = query.trim();
     if (!trimmed) return;
-    if (!N8N_WEBHOOK_URL) {
-      setError("The recommendation service is not yet configured. Check back soon!");
-      return;
-    }
 
     setLoading(true);
     setError("");
@@ -113,14 +119,16 @@ export default function NextReadMatchmaker() {
     setHasSearched(true);
 
     try {
-      const res = await fetch(N8N_WEBHOOK_URL, {
+      const res = await fetch("/api/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: trimmed }),
       });
-
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data: N8nResponse = await res.json();
+      const data: RecommendResponse = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Couldn't generate recommendations. Try again.");
+        return;
+      }
       setResults(data.recommendations ?? []);
     } catch {
       setError("Couldn't reach the recommendation engine. Please try again in a moment.");
