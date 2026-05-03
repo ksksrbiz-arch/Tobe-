@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { ExternalLink, Star, Quote } from "lucide-react";
+import { ExternalLink, Star } from "lucide-react";
 import Reveal from "./Reveal";
+import GoogleReviews from "./GoogleReviews";
 
 const InstagramIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -22,6 +23,18 @@ const FacebookIcon = () => (
   </svg>
 );
 
+const YelpIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M20.16 12.594l-4.995 1.624a1.04 1.04 0 00-.679 1.296c.029.075.064.146.107.213l2.659 4.165a1.041 1.041 0 001.452.27 9.444 9.444 0 003.077-3.96l.026-.066a1.041 1.041 0 00-.624-1.327 12.61 12.61 0 00-1.023-.215zm-7.32-1.063a1.041 1.041 0 001.357.61c.073-.027.142-.064.207-.108L18.564 9.5a1.041 1.041 0 00.291-1.413 9.464 9.464 0 00-4.024-3.018 1.041 1.041 0 00-1.4.703 12.49 12.49 0 00-.591 5.759zm-1.59 2.018l-2.65 4.18a1.041 1.041 0 00.291 1.435c.067.043.139.078.215.105 1.34.474 2.781.566 4.176.245.4-.092.66-.479.62-.886a12.46 12.46 0 00-1.353-4.857 1.041 1.041 0 00-1.299-.222zm-1.49-2.76L9.616 4.7a1.041 1.041 0 00-1.397-.42 16.83 16.83 0 00-3.43 2.4 1.041 1.041 0 00-.18 1.388l4.32 4.85a1.041 1.041 0 001.49-.085c.05-.06.092-.126.124-.197a16.94 16.94 0 00-.78-1.847zm-2.005 4.49l-3.687 1.07a1.041 1.041 0 00-.7 1.42c.486 1.27 1.245 2.422 2.226 3.378a1.041 1.041 0 001.435.067l2.787-2.633a1.041 1.041 0 00-.061-1.581 5.84 5.84 0 00-2-1.72z" />
+  </svg>
+);
+
+const BookshopIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M4 3h13a3 3 0 013 3v15a1 1 0 01-1.45.89L13 19l-5.55 2.89A1 1 0 016 21V6a3 3 0 01-3-3zm2 0v18l5-2.6 5 2.6V6a1 1 0 00-1-1H6zm12 0a1 1 0 011 1v15.38l-1-.52V4a1 1 0 010-1h.01z" />
+  </svg>
+);
+
 const socials = [
   {
     name: "Instagram",
@@ -34,39 +47,29 @@ const socials = [
     name: "TikTok",
     handle: "@clackamas.book.ex",
     icon: TikTokIcon,
-    href: "https://tiktok.com/@clackamas.book.ex",
+    href: "https://www.tiktok.com/@clackamas.book.ex",
     gradient: "linear-gradient(135deg, #25F4EE 0%, #000000 50%, #FE2C55 100%)",
   },
   {
     name: "Facebook",
-    handle: "Clackamas Book Exchange",
+    handle: "Clackamas Books Exchange",
     icon: FacebookIcon,
-    href: "https://facebook.com/ClackamasBookExchange",
+    href: "https://www.facebook.com/ClackamasBooksExchange/",
     gradient: "linear-gradient(135deg, #1877F2 0%, #0c5ec9 100%)",
   },
-];
-
-const testimonials = [
   {
-    quote:
-      "An absolute gem! I've been coming here for years and the new owners have kept all the charm while adding such a warm, welcoming energy. Found three rare fantasy novels I'd been searching for!",
-    author: "Sarah M.",
-    location: "Milwaukie, OR",
-    rating: 5,
+    name: "Yelp",
+    handle: "Clackamas Book Exchange",
+    icon: YelpIcon,
+    href: "https://www.yelp.com/biz/clackamas-book-exchange-milwaukie",
+    gradient: "linear-gradient(135deg, #d32323 0%, #af1d1d 100%)",
   },
   {
-    quote:
-      "The best used bookstore in the Portland metro area, hands down. Fair trade credits, amazing selection, and the staff actually loves books. My kids and I come every weekend!",
-    author: "David K.",
-    location: "Oregon City, OR",
-    rating: 5,
-  },
-  {
-    quote:
-      "Cozy, eclectic, and full of treasures. I walked in looking for one book and came out with eight. The new branding is beautiful and the store feels like home. So excited for TBR 2026!",
-    author: "Priya L.",
-    location: "Portland, OR",
-    rating: 5,
+    name: "Bookshop.org",
+    handle: "ClackamasBookExchange",
+    icon: BookshopIcon,
+    href: "https://bookshop.org/shop/ClackamasBookExchange",
+    gradient: "linear-gradient(135deg, #325b3a 0%, #1f3924 100%)",
   },
 ];
 
@@ -102,7 +105,7 @@ export default function ConnectSection() {
         </Reveal>
 
         {/* Socials */}
-        <div className="mb-16 grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div className="mb-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {socials.map((s, i) => (
             <Reveal key={s.name} delay={i * 80}>
               <a
@@ -176,7 +179,7 @@ export default function ConnectSection() {
                 Love our store? A quick Google review truly makes a difference for small, independent businesses like ours.
               </p>
               <a
-                href="https://g.page/r/placeholder"
+                href="https://www.google.com/search?q=Clackamas+Book+Exchange+Milwaukie+OR&hl=en#lrd=write-review"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-shine inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold shadow-lg transition-all hover:scale-105"
@@ -189,62 +192,16 @@ export default function ConnectSection() {
           </div>
         </Reveal>
 
-        {/* Testimonials */}
+        {/* Real Google reviews */}
         <Reveal>
           <h3
             className="mb-8 text-center text-2xl font-bold sm:text-3xl"
             style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
           >
-            What Readers <span className="underline-accent">Say</span>
+            What Readers <span className="underline-accent">Say</span> on Google
           </h3>
         </Reveal>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {testimonials.map((t, i) => (
-            <Reveal key={t.author} delay={i * 100}>
-              <div
-                className="relative h-full rounded-2xl border bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-xl"
-                style={{
-                  borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
-                }}
-              >
-                <Quote
-                  aria-hidden="true"
-                  size={32}
-                  className="absolute right-4 top-4 opacity-15"
-                  style={{ color: "#F1BB1A" }}
-                />
-                <div className="mb-4 flex items-center gap-1">
-                  {[...Array(t.rating)].map((_, idx) => (
-                    <Star key={idx} size={14} fill="#F1BB1A" style={{ color: "#F1BB1A" }} />
-                  ))}
-                </div>
-                <p className="mb-5 text-sm leading-relaxed" style={{ color: "#374151" }}>
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="flex items-center gap-3 border-t pt-4" style={{ borderColor: "rgba(107,28,111,0.08)" }}>
-                  <div
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
-                    style={{
-                      background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
-                      fontFamily: "'Playfair Display', Georgia, serif",
-                    }}
-                  >
-                    {t.author[0]}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold" style={{ color: "#6B1C6F" }}>
-                      {t.author}
-                    </p>
-                    <p className="text-xs" style={{ color: "#9CA3AF" }}>
-                      {t.location}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        <GoogleReviews />
       </div>
     </section>
   );

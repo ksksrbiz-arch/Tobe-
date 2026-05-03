@@ -24,10 +24,24 @@ const FacebookIcon = () => (
   </svg>
 );
 
+const YelpIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M20.16 12.594l-4.995 1.624a1.04 1.04 0 00-.679 1.296c.029.075.064.146.107.213l2.659 4.165a1.041 1.041 0 001.452.27 9.444 9.444 0 003.077-3.96l.026-.066a1.041 1.041 0 00-.624-1.327 12.61 12.61 0 00-1.023-.215zm-7.32-1.063a1.041 1.041 0 001.357.61c.073-.027.142-.064.207-.108L18.564 9.5a1.041 1.041 0 00.291-1.413 9.464 9.464 0 00-4.024-3.018 1.041 1.041 0 00-1.4.703 12.49 12.49 0 00-.591 5.759zm-1.59 2.018l-2.65 4.18a1.041 1.041 0 00.291 1.435c.067.043.139.078.215.105 1.34.474 2.781.566 4.176.245.4-.092.66-.479.62-.886a12.46 12.46 0 00-1.353-4.857 1.041 1.041 0 00-1.299-.222zm-1.49-2.76L9.616 4.7a1.041 1.041 0 00-1.397-.42 16.83 16.83 0 00-3.43 2.4 1.041 1.041 0 00-.18 1.388l4.32 4.85a1.041 1.041 0 001.49-.085c.05-.06.092-.126.124-.197a16.94 16.94 0 00-.78-1.847zm-2.005 4.49l-3.687 1.07a1.041 1.041 0 00-.7 1.42c.486 1.27 1.245 2.422 2.226 3.378a1.041 1.041 0 001.435.067l2.787-2.633a1.041 1.041 0 00-.061-1.581 5.84 5.84 0 00-2-1.72z" />
+  </svg>
+);
+
+const BookshopIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M4 3h13a3 3 0 013 3v15a1 1 0 01-1.45.89L13 19l-5.55 2.89A1 1 0 016 21V6a3 3 0 01-3-3zm2 0v18l5-2.6 5 2.6V6a1 1 0 00-1-1H6zm12 0a1 1 0 011 1v15.38l-1-.52V4a1 1 0 010-1h.01z" />
+  </svg>
+);
+
 const footerSocials = [
   { name: "Instagram", icon: InstagramIcon, href: "https://instagram.com/toberead_clackamas" },
-  { name: "TikTok", icon: TikTokIcon, href: "https://tiktok.com/@clackamas.book.ex" },
-  { name: "Facebook", icon: FacebookIcon, href: "https://facebook.com/ClackamasBookExchange" },
+  { name: "TikTok", icon: TikTokIcon, href: "https://www.tiktok.com/@clackamas.book.ex" },
+  { name: "Facebook", icon: FacebookIcon, href: "https://www.facebook.com/ClackamasBooksExchange/" },
+  { name: "Yelp", icon: YelpIcon, href: "https://www.yelp.com/biz/clackamas-book-exchange-milwaukie" },
+  { name: "Bookshop.org", icon: BookshopIcon, href: "https://bookshop.org/shop/ClackamasBookExchange" },
 ];
 
 export default function Footer() {
