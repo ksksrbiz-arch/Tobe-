@@ -4,6 +4,7 @@ import {
   getUserFromAccessToken,
   isAdminEmail,
 } from "@/lib/supabase-server";
+import { notifyWishlistMatches } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -110,5 +111,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ arrival: data, book });
+  // Fire wishlist notifications. Failures must not block the scan flow,
+  // so the helper swallows its own errors.
+  const notification = await notifyWishlistMatches({
+    isbn,
+    title: book.title,
+    author: book.author,
+    cover_url: book.cover_url,
+  });
+
+  return NextResponse.json({ arrival: data, book, notification });
 }
