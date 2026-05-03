@@ -1,21 +1,8 @@
 import { NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
-import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
-import { z } from "zod";
-import { createServiceClient } from "@/lib/supabase-server";
+import { GoogleGenAI, Type } from "@google/genai";
+import { sql } from "@/lib/db";
 
 export const runtime = "nodejs";
-
-const RecommendationSchema = z.object({
-  title: z.string(),
-  author: z.string(),
-  description: z.string(),
-  reason: z.string(),
-});
-
-const ResponseSchema = z.object({
-  recommendations: z.array(RecommendationSchema).min(3).max(5),
-});
 
 const SYSTEM_PROMPT = `You are a knowledgeable bookseller at To Be Read, a small \
 independent bookshop. A reader will describe what they just finished or the \
@@ -23,6 +10,34 @@ mood they're chasing. Recommend 3–5 specific real books they're likely to \
 love. For each, give a one-sentence "reason" tying the recommendation back \
 to the reader's prompt. Keep descriptions concise (1–2 sentences). Skip \
 preamble — return only the structured payload.`;
+
+const RESPONSE_SCHEMA = {
+  type: Type.OBJECT,
+  properties: {
+    recommendations: {
+      type: Type.ARRAY,
+      items: {
+        type: Type.OBJECT,
+        properties: {
+          title: { type: Type.STRING },
+          author: { type: Type.STRING },
+          description: { type: Type.STRING },
+          reason: { type: Type.STRING },
+        },
+        required: ["title", "author", "description", "reason"],
+        propertyOrdering: ["title", "author", "description", "reason"],
+      },
+    },
+  },
+  required: ["recommendations"],
+};
+
+interface Recommendation {
+  title: string;
+  author: string;
+  description: string;
+  reason: string;
+}
 
 function normalizeTitle(s: string) {
   return s
@@ -33,18 +48,21 @@ function normalizeTitle(s: string) {
 }
 
 async function fetchInventoryTitles() {
-  const supabase = createServiceClient();
-  const { data, error } = await supabase
-    .from("recent_arrivals")
-    .select("title, author, cover_url")
-    .order("added_at", { ascending: false })
-    .limit(200);
-  if (error || !data) return [];
-  return data as { title: string; author: string; cover_url: string }[];
+  try {
+    const rows = (await sql`
+      SELECT title, author, cover_url FROM recent_arrivals
+      ORDER BY added_at DESC LIMIT 200
+    `) as Array<{ title: string; author: string; cover_url: string }>;
+    return rows;
+  } catch {
+    // DB not provisioned yet — degrade gracefully and skip cross-reference.
+    return [];
+  }
 }
 
 export async function POST(request: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
+  if (!apiKey) {
     return NextResponse.json(
       { error: "Recommendation service is not configured." },
       { status: 503 },
@@ -71,40 +89,40 @@ export async function POST(request: Request) {
     );
   }
 
-  const client = new Anthropic();
+  const ai = new GoogleGenAI({ apiKey });
 
-  let parsed: z.infer<typeof ResponseSchema>;
+  let recommendations: Recommendation[];
   try {
-    const response = await client.messages.parse({
-      model: "claude-opus-4-7",
-      max_tokens: 2048,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: prompt }],
-      output_config: { format: zodOutputFormat(ResponseSchema) },
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+      config: {
+        systemInstruction: SYSTEM_PROMPT,
+        responseMimeType: "application/json",
+        responseSchema: RESPONSE_SCHEMA,
+        temperature: 0.7,
+      },
     });
-    if (!response.parsed_output) {
+    const text = response.text;
+    if (!text) {
       return NextResponse.json(
         { error: "Couldn't generate recommendations. Try rephrasing." },
         { status: 502 },
       );
     }
-    parsed = response.parsed_output;
-  } catch (err) {
-    if (err instanceof Anthropic.RateLimitError) {
+    const parsed = JSON.parse(text) as { recommendations?: Recommendation[] };
+    recommendations = parsed.recommendations ?? [];
+    if (recommendations.length === 0) {
       return NextResponse.json(
-        { error: "Recommendation service is busy. Try again in a moment." },
-        { status: 429 },
-      );
-    }
-    if (err instanceof Anthropic.APIError) {
-      return NextResponse.json(
-        { error: "Recommendation service is unavailable." },
+        { error: "Couldn't generate recommendations. Try rephrasing." },
         { status: 502 },
       );
     }
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Unexpected error.";
     return NextResponse.json(
-      { error: "Unexpected error generating recommendations." },
-      { status: 500 },
+      { error: `Recommendation service is unavailable: ${msg}` },
+      { status: 502 },
     );
   }
 
@@ -114,7 +132,7 @@ export async function POST(request: Request) {
     inventory.map((b) => [normalizeTitle(b.title), b]),
   );
 
-  const recommendations = parsed.recommendations.map((rec) => {
+  const enriched = recommendations.map((rec) => {
     const match = inventoryByTitle.get(normalizeTitle(rec.title));
     return {
       title: rec.title,
@@ -131,5 +149,5 @@ export async function POST(request: Request) {
     };
   });
 
-  return NextResponse.json({ recommendations });
+  return NextResponse.json({ recommendations: enriched });
 }

@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
-import {
-  createServiceClient,
-  getUserFromAccessToken,
-  isAdminEmail,
-} from "@/lib/supabase-server";
+import { auth, isAdminEmail } from "@/lib/auth";
+import { sql } from "@/lib/db";
 import { notifyWishlistMatches } from "@/lib/email";
 
 export const runtime = "nodejs";
@@ -48,20 +45,17 @@ async function lookupBook(isbn: string) {
   return {
     title: info.title ?? "Unknown",
     author: (info.authors ?? []).join(", "),
-    cover_url:
-      info.imageLinks?.thumbnail?.replace("http://", "https://") ?? "",
+    cover_url: info.imageLinks?.thumbnail?.replace("http://", "https://") ?? "",
     list_price: sale.retailPrice?.amount ?? sale.listPrice?.amount ?? 0,
   };
 }
 
 export async function POST(request: Request) {
-  const auth = request.headers.get("authorization") ?? request.headers.get("Authorization");
-  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
-  const user = await getUserFromAccessToken(token);
-  if (!user) {
+  const session = await auth();
+  if (!session?.user?.email) {
     return NextResponse.json({ error: "Not signed in." }, { status: 401 });
   }
-  if (!isAdminEmail(user.email)) {
+  if (!isAdminEmail(session.user.email)) {
     return NextResponse.json({ error: "Not authorized." }, { status: 403 });
   }
 
@@ -93,26 +87,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Book not found." }, { status: 404 });
   }
 
-  const supabase = createServiceClient();
-  const { data, error } = await supabase
-    .from("recent_arrivals")
-    .insert({
-      isbn,
-      title: book.title,
-      author: book.author,
-      cover_url: book.cover_url,
-      list_price: book.list_price,
-      added_at: new Date().toISOString(),
-    })
-    .select()
-    .single();
+  const inserted = (await sql`
+    INSERT INTO recent_arrivals (isbn, title, author, cover_url, list_price, added_at)
+    VALUES (${isbn}, ${book.title}, ${book.author}, ${book.cover_url}, ${book.list_price}, NOW())
+    RETURNING id, isbn, title, author, cover_url, list_price, added_at
+  `) as Array<{ id: string; isbn: string; title: string; author: string; cover_url: string; list_price: number; added_at: string }>;
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  // Fire wishlist notifications. Failures must not block the scan flow,
-  // so the helper swallows its own errors.
   const notification = await notifyWishlistMatches({
     isbn,
     title: book.title,
@@ -120,5 +100,5 @@ export async function POST(request: Request) {
     cover_url: book.cover_url,
   });
 
-  return NextResponse.json({ arrival: data, book, notification });
+  return NextResponse.json({ arrival: inserted[0], book, notification });
 }

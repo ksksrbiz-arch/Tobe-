@@ -2,18 +2,27 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { BookMarked, Plus, Trash2, RefreshCw, Search, LogIn, LogOut, Mail } from "lucide-react";
-import { supabase, type WishlistItem } from "@/lib/supabase";
-import type { User } from "@supabase/supabase-js";
+import { signIn, signOut, useSession } from "next-auth/react";
 
-// ─── Auth panel ──────────────────────────────────────────────────────────────
+interface WishlistItem {
+  id: string;
+  user_id: string;
+  isbn: string;
+  title: string;
+  author: string;
+  cover_url: string;
+  list_price: number | null;
+  notified: boolean;
+  created_at: string;
+}
 
-function AuthPanel({ onAuth }: { onAuth: (u: User) => void }) {
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function AuthPanel() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
-
-  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const sendMagicLink = async () => {
     const trimmed = email.trim();
@@ -23,25 +32,15 @@ function AuthPanel({ onAuth }: { onAuth: (u: User) => void }) {
     }
     setLoading(true);
     setError("");
-    const { error: authError } = await supabase.auth.signInWithOtp({
-      email: trimmed,
-      options: { shouldCreateUser: true },
-    });
-    setLoading(false);
-    if (authError) {
-      setError(authError.message);
-    } else {
+    try {
+      await signIn("resend", { email: trimmed, redirect: false });
       setSent(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Sign-in failed.");
+    } finally {
+      setLoading(false);
     }
   };
-
-  // Listen for auth state changes (magic link callback)
-  useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) onAuth(session.user);
-    });
-    return () => sub.subscription.unsubscribe();
-  }, [onAuth]);
 
   if (sent) {
     return (
@@ -108,8 +107,6 @@ function AuthPanel({ onAuth }: { onAuth: (u: User) => void }) {
   );
 }
 
-// ─── ISBN lookup helper ───────────────────────────────────────────────────────
-
 interface LookupResult {
   title: string;
   author: string;
@@ -140,9 +137,7 @@ async function lookupIsbn(isbn: string): Promise<LookupResult | null> {
   }
 }
 
-// ─── Add book panel ───────────────────────────────────────────────────────────
-
-function AddBookPanel({ userId, onAdded }: { userId: string; onAdded: () => void }) {
+function AddBookPanel({ onAdded }: { onAdded: () => void }) {
   const [input, setInput] = useState("");
   const [preview, setPreview] = useState<LookupResult | null>(null);
   const [lookingUp, setLookingUp] = useState(false);
@@ -157,32 +152,36 @@ function AddBookPanel({ userId, onAdded }: { userId: string; onAdded: () => void
     setPreview(null);
     const result = await lookupIsbn(trimmed);
     setLookingUp(false);
-    if (result) {
-      setPreview(result);
-    } else {
-      setError("Couldn't find that ISBN. Double-check the number and try again.");
-    }
+    if (result) setPreview(result);
+    else setError("Couldn't find that ISBN. Double-check the number and try again.");
   };
 
   const handleSave = async () => {
     if (!preview) return;
     setSaving(true);
-    const { error: dbError } = await supabase.from("wishlists").insert({
-      user_id: userId,
-      isbn: input.trim().replace(/[-\s]/g, ""),
-      title: preview.title,
-      author: preview.author,
-      cover_url: preview.cover_url,
-      list_price: preview.list_price,
-      notified: false,
-    });
-    setSaving(false);
-    if (dbError) {
-      setError(dbError.message);
-    } else {
-      setInput("");
-      setPreview(null);
-      onAdded();
+    setError("");
+    try {
+      const res = await fetch("/api/wishlist", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          isbn: input.trim().replace(/[-\s]/g, ""),
+          title: preview.title,
+          author: preview.author,
+          cover_url: preview.cover_url,
+          list_price: preview.list_price,
+        }),
+      });
+      const payload = await res.json();
+      if (!res.ok) {
+        setError(payload?.error ?? "Couldn't add this book.");
+      } else {
+        setInput("");
+        setPreview(null);
+        onAdded();
+      }
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -243,14 +242,12 @@ function AddBookPanel({ userId, onAdded }: { userId: string; onAdded: () => void
   );
 }
 
-// ─── Wishlist item row ────────────────────────────────────────────────────────
-
 function WishlistRow({ item, onRemove }: { item: WishlistItem; onRemove: () => void }) {
   const [removing, setRemoving] = useState(false);
 
   const handleRemove = async () => {
     setRemoving(true);
-    await supabase.from("wishlists").delete().eq("id", item.id);
+    await fetch(`/api/wishlist?id=${item.id}`, { method: "DELETE" });
     onRemove();
   };
 
@@ -298,52 +295,30 @@ function WishlistRow({ item, onRemove }: { item: WishlistItem; onRemove: () => v
   );
 }
 
-// ─── Main WishlistManager ─────────────────────────────────────────────────────
-
 export default function WishlistManager() {
-  const [user, setUser] = useState<User | null>(null);
+  const sessionState = useSession();
+  const session = sessionState?.data ?? null;
+  const status = sessionState?.status ?? "loading";
   const [items, setItems] = useState<WishlistItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingItems, setLoadingItems] = useState(false);
 
-  const fetchWishlist = useCallback(async (uid: string) => {
-    const { data } = await supabase
-      .from("wishlists")
-      .select("*")
-      .eq("user_id", uid)
-      .order("created_at", { ascending: false });
-    setItems((data as WishlistItem[]) ?? []);
-  }, []);
+  const fetchWishlist = useCallback(async () => {
+    if (!session?.user) return;
+    setLoadingItems(true);
+    try {
+      const res = await fetch("/api/wishlist");
+      const payload = await res.json();
+      if (res.ok) setItems((payload.items as WishlistItem[]) ?? []);
+    } finally {
+      setLoadingItems(false);
+    }
+  }, [session]);
 
-  // Restore session on mount and subscribe to auth state changes.
-  // Wishlist is fetched inside async .then / onAuthStateChange callbacks,
-  // not synchronously in the effect body.
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      const u = data.session?.user ?? null;
-      setUser(u);
-      setLoading(false);
-      if (u) fetchWishlist(u.id);
-    });
+    if (status === "authenticated") fetchWishlist();
+  }, [status, fetchWishlist]);
 
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      const u = session?.user ?? null;
-      setUser(u);
-      if (u) {
-        fetchWishlist(u.id);
-      } else {
-        setItems([]);
-      }
-    });
-    return () => sub.subscription.unsubscribe();
-  }, [fetchWishlist]);
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setItems([]);
-  };
-
-  if (loading) {
+  if (status === "loading") {
     return (
       <div className="space-y-3">
         {Array.from({ length: 3 }).map((_, i) => (
@@ -353,7 +328,7 @@ export default function WishlistManager() {
     );
   }
 
-  if (!user) {
+  if (!session?.user) {
     return (
       <div
         className="rounded-[28px] border-2 p-7 shadow-xl"
@@ -362,7 +337,7 @@ export default function WishlistManager() {
           borderColor: "rgba(107,28,111,0.14)",
         }}
       >
-        <AuthPanel onAuth={setUser} />
+        <AuthPanel />
       </div>
     );
   }
@@ -376,7 +351,6 @@ export default function WishlistManager() {
         boxShadow: "0 20px 60px rgba(107,28,111,0.10)",
       }}
     >
-      {/* Header */}
       <div className="mb-6 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div
@@ -392,11 +366,11 @@ export default function WishlistManager() {
             >
               My Hunting List
             </h3>
-            <p className="text-xs" style={{ color: "#6B7280" }}>{user.email}</p>
+            <p className="text-xs" style={{ color: "#6B7280" }}>{session.user.email}</p>
           </div>
         </div>
         <button
-          onClick={handleSignOut}
+          onClick={() => signOut()}
           className="flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition-all hover:scale-[1.02]"
           style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
         >
@@ -405,13 +379,17 @@ export default function WishlistManager() {
         </button>
       </div>
 
-      {/* Add book */}
       <div className="mb-6">
-        <AddBookPanel userId={user.id} onAdded={() => fetchWishlist(user.id)} />
+        <AddBookPanel onAdded={fetchWishlist} />
       </div>
 
-      {/* Wishlist */}
-      {items.length === 0 ? (
+      {loadingItems ? (
+        <div className="space-y-3">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="h-20 animate-pulse rounded-2xl" style={{ background: "rgba(107,28,111,0.06)" }} />
+          ))}
+        </div>
+      ) : items.length === 0 ? (
         <div
           className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed py-12 text-center"
           style={{ borderColor: "rgba(107,28,111,0.12)" }}
@@ -424,17 +402,13 @@ export default function WishlistManager() {
       ) : (
         <div className="space-y-3">
           {items.map((item) => (
-            <WishlistRow
-              key={item.id}
-              item={item}
-              onRemove={() => fetchWishlist(user.id)}
-            />
+            <WishlistRow key={item.id} item={item} onRemove={fetchWishlist} />
           ))}
         </div>
       )}
 
       <p className="mt-5 text-center text-[10px] leading-4" style={{ color: "#9CA3AF" }}>
-        We&apos;ll email you at {user.email} when a book from your list is processed at the trade desk.
+        We&apos;ll email you at {session.user.email} when a book from your list is processed at the trade desk.
       </p>
     </div>
   );

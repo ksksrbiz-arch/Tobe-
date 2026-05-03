@@ -1,9 +1,19 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Sparkles, BookOpen } from "lucide-react";
-import { supabase, type RecentArrival } from "@/lib/supabase";
 
+interface RecentArrival {
+  id: string;
+  isbn: string;
+  title: string;
+  author: string;
+  cover_url: string;
+  list_price: number;
+  added_at: string;
+}
+
+const POLL_INTERVAL_MS = 15_000;
 const NEW_ITEM_HIGHLIGHT_DURATION_MS = 8_000;
 
 function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
@@ -62,53 +72,47 @@ function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
 export default function JustShelvedFeed() {
   const [books, setBooks] = useState<RecentArrival[]>([]);
   const [newIds, setNewIds] = useState<Set<string>>(new Set());
-  const [connected, setConnected] = useState(false);
+  const [live, setLive] = useState(false);
   const [loading, setLoading] = useState(true);
+  const knownIdsRef = useRef<Set<string>>(new Set());
   const newIdsRef = useRef<Set<string>>(new Set());
 
-  useEffect(() => {
-    // Initial fetch of the last 20 arrivals
-    async function fetchInitial() {
-      const { data, error } = await supabase
-        .from("recent_arrivals")
-        .select("*")
-        .order("added_at", { ascending: false })
-        .limit(20);
-
-      if (!error && data) {
-        setBooks(data as RecentArrival[]);
+  const fetchArrivals = useCallback(async (markNew: boolean) => {
+    try {
+      const res = await fetch("/api/recent-arrivals", { cache: "no-store" });
+      if (!res.ok) {
+        setLive(false);
+        return;
       }
-      setLoading(false);
+      const payload = (await res.json()) as { arrivals: RecentArrival[] };
+      const arrivals = payload.arrivals ?? [];
+      setLive(true);
+
+      if (markNew && knownIdsRef.current.size > 0) {
+        for (const a of arrivals) {
+          if (!knownIdsRef.current.has(a.id)) {
+            newIdsRef.current.add(a.id);
+            const id = a.id;
+            setTimeout(() => {
+              newIdsRef.current.delete(id);
+              setNewIds(new Set(newIdsRef.current));
+            }, NEW_ITEM_HIGHLIGHT_DURATION_MS);
+          }
+        }
+        setNewIds(new Set(newIdsRef.current));
+      }
+      knownIdsRef.current = new Set(arrivals.map((a) => a.id));
+      setBooks(arrivals);
+    } catch {
+      setLive(false);
     }
-    fetchInitial();
-
-    // Subscribe to realtime inserts
-    const channel = supabase
-      .channel("recent_arrivals_feed")
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "recent_arrivals" },
-        (payload) => {
-          const newBook = payload.new as RecentArrival;
-          setBooks((prev) => [newBook, ...prev.slice(0, 19)]);
-          const next = new Set(newIdsRef.current).add(newBook.id);
-          newIdsRef.current = next;
-          setNewIds(new Set(next));
-          // Remove "new" highlight after the configured duration
-          setTimeout(() => {
-            newIdsRef.current.delete(newBook.id);
-            setNewIds(new Set(newIdsRef.current));
-          }, NEW_ITEM_HIGHLIGHT_DURATION_MS);
-        },
-      )
-      .subscribe((status) => {
-        setConnected(status === "SUBSCRIBED");
-      });
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
   }, []);
+
+  useEffect(() => {
+    fetchArrivals(false).finally(() => setLoading(false));
+    const interval = setInterval(() => fetchArrivals(true), POLL_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [fetchArrivals]);
 
   if (loading) {
     return (
@@ -140,30 +144,28 @@ export default function JustShelvedFeed() {
 
   return (
     <div>
-      {/* Live status pill */}
       <div className="mb-4 flex items-center gap-2">
         <span
           className="flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider"
           style={{
-            background: connected ? "rgba(34,197,94,0.12)" : "rgba(107,28,111,0.08)",
-            color: connected ? "#16a34a" : "#6B7280",
+            background: live ? "rgba(34,197,94,0.12)" : "rgba(107,28,111,0.08)",
+            color: live ? "#16a34a" : "#6B7280",
           }}
         >
           <span
             className="h-1.5 w-1.5 rounded-full"
             style={{
-              background: connected ? "#22c55e" : "#9CA3AF",
-              boxShadow: connected ? "0 0 6px rgba(34,197,94,0.7)" : undefined,
+              background: live ? "#22c55e" : "#9CA3AF",
+              boxShadow: live ? "0 0 6px rgba(34,197,94,0.7)" : undefined,
             }}
           />
-          {connected ? "Live" : "Loading…"}
+          {live ? "Live" : "Loading…"}
         </span>
         <span className="text-xs" style={{ color: "#9CA3AF" }}>
-          Updates in real time as books arrive
+          Refreshes every 15 seconds
         </span>
       </div>
 
-      {/* Masonry-style grid */}
       <div className="columns-3 gap-3 sm:columns-4 md:columns-5 lg:columns-6">
         {books.map((book) => (
           <div key={book.id} className="mb-3 break-inside-avoid">
@@ -175,7 +177,6 @@ export default function JustShelvedFeed() {
   );
 }
 
-// Compact section wrapper for homepage embedding
 export function JustShelvedSection() {
   return (
     <section
@@ -206,7 +207,7 @@ export function JustShelvedSection() {
             Fresh arrivals at the <span className="underline-accent">trade desk</span>
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "#6B7280" }}>
-            Watch books arrive in real time as our staff processes today&apos;s trades.
+            New books arrive at the trade desk in real time — check back to see what just came in.
           </p>
           <div className="mx-auto mt-4 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
         </div>

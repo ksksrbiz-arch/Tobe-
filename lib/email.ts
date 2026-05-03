@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { createServiceClient } from "@/lib/supabase-server";
+import { sql } from "@/lib/db";
 
 interface ArrivalForNotification {
   isbn: string;
@@ -8,24 +8,10 @@ interface ArrivalForNotification {
   cover_url: string;
 }
 
-interface WishlistMatch {
-  id: string;
-  user_id: string;
-  isbn: string;
-  title: string;
-  author: string;
-}
-
-interface SupabaseUser {
-  id: string;
-  email?: string | null;
-}
-
 const STORE_NAME = "To Be Read · Clackamas Book Exchange";
 const STORE_URL = "https://tobereadbooks.com";
 
-function renderEmail(arrival: ArrivalForNotification, customerName?: string) {
-  const greeting = customerName ? `Hi ${customerName},` : "Hi there,";
+function renderEmail(arrival: ArrivalForNotification) {
   const cover = arrival.cover_url
     ? `<img src="${arrival.cover_url}" alt="${arrival.title}" width="120" style="border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);margin:20px 0;" />`
     : "";
@@ -37,7 +23,6 @@ function renderEmail(arrival: ArrivalForNotification, customerName?: string) {
     <h1 style="font-family:'Playfair Display',Georgia,serif;color:#6B1C6F;font-size:24px;margin:0 0 16px;">${arrival.title}</h1>
     <p style="margin:0 0 4px;color:#6B7280;font-size:14px;">${arrival.author}</p>
     ${cover}
-    <p style="font-size:14px;line-height:1.6;color:#374151;">${greeting}</p>
     <p style="font-size:14px;line-height:1.6;color:#374151;">A copy of <strong>${arrival.title}</strong> by ${arrival.author} just landed on our shelves. We'll hold it until close of day so you can swing by — first come, first served on a single copy.</p>
     <p style="margin:24px 0;">
       <a href="${STORE_URL}/visit" style="background:linear-gradient(135deg,#6B1C6F 0%,#8B2E90 100%);color:#fff;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">Plan a visit</a>
@@ -60,41 +45,32 @@ export async function notifyWishlistMatches(arrival: ArrivalForNotification) {
   const fromEmail = process.env.RESEND_FROM_EMAIL;
   if (!apiKey || !fromEmail) return { notified: 0, skipped: "not_configured" as const };
 
-  const supabase = createServiceClient();
-
-  // Pending matches only — don't double-notify the same customer.
-  const { data: matches, error: matchesError } = await supabase
-    .from("wishlists")
-    .select("id, user_id, isbn, title, author")
-    .eq("isbn", arrival.isbn)
-    .eq("notified", false);
-
-  if (matchesError || !matches || matches.length === 0) {
+  let matches: Array<{ id: string; email: string }>;
+  try {
+    matches = (await sql`
+      SELECT w.id AS id, u.email AS email
+      FROM wishlists w
+      JOIN users u ON u.id = w.user_id
+      WHERE w.isbn = ${arrival.isbn} AND w.notified = FALSE AND u.email IS NOT NULL
+    `) as Array<{ id: string; email: string }>;
+  } catch {
     return { notified: 0 };
   }
+
+  if (matches.length === 0) return { notified: 0 };
 
   const resend = new Resend(apiKey);
   let notified = 0;
 
-  for (const match of matches as WishlistMatch[]) {
-    // Resolve the customer's email via the auth admin API. The wishlist
-    // table only stores user_id; emails live in auth.users.
-    const { data: userData, error: userError } =
-      await supabase.auth.admin.getUserById(match.user_id);
-    const user = userData?.user as SupabaseUser | null;
-    if (userError || !user?.email) continue;
-
+  for (const match of matches) {
     try {
       await resend.emails.send({
         from: fromEmail,
-        to: user.email,
+        to: match.email,
         subject: `A book from your hunt list just arrived: ${arrival.title}`,
         html: renderEmail(arrival),
       });
-      await supabase
-        .from("wishlists")
-        .update({ notified: true })
-        .eq("id", match.id);
+      await sql`UPDATE wishlists SET notified = TRUE WHERE id = ${match.id}`;
       notified += 1;
     } catch {
       // Email send failed — leave `notified=false` so the next shelve
