@@ -739,16 +739,16 @@ export default function HowItWorksPage() {
             <VisitBlock icon={Phone} caps="Reach us">
               <div className="space-y-2 font-serif" style={{ fontSize: "1.1rem", fontWeight: 500 }}>
                 <div className="flex items-center gap-2">
-                  <Phone size={16} aria-hidden /> (503) 555-0179
+                  <Phone size={16} aria-hidden /> (503) 659-2559
                 </div>
                 <div className="flex items-center gap-2">
-                  <Mail size={16} aria-hidden /> hello@tobereadbooks.com
+                  <Mail size={16} aria-hidden /> TBR@tcpbusiness8.com
                 </div>
                 <div
                   className="flex items-center gap-2 italic"
                   style={{ color: "var(--gold)" }}
                 >
-                  <AtSign size={16} aria-hidden /> @tobereadbooks
+                  <AtSign size={16} aria-hidden /> @toberead_clackamas
                 </div>
               </div>
             </VisitBlock>

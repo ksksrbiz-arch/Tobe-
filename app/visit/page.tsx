@@ -4,6 +4,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import VisitSection from "@/components/VisitSection";
+import GoogleReviews from "@/components/GoogleReviews";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
@@ -55,6 +56,34 @@ export default function VisitPage() {
       />
 
       <VisitSection />
+
+      {/* Real Google reviews */}
+      <section
+        className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
+        style={{ background: "var(--background)" }}
+      >
+        <div className="mx-auto max-w-5xl">
+          <Reveal className="mb-10 text-center">
+            <span
+              className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+            >
+              From our neighbors
+            </span>
+            <h2
+              className="font-bold"
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                color: "#6B1C6F",
+                fontSize: "clamp(1.8rem, 4.5vw, 2.6rem)",
+              }}
+            >
+              What readers <span className="underline-accent">say on Google</span>
+            </h2>
+          </Reveal>
+          <GoogleReviews />
+        </div>
+      </section>
 
       {/* Getting here */}
       <section
