@@ -1,21 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { ScanLine, Plus, RefreshCw, Check, ShieldAlert, LogIn, Mail } from "lucide-react";
-import { supabase } from "@/lib/supabase";
-import type { User } from "@supabase/supabase-js";
-
-const ADMIN_EMAILS: string[] = (process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? "").split(",").map((e) => e.trim()).filter(Boolean);
-
-function isAdmin(user: User | null): boolean {
-  if (!user?.email) return false;
-  // Client-side gate is for UX only — the /api/admin/shelve route enforces
-  // admin status server-side using ADMIN_EMAILS (server env). If
-  // NEXT_PUBLIC_ADMIN_EMAILS isn't set we still let the user reach the form so
-  // server-only deploys work; the API call will reject non-admins.
-  if (ADMIN_EMAILS.length === 0) return true;
-  return ADMIN_EMAILS.includes(user.email);
-}
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { ScanLine, Plus, RefreshCw, Check, ShieldAlert, LogIn, LogOut } from "lucide-react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 interface ScanEntry {
   isbn: string;
@@ -28,16 +15,9 @@ interface ScanEntry {
 }
 
 async function shelveISBN(isbn: string) {
-  const { data: sessionData } = await supabase.auth.getSession();
-  const token = sessionData.session?.access_token;
-  if (!token) throw new Error("Session expired. Sign in again.");
-
   const res = await fetch("/api/admin/shelve", {
     method: "POST",
-    headers: {
-      "content-type": "application/json",
-      authorization: `Bearer ${token}`,
-    },
+    headers: { "content-type": "application/json" },
     body: JSON.stringify({ isbn }),
   });
   const payload = await res.json();
@@ -46,10 +26,11 @@ async function shelveISBN(isbn: string) {
 }
 
 export default function AdminPage() {
-  const [user, setUser] = useState<User | null>(null);
-  const [authLoading, setAuthLoading] = useState(true);
+  const sessionState = useSession();
+  const session = sessionState?.data ?? null;
+  const status = sessionState?.status ?? "loading";
   const [email, setEmail] = useState("");
-  const [magicSent, setMagicSent] = useState(false);
+  const [signinSent, setSigninSent] = useState(false);
   const [authError, setAuthError] = useState("");
 
   const [isbnInput, setIsbnInput] = useState("");
@@ -57,25 +38,17 @@ export default function AdminPage() {
   const [processing, setProcessing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setUser(data.session?.user ?? null);
-      setAuthLoading(false);
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      setUser(session?.user ?? null);
-    });
-    return () => sub.subscription.unsubscribe();
-  }, []);
-
-  const sendMagicLink = async () => {
+  const sendMagicLink = useCallback(async () => {
     const trimmed = email.trim();
     if (!trimmed.includes("@")) { setAuthError("Enter a valid email."); return; }
     setAuthError("");
-    const { error } = await supabase.auth.signInWithOtp({ email: trimmed, options: { shouldCreateUser: false } });
-    if (error) setAuthError(error.message);
-    else setMagicSent(true);
-  };
+    try {
+      await signIn("resend", { email: trimmed, redirect: false });
+      setSigninSent(true);
+    } catch (err) {
+      setAuthError(err instanceof Error ? err.message : "Sign-in failed.");
+    }
+  }, [email]);
 
   const processISBN = async (isbn: string) => {
     const clean = isbn.replace(/[-\s]/g, "");
@@ -109,8 +82,13 @@ export default function AdminPage() {
     }
   };
 
-  // ─── Auth gate ───────────────────────────────────────────────────────────
-  if (authLoading) {
+  useEffect(() => {
+    if (status === "authenticated") {
+      setTimeout(() => inputRef.current?.focus(), 50);
+    }
+  }, [status]);
+
+  if (status === "loading") {
     return (
       <main className="flex min-h-screen items-center justify-center" style={{ background: "var(--background)" }}>
         <RefreshCw size={28} className="animate-spin" style={{ color: "#6B1C6F" }} />
@@ -118,7 +96,7 @@ export default function AdminPage() {
     );
   }
 
-  if (!user) {
+  if (!session?.user) {
     return (
       <main className="flex min-h-screen items-center justify-center px-4" style={{ background: "var(--background)" }}>
         <div
@@ -138,11 +116,10 @@ export default function AdminPage() {
             Staff Sign In
           </h1>
           <p className="mb-5 text-sm" style={{ color: "#6B7280" }}>Trade desk · TBR internal tool</p>
-          {magicSent ? (
-            <div className="flex flex-col items-center gap-2">
-              <Mail size={22} style={{ color: "#F1BB1A" }} />
-              <p className="text-sm" style={{ color: "#374151" }}>Magic link sent to <strong>{email}</strong></p>
-            </div>
+          {signinSent ? (
+            <p className="text-sm" style={{ color: "#374151" }}>
+              Magic link sent to <strong>{email}</strong>. Click it to sign in.
+            </p>
           ) : (
             <>
               <input
@@ -169,24 +146,13 @@ export default function AdminPage() {
     );
   }
 
-  if (!isAdmin(user)) {
-    return (
-      <main className="flex min-h-screen items-center justify-center px-4" style={{ background: "var(--background)" }}>
-        <div className="text-center">
-          <ShieldAlert size={36} style={{ color: "#ef4444" }} className="mx-auto mb-3" />
-          <p className="text-lg font-bold" style={{ color: "#6B1C6F" }}>Access denied</p>
-          <p className="text-sm" style={{ color: "#6B7280" }}>{user.email} is not an authorised admin account.</p>
-          <button onClick={() => supabase.auth.signOut()} className="mt-4 text-xs underline" style={{ color: "#6B1C6F" }}>Sign out</button>
-        </div>
-      </main>
-    );
-  }
+  // Server-side authorization is enforced in /api/admin/shelve. The client gate
+  // is UX only — render the dashboard for any signed-in user, and surface 403s
+  // returned from the API.
 
-  // ─── Admin dashboard ──────────────────────────────────────────────────────
   return (
     <main className="min-h-screen px-4 py-12 sm:px-6 lg:px-8" style={{ background: "var(--background)" }}>
       <div className="mx-auto max-w-2xl">
-        {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1
@@ -200,15 +166,15 @@ export default function AdminPage() {
             </p>
           </div>
           <button
-            onClick={() => supabase.auth.signOut()}
-            className="rounded-xl border px-3 py-2 text-xs font-medium"
+            onClick={() => signOut()}
+            className="flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium"
             style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
           >
+            <LogOut size={12} />
             Sign out
           </button>
         </div>
 
-        {/* Scanner input */}
         <div
           className="mb-6 rounded-[24px] border-2 p-6"
           style={{
@@ -248,7 +214,6 @@ export default function AdminPage() {
           </p>
         </div>
 
-        {/* Queue */}
         {queue.length > 0 && (
           <div className="space-y-3">
             <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#6B1C6F" }}>
