@@ -315,7 +315,15 @@ export default function WishlistManager() {
   }, [session]);
 
   useEffect(() => {
-    if (status === "authenticated") fetchWishlist();
+    if (status !== "authenticated") return;
+    let cancelled = false;
+    void (async () => {
+      await fetchWishlist();
+      if (cancelled) return;
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [status, fetchWishlist]);
 
   if (status === "loading") {

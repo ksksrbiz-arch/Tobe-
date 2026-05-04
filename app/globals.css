@@ -457,6 +457,108 @@ h1, h2, h3, .font-serif {
   mix-blend-mode: multiply;
 }
 
+/* ───────── Magical / firefly animations ───────── */
+
+@keyframes fireflyDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.8);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  25% {
+    transform: translate3d(20px, -30px, 0) scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate3d(-10px, -60px, 0) scale(1.1);
+    opacity: 1;
+  }
+  75% {
+    transform: translate3d(28px, -90px, 0) scale(0.95);
+    opacity: 0.7;
+  }
+  90% { opacity: 0.4; }
+  100% {
+    transform: translate3d(0, -120px, 0) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes fireflyPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 4px rgba(241, 187, 26, 0.9),
+      0 0 12px rgba(241, 187, 26, 0.6),
+      0 0 22px rgba(241, 187, 26, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 8px rgba(255, 220, 110, 1),
+      0 0 22px rgba(241, 187, 26, 0.85),
+      0 0 36px rgba(241, 187, 26, 0.55);
+  }
+}
+
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(0.6) rotate(0deg);
+  }
+  40% {
+    opacity: 0.95;
+    transform: scale(1) rotate(35deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.15) rotate(70deg);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.5;
+    filter: blur(28px);
+  }
+  50% {
+    opacity: 0.85;
+    filter: blur(36px);
+  }
+}
+
+@keyframes ribbonSway {
+  0%, 100% { transform: rotate(-2deg) translateY(0); }
+  50% { transform: rotate(2deg) translateY(2px); }
+}
+
+.animate-firefly { animation: fireflyDrift 14s ease-in-out infinite, fireflyPulse 2.4s ease-in-out infinite; }
+.animate-star-twinkle { animation: starTwinkle 4s ease-in-out infinite; }
+.animate-glow-pulse { animation: glowPulse 7s ease-in-out infinite; }
+.animate-ribbon-sway { animation: ribbonSway 6s ease-in-out infinite; }
+
+/* Magical glow halo — drop behind any element for a candlelit aura */
+.magical-glow {
+  position: relative;
+}
+.magical-glow::before {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(241,187,26,0.32) 0%, rgba(241,187,26,0.10) 35%, transparent 70%),
+    radial-gradient(ellipse at 50% 80%, rgba(107,28,111,0.22) 0%, transparent 60%);
+  filter: blur(30px);
+  animation: glowPulse 6s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+/* Mobile: thin out ambient density so the magic feels intimate, not busy */
+@media (max-width: 640px) {
+  .cozy-firefly:nth-child(odd) { display: none; }
+  .cozy-star:nth-child(3n) { display: none; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

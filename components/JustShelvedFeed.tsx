@@ -109,9 +109,18 @@ export default function JustShelvedFeed() {
   }, []);
 
   useEffect(() => {
-    fetchArrivals(false).finally(() => setLoading(false));
-    const interval = setInterval(() => fetchArrivals(true), POLL_INTERVAL_MS);
-    return () => clearInterval(interval);
+    let cancelled = false;
+    void (async () => {
+      await fetchArrivals(false);
+      if (!cancelled) setLoading(false);
+    })();
+    const interval = setInterval(() => {
+      if (!cancelled) void fetchArrivals(true);
+    }, POLL_INTERVAL_MS);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
   }, [fetchArrivals]);
 
   if (loading) {

@@ -23,7 +23,7 @@ export default function CozyAmbience() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(241,187,26,0.10), transparent 70%), radial-gradient(ellipse 70% 60% at 50% 100%, rgba(107,28,111,0.10), transparent 70%)",
+            "radial-gradient(ellipse 65% 55% at 50% 0%, rgba(241,187,26,0.14), transparent 70%), radial-gradient(ellipse 70% 60% at 50% 100%, rgba(107,28,111,0.12), transparent 70%), radial-gradient(ellipse 40% 40% at 15% 40%, rgba(241,187,26,0.07), transparent 70%), radial-gradient(ellipse 40% 40% at 85% 60%, rgba(139,46,144,0.08), transparent 70%)",
           animation: "lampBreath 9s ease-in-out infinite",
           mixBlendMode: "multiply",
         }}
@@ -76,6 +76,62 @@ export default function CozyAmbience() {
           <line x1="8" y1="32" x2="32" y2="32" stroke="#6B1C6F" strokeWidth="0.6" opacity="0.5" />
         </svg>
       ))}
+
+      {/* Fireflies — warm pulsing lights drifting upward, magical evening feel */}
+      {Array.from({ length: 9 }).map((_, i) => {
+        const left = (i * 41 + 13) % 100;
+        const top = 60 + ((i * 17) % 35);
+        const delay = (i * 1.7) % 8;
+        const dur = 12 + (i % 6) * 2;
+        const size = i % 3 === 0 ? 4 : 3;
+        return (
+          <span
+            key={`firefly-${i}`}
+            className="cozy-firefly absolute rounded-full"
+            style={{
+              left: `${left}%`,
+              top: `${top}%`,
+              width: size,
+              height: size,
+              background:
+                "radial-gradient(circle, rgba(255,235,150,1) 0%, rgba(241,187,26,0.85) 45%, rgba(241,187,26,0) 75%)",
+              animation: `fireflyDrift ${dur}s ease-in-out ${delay}s infinite, fireflyPulse ${
+                2 + (i % 3) * 0.6
+              }s ease-in-out infinite`,
+            }}
+          />
+        );
+      })}
+
+      {/* Twinkling stars — tiny constellation feel scattered across the upper viewport */}
+      {Array.from({ length: 14 }).map((_, i) => {
+        const left = (i * 71 + 5) % 100;
+        const top = (i * 23 + 4) % 55;
+        const delay = (i * 0.9) % 6;
+        const dur = 3.5 + (i % 4);
+        const size = i % 4 === 0 ? 9 : i % 2 === 0 ? 7 : 5;
+        return (
+          <svg
+            key={`star-${i}`}
+            className="cozy-star absolute"
+            width={size}
+            height={size}
+            viewBox="0 0 10 10"
+            style={{
+              left: `${left}%`,
+              top: `${top}%`,
+              animation: `starTwinkle ${dur}s ease-in-out ${delay}s infinite`,
+              filter: "drop-shadow(0 0 3px rgba(241,187,26,0.7))",
+            }}
+          >
+            <path
+              d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z"
+              fill={i % 3 === 0 ? "#F1BB1A" : i % 2 === 0 ? "#FCE8A6" : "#8B2E90"}
+              opacity="0.9"
+            />
+          </svg>
+        );
+      })}
 
       {/* Dust motes catching light — very subtle */}
       {Array.from({ length: 18 }).map((_, i) => {

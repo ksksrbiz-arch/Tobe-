@@ -130,7 +130,32 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
 
         {/* Logo */}
         <div className="fade-in-up mb-6 flex justify-center" style={{ animationDelay: "100ms" }}>
-          <div className="relative lamp-glow">
+          <div className="relative lamp-glow magical-glow">
+            {/* Tiny constellation of twinkling stars around the logo */}
+            {[
+              { x: "-12%", y: "8%", size: 10, delay: "0.2s", color: "#F1BB1A" },
+              { x: "108%", y: "12%", size: 8, delay: "1.1s", color: "#FCE8A6" },
+              { x: "-8%", y: "78%", size: 7, delay: "2.3s", color: "#8B2E90" },
+              { x: "104%", y: "70%", size: 9, delay: "0.8s", color: "#F1BB1A" },
+              { x: "50%", y: "-10%", size: 6, delay: "1.7s", color: "#FCE8A6" },
+            ].map((s, i) => (
+              <svg
+                key={i}
+                className="absolute animate-star-twinkle pointer-events-none"
+                width={s.size}
+                height={s.size}
+                viewBox="0 0 10 10"
+                style={{
+                  left: s.x,
+                  top: s.y,
+                  animationDelay: s.delay,
+                  filter: `drop-shadow(0 0 4px ${s.color})`,
+                }}
+                aria-hidden="true"
+              >
+                <path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill={s.color} />
+              </svg>
+            ))}
             <BookLogo
               size={170}
               showText={false}
