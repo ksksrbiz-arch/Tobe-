@@ -1,46 +1,32 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-
-interface Mote {
-  id: number;
-  left: string;
-  top: string;
-  size: number;
-  duration: number;
-  delay: number;
-  opacity: number;
-  isGold: boolean;
-}
+import React from "react";
 
 const MOTE_COUNT = 18;
 
+const MOTES = Array.from({ length: MOTE_COUNT }, (_, i) => {
+  const r1 = (i * 9301 + 49297) % 233280;
+  const r2 = (i * 233280 + 9301) % 49297;
+  const r3 = (i * 49297 + 233280) % 9301;
+  return {
+    id: i,
+    left: `${4 + (r1 / 233280) * 92}%`,
+    top: `${4 + (r2 / 49297) * 92}%`,
+    size: 1.5 + (r3 / 9301) * 3.5,
+    duration: 9 + ((i * 7) % 14),
+    delay: (i * 0.43) % 8,
+    opacity: 0.08 + ((i * 11) % 100) / 500,
+    isGold: i % 3 !== 0,
+  };
+});
+
 export default function DustMotes() {
-  const [motes, setMotes] = useState<Mote[]>([]);
-
-  useEffect(() => {
-    setMotes(
-      Array.from({ length: MOTE_COUNT }, (_, i) => ({
-        id: i,
-        left: `${4 + Math.random() * 92}%`,
-        top: `${4 + Math.random() * 92}%`,
-        size: 1.5 + Math.random() * 3.5,
-        duration: 9 + Math.random() * 14,
-        delay: Math.random() * 8,
-        opacity: 0.08 + Math.random() * 0.20,
-        isGold: i % 3 !== 0,
-      }))
-    );
-  }, []);
-
-  if (motes.length === 0) return null;
-
   return (
     <div
       className="pointer-events-none absolute inset-0 overflow-hidden"
       aria-hidden="true"
     >
-      {motes.map((mote) => (
+      {MOTES.map((mote) => (
         <span
           key={mote.id}
           className="absolute rounded-full animate-float"
