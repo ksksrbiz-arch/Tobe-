@@ -553,6 +553,12 @@ h1, h2, h3, .font-serif {
   border-radius: 50%;
 }
 
+/* Mobile: thin out ambient density so the magic feels intimate, not busy */
+@media (max-width: 640px) {
+  .cozy-firefly:nth-child(odd) { display: none; }
+  .cozy-star:nth-child(3n) { display: none; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

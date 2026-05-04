@@ -87,7 +87,7 @@ export default function CozyAmbience() {
         return (
           <span
             key={`firefly-${i}`}
-            className="absolute rounded-full"
+            className="cozy-firefly absolute rounded-full"
             style={{
               left: `${left}%`,
               top: `${top}%`,
@@ -113,7 +113,7 @@ export default function CozyAmbience() {
         return (
           <svg
             key={`star-${i}`}
-            className="absolute"
+            className="cozy-star absolute"
             width={size}
             height={size}
             viewBox="0 0 10 10"
