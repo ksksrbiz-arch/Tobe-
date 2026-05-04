@@ -6,7 +6,7 @@ import CozyAmbience from "@/components/CozyAmbience";
 import PageTransition from "@/components/PageTransition";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://tobereadbooks.com"),
+  metadataBase: new URL("https://to-be-read-clackamas.netlify.app"),
   title: {
     default: "To Be Read (TBR) | Clackamas Book Exchange – Milwaukie, OR",
     template: "%s · To Be Read",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://tobereadbooks.com",
+    url: "https://to-be-read-clackamas.netlify.app",
     title: "To Be Read (TBR) | Clackamas Book Exchange",
     description:
       "45-year-old beloved used bookstore in Milwaukie, OR. Trade books for store credit, shop online, visit us!",
@@ -68,7 +68,7 @@ const jsonLd = {
   "@type": "BookStore",
   name: "Clackamas Book Exchange (To Be Read)",
   alternateName: "TBR – To Be Read",
-  url: "https://tobereadbooks.com",
+  url: "https://to-be-read-clackamas.netlify.app",
   telephone: "+1-503-659-2559",
   email: "TBR@tcpbusiness8.com",
   address: {
