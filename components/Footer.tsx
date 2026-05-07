@@ -182,10 +182,10 @@ export default function Footer() {
               <li className="flex items-center gap-2.5">
                 <Mail size={16} style={{ color: "#F1BB1A" }} />
                 <a
-                  href="mailto:TBR@tcpbusiness8.com"
+                  href="mailto:TBR@tcpbusiness.com"
                   className="break-all transition-colors hover:text-yellow-300"
                 >
-                  TBR@tcpbusiness8.com
+                  TBR@tcpbusiness.com
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
