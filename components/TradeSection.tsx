@@ -97,7 +97,7 @@ export default function TradeSection() {
                 NO CASH GIVEN FOR BOOKS!
               </p>
               <p className="mt-1 text-sm leading-relaxed" style={{ color: "#374151" }}>
-                We operate on a trade credit system. Bring your books in and receive store credit toward any purchase.
+                We operate on a trade credit system. Bring your books in and receive store credit toward any book purchase.
               </p>
             </div>
           </div>
