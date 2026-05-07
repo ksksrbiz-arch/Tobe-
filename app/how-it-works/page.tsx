@@ -742,7 +742,7 @@ export default function HowItWorksPage() {
                   <Phone size={16} aria-hidden /> (503) 659-2559
                 </div>
                 <div className="flex items-center gap-2">
-                  <Mail size={16} aria-hidden /> TBR@tcpbusiness8.com
+                  <Mail size={16} aria-hidden /> TBR@tcpbusiness.com
                 </div>
                 <div
                   className="flex items-center gap-2 italic"

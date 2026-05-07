@@ -133,7 +133,7 @@ export default function FAQSection() {
           <p className="mt-8 text-center text-sm" style={{ color: "#6B7280" }}>
             Still curious?{" "}
             <a
-              href="mailto:TBR@tcpbusiness8.com"
+              href="mailto:TBR@tcpbusiness.com"
               className="font-semibold underline decoration-2 underline-offset-4"
               style={{ color: "#6B1C6F", textDecorationColor: "#F1BB1A" }}
             >

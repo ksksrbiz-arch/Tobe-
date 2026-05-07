@@ -70,7 +70,7 @@ const jsonLd = {
   alternateName: "TBR – To Be Read",
   url: "https://to-be-read-clackamas.netlify.app",
   telephone: "+1-503-659-2559",
-  email: "TBR@tcpbusiness8.com",
+  email: "TBR@tcpbusiness.com",
   address: {
     "@type": "PostalAddress",
     streetAddress: "7931 SE King Rd",

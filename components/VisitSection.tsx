@@ -249,7 +249,7 @@ export default function VisitSection() {
 
               {/* Email */}
               <a
-                href="mailto:TBR@tcpbusiness8.com"
+                href="mailto:TBR@tcpbusiness.com"
                 className="group block rounded-2xl border p-4 transition-all hover:-translate-y-1 active:scale-[0.98] sm:p-5"
                 style={{
                   background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
@@ -272,7 +272,7 @@ export default function VisitSection() {
                   className="block break-all text-sm font-semibold leading-relaxed transition-colors group-hover:underline"
                   style={{ color: "#6B1C6F" }}
                 >
-                  TBR@tcpbusiness8.com
+                  TBR@tcpbusiness.com
                 </span>
               </a>
 
