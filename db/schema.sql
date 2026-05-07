@@ -55,6 +55,18 @@ CREATE TABLE IF NOT EXISTS recent_arrivals (
   added_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS sku TEXT;
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS co_author TEXT NOT NULL DEFAULT '';
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS series TEXT NOT NULL DEFAULT '';
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS series_number TEXT NOT NULL DEFAULT '';
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS category TEXT NOT NULL DEFAULT '';
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS subcategory TEXT NOT NULL DEFAULT '';
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS format TEXT NOT NULL DEFAULT '';
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS publisher TEXT NOT NULL DEFAULT '';
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS pub_year INTEGER;
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS verified TEXT NOT NULL DEFAULT 'verify';
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS notes TEXT NOT NULL DEFAULT '';
+
 CREATE INDEX IF NOT EXISTS recent_arrivals_added_at_idx ON recent_arrivals (added_at DESC);
 CREATE INDEX IF NOT EXISTS recent_arrivals_isbn_idx ON recent_arrivals (isbn);
 
