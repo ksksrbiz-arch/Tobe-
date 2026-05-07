@@ -11,6 +11,29 @@ interface RecentArrival {
   cover_url: string;
   list_price: number;
   added_at: string;
+  co_author?: string;
+  series?: string;
+  series_number?: string;
+  format?: string;
+  publisher?: string;
+  pub_year?: number;
+  category?: string;
+  subcategory?: string;
+}
+
+function formatLabel(format?: string) {
+  if (!format) return "";
+  return format
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function seriesLabel(book: RecentArrival) {
+  if (!book.series) return "";
+  return book.series_number
+    ? `${book.series} #${book.series_number}`
+    : book.series;
 }
 
 const POLL_INTERVAL_MS = 15_000;
@@ -58,7 +81,26 @@ function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
         </p>
         <p className="mt-0.5 truncate text-[10px]" style={{ color: "#6B7280" }}>
           {book.author}
+          {book.co_author ? ` & ${book.co_author}` : ""}
         </p>
+        {seriesLabel(book) && (
+          <p
+            className="mt-0.5 truncate text-[9px] italic"
+            style={{ color: "rgba(107,28,111,0.75)" }}
+          >
+            {seriesLabel(book)}
+          </p>
+        )}
+        {(book.pub_year || book.format) && (
+          <p className="mt-0.5 truncate text-[9px]" style={{ color: "#9CA3AF" }}>
+            {[formatLabel(book.format), book.pub_year].filter(Boolean).join(" • ")}
+          </p>
+        )}
+        {book.publisher && (
+          <p className="mt-0.5 truncate text-[9px]" style={{ color: "#9CA3AF" }}>
+            {book.publisher}
+          </p>
+        )}
         {book.list_price > 0 && (
           <p className="mt-1 text-[10px] font-semibold" style={{ color: "#F1BB1A" }}>
             Credit: ${(book.list_price * 0.25).toFixed(2)}
