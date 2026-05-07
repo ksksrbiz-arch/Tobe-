@@ -133,6 +133,11 @@ const JustShelvedSection = dynamic(
   { loading: () => <SectionSkeleton eyebrow="Just Shelved" title="Loading live arrivals..." muted /> },
 );
 
+const CookbookCurationGallery = dynamic(
+  () => import("@/components/CookbookCurationGallery").then((m) => ({ default: m.CookbookCurationGallery })),
+  { loading: () => <SectionSkeleton eyebrow="Newly Curated" title="Plating the cookbook area..." /> },
+);
+
 const NextReadSection = dynamic(
   () => import("@/components/NextReadMatchmaker").then((m) => ({ default: m.NextReadSection })),
   { loading: () => <SectionSkeleton eyebrow="AI Matchmaker" title="Warming up the recommendation engine..." /> },
@@ -456,6 +461,7 @@ export default function Home() {
       <TradeSection />
       <ShopSection />
       <JustShelvedSection />
+      <CookbookCurationGallery />
       <NextReadSection />
 
       {/* TikTok spotlight */}
