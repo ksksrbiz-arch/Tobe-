@@ -7,14 +7,14 @@ import Reveal from "./Reveal";
 const milestones = [
   {
     icon: BookOpen,
-    label: "~1979",
+    label: "~1981",
     title: "It begins",
     desc: "Clackamas Book Exchange opens its doors and quickly becomes a local haven for readers.",
   },
   {
     icon: Coffee,
-    label: "1980 – 2024",
-    title: "45 cozy years",
+    label: "1981 – 2024",
+    title: "43 cozy years",
     desc: "Generations of readers wander our stacks, swap stories, and turn the shop into a community living room.",
   },
   {
@@ -86,7 +86,7 @@ export default function StorySection() {
 
           <Reveal delay={160} className="space-y-5 text-base leading-relaxed lg:text-lg" >
             <p style={{ color: "#374151" }}>
-              Nestled in the heart of Milwaukie, Oregon, <strong style={{ color: "#6B1C6F" }}>Clackamas Book Exchange</strong> has been a beloved community treasure for nearly five decades. Since the late 1970s, book lovers of all ages have wandered through our shelves, discovering hidden gems, trading beloved reads, and building connections over shared stories.
+              Nestled in the heart of Milwaukie, Oregon, <strong style={{ color: "#6B1C6F" }}>Clackamas Book Exchange</strong> has been a beloved community treasure for nearly five decades. Since 1981, book lovers of all ages have wandered through our shelves, discovering hidden gems, trading beloved reads, and building connections over shared stories.
             </p>
             <p style={{ color: "#374151" }}>
               On <strong style={{ color: "#6B1C6F" }}>June 7, 2024</strong>, a new chapter began. With fresh eyes and deep respect for the store&apos;s rich history, our new owners stepped in — bringing renewed energy, modern touches, and the same heartfelt commitment to this community.

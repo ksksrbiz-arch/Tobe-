@@ -97,7 +97,7 @@ export default function PageHero({
       />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-4 pb-10 pt-24 text-center sm:px-6">
+      <div className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-4 pb-10 pt-32 text-center sm:px-6 sm:pt-28">
         {badge && (
           <span
             className="fade-in-up mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] shadow-md"

@@ -267,6 +267,11 @@ h1, h2, h3, .font-serif {
   100% { transform: translateX(200%) skewX(-18deg); }
 }
 
+@keyframes tickerScroll {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
 .fade-in-up { animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 .fade-in { animation: fadeIn 0.7s ease-out forwards; }
 .animate-float { animation: float 6s ease-in-out infinite; }
@@ -278,6 +283,13 @@ h1, h2, h3, .font-serif {
 .animate-ink-settle { animation: inkSettle 1.1s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .animate-candle-glow { animation: candleGlow 4.5s ease-in-out infinite; }
 .animate-page-enter { animation: pageEnter 0.65s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.ticker-track { animation: tickerScroll 22s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+}
 
 /* Cozy hover lift used on cards */
 .cozy-lift {

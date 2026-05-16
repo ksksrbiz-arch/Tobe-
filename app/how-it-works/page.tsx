@@ -126,7 +126,7 @@ export default function HowItWorksPage() {
             </p>
 
             <div className="mt-8 flex flex-wrap items-end gap-6">
-              <Stat label="Since" value="1979" />
+              <Stat label="Since" value="1981" />
               <Divider />
               <Stat label="Books traded" value="200k+" />
               <Divider />

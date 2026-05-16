@@ -19,6 +19,9 @@ const navLinks = [
   { label: "TBR Loop", href: "/loop" },
 ];
 
+const tickerMessage = "WE DO NOT BUY FOR CASH";
+const tickerItems = Array.from({ length: 8 }, (_, index) => `${tickerMessage} · Trade credit only · ${index + 1}`);
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -87,8 +90,25 @@ export default function Navbar() {
           borderBottom: scrolled ? "1px solid rgba(107,28,111,0.10)" : "1px solid transparent",
         }}
       >
+        <div
+          className="overflow-hidden border-b"
+          style={{
+            background: "linear-gradient(90deg, #4A1350 0%, #6B1C6F 45%, #8B2E90 100%)",
+            borderColor: "rgba(241,187,26,0.20)",
+          }}
+        >
+          <div className="ticker-track flex min-w-max items-center gap-8 py-2 text-[10px] font-bold uppercase tracking-[0.28em] text-white sm:text-[11px]">
+            {tickerItems.map((item) => (
+              <span key={item} className="flex items-center gap-8 whitespace-nowrap">
+                <span style={{ color: "#F1BB1A" }}>Store update</span>
+                <span>{tickerMessage}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between md:h-[68px]">
+          <div className="flex h-[60px] items-center justify-between md:h-[68px]">
             {/* Logo */}
             <Link href="/" className="group flex items-center gap-2.5" aria-label="To Be Read home">
               <span className="relative inline-flex items-center justify-center">
@@ -166,6 +186,14 @@ export default function Navbar() {
               <a
                 href="tel:503-659-2559"
                 aria-label="Call the store"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border transition-all active:scale-95 md:hidden"
+                style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F", background: "rgba(255,255,255,0.72)" }}
+              >
+                <Phone size={15} />
+              </a>
+              <a
+                href="tel:503-659-2559"
+                aria-label="Call the store"
                 className="hidden h-9 w-9 items-center justify-center rounded-full border transition-all hover:scale-110 lg:inline-flex"
                 style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
               >
@@ -234,12 +262,26 @@ export default function Navbar() {
           onClick={() => setIsOpen(false)}
         />
         <nav
-          className={`absolute right-0 top-0 flex h-full w-[82%] max-w-sm flex-col gap-1 px-5 pb-8 pt-24 shadow-2xl transition-transform duration-300 ${
+          className={`absolute right-0 top-0 flex h-full w-[86%] max-w-sm flex-col gap-1 rounded-l-[32px] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-28 shadow-2xl transition-transform duration-300 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
           style={{ background: "linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%)" }}
           aria-label="Mobile navigation"
         >
+          <div
+            className="mb-3 rounded-2xl border px-4 py-3"
+            style={{
+              borderColor: "rgba(107,28,111,0.10)",
+              background: "rgba(255,255,255,0.72)",
+            }}
+          >
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: "#6B1C6F" }}>
+              Quick reminder
+            </p>
+            <p className="mt-1 text-sm font-semibold" style={{ color: "#374151" }}>
+              {tickerMessage}
+            </p>
+          </div>
           {navLinks.map((link, i) => {
             const isActive = pathname === link.href;
             return (
