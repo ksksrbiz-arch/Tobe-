@@ -13,8 +13,8 @@ const milestones = [
   },
   {
     icon: Coffee,
-    label: "1981 – 2024",
-    title: "43 cozy years",
+    label: "1981 – today",
+    title: "A beloved chapter",
     desc: "Generations of readers wander our stacks, swap stories, and turn the shop into a community living room.",
   },
   {
