@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   },
   description:
     "Your neighborhood used bookstore in Milwaukie, Oregon. Trade books, browse thousands of titles, shop online on PangoBooks and Bookshop.org. Under new ownership since 2024, rebranding to TBR in 2026!",
+  applicationName: "To Be Read",
+  category: "shopping",
   keywords: [
     "used bookstore",
     "Milwaukie Oregon",
@@ -20,12 +22,21 @@ export const metadata: Metadata = {
     "To Be Read",
     "TBR",
     "trade books",
+    "book trade-in",
+    "store credit for books",
     "PangoBooks",
     "Bookshop.org",
     "used books Portland",
     "book exchange",
+    "independent bookstore Oregon",
+    "rare books Milwaukie",
   ],
   authors: [{ name: "To Be Read" }],
+  creator: "To Be Read – Clackamas Book Exchange",
+  publisher: "To Be Read – Clackamas Book Exchange",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -34,23 +45,30 @@ export const metadata: Metadata = {
     description:
       "45-year-old beloved used bookstore in Milwaukie, OR. Trade books for store credit, shop online, visit us!",
     siteName: "To Be Read – Clackamas Book Exchange",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "To Be Read – Clackamas Book Exchange",
-      },
-    ],
+    // Open Graph image is supplied by app/opengraph-image.tsx (file-based
+    // metadata convention) so it is always in sync with the brand.
   },
   twitter: {
     card: "summary_large_image",
     title: "To Be Read (TBR) | Clackamas Book Exchange",
     description: "Your neighborhood used bookstore in Milwaukie, Oregon.",
+    // twitter:image is supplied by app/twitter-image.tsx.
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  formatDetection: {
+    telephone: true,
+    address: true,
+    email: true,
   },
 };
 
@@ -66,11 +84,17 @@ export const viewport: Viewport = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "BookStore",
+  "@id": "https://to-be-read-clackamas.netlify.app/#bookstore",
   name: "Clackamas Book Exchange (To Be Read)",
   alternateName: "TBR – To Be Read",
   url: "https://to-be-read-clackamas.netlify.app",
+  image: "https://to-be-read-clackamas.netlify.app/opengraph-image",
+  logo: "https://to-be-read-clackamas.netlify.app/icon",
   telephone: "+1-503-659-2559",
   email: "TBR@tcpbusiness.com",
+  priceRange: "$",
+  currenciesAccepted: "USD",
+  paymentAccepted: "Cash, Credit Card, Store Credit",
   address: {
     "@type": "PostalAddress",
     streetAddress: "7931 SE King Rd",
@@ -79,14 +103,35 @@ const jsonLd = {
     postalCode: "97222",
     addressCountry: "US",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 45.4445,
+    longitude: -122.5829,
+  },
+  hasMap:
+    "https://www.google.com/maps/search/?api=1&query=Clackamas+Book+Exchange+Milwaukie+OR",
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
       opens: "10:00",
       closes: "17:00",
     },
   ],
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.6",
+    reviewCount: "112",
+    bestRating: "5",
+    worstRating: "1",
+  },
   sameAs: [
     "https://instagram.com/toberead_clackamas",
     "https://www.tiktok.com/@clackamas.book.ex",
