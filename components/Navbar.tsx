@@ -92,12 +92,17 @@ export default function Navbar() {
       >
         <div
           className="overflow-hidden border-b"
+          aria-label={tickerMessage}
           style={{
             background: "linear-gradient(90deg, #4A1350 0%, #6B1C6F 45%, #8B2E90 100%)",
             borderColor: "rgba(241,187,26,0.20)",
           }}
         >
-          <div className="ticker-track flex min-w-max items-center gap-8 py-2 text-[10px] font-bold uppercase tracking-[0.28em] text-white sm:text-[11px]">
+          <span className="sr-only">{tickerMessage}</span>
+          <div
+            aria-hidden="true"
+            className="ticker-track flex min-w-max items-center gap-8 py-2 text-[10px] font-bold uppercase tracking-[0.28em] text-white sm:text-[11px]"
+          >
             {tickerItems.map((_, index) => (
               <span key={index} className="flex items-center gap-8 whitespace-nowrap">
                 <span style={{ color: "#F1BB1A" }}>Store update</span>
@@ -186,17 +191,8 @@ export default function Navbar() {
               <a
                 href="tel:503-659-2559"
                 aria-label="Call the store"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border transition-all active:scale-95 md:hidden"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border transition-all active:scale-95 md:hidden lg:inline-flex lg:hover:scale-110"
                 style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F", background: "rgba(255,255,255,0.72)" }}
-              >
-                <Phone size={15} />
-                <span className="sr-only">Call the store</span>
-              </a>
-              <a
-                href="tel:503-659-2559"
-                aria-label="Call the store"
-                className="hidden h-9 w-9 items-center justify-center rounded-full border transition-all hover:scale-110 lg:inline-flex"
-                style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
               >
                 <Phone size={15} />
                 <span className="sr-only">Call the store</span>
