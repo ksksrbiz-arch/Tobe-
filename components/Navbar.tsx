@@ -190,7 +190,6 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
               <a
                 href="tel:503-659-2559"
-                aria-label="Call the store"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border transition-all active:scale-95 lg:hover:scale-110"
                 style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F", background: "rgba(255,255,255,0.72)" }}
               >
@@ -263,7 +262,7 @@ export default function Navbar() {
           className={`absolute right-0 top-0 flex h-full w-[86%] max-w-sm flex-col gap-1 rounded-l-[32px] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] shadow-2xl transition-transform duration-300 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
-          style={{ background: "linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%)", paddingTop: "var(--header-offset)" }}
+          style={{ background: "linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%)", paddingTop: "var(--mobile-menu-offset)" }}
           aria-label="Mobile navigation"
         >
           <div

@@ -322,21 +322,19 @@ export default function TradeSection() {
             </p>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {tradeChecklist.map((item, i) => (
-                <label
+                <button
                   key={item.label}
-                  className="group flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition-all hover:bg-white/70"
+                  type="button"
+                  role="checkbox"
+                  aria-checked={!!checked[i]}
+                  onClick={() => toggle(i)}
+                  className="group flex w-full cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all hover:bg-white/70"
                   style={{
                     borderColor: checked[i] ? "rgba(34,197,94,0.45)" : "rgba(107,28,111,0.10)",
                     background: checked[i] ? "rgba(34,197,94,0.10)" : "white",
                     boxShadow: checked[i] ? "0 10px 22px rgba(34,197,94,0.12)" : "none",
                   }}
                 >
-                  <input
-                    type="checkbox"
-                    checked={!!checked[i]}
-                    onChange={() => toggle(i)}
-                    className="sr-only"
-                  />
                   <span
                     aria-hidden="true"
                     className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md border-2 transition-all"
@@ -358,7 +356,7 @@ export default function TradeSection() {
                   >
                     {item.label}
                   </span>
-                </label>
+                </button>
               ))}
             </div>
             {allChecked && (
