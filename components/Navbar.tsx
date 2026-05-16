@@ -20,7 +20,7 @@ const navLinks = [
 ];
 
 const tickerMessage = "WE DO NOT BUY FOR CASH";
-const tickerItems = Array.from({ length: 8 }, (_, index) => `${tickerMessage} · Trade credit only · ${index + 1}`);
+const tickerItems = Array.from({ length: 8 });
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -98,8 +98,8 @@ export default function Navbar() {
           }}
         >
           <div className="ticker-track flex min-w-max items-center gap-8 py-2 text-[10px] font-bold uppercase tracking-[0.28em] text-white sm:text-[11px]">
-            {tickerItems.map((item) => (
-              <span key={item} className="flex items-center gap-8 whitespace-nowrap">
+            {tickerItems.map((_, index) => (
+              <span key={index} className="flex items-center gap-8 whitespace-nowrap">
                 <span style={{ color: "#F1BB1A" }}>Store update</span>
                 <span>{tickerMessage}</span>
               </span>
@@ -190,6 +190,7 @@ export default function Navbar() {
                 style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F", background: "rgba(255,255,255,0.72)" }}
               >
                 <Phone size={15} />
+                <span className="sr-only">Call the store</span>
               </a>
               <a
                 href="tel:503-659-2559"
@@ -198,6 +199,7 @@ export default function Navbar() {
                 style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
               >
                 <Phone size={15} />
+                <span className="sr-only">Call the store</span>
               </a>
               <button
                 onClick={handleDirections}
