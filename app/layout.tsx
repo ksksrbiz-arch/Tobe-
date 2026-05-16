@@ -97,7 +97,7 @@ const jsonLd = {
   ],
   description:
     "A beloved neighborhood used bookstore in Milwaukie, Oregon, serving the community for over 45 years. Trade books for store credit, browse thousands of titles in-store and online.",
-  foundingDate: "1979",
+  foundingDate: "1981",
 };
 
 export default function RootLayout({

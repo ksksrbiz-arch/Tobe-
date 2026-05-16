@@ -322,28 +322,41 @@ export default function TradeSection() {
             </p>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {tradeChecklist.map((item, i) => (
-                <label
+                <button
                   key={item.label}
-                  className="group flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition-all hover:bg-white/70"
+                  type="button"
+                  role="checkbox"
+                  aria-checked={!!checked[i]}
+                  onClick={() => toggle(i)}
+                  className="group flex w-full cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all hover:bg-white/70"
                   style={{
-                    borderColor: checked[i] ? "rgba(107,28,111,0.50)" : "rgba(107,28,111,0.10)",
-                    background: checked[i] ? "rgba(107,28,111,0.05)" : "white",
+                    borderColor: checked[i] ? "rgba(34,197,94,0.45)" : "rgba(107,28,111,0.10)",
+                    background: checked[i] ? "rgba(34,197,94,0.10)" : "white",
+                    boxShadow: checked[i] ? "0 10px 22px rgba(34,197,94,0.12)" : "none",
                   }}
                 >
-                  <input
-                    type="checkbox"
-                    checked={!!checked[i]}
-                    onChange={() => toggle(i)}
-                    className="h-5 w-5 cursor-pointer rounded"
-                    style={{ accentColor: "#6B1C6F" }}
-                  />
+                  <span
+                    aria-hidden="true"
+                    className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md border-2 transition-all"
+                    style={{
+                      borderColor: checked[i] ? "#16A34A" : "rgba(107,28,111,0.18)",
+                      background: checked[i] ? "#16A34A" : "rgba(255,255,255,0.92)",
+                    }}
+                  >
+                    <Check
+                      size={14}
+                      strokeWidth={3}
+                      className="transition-all"
+                      style={{ color: "white", opacity: checked[i] ? 1 : 0 }}
+                    />
+                  </span>
                   <span
                     className="text-sm font-medium"
-                    style={{ color: checked[i] ? "#6B1C6F" : "#374151" }}
+                    style={{ color: checked[i] ? "#166534" : "#374151" }}
                   >
                     {item.label}
                   </span>
-                </label>
+                </button>
               ))}
             </div>
             {allChecked && (

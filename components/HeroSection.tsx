@@ -22,7 +22,7 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
 
   return (
     <section
-      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pt-24 pb-12 paper-warm"
+      className="paper-warm relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pb-12 pt-32 sm:pt-36"
       style={{
         background:
           "radial-gradient(circle at 12% 18%, rgba(241,187,26,0.22), transparent 32%), radial-gradient(circle at 82% 22%, rgba(107,28,111,0.20), transparent 30%), radial-gradient(circle at 50% 90%, rgba(241,187,26,0.10), transparent 50%), linear-gradient(135deg, #FDF8F0 0%, #FFF7EC 36%, #F7F0FF 100%)",
@@ -165,7 +165,7 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
               className="absolute -right-3 -top-2 inline-flex h-7 items-center rounded-full px-2.5 text-[10px] font-bold uppercase tracking-widest text-white animate-wiggle"
               style={{ background: "#F1BB1A", color: "#1a1a1a", boxShadow: "0 8px 20px rgba(241,187,26,0.35)" }}
             >
-              Est. 1979
+              Est. 1981
             </span>
           </div>
         </div>
@@ -259,7 +259,7 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
 
         {/* Quick facts row */}
         <div
-          className="fade-in-up mt-9 grid grid-cols-3 gap-3 border-t pt-6 text-left sm:gap-6"
+          className="fade-in-up mt-9 grid grid-cols-1 gap-3 border-t pt-6 text-center sm:grid-cols-3 sm:gap-6 sm:text-left"
           style={{ borderColor: "rgba(107,28,111,0.10)", animationDelay: "600ms" }}
         >
           {[

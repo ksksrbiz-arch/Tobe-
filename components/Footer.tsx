@@ -101,7 +101,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm leading-relaxed opacity-75">
-              Your neighborhood used bookstore since the late 1970s. Trading stories, one book at a time.
+              Your neighborhood used bookstore since 1981. Trading stories, one book at a time.
             </p>
 
             <div className="mt-5 flex gap-2">
