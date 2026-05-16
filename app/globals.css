@@ -43,7 +43,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 6rem;
+  scroll-padding-top: 8rem;
   background: var(--background);
 }
 
