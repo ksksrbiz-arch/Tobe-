@@ -52,7 +52,7 @@ const steps = [
   {
     icon: HandCoins,
     title: "Get store credit",
-    body: "Receive 25% of the original list price as credit on each accepted book. It never expires.",
+    body: "Receive 25% of the original list price as credit on each accepted book. Unused credit renews every year on December 31.",
   },
   {
     icon: Smile,

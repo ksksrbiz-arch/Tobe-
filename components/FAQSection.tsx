@@ -7,11 +7,11 @@ import Reveal from "./Reveal";
 const faqs = [
   {
     q: "Do you really not give cash for trades?",
-    a: "Correct — we operate as a trade-credit shop. Bring books in, get store credit, then use it toward anything in the store. It's how we keep prices low and inventory fresh.",
+    a: "Correct — we operate as a trade-credit shop. Bring books in, get store credit, then use it toward anything in the store. Unused credit stays on your account and renews every year on December 31.",
   },
   {
     q: "How is my trade credit calculated?",
-    a: "You receive 25% of the book's original list price as store credit on books we accept. When you purchase a book using credit, 50% of the list price comes off your credit, plus a small swap fee ($1–$3 depending on price).",
+    a: "You receive 25% of the book's original list price as store credit on books we accept. When you purchase a book using credit, 50% of the list price comes off your credit, plus a small swap fee ($1–$3 depending on price). Unused credit stays on your account and renews every year on December 31.",
   },
   {
     q: "What books do you accept?",
