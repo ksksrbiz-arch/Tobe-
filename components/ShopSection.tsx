@@ -26,7 +26,7 @@ const shopCards = [
     description:
       "Support us and independent bookstores everywhere through Bookshop.org. Every purchase helps small bookshops thrive.",
     cta: "Browse Bookshop",
-    href: "https://bookshop.org/shop/tobereadclackamas",
+    href: "https://bookshop.org/shop/ClackamasBookExchange",
     badge: "Support Indies",
   },
   {
