@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import DustMotes from "@/components/DustMotes";
+import SectionDivider from "@/components/SectionDivider";
 import {
   Award,
   BookMarked,
@@ -367,6 +368,8 @@ export default function Home() {
 
       <StorySection />
 
+      <SectionDivider variant="book" label="Explore" muted />
+
       {/* Explore grid */}
       <section
         className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8"
@@ -460,6 +463,7 @@ export default function Home() {
       <VisitSection />
       <TradeSection />
       <ShopSection />
+      <SectionDivider variant="sparkle" label="Just Shelved" />
       <JustShelvedSection />
       <CookbookCurationGallery />
       <NextReadSection />
@@ -524,6 +528,7 @@ export default function Home() {
 
       <EventsSection />
       <LemmyFeatureSection />
+      <SectionDivider variant="bookmark" label="Stay in touch" muted />
       <ConnectSection />
       <FAQSection />
       <NewsletterCTA />

@@ -544,6 +544,21 @@ h1, h2, h3, .font-serif {
   50% { transform: rotate(2deg) translateY(2px); }
 }
 
+/* Section divider: gently shimmering hairlines flanking an ornament */
+@keyframes dividerShimmer {
+  0%, 100% { opacity: 0.55; transform: scaleX(1); }
+  50%      { opacity: 1;    transform: scaleX(1.04); }
+}
+.section-divider-line {
+  display: block;
+  border-radius: 999px;
+  transform-origin: center;
+  will-change: opacity, transform;
+  animation: dividerShimmer 6s ease-in-out infinite;
+}
+.section-divider-line--left  { transform-origin: right center; }
+.section-divider-line--right { transform-origin: left center; animation-delay: 1.5s; }
+
 .animate-firefly { animation: fireflyDrift 14s ease-in-out infinite, fireflyPulse 2.4s ease-in-out infinite; }
 .animate-star-twinkle { animation: starTwinkle 4s ease-in-out infinite; }
 .animate-glow-pulse { animation: glowPulse 7s ease-in-out infinite; }
