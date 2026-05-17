@@ -35,7 +35,7 @@ const chapters = [
     n: "02",
     eyebrow: "Chapter two",
     title: "Earn store credit",
-    body: "One credit per paperback, two per hardcover. Credit lives on your account under your name. It never expires.",
+    body: "One credit per paperback, two per hardcover. Credit lives on your account under your name and renews every year on December 31.",
     icon: Coins,
   },
   {
@@ -421,7 +421,7 @@ export default function HowItWorksPage() {
               className="mt-4 max-w-2xl font-serif italic"
               style={{ color: "var(--ink-soft)", fontSize: "1.15rem" }}
             >
-              Credit lives on your account, under your name and phone number. It never expires.
+              Credit lives on your account, under your name and phone number, and renews every year on December 31.
             </p>
           </Reveal>
 
@@ -487,8 +487,8 @@ export default function HowItWorksPage() {
               <div className="flex h-full flex-col justify-center gap-7">
                 <SideNote
                   icon={Clock}
-                  caps="Never expires"
-                  body="Come back next week or next year — your credit will be waiting."
+                  caps="Annual renewal"
+                  body="Trade credit renews every year on December 31."
                 />
                 <Hairline />
                 <SideNote
