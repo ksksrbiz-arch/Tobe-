@@ -327,7 +327,7 @@ export default function TradeCreditEstimator() {
 
       {/* Disclaimer */}
       <p className="mt-4 text-center text-[10px] leading-4" style={{ color: "#9CA3AF" }}>
-        Credit is issued as store credit, not cash. Final amount may vary based on book condition and staff review.
+        Credit is issued as store credit, not cash. Trade credit renews every year on December 31. Final amount may vary based on book condition and staff review.
       </p>
     </div>
   );
