@@ -4,16 +4,13 @@ This folder holds authentic photos of the children's book shelves and collection
 
 These images show warm wooden bookshelves packed with picture books, chapter books, Dr. Seuss, fantasy series, and more – perfect visual assets for the To Be Read (Tobe) website.
 
-## Suggested Organization
+## Files
 
-Rename the 7 uploaded photos to:
-- shelf-01-tall-full.jpg
-- shelf-02-picture-books.jpg
-- shelf-03-ladder-dr-seuss.jpg
-- shelf-04-dense-collection.jpg
-- shelf-05-lower-bins.jpg
-- shelf-06-wide-view.jpg
-- shelf-07-top-detail.jpg
+The 4 authentic store photos delivered May 2026:
+- shelf-01-childrens-chapter-books.jpg — wall-to-wall children's chapter books with picture books on top
+- shelf-02-picture-book-corner.jpg — picture book corner with alphabet crate and small red chair
+- shelf-03-young-adult-fantasy.jpg — densely packed young adult and fantasy shelves
+- shelf-04-chapter-book-wall.jpg — wide chapter book wall with stuffed reading friends
 
 ## Recommended Usage
 
@@ -22,7 +19,8 @@ Rename the 7 uploaded photos to:
 - About page to show the real physical space
 - Social media assets
 
-Use Next.js <Image> component for optimization.
+Used in the About page "A peek between the shelves" gallery
+(`app/about/page.tsx`).
 
 Alt text examples:
 - "Abundant wooden bookshelves filled with children's books at To Be Read book exchange"
