@@ -10,12 +10,26 @@ import Reveal from "@/components/Reveal";
 import { Heart, BookOpen, Sparkles, Users, Quote } from "lucide-react";
 
 const galleryItems = [
-  { url: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&q=80", caption: "Our shelves" },
-  { url: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80", caption: "Cozy reading nooks" },
-  { url: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80", caption: "Community corner" },
-  { url: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=800&q=80", caption: "Trade-in counter" },
-  { url: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80", caption: "New arrivals" },
-  { url: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&q=80", caption: "The reading chair" },
+  {
+    url: "/images/shelves/shelf-01-childrens-chapter-books.jpg",
+    caption: "Wall-to-wall children's chapter books",
+    alt: "Tall wooden bookshelves packed with children's chapter books and picture books at To Be Read",
+  },
+  {
+    url: "/images/shelves/shelf-02-picture-book-corner.jpg",
+    caption: "Picture book corner",
+    alt: "Picture book corner with crates of board books and a small red children's chair",
+  },
+  {
+    url: "/images/shelves/shelf-03-young-adult-fantasy.jpg",
+    caption: "Young adult & fantasy",
+    alt: "Densely packed shelves of young adult novels and fantasy series",
+  },
+  {
+    url: "/images/shelves/shelf-04-chapter-book-wall.jpg",
+    caption: "The chapter book wall",
+    alt: "Wide wooden shelving wall filled with middle-grade chapter books and stuffed reading friends",
+  },
 ];
 
 const values = [
@@ -154,7 +168,7 @@ export default function AboutPage() {
                 >
                   <img
                     src={item.url}
-                    alt={item.caption}
+                    alt={item.alt}
                     loading="lazy"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
