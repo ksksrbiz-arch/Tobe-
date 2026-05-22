@@ -28,7 +28,33 @@ const WORD_CONFIGS = FLOATING_WORDS.map((_, i) => ({
   delay: (i * 0.83) % 6,
 }));
 
-function FloatingWord({
+const FEATURE_BULLETS = [
+  { icon: Zap, text: "AI-generated branching narratives with real images" },
+  { icon: BookOpen, text: "Romance · Crime · Paranormal genres" },
+  { icon: Star, text: "Cloud-synced story saves — pick up anywhere" },
+];
+
+const SCENE_CONTENT: Record<string, { subtitle: string; title: string; description: string }> = {
+  Romance: {
+    subtitle: "The Forbidden Garden",
+    title: "A Single Rose in the Moonlight",
+    description: "Your heart races as familiar eyes meet yours across the candlelit ballroom…",
+  },
+  "Crime Noir": {
+    subtitle: "The Neon Shadows",
+    title: "The Last Clue Before Midnight",
+    description: "Rain hammers the alley. The envelope in your pocket could end everything…",
+  },
+  Paranormal: {
+    subtitle: "Blood Covenant",
+    title: "The Witch's Final Gambit",
+    description: "Ancient runes pulse beneath your fingertips as the veil grows thin…",
+  },
+};
+
+const CHOICES = ["Step forward into the light", "Retreat into the shadows"];
+
+const FloatingWord = React.memo(function FloatingWord({
   word,
   style,
   duration,
@@ -51,22 +77,63 @@ function FloatingWord({
       {word}
     </span>
   );
-}
+});
 
 export default function EchoesLaunchBanner() {
   const [activeGenre, setActiveGenre] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setActiveGenre((g) => (g + 1) % GENRES.length);
-    }, 2800);
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onChange = () => setPrefersReducedMotion(mediaQuery.matches);
+    onChange();
+    mediaQuery.addEventListener("change", onChange);
+
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      mediaQuery.removeEventListener("change", onChange);
     };
   }, []);
 
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      intervalRef.current = null;
+      return;
+    }
+
+    const startInterval = () => {
+      if (intervalRef.current || document.hidden) return;
+      intervalRef.current = setInterval(() => {
+        setActiveGenre((g) => (g + 1) % GENRES.length);
+      }, 2800);
+    };
+
+    const stopInterval = () => {
+      if (!intervalRef.current) return;
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    };
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        stopInterval();
+      } else {
+        startInterval();
+      }
+    };
+
+    startInterval();
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      stopInterval();
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [prefersReducedMotion]);
+
   const genre = GENRES[activeGenre];
+  const scene = SCENE_CONTENT[genre.label];
 
   return (
     <>
@@ -95,6 +162,12 @@ export default function EchoesLaunchBanner() {
           98%              { clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); transform: translateX(-3px); }
           99%              { clip-path: none; transform: none; }
         }
+        @media (prefers-reduced-motion: reduce) {
+          [data-echoes-animated="true"] {
+            animation: none !important;
+            transition: none !important;
+          }
+        }
       `}</style>
 
       <section
@@ -104,6 +177,7 @@ export default function EchoesLaunchBanner() {
         {/* Dark cinematic background */}
         <div
           className="absolute inset-0 transition-all duration-1000"
+          data-echoes-animated="true"
           style={{
             background: `radial-gradient(ellipse at 60% 40%, ${genre.glow} 0%, transparent 55%),
                          radial-gradient(ellipse at 15% 70%, rgba(74,19,80,0.45) 0%, transparent 45%),
@@ -142,6 +216,7 @@ export default function EchoesLaunchBanner() {
         {/* Corner decorative glyphs */}
         <div
           className="pointer-events-none absolute right-8 top-8 h-24 w-24 opacity-10"
+          data-echoes-animated="true"
           style={{
             background: `conic-gradient(from 0deg, ${genre.color}, transparent 60%, ${genre.color})`,
             borderRadius: "50%",
@@ -185,6 +260,7 @@ export default function EchoesLaunchBanner() {
                     color: "white",
                     animation: "echoesGlitch 9s ease-in-out infinite",
                   }}
+                  data-echoes-animated="true"
                 >
                   Echoes of{" "}
                   <span
@@ -197,6 +273,7 @@ export default function EchoesLaunchBanner() {
                       animation: "echoesShimmer 3s linear infinite",
                       transition: "all 0.7s ease",
                     }}
+                    data-echoes-animated="true"
                   >
                     Choice
                   </span>
@@ -224,7 +301,10 @@ export default function EchoesLaunchBanner() {
                     <button
                       key={g.label}
                       onClick={() => setActiveGenre(i)}
+                      type="button"
+                      aria-pressed={i === activeGenre}
                       className="rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all duration-300"
+                      data-echoes-animated="true"
                       style={{
                         background:
                           i === activeGenre
@@ -245,11 +325,7 @@ export default function EchoesLaunchBanner() {
 
                 {/* Feature bullets */}
                 <ul className="mt-6 space-y-2">
-                  {[
-                    { icon: Zap, text: "AI-generated branching narratives with real images" },
-                    { icon: BookOpen, text: "Romance · Crime · Paranormal genres" },
-                    { icon: Star, text: "Cloud-synced story saves — pick up anywhere" },
-                  ].map(({ icon: Icon, text }) => (
+                  {FEATURE_BULLETS.map(({ icon: Icon, text }) => (
                     <li key={text} className="flex items-center gap-2.5">
                       <span
                         className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full"
@@ -271,6 +347,8 @@ export default function EchoesLaunchBanner() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-bold text-black shadow-xl transition-all duration-300 hover:scale-[1.04] hover:shadow-2xl"
+                    aria-label="Play Echoes of Choice in a new tab"
+                    data-echoes-animated="true"
                     style={{
                       background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)",
                       boxShadow: `0 0 28px rgba(241,187,26,0.4), 0 8px 24px rgba(0,0,0,0.4)`,
@@ -303,6 +381,7 @@ export default function EchoesLaunchBanner() {
                   boxShadow: `0 0 60px ${genre.glow}, 0 32px 80px rgba(0,0,0,0.6)`,
                   transition: "all 0.7s ease",
                 }}
+                data-echoes-animated="true"
               >
                 {/* Glowing top accent */}
                 <div
@@ -324,6 +403,7 @@ export default function EchoesLaunchBanner() {
                         border: `1px solid ${genre.color}30`,
                         transition: "all 0.7s ease",
                       }}
+                      data-echoes-animated="true"
                     >
                       Neural Canvas
                     </span>
@@ -334,6 +414,7 @@ export default function EchoesLaunchBanner() {
                         boxShadow: `0 0 8px ${genre.color}`,
                         animation: "echoesPulse 2s ease-in-out infinite",
                       }}
+                      data-echoes-animated="true"
                     />
                   </div>
 
@@ -361,40 +442,27 @@ export default function EchoesLaunchBanner() {
 
                   {/* Fake scene title */}
                   <p
-                    className="mb-2 text-[9px] font-black uppercase tracking-[0.3em]"
-                    style={{ color: genre.color, transition: "color 0.7s ease" }}
-                  >
-                    {genre.label === "Romance"
-                      ? "The Forbidden Garden"
-                      : genre.label === "Crime Noir"
-                        ? "The Neon Shadows"
-                        : "Blood Covenant"}
+                   className="mb-2 text-[9px] font-black uppercase tracking-[0.3em]"
+                   style={{ color: genre.color, transition: "color 0.7s ease" }}
+                 >
+                    {scene.subtitle}
                   </p>
                   <p
                     className="text-sm font-bold leading-snug"
                     style={{ color: "white", fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
-                    {genre.label === "Romance"
-                      ? "A Single Rose in the Moonlight"
-                      : genre.label === "Crime Noir"
-                        ? "The Last Clue Before Midnight"
-                        : "The Witch's Final Gambit"}
+                    {scene.title}
                   </p>
                   <p
                     className="mt-2 text-xs leading-relaxed"
                     style={{ color: "rgba(255,255,255,0.38)" }}
                   >
-                    {genre.label === "Romance"
-                      ? "Your heart races as familiar eyes meet yours across the candlelit ballroom…"
-                      : genre.label === "Crime Noir"
-                        ? "Rain hammers the alley. The envelope in your pocket could end everything…"
-                        : "Ancient runes pulse beneath your fingertips as the veil grows thin…"}
+                    {scene.description}
                   </p>
 
                   {/* Fake choice buttons */}
                   <div className="mt-5 space-y-2">
-                    {["Step forward into the light", "Retreat into the shadows"].map(
-                      (choice, ci) => (
+                    {CHOICES.map((choice, ci) => (
                         <div
                           key={choice}
                           className="flex cursor-default items-center gap-2.5 rounded-[12px] px-4 py-2.5"
@@ -413,6 +481,7 @@ export default function EchoesLaunchBanner() {
                               color: ci === 0 ? "#0b0912" : "rgba(255,255,255,0.3)",
                               transition: "all 0.7s ease",
                             }}
+                            data-echoes-animated="true"
                           >
                             {ci === 0 ? "→" : "↓"}
                           </span>
@@ -426,8 +495,7 @@ export default function EchoesLaunchBanner() {
                             {choice}
                           </span>
                         </div>
-                      ),
-                    )}
+                      ))}
                   </div>
                 </div>
 
@@ -438,6 +506,7 @@ export default function EchoesLaunchBanner() {
                     background: `linear-gradient(90deg, transparent, ${genre.color}60, transparent)`,
                     transition: "all 0.7s ease",
                   }}
+                  data-echoes-animated="true"
                 />
               </div>
             </Reveal>
