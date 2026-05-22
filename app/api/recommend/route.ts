@@ -173,7 +173,7 @@ export async function POST(request: Request) {
     );
   }
 
-  // Enforce shelf-only output and normalize to canonical inventory metadata.
+  // Enforce inventory-only output and normalize to canonical inventory metadata.
   const inventoryByKey = new Map(inventory.map((b) => [inventoryKey(b.title, b.author), b]));
   const inventoryByTitle = new Map<string, InventoryBook[]>();
   for (const item of inventory) {
