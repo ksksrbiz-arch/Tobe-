@@ -1,3 +1,8 @@
 [build]
   command = "npm run build"
   publish = ".next"
+
+[build.environment]
+  # Firebase API keys are safe to expose publicly; they are meant for client-side use
+  # and are restricted via Firebase Security Rules, not secrecy.
+  SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES = "AIzaSyAT3s-0lTS1EIYN92aLLbGJbzHgeDTylR0"
