@@ -196,9 +196,7 @@ export async function POST(request: Request) {
     .slice(0, 5);
 
   if (enriched.length === 0) {
-    return {
-      recommendations: [],
-    };
+    return NextResponse.json({ recommendations: [] });
   }
 
   return NextResponse.json({ recommendations: enriched });
