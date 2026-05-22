@@ -3,6 +3,9 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { sql } from "@/lib/db";
 
 export const runtime = "nodejs";
+const MAX_RECOMMENDATIONS = 5;
+const MAX_INVENTORY_CONTEXT = 120;
+const MODEL_TEMPERATURE = 0.5;
 
 const SYSTEM_PROMPT = `You are a knowledgeable bookseller at To Be Read, a small \
 independent bookshop. A reader will describe what they just finished or the \
@@ -75,7 +78,8 @@ function inventoryKey(title: string, author: string) {
 
 function buildGroundedPrompt(readerPrompt: string, inventory: InventoryBook[]) {
   const inventoryContext = inventory
-    .slice(0, 120)
+    // Keep context bounded to reduce token usage while still covering recent stock breadth.
+    .slice(0, MAX_INVENTORY_CONTEXT)
     .map((book, index) => `${index + 1}. ${book.title} — ${book.author}`)
     .join("\n");
   return `Reader request:
@@ -138,7 +142,7 @@ export async function POST(request: Request) {
         systemInstruction: SYSTEM_PROMPT,
         responseMimeType: "application/json",
         responseSchema: RESPONSE_SCHEMA,
-        temperature: 0.3,
+        temperature: MODEL_TEMPERATURE,
         tools: [{ googleSearch: {} }],
       },
     });
@@ -193,7 +197,7 @@ export async function POST(request: Request) {
       };
     })
     .filter((rec): rec is NonNullable<typeof rec> => Boolean(rec))
-    .slice(0, 5);
+    .slice(0, MAX_RECOMMENDATIONS);
 
   if (enriched.length === 0) {
     return NextResponse.json({ recommendations: [] });
