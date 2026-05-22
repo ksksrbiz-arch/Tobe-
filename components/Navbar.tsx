@@ -17,6 +17,11 @@ const navLinks = [
   { label: "Wishlist", href: "/wishlist" },
   { label: "Connect", href: "/connect" },
   { label: "TBR Loop", href: "/loop" },
+  {
+    label: "✦ Echoes",
+    href: "https://echoes-of-choice-167345356687.us-west2.run.app",
+    external: true,
+  },
 ];
 
 const tickerMessage = "WE DO NOT BUY FOR CASH";
@@ -161,7 +166,25 @@ export default function Navbar() {
             {/* Desktop Nav */}
             <nav className="hidden items-center gap-0.5 md:flex" aria-label="Main navigation">
               {navLinks.map((link) => {
-                const isActive = pathname === link.href;
+                const isActive = !link.external && pathname === link.href;
+                if (link.external) {
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="relative rounded-lg px-3.5 py-2 text-sm font-bold transition-all hover:scale-105"
+                      style={{
+                        background: "linear-gradient(135deg, rgba(241,187,26,0.14) 0%, rgba(107,28,111,0.10) 100%)",
+                        color: "#6B1C6F",
+                        border: "1px solid rgba(241,187,26,0.25)",
+                      }}
+                    >
+                      {link.label}
+                    </a>
+                  );
+                }
                 return (
                   <Link
                     key={link.href}
@@ -280,7 +303,27 @@ export default function Navbar() {
             </p>
           </div>
           {navLinks.map((link, i) => {
-            const isActive = pathname === link.href;
+            const isActive = !link.external && pathname === link.href;
+            if (link.external) {
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-xl px-4 py-3.5 text-base font-bold transition-all"
+                  style={{
+                    color: "#6B1C6F",
+                    background: "linear-gradient(135deg, rgba(241,187,26,0.12) 0%, rgba(107,28,111,0.08) 100%)",
+                    border: "1px solid rgba(241,187,26,0.22)",
+                    animation: isOpen ? `fadeInUp 0.45s ${i * 60}ms both` : undefined,
+                  }}
+                >
+                  {link.label}
+                </a>
+              );
+            }
             return (
               <Link
                 key={link.href}

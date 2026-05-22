@@ -1,0 +1,147 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique identifier for the user" },
+        "email": { "type": "string", "description": "User's email address" },
+        "displayName": { "type": "string", "description": "User's display name" },
+        "photoURL": { "type": "string", "description": "User's profile photo URL" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the user was created" }
+      },
+      "required": ["uid", "email", "createdAt"]
+    },
+    "Story": {
+      "title": "Story",
+      "description": "An interactive story session",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner of the story" },
+        "genre": { "type": "string", "enum": ["romance", "crime", "paranormal"], "description": "Chosen genre" },
+        "storyLength": { "type": "string", "enum": ["short", "medium", "epic"], "description": "Target length of the story" },
+        "characterArchetype": { "type": "string", "description": "User chosen starting archetype" },
+        "plotComplexity": { "type": "string", "enum": ["simple", "complex", "layered"], "description": "How complex the plot should be" },
+        "status": { "type": "string", "enum": ["active", "completed"], "description": "Current status of the story" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp" }
+      },
+      "required": ["userId", "genre", "status", "createdAt", "updatedAt"]
+    },
+    "Step": {
+      "title": "Step",
+      "description": "A single step/scene in a story's history",
+      "type": "object",
+      "properties": {
+        "sceneTitle": { "type": "string", "description": "Title of the scene" },
+        "sceneDescription": { "type": "string", "description": "Description of the scene" },
+        "imageUrl": { "type": "string", "description": "URL of the generated image" },
+        "choiceTaken": { "type": "string", "description": "The choice the user took from the previous step" },
+        "imagePrompt": { "type": "string", "description": "The prompt used for the image" },
+        "choices": { "type": "array", "description": "The choices offered at this step" },
+        "timestamp": { "type": "string", "format": "date-time", "description": "When this step occurred" }
+      },
+      "required": ["sceneTitle", "sceneDescription", "timestamp"]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "A Google Keep style creative story note",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Title of the note" },
+        "content": { "type": "string", "description": "Text content of the note" },
+        "type": { "type": "string", "description": "Type of note text or checklist" },
+        "listItems": {
+          "type": "array",
+          "description": "Items in checklist"
+        },
+        "color": { "type": "string", "description": "Background color label" },
+        "pinned": { "type": "boolean", "description": "Pinned status" },
+        "labels": { "type": "array", "description": "Category tags like character development, plot mapping" },
+        "linkedSceneId": { "type": "string", "description": "Linked story step or scene identifier" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last updated timestamp" }
+      },
+      "required": ["title", "type", "createdAt"]
+    },
+    "CodexEntry": {
+      "title": "CodexEntry",
+      "description": "A dynamically discovered lore or world-building item in the story",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Name/Title of the entry, e.g. Inspector Vance, Crimson Medallion" },
+        "category": { "type": "string", "description": "Category of the entry (character, location, item, clue, lore)" },
+        "content": { "type": "string", "description": "Detailed description/lore about the discovery" },
+        "sourceScene": { "type": "string", "description": "Scene title where this was discovered" },
+        "discoveredAt": { "type": "string", "format": "date-time", "description": "Timestamp when player discovered/updated this entry" },
+        "status": { "type": "string", "description": "Discovery state of the lore element" }
+      },
+      "required": ["title", "category", "content", "discoveredAt"]
+    },
+    "SharedEcho": {
+      "title": "SharedEcho",
+      "description": "A publicly shared interactive choice tree snapshot from a player's universe",
+      "type": "object",
+      "properties": {
+        "storyId": { "type": "string" },
+        "userId": { "type": "string" },
+        "creatorName": { "type": "string" },
+        "genre": { "type": "string" },
+        "characterArchetype": { "type": "string" },
+        "customBasis": { "type": "string" },
+        "stepsSnapshot": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["storyId", "userId", "creatorName", "stepsSnapshot", "createdAt"]
+    },
+    "Room": {
+      "title": "Room",
+      "description": "A live, collaborative space for multi-user storytelling and voting",
+      "type": "object",
+      "properties": {
+        "roomId": { "type": "string" },
+        "hostName": { "type": "string" },
+        "hostId": { "type": "string" },
+        "genre": { "type": "string" },
+        "status": { "type": "string" },
+        "activeStoryId": { "type": "string" },
+        "participants": { "type": "array" },
+        "currentVotes": { "type": "object" },
+        "chat": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["roomId", "hostId", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "Root user documents"
+    },
+    "users/{userId}/stories/{storyId}": {
+      "schema": "Story",
+      "description": "Collection of story sessions for a user"
+    },
+    "users/{userId}/stories/{storyId}/steps/{stepId}": {
+      "schema": "Step",
+      "description": "History of steps in a specific story"
+    },
+    "users/{userId}/stories/{storyId}/notes/{noteId}": {
+      "schema": "Note",
+      "description": "Collaborative Keep-style creative notes mapped to the branching narrative"
+    },
+    "users/{userId}/stories/{storyId}/codex/{codexId}": {
+      "schema": "CodexEntry",
+      "description": "Dynamically updated genre-specific codex elements and lore discovered by the player"
+    },
+    "shared_echoes/{echoId}": {
+      "schema": "SharedEcho",
+      "description": "Publicly shared static snapshot of choices and story pathways"
+    },
+    "rooms/{roomId}": {
+      "schema": "Room",
+      "description": "Real-time collaborative storyteller lobby and sync"
+    }
+  }
+}

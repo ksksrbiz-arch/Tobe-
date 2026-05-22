@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import EchoesLaunchBanner from "@/components/EchoesLaunchBanner";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
@@ -243,6 +244,9 @@ export default function Home() {
     >
       <Navbar />
       <HeroSection onConfetti={fireConfetti} />
+
+      {/* Echoes of Choice launch banner */}
+      <EchoesLaunchBanner />
 
       {/* TBR Loop preview section */}
       <section
