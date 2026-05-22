@@ -51,6 +51,7 @@ const SCENE_CONTENT: Record<string, { subtitle: string; title: string; descripti
     description: "Ancient runes pulse beneath your fingertips as the veil grows thin…",
   },
 };
+const DEFAULT_SCENE = SCENE_CONTENT.Romance;
 
 const CHOICES = ["Step forward into the light", "Retreat into the shadows"];
 
@@ -106,6 +107,7 @@ export default function EchoesLaunchBanner() {
     const startInterval = () => {
       if (intervalRef.current || document.hidden) return;
       intervalRef.current = setInterval(() => {
+        if (document.hidden) return;
         setActiveGenre((g) => (g + 1) % GENRES.length);
       }, 2800);
     };
@@ -136,7 +138,7 @@ export default function EchoesLaunchBanner() {
   const genre = GENRES[activeGenre];
   const scene =
     SCENE_CONTENT[genre.label] ??
-    SCENE_CONTENT.Romance;
+    DEFAULT_SCENE;
 
   return (
     <>
@@ -446,9 +448,9 @@ export default function EchoesLaunchBanner() {
 
                   {/* Fake scene title */}
                   <p
-                   className="mb-2 text-[9px] font-black uppercase tracking-[0.3em]"
-                   style={{ color: genre.color, transition: "color 0.7s ease" }}
-                 >
+                    className="mb-2 text-[9px] font-black uppercase tracking-[0.3em]"
+                    style={{ color: genre.color, transition: "color 0.7s ease" }}
+                  >
                     {scene.subtitle}
                   </p>
                   <p
@@ -467,39 +469,39 @@ export default function EchoesLaunchBanner() {
                   {/* Fake choice buttons */}
                   <div className="mt-5 space-y-2">
                     {CHOICES.map((choice, ci) => (
-                        <div
-                          key={choice}
-                          className="flex cursor-default items-center gap-2.5 rounded-[12px] px-4 py-2.5"
+                      <div
+                        key={choice}
+                        className="flex cursor-default items-center gap-2.5 rounded-[12px] px-4 py-2.5"
+                        style={{
+                          background:
+                            ci === 0
+                              ? `${genre.color}18`
+                              : "rgba(255,255,255,0.04)",
+                          border: `1px solid ${ci === 0 ? `${genre.color}35` : "rgba(255,255,255,0.06)"}`,
+                        }}
+                      >
+                        <span
+                          className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-[8px] font-black"
                           style={{
-                            background:
-                              ci === 0
-                                ? `${genre.color}18`
-                                : "rgba(255,255,255,0.04)",
-                            border: `1px solid ${ci === 0 ? `${genre.color}35` : "rgba(255,255,255,0.06)"}`,
+                            background: ci === 0 ? genre.color : "rgba(255,255,255,0.08)",
+                            color: ci === 0 ? "#0b0912" : "rgba(255,255,255,0.3)",
+                            transition: "all 0.7s ease",
+                          }}
+                          data-echoes-animated="true"
+                        >
+                          {ci === 0 ? "→" : "↓"}
+                        </span>
+                        <span
+                          className="text-[11px] font-medium"
+                          style={{
+                            color:
+                              ci === 0 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.38)",
                           }}
                         >
-                          <span
-                            className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-[8px] font-black"
-                            style={{
-                              background: ci === 0 ? genre.color : "rgba(255,255,255,0.08)",
-                              color: ci === 0 ? "#0b0912" : "rgba(255,255,255,0.3)",
-                              transition: "all 0.7s ease",
-                            }}
-                            data-echoes-animated="true"
-                          >
-                            {ci === 0 ? "→" : "↓"}
-                          </span>
-                          <span
-                            className="text-[11px] font-medium"
-                            style={{
-                              color:
-                                ci === 0 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.38)",
-                            }}
-                          >
-                            {choice}
-                          </span>
-                        </div>
-                      ))}
+                          {choice}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
