@@ -6,10 +6,13 @@ export const runtime = "nodejs";
 
 const SYSTEM_PROMPT = `You are a knowledgeable bookseller at To Be Read, a small \
 independent bookshop. A reader will describe what they just finished or the \
-mood they're chasing. Recommend 3–5 specific real books they're likely to \
-love. For each, give a one-sentence "reason" tying the recommendation back \
-to the reader's prompt. Keep descriptions concise (1–2 sentences). Skip \
-preamble — return only the structured payload.`;
+mood they're chasing. You will also receive LIVE_SHELF titles from current \
+inventory. Recommend only books from LIVE_SHELF and never invent titles. \
+Use Google Search grounding to ensure each recommendation is a real published \
+book. If there are no strong matches in LIVE_SHELF, return an empty \
+recommendations array. For each recommendation, give a one-sentence "reason" \
+tying the recommendation back to the reader's prompt. Keep descriptions \
+concise (1–2 sentences). Skip preamble — return only the structured payload.`;
 
 const RESPONSE_SCHEMA = {
   type: Type.OBJECT,
@@ -39,7 +42,13 @@ interface Recommendation {
   reason: string;
 }
 
-function normalizeTitle(s: string) {
+interface InventoryBook {
+  title: string;
+  author: string;
+  cover_url: string;
+}
+
+function normalizeText(s: string) {
   return s
     .toLowerCase()
     .replace(/[^a-z0-9 ]/g, "")
@@ -52,12 +61,34 @@ async function fetchInventoryTitles() {
     const rows = (await sql`
       SELECT title, author, cover_url FROM recent_arrivals
       ORDER BY added_at DESC LIMIT 200
-    `) as Array<{ title: string; author: string; cover_url: string }>;
+    `) as InventoryBook[];
     return rows;
   } catch {
     // DB not provisioned yet — degrade gracefully and skip cross-reference.
     return [];
   }
+}
+
+function inventoryKey(title: string, author: string) {
+  return `${normalizeText(title)}::${normalizeText(author)}`;
+}
+
+function buildGroundedPrompt(readerPrompt: string, inventory: InventoryBook[]) {
+  const inventoryContext = inventory
+    .slice(0, 120)
+    .map((book, index) => `${index + 1}. ${book.title} — ${book.author}`)
+    .join("\n");
+  return `Reader request:
+${readerPrompt}
+
+LIVE_SHELF:
+${inventoryContext}
+
+Rules:
+- Return 3 to 5 recommendations when possible.
+- Choose only books from LIVE_SHELF.
+- Match title and author exactly to LIVE_SHELF entries.
+- Use Google Search grounding to verify each pick is a real book.`;
 }
 
 export async function POST(request: Request) {
@@ -90,17 +121,25 @@ export async function POST(request: Request) {
   }
 
   const ai = new GoogleGenAI({ apiKey });
+  const inventory = await fetchInventoryTitles();
+  if (inventory.length === 0) {
+    return NextResponse.json(
+      { error: "Our live shelf data is unavailable right now. Please try again shortly." },
+      { status: 503 },
+    );
+  }
 
   let recommendations: Recommendation[];
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
-      contents: prompt,
+      contents: buildGroundedPrompt(prompt, inventory),
       config: {
         systemInstruction: SYSTEM_PROMPT,
         responseMimeType: "application/json",
         responseSchema: RESPONSE_SCHEMA,
-        temperature: 0.7,
+        temperature: 0.3,
+        tools: [{ googleSearch: {} }],
       },
     });
     const text = response.text;
@@ -126,28 +165,41 @@ export async function POST(request: Request) {
     );
   }
 
-  // Cross-reference against our shelf.
-  const inventory = await fetchInventoryTitles();
-  const inventoryByTitle = new Map(
-    inventory.map((b) => [normalizeTitle(b.title), b]),
-  );
+  // Enforce shelf-only output and normalize to canonical inventory metadata.
+  const inventoryByKey = new Map(inventory.map((b) => [inventoryKey(b.title, b.author), b]));
+  const inventoryByTitle = new Map<string, InventoryBook[]>();
+  for (const item of inventory) {
+    const normalizedTitle = normalizeText(item.title);
+    const existing = inventoryByTitle.get(normalizedTitle) ?? [];
+    existing.push(item);
+    inventoryByTitle.set(normalizedTitle, existing);
+  }
 
-  const enriched = recommendations.map((rec) => {
-    const match = inventoryByTitle.get(normalizeTitle(rec.title));
+  const enriched = recommendations
+    .map((rec) => {
+      const exactMatch = inventoryByKey.get(inventoryKey(rec.title, rec.author));
+      const titleMatches = inventoryByTitle.get(normalizeText(rec.title)) ?? [];
+      const match = exactMatch ?? titleMatches[0];
+      if (!match) return null;
+
+      return {
+        title: match.title,
+        author: match.author,
+        description: rec.description,
+        reason: rec.reason,
+        cover_url: match.cover_url || undefined,
+        in_stock: true,
+        pango_url: undefined,
+      };
+    })
+    .filter((rec): rec is NonNullable<typeof rec> => Boolean(rec))
+    .slice(0, 5);
+
+  if (enriched.length === 0) {
     return {
-      title: rec.title,
-      author: rec.author,
-      description: rec.description,
-      reason: rec.reason,
-      cover_url: match?.cover_url || undefined,
-      in_stock: Boolean(match),
-      pango_url: match
-        ? undefined
-        : `https://pangobooks.com/search?q=${encodeURIComponent(
-            `${rec.title} ${rec.author}`,
-          )}`,
+      recommendations: [],
     };
-  });
+  }
 
   return NextResponse.json({ recommendations: enriched });
 }
