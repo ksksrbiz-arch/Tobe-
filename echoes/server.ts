@@ -609,8 +609,31 @@ app.post("/api/story/premise", rateLimitingMiddleware, async (req, res) => {
 app.get("/api/proxy-audio", async (req, res) => {
   const url = req.query.url as string;
   if (!url) return res.status(400).send("No URL provided");
+
+  // Validate that the URL is from an allowlisted audio CDN to prevent SSRF
+  const ALLOWED_AUDIO_HOSTS = [
+    "freemusicarchive.org",
+    "archive.org",
+    "upload.wikimedia.org",
+    "incompetech.com",
+    "soundbible.com",
+    "freesound.org",
+    "pixabay.com",
+    "cdn.pixabay.com",
+  ];
+  let parsedUrl: URL;
   try {
-    const response = await fetch(url);
+    parsedUrl = new URL(url);
+  } catch {
+    return res.status(400).send("Invalid URL");
+  }
+  if (!ALLOWED_AUDIO_HOSTS.some((host) => parsedUrl.hostname === host || parsedUrl.hostname.endsWith(`.${host}`))) {
+    return res.status(403).send("URL host not allowed");
+  }
+
+  try {
+    // Use the normalized parsed URL to avoid any manipulation of the original user string
+    const response = await fetch(parsedUrl.href);
     if (!response.ok) return res.status(response.status).send(`Failed to fetch: ${response.statusText}`);
     
     // Set headers
@@ -1031,14 +1054,24 @@ function getEnrichedImagePrompt(prompt: string, mood: string = "mystery", genre:
   return `Cinematic high-fidelity illustration. Scene: ${cleanPrompt}. Atmosphere style: ${genreInstructions} ${moodInstructions} Exquisite details, 8k render, masterpiece texture blending, breathtaking volumetric lighting.`;
 }
 
-app.get("/api/story/image-serve", async (req, res) => {
+app.get("/api/story/image-serve", rateLimitingMiddleware, async (req, res) => {
   const { hash, prompt, mood, genre } = req.query as { hash?: string; prompt?: string; mood?: string; genre?: string };
 
   if (!hash) {
     return res.status(400).send("Missing image hash identifier.");
   }
 
-  const filePath = path.join(generatedImagesDir, `${hash}.png`);
+  // Sanitize hash: only allow hex characters to prevent path traversal
+  if (!/^[0-9a-f]{32}$/i.test(hash)) {
+    return res.status(400).send("Invalid image hash format.");
+  }
+
+  // Resolve the path and verify it stays within the designated directory
+  const resolvedImagesDir = path.resolve(generatedImagesDir);
+  const filePath = path.resolve(resolvedImagesDir, `${hash}.png`);
+  if (!filePath.startsWith(resolvedImagesDir + path.sep)) {
+    return res.status(400).send("Invalid file path.");
+  }
 
   // 1. Try to serve from local container cache directory first
   if (fs.existsSync(filePath)) {
@@ -1124,7 +1157,7 @@ app.get("/api/story/image-serve", async (req, res) => {
   }
 });
 
-app.post("/api/story/cache-base64", async (req, res) => {
+app.post("/api/story/cache-base64", rateLimitingMiddleware, async (req, res) => {
   const { base64, prompt, mood, genre } = req.body;
 
   if (!base64) {

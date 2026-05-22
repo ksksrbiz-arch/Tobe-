@@ -99,7 +99,14 @@ export function EnhancedImageContainer({
     // Determine targeted resolution URL transformation
     // Note: If using unsplash or base64 data, we can apply size query parameters to unsplash images
     let finalUrl = imageUrl;
-    if (imageUrl.includes("unsplash.com")) {
+    let isUnsplash = false;
+    try {
+      const parsed = new URL(imageUrl);
+      isUnsplash = parsed.hostname === "images.unsplash.com" || parsed.hostname === "unsplash.com";
+    } catch {
+      // Not a valid URL (e.g. base64), leave isUnsplash as false
+    }
+    if (isUnsplash) {
       const sizeParam = 
         resolutionSetting === "2k" 
           ? "&w=2000&q=90" 
@@ -147,7 +154,7 @@ export function EnhancedImageContainer({
       // If higher resolution fails, fallback to standard or lite
       if (resolutionSetting !== "lite") {
         console.warn("High fidelity fetch failed; adapting down and retrying");
-        const fallbackUrl = imageUrl.includes("unsplash.com") 
+        const fallbackUrl = isUnsplash
           ? imageUrl.split("?")[0] + "?auto=format&fit=crop&w=800&q=60"
           : imageUrl;
         setCurrentSrc(fallbackUrl);
