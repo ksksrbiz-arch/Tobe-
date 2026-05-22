@@ -255,6 +255,25 @@ const PREMADE_PREMISES: Record<
   ],
 };
 
+const TBR_BASE_URL = "https://to-be-read-clackamas.netlify.app";
+const TBR_NAV_LINKS = [
+  { label: "Home", href: `${TBR_BASE_URL}/` },
+  { label: "Visit", href: `${TBR_BASE_URL}/visit` },
+  { label: "Trade", href: `${TBR_BASE_URL}/trade` },
+  { label: "Shop", href: `${TBR_BASE_URL}/shop` },
+] as const;
+const TBR_FOOTER_LINKS = [
+  { label: "Bookstore Home", href: `${TBR_BASE_URL}/` },
+  { label: "About", href: `${TBR_BASE_URL}/about` },
+  { label: "Visit Us", href: `${TBR_BASE_URL}/visit` },
+  { label: "Trade Books", href: `${TBR_BASE_URL}/trade` },
+  { label: "How It Works", href: `${TBR_BASE_URL}/how-it-works` },
+  { label: "Shop Online", href: `${TBR_BASE_URL}/shop` },
+  { label: "Wishlist", href: `${TBR_BASE_URL}/wishlist` },
+  { label: "TBR Loop", href: `${TBR_BASE_URL}/loop` },
+  { label: "Connect", href: `${TBR_BASE_URL}/connect` },
+] as const;
+
 function App() {
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -2879,11 +2898,7 @@ function App() {
           </a>
           {/* Desktop TBR nav links */}
           <nav className="hidden md:flex items-center gap-1 ml-1" aria-label="TBR site navigation">
-            {[
-              { label: "Visit", href: "https://to-be-read-clackamas.netlify.app/visit" },
-              { label: "Trade", href: "https://to-be-read-clackamas.netlify.app/trade" },
-              { label: "Shop", href: "https://to-be-read-clackamas.netlify.app/shop" },
-            ].map((link) => (
+            {TBR_NAV_LINKS.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
@@ -5417,14 +5432,7 @@ function App() {
                 Part of To Be Read
               </p>
               <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 md:justify-start">
-                {[
-                  { label: "Bookstore Home", href: "https://to-be-read-clackamas.netlify.app/" },
-                  { label: "Visit Us", href: "https://to-be-read-clackamas.netlify.app/visit" },
-                  { label: "Trade Books", href: "https://to-be-read-clackamas.netlify.app/trade" },
-                  { label: "Shop Online", href: "https://to-be-read-clackamas.netlify.app/shop" },
-                  { label: "About TBR", href: "https://to-be-read-clackamas.netlify.app/about" },
-                  { label: "Connect", href: "https://to-be-read-clackamas.netlify.app/connect" },
-                ].map((link) => (
+                {TBR_FOOTER_LINKS.map((link) => (
                   <a
                     key={link.label}
                     href={link.href}
