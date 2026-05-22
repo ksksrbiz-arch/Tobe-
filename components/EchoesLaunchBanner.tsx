@@ -85,6 +85,7 @@ export default function EchoesLaunchBanner() {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const onChange = () => setPrefersReducedMotion(mediaQuery.matches);
     onChange();
@@ -133,7 +134,9 @@ export default function EchoesLaunchBanner() {
   }, [prefersReducedMotion]);
 
   const genre = GENRES[activeGenre];
-  const scene = SCENE_CONTENT[genre.label];
+  const scene =
+    SCENE_CONTENT[genre.label] ??
+    SCENE_CONTENT.Romance;
 
   return (
     <>
@@ -296,13 +299,14 @@ export default function EchoesLaunchBanner() {
                 </p>
 
                 {/* Genre pills */}
-                <div className="mt-5 flex flex-wrap gap-2">
+                <div className="mt-5 flex flex-wrap gap-2" role="radiogroup" aria-label="Story genre">
                   {GENRES.map((g, i) => (
                     <button
                       key={g.label}
                       onClick={() => setActiveGenre(i)}
                       type="button"
-                      aria-pressed={i === activeGenre}
+                      role="radio"
+                      aria-checked={i === activeGenre}
                       className="rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all duration-300"
                       data-echoes-animated="true"
                       style={{
