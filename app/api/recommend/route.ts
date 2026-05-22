@@ -3,6 +3,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { sql } from "@/lib/db";
 
 export const runtime = "nodejs";
+const MIN_RECOMMENDATIONS = 3;
 const MAX_RECOMMENDATIONS = 5;
 const MAX_INVENTORY_CONTEXT = 120;
 const MODEL_TEMPERATURE = 0.5;
@@ -65,10 +66,9 @@ async function fetchInventoryTitles() {
       SELECT title, author, cover_url FROM recent_arrivals
       ORDER BY added_at DESC LIMIT 200
     `) as InventoryBook[];
-    return rows;
+    return { rows, unavailable: false };
   } catch {
-    // DB not provisioned yet — degrade gracefully and skip cross-reference.
-    return [];
+    return { rows: [] as InventoryBook[], unavailable: true };
   }
 }
 
@@ -89,7 +89,7 @@ LIVE_SHELF:
 ${inventoryContext}
 
 Rules:
-- Return 3 to 5 recommendations when possible.
+- Return ${MIN_RECOMMENDATIONS} to ${MAX_RECOMMENDATIONS} recommendations when possible.
 - Choose only books from LIVE_SHELF.
 - Match title and author exactly to LIVE_SHELF entries.
 - Use Google Search grounding to verify each pick is a real book.`;
@@ -125,12 +125,16 @@ export async function POST(request: Request) {
   }
 
   const ai = new GoogleGenAI({ apiKey });
-  const inventory = await fetchInventoryTitles();
-  if (inventory.length === 0) {
+  const inventoryState = await fetchInventoryTitles();
+  if (inventoryState.unavailable) {
     return NextResponse.json(
       { error: "Our live shelf data is unavailable right now. Please try again shortly." },
       { status: 503 },
     );
+  }
+  const inventory = inventoryState.rows;
+  if (inventory.length === 0) {
+    return NextResponse.json({ recommendations: [] });
   }
 
   let recommendations: Recommendation[];
