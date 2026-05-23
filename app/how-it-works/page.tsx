@@ -35,7 +35,7 @@ const chapters = [
     n: "02",
     eyebrow: "Chapter two",
     title: "Earn store credit",
-    body: "One credit per paperback, two per hardcover. Unused credit stays on your account under your name and renews every year on December 31.",
+    body: "One credit per paperback, two per hardcover. Unused credit stays on your account under your name and expires on December 31 each year.",
     icon: Coins,
   },
   {
@@ -421,7 +421,7 @@ export default function HowItWorksPage() {
               className="mt-4 max-w-2xl font-serif italic"
               style={{ color: "var(--ink-soft)", fontSize: "1.15rem" }}
             >
-              Unused credit stays on your account, under your name and phone number, and renews every year on December 31.
+              Unused credit stays on your account, under your name and phone number, and expires on December 31 each year.
             </p>
           </Reveal>
 
@@ -488,7 +488,7 @@ export default function HowItWorksPage() {
                 <SideNote
                   icon={Clock}
                   caps="Annual renewal"
-                  body="Unused trade credit renews every year on December 31."
+                  body="Unused trade credit expires on December 31 each year."
                 />
                 <Hairline />
                 <SideNote
