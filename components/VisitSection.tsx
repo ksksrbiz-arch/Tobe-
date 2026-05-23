@@ -22,12 +22,22 @@ const dayHours = [
 ];
 
 function isOpenNow(): { open: boolean; label: string } {
-  const now = new Date();
-  const day = now.getDay();
-  const hour = now.getHours();
-  const minute = now.getMinutes();
+  // Always evaluate in America/Los_Angeles so out-of-state visitors see correct status.
+  const ptParts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Los_Angeles",
+    weekday: "short",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(new Date());
+
+  const get = (type: string) => ptParts.find((p) => p.type === type)?.value ?? "";
+  const weekday = get("weekday"); // "Sun" | "Mon" … "Sat"
+  const hour = parseInt(get("hour"), 10);
+  const minute = parseInt(get("minute"), 10);
   const time = hour + minute / 60;
-  if (day === 0) return { open: false, label: "Closed today (Sun) · opens Mon 10am" };
+
+  if (weekday === "Sun") return { open: false, label: "Closed today (Sun) · opens Mon 10am" };
   if (time >= 10 && time < 17) return { open: true, label: "Open now until 5pm" };
   if (time < 10) return { open: false, label: "Opening at 10am today" };
   return { open: false, label: "Closed for the day · opens 10am" };
@@ -62,8 +72,13 @@ export default function VisitSection() {
   };
 
   const status = isOpenNow();
-  const todayIdx = new Date().getDay();
-  const todayName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][todayIdx];
+  const ptWeekday = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Los_Angeles",
+    weekday: "short",
+  }).format(new Date());
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const todayIdx = dayNames.indexOf(ptWeekday);
+  const todayName = ptWeekday;
 
   return (
     <section

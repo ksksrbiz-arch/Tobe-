@@ -51,7 +51,7 @@ export default function VisitPage() {
         title="Find Us"
         subtitle="Your neighborhood used bookstore in Milwaukie, OR."
         badge="Visit"
-        imageUrl="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1600&q=80"
+        imageUrl="/images/shelves/store-front-adult-fiction.jpg"
         scrollTargetId="visit"
       />
 

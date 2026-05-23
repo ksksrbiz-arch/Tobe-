@@ -48,18 +48,29 @@ export default function Footer() {
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const handleNewsletter = (e: React.FormEvent) => {
+  const handleNewsletter = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes("@")) {
       toast.error("Please enter a valid email address.");
       return;
     }
     setSubmitting(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error ?? "Unknown error");
       toast.success("You're on the list! We'll keep you updated on book news and events.");
       setEmail("");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Something went wrong — please try again.";
+      toast.error(msg);
+    } finally {
       setSubmitting(false);
-    }, 800);
+    }
   };
 
   return (

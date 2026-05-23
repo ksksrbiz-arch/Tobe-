@@ -493,11 +493,10 @@ export default function Home() {
                 fontSize: "clamp(1.9rem, 4vw, 2.7rem)",
               }}
             >
-              A little <span className="underline-accent">motion</span> and personality.
+              Behind the <span className="underline-accent">shelves</span>.
             </h2>
             <p className="mt-4 text-sm leading-7" style={{ color: "#4B5563" }}>
-              The embed loads behind a styled placeholder, so the page feels intentional rather than empty
-              while third-party content boots up.
+              Fresh finds, weird treasures, and the occasional very good dog spotted near the children&apos;s section. Follow along for shelf tours, new arrivals, and the kind of bookish energy that makes you want to come in just to browse.
             </p>
             <div
               className="mt-6 rounded-[28px] border p-5"
@@ -508,9 +507,9 @@ export default function Home() {
               }}
             >
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-white/65">Now playing</p>
-              <p className="mt-3 text-lg font-semibold text-white">Behind the scenes at @clackamas.book.ex</p>
+              <p className="mt-3 text-lg font-semibold text-white">@clackamas.book.ex on TikTok</p>
               <p className="mt-2 text-sm leading-6 text-white/75">
-                Fresh finds, shelf tours, and bookish energy from inside the shop.
+                45 years of stories — and we&apos;re finally showing you what&apos;s behind the stacks.
               </p>
               <a
                 href="https://tiktok.com/@clackamas.book.ex"

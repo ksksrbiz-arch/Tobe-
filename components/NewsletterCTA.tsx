@@ -9,18 +9,29 @@ export default function NewsletterCTA() {
   const [email, setEmail] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.includes("@")) {
       toast.error("Please enter a valid email address.");
       return;
     }
     setBusy(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error ?? "Unknown error");
       toast.success("You're subscribed! Welcome to the TBR family.");
       setEmail("");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Something went wrong — please try again.";
+      toast.error(msg);
+    } finally {
       setBusy(false);
-    }, 700);
+    }
   };
 
   return (

@@ -97,7 +97,7 @@ export default function HowItWorksPage() {
         badge="A six-minute tour"
         title="How the book exchange works"
         subtitle="No app. No membership. Just books, credit, and the next read on the shelf."
-        imageUrl="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80"
+        imageUrl="/images/shelves/store-kids-middle-grade.jpg"
         scrollTargetId="who-we-are"
       />
 
@@ -140,7 +140,7 @@ export default function HowItWorksPage() {
               style={{ boxShadow: "var(--shadow-lg)" }}
             >
               <img
-                src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&q=80"
+                src="/images/shelves/store-kids-adventure-shelves.jpg"
                 alt="Storefront on SE King Road — warm window light, hand-painted sign."
                 className="absolute inset-0 h-full w-full object-cover"
               />
@@ -517,7 +517,7 @@ export default function HowItWorksPage() {
               style={{ boxShadow: "var(--shadow-lg)" }}
             >
               <img
-                src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1200&q=80"
+                src="/images/shelves/store-kids-doorway-seuss.jpg"
                 alt="The shelves — fiction wall, reading chair, candle-tone afternoon light."
                 className="absolute inset-0 h-full w-full object-cover"
               />

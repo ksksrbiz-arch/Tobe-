@@ -69,7 +69,7 @@ export default function TradePage() {
         title="Trade Your Books"
         subtitle="Bring your books in, take new adventures home with store credit."
         badge="Trade With Us"
-        imageUrl="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=1600&q=80"
+        imageUrl="/images/shelves/store-kids-chapter-wall.jpg"
         scrollTargetId="trade"
       />
 

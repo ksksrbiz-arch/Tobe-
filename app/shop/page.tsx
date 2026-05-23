@@ -103,7 +103,7 @@ export default function ShopPage() {
         title="Shop Our Collection"
         subtitle="Browse thousands of titles online or visit us in person."
         badge="Shop"
-        imageUrl="https://images.unsplash.com/photo-1589998059171-988d887df646?w=1600&q=80"
+        imageUrl="/images/shelves/store-kids-ya-shelves.jpg"
         scrollTargetId="shop"
       />
       <ShopSection />

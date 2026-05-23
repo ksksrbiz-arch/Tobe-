@@ -99,7 +99,7 @@ export default function AboutPage() {
         title="Our Story"
         subtitle="45 years of stories, one chapter at a time."
         badge="About Us"
-        imageUrl="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1600&q=80"
+        imageUrl="/images/shelves/store-kids-room-overview.jpg"
         scrollTargetId="about"
       />
 
