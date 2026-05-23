@@ -31,6 +31,7 @@ const tradeChecklist = [
   { label: "It's in good readable condition" },
   { label: "It's NOT a magazine" },
   { label: "It's NOT a Harlequin romance" },
+  { label: "Book has an odor or water damage or highlighting", disqualifier: true },
 ];
 
 const swapTiers = [
@@ -46,7 +47,9 @@ export default function TradeSection() {
     setChecked((prev) => ({ ...prev, [i]: !prev[i] }));
   };
 
-  const allChecked = Object.values(checked).filter(Boolean).length === tradeChecklist.length;
+  const allChecked = tradeChecklist.every((item, i) =>
+    item.disqualifier ? !checked[i] : !!checked[i]
+  );
 
   return (
     <section
@@ -321,43 +324,79 @@ export default function TradeSection() {
               Tick what applies and we&apos;ll let you know if your stack is a good fit.
             </p>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {tradeChecklist.map((item, i) => (
-                <button
-                  key={item.label}
-                  type="button"
-                  role="checkbox"
-                  aria-checked={!!checked[i]}
-                  onClick={() => toggle(i)}
-                  className="group flex w-full cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all hover:bg-white/70"
-                  style={{
-                    borderColor: checked[i] ? "rgba(34,197,94,0.45)" : "rgba(107,28,111,0.10)",
-                    background: checked[i] ? "rgba(34,197,94,0.10)" : "white",
-                    boxShadow: checked[i] ? "0 10px 22px rgba(34,197,94,0.12)" : "none",
-                  }}
-                >
-                  <span
-                    aria-hidden="true"
-                    className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md border-2 transition-all"
+              {tradeChecklist.map((item, i) => {
+                const isChecked = !!checked[i];
+                const isRed = item.disqualifier && isChecked;
+                const isGreen = !item.disqualifier && isChecked;
+                return (
+                  <button
+                    key={item.label}
+                    type="button"
+                    role="checkbox"
+                    aria-checked={isChecked}
+                    onClick={() => toggle(i)}
+                    className="group flex w-full cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all hover:bg-white/70"
                     style={{
-                      borderColor: checked[i] ? "#16A34A" : "rgba(107,28,111,0.18)",
-                      background: checked[i] ? "#16A34A" : "rgba(255,255,255,0.92)",
+                      borderColor: isRed
+                        ? "rgba(239,68,68,0.45)"
+                        : isGreen
+                          ? "rgba(34,197,94,0.45)"
+                          : "rgba(107,28,111,0.10)",
+                      background: isRed
+                        ? "rgba(239,68,68,0.08)"
+                        : isGreen
+                          ? "rgba(34,197,94,0.10)"
+                          : "white",
+                      boxShadow: isRed
+                        ? "0 10px 22px rgba(239,68,68,0.12)"
+                        : isGreen
+                          ? "0 10px 22px rgba(34,197,94,0.12)"
+                          : "none",
                     }}
                   >
-                    <Check
-                      size={14}
-                      strokeWidth={3}
-                      className="transition-all"
-                      style={{ color: "white", opacity: checked[i] ? 1 : 0 }}
-                    />
-                  </span>
-                  <span
-                    className="text-sm font-medium"
-                    style={{ color: checked[i] ? "#166534" : "#374151" }}
-                  >
-                    {item.label}
-                  </span>
-                </button>
-              ))}
+                    <span
+                      aria-hidden="true"
+                      className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md border-2 transition-all"
+                      style={{
+                        borderColor: isRed
+                          ? "#DC2626"
+                          : isGreen
+                            ? "#16A34A"
+                            : "rgba(107,28,111,0.18)",
+                        background: isRed
+                          ? "#DC2626"
+                          : isGreen
+                            ? "#16A34A"
+                            : "rgba(255,255,255,0.92)",
+                      }}
+                    >
+                      {item.disqualifier ? (
+                        <XIcon
+                          size={14}
+                          strokeWidth={3}
+                          className="transition-all"
+                          style={{ color: "white", opacity: isChecked ? 1 : 0 }}
+                        />
+                      ) : (
+                        <Check
+                          size={14}
+                          strokeWidth={3}
+                          className="transition-all"
+                          style={{ color: "white", opacity: isChecked ? 1 : 0 }}
+                        />
+                      )}
+                    </span>
+                    <span
+                      className="text-sm font-medium"
+                      style={{
+                        color: isRed ? "#991B1B" : isGreen ? "#166534" : "#374151",
+                      }}
+                    >
+                      {item.label}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
             {allChecked && (
               <div
