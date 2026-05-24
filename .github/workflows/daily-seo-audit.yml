@@ -1,0 +1,124 @@
+name: Daily SEO Audit
+
+on:
+  schedule:
+    # Run daily at 6:00 AM UTC
+    - cron: "0 6 * * *"
+  workflow_dispatch: # Allow manual triggers
+
+permissions:
+  contents: read
+
+jobs:
+  seo-audit:
+    name: SEO & Search Engine Optimization Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Validate sitemap generation
+        run: |
+          echo "=== Validating sitemap.ts ==="
+          # Ensure sitemap file exists
+          if [ ! -f "app/sitemap.ts" ]; then
+            echo "::error::sitemap.ts is missing"
+            exit 1
+          fi
+          echo "✅ sitemap.ts exists"
+
+      - name: Validate robots.txt generation
+        run: |
+          echo "=== Validating robots.ts ==="
+          if [ ! -f "app/robots.ts" ]; then
+            echo "::error::robots.ts is missing"
+            exit 1
+          fi
+          echo "✅ robots.ts exists"
+
+      - name: Validate structured data (JSON-LD)
+        run: |
+          echo "=== Checking JSON-LD structured data in layout.tsx ==="
+          if ! grep -q 'application/ld+json' app/layout.tsx; then
+            echo "::error::JSON-LD structured data is missing from layout.tsx"
+            exit 1
+          fi
+          echo "✅ JSON-LD structured data present"
+
+      - name: Validate meta tags
+        run: |
+          echo "=== Checking SEO metadata in layout.tsx ==="
+          MISSING=""
+          grep -q 'metadataBase' app/layout.tsx || MISSING="${MISSING} metadataBase"
+          grep -q 'title' app/layout.tsx || MISSING="${MISSING} title"
+          grep -q 'description' app/layout.tsx || MISSING="${MISSING} description"
+          grep -q 'keywords' app/layout.tsx || MISSING="${MISSING} keywords"
+          grep -q 'openGraph' app/layout.tsx || MISSING="${MISSING} openGraph"
+          grep -q 'twitter' app/layout.tsx || MISSING="${MISSING} twitter"
+          grep -q 'robots' app/layout.tsx || MISSING="${MISSING} robots"
+          grep -q 'canonical' app/layout.tsx || MISSING="${MISSING} canonical"
+
+          if [ -n "$MISSING" ]; then
+            echo "::warning::Missing SEO meta tags:${MISSING}"
+          else
+            echo "✅ All essential SEO meta tags are present"
+          fi
+
+      - name: Validate Open Graph & Twitter images
+        run: |
+          echo "=== Checking OG and Twitter image files ==="
+          MISSING=""
+          [ ! -f "app/opengraph-image.tsx" ] && MISSING="${MISSING} opengraph-image.tsx"
+          [ ! -f "app/twitter-image.tsx" ] && MISSING="${MISSING} twitter-image.tsx"
+          [ ! -f "app/icon.tsx" ] && MISSING="${MISSING} icon.tsx"
+          [ ! -f "app/apple-icon.tsx" ] && MISSING="${MISSING} apple-icon.tsx"
+
+          if [ -n "$MISSING" ]; then
+            echo "::warning::Missing image metadata files:${MISSING}"
+          else
+            echo "✅ All OG/Twitter/icon image files present"
+          fi
+
+      - name: Run Lighthouse SEO audit
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://to-be-read-clackamas.netlify.app
+          configJson: |
+            {
+              "ci": {
+                "collect": {
+                  "settings": {
+                    "onlyCategories": ["seo"],
+                    "preset": "desktop"
+                  }
+                },
+                "assert": {
+                  "assertions": {
+                    "categories:seo": ["warn", { "minScore": 0.9 }]
+                  }
+                }
+              }
+            }
+
+      - name: SEO audit summary
+        if: always()
+        run: |
+          echo "=== Daily SEO Audit Complete ==="
+          echo "Sitemap: app/sitemap.ts"
+          echo "Robots: app/robots.ts"
+          echo "Structured Data: JSON-LD in app/layout.tsx"
+          echo "Target URL: https://to-be-read-clackamas.netlify.app"

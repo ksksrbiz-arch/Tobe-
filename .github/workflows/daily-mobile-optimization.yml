@@ -1,0 +1,130 @@
+name: Daily Mobile Optimization Check
+
+on:
+  schedule:
+    # Run daily at 8:00 AM UTC
+    - cron: "0 8 * * *"
+  workflow_dispatch: # Allow manual triggers
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-audit:
+    name: Mobile Performance & Optimization Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate mobile viewport configuration
+        run: |
+          echo "=== Checking mobile viewport settings ==="
+          if ! grep -q 'device-width' app/layout.tsx; then
+            echo "::error::Missing viewport device-width in layout.tsx"
+            exit 1
+          fi
+          echo "✅ Viewport device-width is set"
+
+          if ! grep -q 'initialScale' app/layout.tsx; then
+            echo "::warning::Missing initialScale viewport setting"
+          else
+            echo "✅ initialScale viewport is set"
+          fi
+
+      - name: Validate web app manifest
+        run: |
+          echo "=== Checking manifest.ts ==="
+          if [ ! -f "app/manifest.ts" ]; then
+            echo "::error::manifest.ts is missing – required for PWA/mobile"
+            exit 1
+          fi
+
+          MISSING=""
+          grep -q 'display' app/manifest.ts || MISSING="${MISSING} display"
+          grep -q 'theme_color' app/manifest.ts || MISSING="${MISSING} theme_color"
+          grep -q 'background_color' app/manifest.ts || MISSING="${MISSING} background_color"
+          grep -q 'icons' app/manifest.ts || MISSING="${MISSING} icons"
+          grep -q 'start_url' app/manifest.ts || MISSING="${MISSING} start_url"
+
+          if [ -n "$MISSING" ]; then
+            echo "::warning::Missing manifest fields:${MISSING}"
+          else
+            echo "✅ All essential manifest fields present"
+          fi
+
+      - name: Validate touch icons
+        run: |
+          echo "=== Checking touch icon files ==="
+          MISSING=""
+          [ ! -f "app/icon.tsx" ] && MISSING="${MISSING} icon.tsx"
+          [ ! -f "app/apple-icon.tsx" ] && MISSING="${MISSING} apple-icon.tsx"
+
+          if [ -n "$MISSING" ]; then
+            echo "::warning::Missing touch icon files:${MISSING}"
+          else
+            echo "✅ Touch icon files present"
+          fi
+
+      - name: Validate responsive theme colors
+        run: |
+          echo "=== Checking theme color configuration ==="
+          if grep -q 'prefers-color-scheme' app/layout.tsx; then
+            echo "✅ Responsive theme colors (light/dark) configured"
+          else
+            echo "::warning::No prefers-color-scheme theme colors found"
+          fi
+
+      - name: Build site
+        run: npm run build
+
+      - name: Run Lighthouse mobile audit
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://to-be-read-clackamas.netlify.app
+          configJson: |
+            {
+              "ci": {
+                "collect": {
+                  "settings": {
+                    "onlyCategories": ["performance", "accessibility", "best-practices"],
+                    "preset": "mobile",
+                    "throttling": {
+                      "cpuSlowdownMultiplier": 4
+                    }
+                  }
+                },
+                "assert": {
+                  "assertions": {
+                    "categories:performance": ["warn", { "minScore": 0.6 }],
+                    "categories:accessibility": ["warn", { "minScore": 0.85 }],
+                    "categories:best-practices": ["warn", { "minScore": 0.85 }]
+                  }
+                }
+              }
+            }
+
+      - name: Mobile optimization summary
+        if: always()
+        run: |
+          echo "=== Daily Mobile Optimization Audit Complete ==="
+          echo "Viewport: configured in app/layout.tsx"
+          echo "Manifest: app/manifest.ts"
+          echo "Theme colors: light (#FFFDF9) / dark (#4A1350)"
+          echo "Target URL: https://to-be-read-clackamas.netlify.app"
+          echo ""
+          echo "Lighthouse categories checked:"
+          echo "  - Performance (mobile preset, 4x CPU slowdown)"
+          echo "  - Accessibility"
+          echo "  - Best Practices"
