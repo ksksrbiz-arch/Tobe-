@@ -35,29 +35,7 @@ jobs:
       - name: Check for critical vulnerabilities (root)
         run: |
           echo "=== Checking for critical/high vulnerabilities ==="
-          AUDIT_OUTPUT=$(npm audit --json 2>/dev/null || true)
-          CRITICAL=$(echo "$AUDIT_OUTPUT" | node -e "
-            const data = require('fs').readFileSync('/dev/stdin','utf8');
-            try {
-              const json = JSON.parse(data);
-              const v = json.metadata?.vulnerabilities || {};
-              console.log(JSON.stringify({ critical: v.critical || 0, high: v.high || 0 }));
-            } catch { console.log(JSON.stringify({ critical: 0, high: 0 })); }
-          ")
-          CRIT_COUNT=$(echo "$CRITICAL" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(JSON.parse(d).critical)")
-          HIGH_COUNT=$(echo "$CRITICAL" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(JSON.parse(d).high)")
-
-          echo "Critical: $CRIT_COUNT | High: $HIGH_COUNT"
-
-          if [ "$CRIT_COUNT" -gt 0 ]; then
-            echo "::error::Found $CRIT_COUNT critical vulnerabilities in root project"
-          fi
-          if [ "$HIGH_COUNT" -gt 0 ]; then
-            echo "::warning::Found $HIGH_COUNT high vulnerabilities in root project"
-          fi
-          if [ "$CRIT_COUNT" -eq 0 ] && [ "$HIGH_COUNT" -eq 0 ]; then
-            echo "✅ No critical or high vulnerabilities found in root project"
-          fi
+          npm audit --json 2>/dev/null | node .github/scripts/check-audit.js "root project" || true
 
       - name: Check for outdated dependencies (root)
         run: |
@@ -93,29 +71,7 @@ jobs:
         working-directory: echoes
         run: |
           echo "=== Checking for critical/high vulnerabilities ==="
-          AUDIT_OUTPUT=$(npm audit --json 2>/dev/null || true)
-          CRITICAL=$(echo "$AUDIT_OUTPUT" | node -e "
-            const data = require('fs').readFileSync('/dev/stdin','utf8');
-            try {
-              const json = JSON.parse(data);
-              const v = json.metadata?.vulnerabilities || {};
-              console.log(JSON.stringify({ critical: v.critical || 0, high: v.high || 0 }));
-            } catch { console.log(JSON.stringify({ critical: 0, high: 0 })); }
-          ")
-          CRIT_COUNT=$(echo "$CRITICAL" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(JSON.parse(d).critical)")
-          HIGH_COUNT=$(echo "$CRITICAL" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(JSON.parse(d).high)")
-
-          echo "Critical: $CRIT_COUNT | High: $HIGH_COUNT"
-
-          if [ "$CRIT_COUNT" -gt 0 ]; then
-            echo "::error::Found $CRIT_COUNT critical vulnerabilities in echoes subsite"
-          fi
-          if [ "$HIGH_COUNT" -gt 0 ]; then
-            echo "::warning::Found $HIGH_COUNT high vulnerabilities in echoes subsite"
-          fi
-          if [ "$CRIT_COUNT" -eq 0 ] && [ "$HIGH_COUNT" -eq 0 ]; then
-            echo "✅ No critical or high vulnerabilities found in echoes subsite"
-          fi
+          npm audit --json 2>/dev/null | node ../.github/scripts/check-audit.js "echoes subsite" || true
 
       - name: Check for outdated dependencies (echoes)
         working-directory: echoes
