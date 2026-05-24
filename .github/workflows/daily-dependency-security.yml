@@ -1,0 +1,124 @@
+name: Daily Dependency Security Scan
+
+on:
+  schedule:
+    # Run daily at 7:00 AM UTC
+    - cron: "0 7 * * *"
+  workflow_dispatch: # Allow manual triggers
+
+permissions:
+  contents: read
+
+jobs:
+  security-scan-root:
+    name: Security Scan – Root App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit (root)
+        run: |
+          echo "=== npm audit – Root Project ==="
+          npm audit --audit-level=moderate || true
+
+      - name: Check for critical vulnerabilities (root)
+        run: |
+          echo "=== Checking for critical/high vulnerabilities ==="
+          AUDIT_OUTPUT=$(npm audit --json 2>/dev/null || true)
+          CRITICAL=$(echo "$AUDIT_OUTPUT" | node -e "
+            const data = require('fs').readFileSync('/dev/stdin','utf8');
+            try {
+              const json = JSON.parse(data);
+              const v = json.metadata?.vulnerabilities || {};
+              console.log(JSON.stringify({ critical: v.critical || 0, high: v.high || 0 }));
+            } catch { console.log(JSON.stringify({ critical: 0, high: 0 })); }
+          ")
+          CRIT_COUNT=$(echo "$CRITICAL" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(JSON.parse(d).critical)")
+          HIGH_COUNT=$(echo "$CRITICAL" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(JSON.parse(d).high)")
+
+          echo "Critical: $CRIT_COUNT | High: $HIGH_COUNT"
+
+          if [ "$CRIT_COUNT" -gt 0 ]; then
+            echo "::error::Found $CRIT_COUNT critical vulnerabilities in root project"
+          fi
+          if [ "$HIGH_COUNT" -gt 0 ]; then
+            echo "::warning::Found $HIGH_COUNT high vulnerabilities in root project"
+          fi
+          if [ "$CRIT_COUNT" -eq 0 ] && [ "$HIGH_COUNT" -eq 0 ]; then
+            echo "✅ No critical or high vulnerabilities found in root project"
+          fi
+
+      - name: Check for outdated dependencies (root)
+        run: |
+          echo "=== Outdated Dependencies – Root Project ==="
+          npm outdated || true
+
+  security-scan-echoes:
+    name: Security Scan – Echoes Subsite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: echoes/package-lock.json
+
+      - name: Install dependencies (echoes)
+        working-directory: echoes
+        run: npm ci
+
+      - name: Run npm audit (echoes)
+        working-directory: echoes
+        run: |
+          echo "=== npm audit – Echoes Subsite ==="
+          npm audit --audit-level=moderate || true
+
+      - name: Check for critical vulnerabilities (echoes)
+        working-directory: echoes
+        run: |
+          echo "=== Checking for critical/high vulnerabilities ==="
+          AUDIT_OUTPUT=$(npm audit --json 2>/dev/null || true)
+          CRITICAL=$(echo "$AUDIT_OUTPUT" | node -e "
+            const data = require('fs').readFileSync('/dev/stdin','utf8');
+            try {
+              const json = JSON.parse(data);
+              const v = json.metadata?.vulnerabilities || {};
+              console.log(JSON.stringify({ critical: v.critical || 0, high: v.high || 0 }));
+            } catch { console.log(JSON.stringify({ critical: 0, high: 0 })); }
+          ")
+          CRIT_COUNT=$(echo "$CRITICAL" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(JSON.parse(d).critical)")
+          HIGH_COUNT=$(echo "$CRITICAL" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(JSON.parse(d).high)")
+
+          echo "Critical: $CRIT_COUNT | High: $HIGH_COUNT"
+
+          if [ "$CRIT_COUNT" -gt 0 ]; then
+            echo "::error::Found $CRIT_COUNT critical vulnerabilities in echoes subsite"
+          fi
+          if [ "$HIGH_COUNT" -gt 0 ]; then
+            echo "::warning::Found $HIGH_COUNT high vulnerabilities in echoes subsite"
+          fi
+          if [ "$CRIT_COUNT" -eq 0 ] && [ "$HIGH_COUNT" -eq 0 ]; then
+            echo "✅ No critical or high vulnerabilities found in echoes subsite"
+          fi
+
+      - name: Check for outdated dependencies (echoes)
+        working-directory: echoes
+        run: |
+          echo "=== Outdated Dependencies – Echoes Subsite ==="
+          npm outdated || true
