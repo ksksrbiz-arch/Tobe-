@@ -304,6 +304,26 @@ export default function TradeSection() {
           </Reveal>
         </div>
 
+        {/* Inventory disclaimer */}
+        <Reveal delay={270}>
+          <div
+            className="mb-10 flex items-start gap-3 rounded-2xl border p-5"
+            style={{
+              background: "rgba(241,187,26,0.07)",
+              borderColor: "rgba(107,28,111,0.12)",
+            }}
+          >
+            <Sparkles size={20} style={{ color: "#F1BB1A", flexShrink: 0, marginTop: 2 }} />
+            <p className="text-sm leading-relaxed" style={{ color: "#374151" }}>
+              <strong style={{ color: "#6B1C6F" }}>A friendly heads-up:</strong> Even when your
+              books meet all of our trade requirements, there&apos;s a small chance we already have
+              plenty of copies of a particular title. If we can&apos;t take a book today, please
+              don&apos;t take it personally — our shelves change all the time, so you&apos;re always
+              welcome to bring it back another time.
+            </p>
+          </div>
+        </Reveal>
+
         {/* Interactive Checklist */}
         <Reveal delay={300}>
           <div
@@ -407,7 +427,7 @@ export default function TradeSection() {
                 }}
               >
                 <Sparkles size={18} />
-                <p className="font-semibold">Sounds great! Bring those books in — we&apos;d love to see them.</p>
+                <p className="font-semibold">Sounds great! Bring those books in — we&apos;d love to take a look (titles we&apos;re already stocked up on are the only maybe).</p>
                 <Sparkles size={18} />
               </div>
             )}
