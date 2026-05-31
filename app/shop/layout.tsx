@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Shop Online",
@@ -24,5 +26,10 @@ export default function ShopLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <JsonLd data={breadcrumbList([{ name: "Shop Online", path: "/shop" }])} />
+      {children}
+    </>
+  );
 }

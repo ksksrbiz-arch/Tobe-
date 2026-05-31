@@ -163,6 +163,17 @@ const FAQSection = dynamic(() => import("@/components/FAQSection"), {
   loading: () => <SectionSkeleton eyebrow="FAQ" title="Gathering common questions..." muted />,
 });
 
+const BookishQuote = dynamic(() => import("@/components/BookishQuote"), {
+  loading: () => (
+    <div className="px-4 py-20">
+      <div
+        className="mx-auto h-56 max-w-3xl animate-pulse rounded-[28px]"
+        style={{ background: "rgba(107,28,111,0.06)" }}
+      />
+    </div>
+  ),
+});
+
 const NewsletterCTA = dynamic(() => import("@/components/NewsletterCTA"), {
   loading: () => (
     <div className="px-4 py-20">
@@ -531,6 +542,7 @@ export default function Home() {
 
       <EventsSection />
       <LemmyFeatureSection />
+      <BookishQuote />
       <SectionDivider variant="bookmark" label="Stay in touch" muted />
       <ConnectSection />
       <FAQSection />

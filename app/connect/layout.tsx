@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Connect With Us",
@@ -24,5 +26,10 @@ export default function ConnectLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <JsonLd data={breadcrumbList([{ name: "Connect With Us", path: "/connect" }])} />
+      {children}
+    </>
+  );
 }

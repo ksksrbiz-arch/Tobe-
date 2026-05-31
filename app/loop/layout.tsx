@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "The TBR Loop",
@@ -24,5 +26,10 @@ export default function LoopLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <JsonLd data={breadcrumbList([{ name: "The TBR Loop", path: "/loop" }])} />
+      {children}
+    </>
+  );
 }

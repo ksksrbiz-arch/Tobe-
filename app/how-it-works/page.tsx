@@ -143,6 +143,8 @@ export default function HowItWorksPage() {
                 src="/images/shelves/store-kids-adventure-shelves.jpg"
                 alt="Storefront on SE King Road — warm window light, hand-painted sign."
                 className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
               <div
                 aria-hidden
@@ -520,6 +522,8 @@ export default function HowItWorksPage() {
                 src="/images/shelves/store-kids-doorway-seuss.jpg"
                 alt="The shelves — fiction wall, reading chair, candle-tone afternoon light."
                 className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
               <div
                 aria-hidden
