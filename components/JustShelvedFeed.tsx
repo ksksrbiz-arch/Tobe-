@@ -232,7 +232,7 @@ export function JustShelvedSection() {
   return (
     <section
       id="just-shelved"
-      className="px-4 py-24 sm:px-6 lg:px-8"
+      className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
           "radial-gradient(circle at 10% 80%, rgba(241,187,26,0.08), transparent 40%), linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%)",
@@ -260,7 +260,7 @@ export function JustShelvedSection() {
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "#6B7280" }}>
             New books arrive at the trade desk in real time — check back to see what just came in.
           </p>
-          <div className="mx-auto mt-4 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
         </div>
         <JustShelvedFeed />
       </div>

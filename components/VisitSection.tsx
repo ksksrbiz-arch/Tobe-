@@ -131,7 +131,7 @@ export default function VisitSection() {
           >
             Find Us in <span className="underline-accent">Milwaukie</span>
           </h2>
-          <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
 
           <div
             className="mx-auto mt-6 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium sm:text-sm"

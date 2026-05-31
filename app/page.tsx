@@ -165,7 +165,7 @@ const FAQSection = dynamic(() => import("@/components/FAQSection"), {
 
 const BookishQuote = dynamic(() => import("@/components/BookishQuote"), {
   loading: () => (
-    <div className="px-4 py-20">
+    <div className="px-4 py-12 sm:py-20">
       <div
         className="mx-auto h-56 max-w-3xl animate-pulse rounded-[28px]"
         style={{ background: "rgba(107,28,111,0.06)" }}
@@ -176,7 +176,7 @@ const BookishQuote = dynamic(() => import("@/components/BookishQuote"), {
 
 const NewsletterCTA = dynamic(() => import("@/components/NewsletterCTA"), {
   loading: () => (
-    <div className="px-4 py-20">
+    <div className="px-4 py-12 sm:py-20">
       <div
         className="mx-auto h-48 max-w-4xl animate-pulse rounded-[36px]"
         style={{ background: "rgba(107,28,111,0.10)" }}
@@ -261,7 +261,7 @@ export default function Home() {
 
       {/* TBR Loop preview section */}
       <section
-        className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8"
+        className="relative overflow-hidden px-4 py-12 sm:py-20 sm:px-6 lg:px-8"
         style={{
           background:
             "linear-gradient(180deg, rgba(253,248,240,0.60) 0%, rgba(255,253,249,0.90) 100%)",
@@ -289,7 +289,7 @@ export default function Home() {
             <p className="mx-auto mt-3 max-w-xl text-sm leading-6" style={{ color: "#6B7280" }}>
               Bring a book, earn credit, pick something new. That&apos;s the loop — and it never gets old.
             </p>
-            <div className="mx-auto mt-4 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+            <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
           </Reveal>
 
           <Reveal delay={100}>
@@ -387,7 +387,7 @@ export default function Home() {
 
       {/* Explore grid */}
       <section
-        className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8"
+        className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background: "linear-gradient(180deg, rgba(255,255,255,0.46) 0%, rgba(253,248,240,0.86) 100%)",
         }}
@@ -415,7 +415,7 @@ export default function Home() {
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "#6B7280" }}>
               Start with the chapter that matters most right now, then keep scrolling for the full experience.
             </p>
-            <div className="mx-auto mt-4 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+            <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
           </Reveal>
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -485,7 +485,7 @@ export default function Home() {
 
       {/* TikTok spotlight */}
       <section
-        className="px-4 py-24 sm:px-6 lg:px-8"
+        className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{ background: "rgba(255,255,255,0.78)" }}
       >
         <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">

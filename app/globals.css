@@ -58,6 +58,27 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* Site-wide guard: blurred float/decoration elements must never create a
+     horizontal scrollbar on mobile. `clip` doesn't spawn a scroll container,
+     so it won't break the fixed header or smooth-scroll anchors. */
+  overflow-x: clip;
+}
+
+/* Kill the grey flash on tap for touch devices and keep controls comfy. */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile: fixed background-attachment is janky/expensive on iOS; let it scroll
+   normally and shrink the chunky custom scrollbar that wastes space. */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
 }
 
 h1, h2, h3, .font-serif {
@@ -369,10 +390,37 @@ h1, h2, h3, .font-serif {
   position: absolute;
   left: 0; right: 0; bottom: -0.15em;
   height: 0.32em;
-  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+  background-size: 200% auto;
   border-radius: 999px;
   z-index: -1;
-  opacity: 0.55;
+  opacity: 0.6;
+  animation: gradientShift 6s ease infinite;
+}
+
+/* Eyebrow / section-label pill — a shared accent used above headings.
+   Adds a soft sheen so labels feel intentional rather than flat. */
+.eyebrow-glow {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.eyebrow-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%);
+  transform: translateX(-130%) skewX(-18deg);
+  animation: warmSweep 5.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Animated heading accent bar — the recurring `h-1 w-16` gold rule under
+   section titles. Use `.accent-bar` to give it a living gradient shimmer. */
+.accent-bar {
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+  background-size: 200% auto;
+  animation: gradientShift 6s ease infinite;
 }
 
 /* Glass card */

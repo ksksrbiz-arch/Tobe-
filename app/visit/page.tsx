@@ -111,7 +111,7 @@ export default function VisitPage() {
             >
               However you <span className="underline-accent">arrive</span>, we&apos;re ready
             </h2>
-            <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+            <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
           </Reveal>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {gettingHere.map((card, i) => (

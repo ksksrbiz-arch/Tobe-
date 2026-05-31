@@ -54,7 +54,7 @@ export default function TradeSection() {
   return (
     <section
       id="trade"
-      className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8"
+      className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
           "radial-gradient(circle at 90% 10%, rgba(241,187,26,0.10), transparent 40%), linear-gradient(180deg, #FDF8F0 0%, #F8F2E8 100%)",
@@ -79,7 +79,7 @@ export default function TradeSection() {
           >
             Bring Your <span className="underline-accent">Books</span> In
           </h2>
-          <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed" style={{ color: "#6B7280" }}>
             We run a friendly trade-credit shop — bring books in, take new ones home with credit toward the trade.
           </p>

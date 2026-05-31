@@ -47,7 +47,7 @@ export default function ShopSection() {
   return (
     <section
       id="shop"
-      className="px-4 py-24 sm:px-6 lg:px-8"
+      className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{ background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)" }}
     >
       <div className="mx-auto max-w-6xl">
@@ -71,7 +71,7 @@ export default function ShopSection() {
           <p className="mx-auto max-w-xl text-sm leading-relaxed" style={{ color: "#6B7280" }}>
             Whether you prefer scrolling from the couch or wandering between shelves, we&apos;ve got you covered.
           </p>
-          <div className="mx-auto mt-4 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
         </Reveal>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-7">

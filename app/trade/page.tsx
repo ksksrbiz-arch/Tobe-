@@ -75,7 +75,7 @@ export default function TradePage() {
 
       {/* How it works */}
       <section
-        className="px-4 py-24 sm:px-6 lg:px-8"
+        className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
             "radial-gradient(ellipse at 0% 0%, rgba(107,28,111,0.06) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(241,187,26,0.08) 0%, transparent 45%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
@@ -99,7 +99,7 @@ export default function TradePage() {
             >
               Four simple <span className="underline-accent">steps</span>
             </h2>
-            <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+            <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
           </Reveal>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -148,7 +148,7 @@ export default function TradePage() {
       {/* Trade Credit Estimator */}
       <section
         id="estimator"
-        className="px-4 py-24 sm:px-6 lg:px-8"
+        className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
             "radial-gradient(circle at 90% 10%, rgba(241,187,26,0.10), transparent 40%), linear-gradient(180deg, white 0%, #FDF8F0 100%)",
@@ -175,7 +175,7 @@ export default function TradePage() {
             <p className="mx-auto mt-3 max-w-xl text-sm leading-6" style={{ color: "#6B7280" }}>
               Enter a list price or scan an ISBN to instantly see your estimated store credit and swap fee — before you even walk in.
             </p>
-            <div className="mx-auto mt-4 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+            <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
           </Reveal>
           <TradeCreditEstimator />
         </div>
@@ -183,7 +183,7 @@ export default function TradePage() {
 
       {/* Tips */}
       <section
-        className="px-4 py-24 sm:px-6 lg:px-8"
+        className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
             "radial-gradient(ellipse at 100% 0%, rgba(241,187,26,0.10) 0%, transparent 45%), radial-gradient(ellipse at 0% 100%, rgba(107,28,111,0.07) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 60%, #F5EAFB 100%)",
@@ -207,7 +207,7 @@ export default function TradePage() {
             >
               Make the most of your <span className="underline-accent">trade</span>
             </h2>
-            <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+            <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
           </Reveal>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {tradeTips.map((tip, i) => (

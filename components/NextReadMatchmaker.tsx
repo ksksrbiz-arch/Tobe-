@@ -255,7 +255,7 @@ export function NextReadSection() {
   return (
     <section
       id="next-read"
-      className="px-4 py-24 sm:px-6 lg:px-8"
+      className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
           "radial-gradient(circle at 80% 20%, rgba(107,28,111,0.08), transparent 40%), linear-gradient(180deg, rgba(255,255,255,0.50) 0%, rgba(253,248,240,0.90) 100%)",
@@ -284,7 +284,7 @@ export function NextReadSection() {
             Describe what you just finished or the vibe you&apos;re chasing — our AI uses Google Search
             grounding and our live shelf to find real titles waiting for you.
           </p>
-          <div className="mx-auto mt-4 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
         </div>
         <NextReadMatchmaker />
       </div>
