@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { ChevronDown, HelpCircle } from "lucide-react";
 import Reveal from "./Reveal";
+import JsonLd from "./JsonLd";
 
 const faqs = [
   {
@@ -39,6 +40,19 @@ const faqs = [
   },
 ];
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
+
 export default function FAQSection() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
@@ -48,6 +62,7 @@ export default function FAQSection() {
       style={{ background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)" }}
       id="faq"
     >
+      <JsonLd data={faqJsonLd} />
       <div className="mx-auto max-w-3xl">
         <Reveal className="mb-12 text-center">
           <span

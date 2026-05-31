@@ -145,6 +145,19 @@ const jsonLd = {
   foundingDate: "1981",
 };
 
+// WebSite entity ties the brand name to the domain so Google can resolve a
+// canonical site name in results and link the brand to the storefront entity.
+const webSiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://to-be-read-clackamas.netlify.app/#website",
+  url: "https://to-be-read-clackamas.netlify.app",
+  name: "To Be Read – Clackamas Book Exchange",
+  alternateName: ["To Be Read", "TBR", "Clackamas Book Exchange"],
+  inLanguage: "en-US",
+  publisher: { "@id": "https://to-be-read-clackamas.netlify.app/#bookstore" },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -162,6 +175,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
         />
       </head>
       <body>

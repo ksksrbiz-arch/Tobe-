@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const SITE_URL = "https://to-be-read-clackamas.netlify.app";
+import { SITE_URL } from "@/lib/seo";
 
 // Public, indexable routes. Admin and API routes are intentionally excluded
 // (see robots.ts), as are user-utility surfaces like /wishlist that hold no
