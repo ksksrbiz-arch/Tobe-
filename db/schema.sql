@@ -66,6 +66,10 @@ ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS publisher TEXT NOT NULL DEF
 ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS pub_year INTEGER;
 ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS verified TEXT NOT NULL DEFAULT 'verify';
 ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS notes TEXT NOT NULL DEFAULT '';
+-- Studio photo-intake provenance (see db/studio-photos.sql).
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS description TEXT NOT NULL DEFAULT '';
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT '';
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS source_photo_url TEXT NOT NULL DEFAULT '';
 
 CREATE INDEX IF NOT EXISTS recent_arrivals_added_at_idx ON recent_arrivals (added_at DESC);
 CREATE INDEX IF NOT EXISTS recent_arrivals_isbn_idx ON recent_arrivals (isbn);

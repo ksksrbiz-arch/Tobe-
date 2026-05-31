@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { ScanLine, Plus, RefreshCw, Check, ShieldAlert, LogIn, LogOut } from "lucide-react";
+import { ScanLine, Plus, RefreshCw, Check, ShieldAlert, LogIn, LogOut, Camera } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 interface ScanEntry {
@@ -165,14 +165,24 @@ export default function AdminPage() {
               Scan ISBNs to publish books to the live &quot;Just Shelved&quot; feed
             </p>
           </div>
-          <button
-            onClick={() => signOut()}
-            className="flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium"
-            style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
-          >
-            <LogOut size={12} />
-            Sign out
-          </button>
+          <div className="flex items-center gap-2">
+            <a
+              href="/studio"
+              className="flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium"
+              style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
+            >
+              <Camera size={12} />
+              Photo Studio
+            </a>
+            <button
+              onClick={() => signOut()}
+              className="flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium"
+              style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
+            >
+              <LogOut size={12} />
+              Sign out
+            </button>
+          </div>
         </div>
 
         <div
