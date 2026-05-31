@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import LoadingScreen from "@/components/LoadingScreen";
 import CozyAmbience from "@/components/CozyAmbience";
 import PageTransition from "@/components/PageTransition";
+import BookishEasterEgg from "@/components/BookishEasterEgg";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://to-be-read-clackamas.netlify.app"),
@@ -190,6 +191,7 @@ export default function RootLayout({
         </a>
         <LoadingScreen />
         <CozyAmbience />
+        <BookishEasterEgg />
         <div className="relative z-[2]">
           <PageTransition>{children}</PageTransition>
         </div>
