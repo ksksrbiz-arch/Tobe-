@@ -38,7 +38,7 @@ const events = [
 export default function EventsSection() {
   return (
     <section
-      className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8"
+      className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
           "radial-gradient(circle at 80% 20%, rgba(107,28,111,0.08), transparent 38%), linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
@@ -67,7 +67,7 @@ export default function EventsSection() {
           <p className="mx-auto max-w-xl text-sm leading-relaxed" style={{ color: "#6B7280" }}>
             We host small, cozy moments throughout the year — here&apos;s what&apos;s on right now.
           </p>
-          <div className="mx-auto mt-4 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
         </Reveal>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">

@@ -107,7 +107,7 @@ export default function AboutPage() {
 
       {/* Values */}
       <section
-        className="px-4 py-24 sm:px-6 lg:px-8"
+        className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
             "radial-gradient(ellipse at 0% 0%, rgba(107,28,111,0.06) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(241,187,26,0.08) 0%, transparent 45%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
@@ -131,7 +131,7 @@ export default function AboutPage() {
             >
               The shelves are full. So are our <span className="underline-accent">values</span>.
             </h2>
-            <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+            <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
           </Reveal>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -167,7 +167,7 @@ export default function AboutPage() {
 
       {/* Gallery */}
       <section
-        className="px-4 py-24 sm:px-6 lg:px-8"
+        className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{ background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)" }}
       >
         <div className="mx-auto max-w-6xl">
@@ -191,7 +191,7 @@ export default function AboutPage() {
             <p className="mx-auto mb-3 max-w-xl text-sm leading-6" style={{ color: "#6B7280" }}>
               Nine rooms&apos; worth of finds — kids&apos; picture books, YA, adult fiction, Dr. Seuss corner, and more.
             </p>
-            <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+            <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
           </Reveal>
 
           {/* Row 1 — hero (full width) */}
@@ -285,7 +285,7 @@ export default function AboutPage() {
 
       {/* Owner letter */}
       <section
-        className="px-4 py-24 sm:px-6 lg:px-8"
+        className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
             "radial-gradient(ellipse at 80% 0%, rgba(241,187,26,0.10) 0%, transparent 50%), radial-gradient(ellipse at 20% 100%, rgba(107,28,111,0.07) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 60%, #F5EAFB 100%)",

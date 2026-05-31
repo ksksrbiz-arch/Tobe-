@@ -58,7 +58,7 @@ export default function FAQSection() {
 
   return (
     <section
-      className="px-4 py-24 sm:px-6 lg:px-8"
+      className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{ background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)" }}
       id="faq"
     >

@@ -176,7 +176,7 @@ export default function EchoesLaunchBanner() {
       `}</style>
 
       <section
-        className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8"
+        className="relative overflow-hidden px-4 py-12 sm:py-20 sm:px-6 lg:px-8"
         aria-label="Echoes of Choice — new interactive fiction app launch"
       >
         {/* Dark cinematic background */}

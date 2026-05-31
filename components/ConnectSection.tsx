@@ -77,7 +77,7 @@ export default function ConnectSection() {
   return (
     <section
       id="connect"
-      className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8"
+      className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
           "radial-gradient(circle at 12% 90%, rgba(241,187,26,0.08), transparent 35%), linear-gradient(180deg, #FDF8F0 0%, #F8F2E8 100%)",
@@ -101,7 +101,7 @@ export default function ConnectSection() {
           >
             Join Our <span className="underline-accent">Community</span>
           </h2>
-          <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
         </Reveal>
 
         {/* Socials */}

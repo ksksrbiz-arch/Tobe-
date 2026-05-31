@@ -100,7 +100,7 @@ export default function PageHero({
       <div className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-4 pb-10 pt-32 text-center sm:px-6 sm:pt-28">
         {badge && (
           <span
-            className="fade-in-up mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] shadow-md"
+            className="eyebrow-glow fade-in-up mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] shadow-md"
             style={{ background: "#F1BB1A", color: "#1a1a1a" }}
           >
             <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#6B1C6F" }} />
@@ -130,8 +130,8 @@ export default function PageHero({
           {subtitle}
         </p>
         <div
-          className="fade-in-up mt-5 h-1 w-16 rounded-full"
-          style={{ background: "#F1BB1A", animationDelay: "260ms" }}
+          className="accent-bar fade-in-up mt-5 h-1 w-16 rounded-full"
+          style={{ animationDelay: "260ms" }}
         />
       </div>
 
@@ -152,10 +152,10 @@ export default function PageHero({
       {scrollTargetId && (
         <a
           href={`#${scrollTargetId}`}
-          className="absolute bottom-16 left-1/2 z-10 flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur transition-all hover:scale-110 hover:bg-white/30"
+          className="animate-float absolute bottom-14 left-1/2 z-10 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur transition-all hover:scale-110 hover:bg-white/30 sm:bottom-16"
           aria-label="Scroll to content"
         >
-          <ChevronDown size={18} />
+          <ChevronDown size={20} />
         </a>
       )}
     </div>

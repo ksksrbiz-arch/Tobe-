@@ -156,7 +156,7 @@ export default function ShopPage() {
 
       {/* Featured */}
       <section
-        className="px-4 py-24 sm:px-6 lg:px-8"
+        className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
             "radial-gradient(ellipse at 0% 0%, rgba(107,28,111,0.07) 0%, transparent 50%), radial-gradient(ellipse at 100% 100%, rgba(241,187,26,0.10) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
@@ -181,7 +181,7 @@ export default function ShopPage() {
             >
               On the table this <span className="underline-accent">week</span>
             </h2>
-            <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+            <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
             <p className="mx-auto mt-4 max-w-xl text-sm" style={{ color: "#6B7280" }}>
               Examples only — our shelves change daily, so come hunt for something you didn&apos;t expect.
             </p>

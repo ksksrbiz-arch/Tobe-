@@ -54,7 +54,7 @@ export function CookbookCurationGallery() {
   return (
     <section
       id="cookbook-curation"
-      className="px-4 py-24 sm:px-6 lg:px-8"
+      className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
           "radial-gradient(circle at 90% 10%, rgba(241,187,26,0.10), transparent 40%), linear-gradient(180deg, #FDF8F0 0%, #FFFDF9 100%)",
@@ -83,7 +83,7 @@ export function CookbookCurationGallery() {
             We just rebuilt the cookbook section from the ground up — world cuisines, celebrity chefs,
             baking, grilling, healthy living, and a drinks corner you can actually browse.
           </p>
-          <div className="mx-auto mt-4 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
         </Reveal>
 
         <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">

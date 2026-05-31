@@ -54,7 +54,7 @@ export default function TradeSection() {
   return (
     <section
       id="trade"
-      className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8"
+      className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
           "radial-gradient(circle at 90% 10%, rgba(241,187,26,0.10), transparent 40%), linear-gradient(180deg, #FDF8F0 0%, #F8F2E8 100%)",
@@ -79,7 +79,7 @@ export default function TradeSection() {
           >
             Bring Your <span className="underline-accent">Books</span> In
           </h2>
-          <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed" style={{ color: "#6B7280" }}>
             We run a friendly trade-credit shop — bring books in, take new ones home with credit toward the trade.
           </p>
@@ -304,6 +304,26 @@ export default function TradeSection() {
           </Reveal>
         </div>
 
+        {/* Inventory disclaimer */}
+        <Reveal delay={270}>
+          <div
+            className="mb-10 flex items-start gap-3 rounded-2xl border p-5"
+            style={{
+              background: "rgba(241,187,26,0.07)",
+              borderColor: "rgba(107,28,111,0.12)",
+            }}
+          >
+            <Sparkles size={20} style={{ color: "#F1BB1A", flexShrink: 0, marginTop: 2 }} />
+            <p className="text-sm leading-relaxed" style={{ color: "#374151" }}>
+              <strong style={{ color: "#6B1C6F" }}>A friendly heads-up:</strong> Even when your
+              books meet all of our trade requirements, there&apos;s a small chance we already have
+              plenty of copies of a particular title. If we can&apos;t take a book today, please
+              don&apos;t take it personally — our shelves change all the time, so you&apos;re always
+              welcome to bring it back another time.
+            </p>
+          </div>
+        </Reveal>
+
         {/* Interactive Checklist */}
         <Reveal delay={300}>
           <div
@@ -407,7 +427,7 @@ export default function TradeSection() {
                 }}
               >
                 <Sparkles size={18} />
-                <p className="font-semibold">Sounds great! Bring those books in — we&apos;d love to see them.</p>
+                <p className="font-semibold">Sounds great! Bring those books in — we&apos;d love to take a look (titles we&apos;re already stocked up on are the only maybe).</p>
                 <Sparkles size={18} />
               </div>
             )}

@@ -104,7 +104,7 @@ export default function HowItWorksPage() {
       {/* ─── Who we are ─── */}
       <section
         id="who-we-are"
-        className="px-4 py-20 sm:px-6 md:py-28"
+        className="px-4 py-12 sm:py-20 sm:px-6 md:py-28"
         style={{ background: "var(--background)" }}
       >
         <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
@@ -172,7 +172,7 @@ export default function HowItWorksPage() {
 
       {/* ─── Three chapters overview ─── */}
       <section
-        className="px-4 py-20 sm:px-6 md:py-28"
+        className="px-4 py-12 sm:py-20 sm:px-6 md:py-28"
         style={{
           background:
             "radial-gradient(ellipse at 0% 0%, rgba(241,187,26,0.10) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(107,28,111,0.10) 0%, transparent 50%), linear-gradient(180deg, #FDF8F0 0%, #F5EFE0 100%)",
@@ -266,7 +266,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* ─── What we look for ─── */}
-      <section className="px-4 py-20 sm:px-6 md:py-28" style={{ background: "var(--background)" }}>
+      <section className="px-4 py-12 sm:py-20 sm:px-6 md:py-28" style={{ background: "var(--background)" }}>
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <div className="text-center">
@@ -383,7 +383,7 @@ export default function HowItWorksPage() {
 
       {/* ─── Store credit ─── */}
       <section
-        className="px-4 py-20 sm:px-6 md:py-28"
+        className="px-4 py-12 sm:py-20 sm:px-6 md:py-28"
         style={{
           background:
             "radial-gradient(ellipse at 0% 0%, rgba(241,187,26,0.10) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(107,28,111,0.10) 0%, transparent 50%), linear-gradient(180deg, #FDF8F0 0%, #F5EFE0 100%)",
@@ -511,7 +511,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* ─── Browse & take home ─── */}
-      <section className="px-4 py-20 sm:px-6 md:py-28" style={{ background: "var(--background)" }}>
+      <section className="px-4 py-12 sm:py-20 sm:px-6 md:py-28" style={{ background: "var(--background)" }}>
         <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
           <Reveal>
             <div
@@ -601,7 +601,7 @@ export default function HowItWorksPage() {
 
       {/* ─── Fine print ─── */}
       <section
-        className="px-4 py-20 sm:px-6 md:py-28"
+        className="px-4 py-12 sm:py-20 sm:px-6 md:py-28"
         style={{
           background:
             "radial-gradient(ellipse at 0% 0%, rgba(241,187,26,0.10) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(107,28,111,0.10) 0%, transparent 50%), linear-gradient(180deg, #FDF8F0 0%, #F5EFE0 100%)",
@@ -676,7 +676,7 @@ export default function HowItWorksPage() {
 
       {/* ─── Visit us ─── */}
       <section
-        className="relative overflow-hidden px-4 py-24 sm:px-6 md:py-32"
+        className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 md:py-32"
         style={{
           background:
             "radial-gradient(ellipse at 80% 20%, rgba(241,187,26,0.18) 0%, transparent 55%), radial-gradient(ellipse at 10% 90%, rgba(139,46,144,0.55) 0%, transparent 50%), linear-gradient(135deg, #4A1350 0%, #2A0930 100%)",
@@ -762,7 +762,7 @@ export default function HowItWorksPage() {
 
       {/* ─── Closing ─── */}
       <section
-        className="relative overflow-hidden px-4 py-24 text-center sm:px-6 md:py-32"
+        className="relative overflow-hidden px-4 py-14 sm:py-24 text-center sm:px-6 md:py-32"
         style={{ background: "var(--background-gradient), var(--background)" }}
       >
         <div className="mx-auto max-w-3xl">

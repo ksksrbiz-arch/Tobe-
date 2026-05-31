@@ -35,7 +35,7 @@ export default function StorySection() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8"
+      className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{ background: "linear-gradient(180deg, #FDF8F0 0%, #F8F2E8 100%)" }}
     >
       {/* Decorative quote mark */}
@@ -67,7 +67,7 @@ export default function StorySection() {
           >
             45 Years of <span className="underline-accent">Stories</span>
           </h2>
-          <div className="mx-auto mt-2 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          <div className="mx-auto mt-2 accent-bar h-1 w-16 rounded-full" />
         </Reveal>
 
         {/* Story paragraphs in two-column lift */}

@@ -95,7 +95,7 @@ export default function BookishQuote() {
 
   return (
     <section
-      className="px-4 py-20 sm:px-6 lg:px-8"
+      className="px-4 py-12 sm:py-20 sm:px-6 lg:px-8"
       style={{
         background:
           "radial-gradient(circle at 15% 20%, rgba(241,187,26,0.10), transparent 40%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",

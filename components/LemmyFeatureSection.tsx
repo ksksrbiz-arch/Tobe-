@@ -46,7 +46,7 @@ export default function LemmyFeatureSection() {
   return (
     <section
       id="featured-author"
-      className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8"
+      className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
           "radial-gradient(circle at 12% 10%, rgba(241,187,26,0.16), transparent 35%), radial-gradient(circle at 88% 90%, rgba(107,28,111,0.18), transparent 38%), linear-gradient(180deg, #FDF8F0 0%, #FFF7EC 60%, #F5EAFB 100%)",
@@ -120,7 +120,7 @@ export default function LemmyFeatureSection() {
             beneath his cap, Lemmy reminds us that the best places are full of wonder, warmth, and
             the occasional hidden treasure.
           </p>
-          <div className="mx-auto mt-5 h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+          <div className="mx-auto mt-5 accent-bar h-1 w-16 rounded-full" />
         </Reveal>
 
         <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-[1.05fr_0.95fr]">

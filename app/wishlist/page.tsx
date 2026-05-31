@@ -112,7 +112,7 @@ export default function WishlistPage() {
             >
               Hunt for your <span className="underline-accent">next treasure</span>
             </h2>
-            <div className="mx-auto h-1 w-16 rounded-full" style={{ background: "#F1BB1A" }} />
+            <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
           </Reveal>
           <WishlistManager />
         </div>
