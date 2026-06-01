@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 /**
  * A site-wide ambient layer that adds the "cozy bookstore" texture:
@@ -11,8 +11,38 @@ import React from "react";
  *
  * It is rendered via a fixed, pointer-events-none container and respects
  * `prefers-reduced-motion` (the keyframes auto-shorten via globals.css).
+ *
+ * The decorative DOM is only mounted after the first paint (via
+ * `requestIdleCallback`) so it never competes with the LCP, and it is
+ * skipped entirely when the user has requested reduced motion.
  */
 export default function CozyAmbience() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    // Honor reduced-motion: skip rendering the ambient layer entirely so it
+    // doesn't add DOM cost or paint work for users who opted out.
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+    const w = window as typeof window & {
+      requestIdleCallback?: (cb: () => void) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    if (typeof w.requestIdleCallback === "function") {
+      const handle = w.requestIdleCallback(() => setReady(true));
+      return () => {
+        if (typeof w.cancelIdleCallback === "function") {
+          w.cancelIdleCallback(handle);
+        }
+      };
+    }
+    const t = window.setTimeout(() => setReady(true), 0);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  if (!ready) return null;
+
   return (
     <div
       aria-hidden="true"

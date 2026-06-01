@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { ChefHat, X } from "lucide-react";
 import Reveal from "@/components/Reveal";
 
@@ -100,12 +101,17 @@ export function CookbookCurationGallery() {
                 style={{ minHeight: i === 0 ? "320px" : "180px" }}
                 aria-label={`View larger photo: ${photo.caption}`}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                {/* Below-the-fold cookbook tiles — keep them lazy so they don't
+                    compete with the hero LCP, but use next/image so each <img>
+                    ships with intrinsic width/height (no CLS) and a responsive
+                    srcset based on the grid's responsive `sizes`. */}
+                <Image
                   src={photo.src}
                   alt={photo.caption}
+                  fill
                   loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div
                   aria-hidden="true"
@@ -154,10 +160,15 @@ export function CookbookCurationGallery() {
             >
               <X size={18} />
             </button>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            {/* Lightbox image: only mounted when the user explicitly opens it,
+                so eager loading + high fetch priority is fine here. */}
+            <Image
               src={active.src}
               alt={active.caption}
+              width={1130}
+              height={636}
+              sizes="(min-width: 768px) 768px, 100vw"
+              priority
               className="block max-h-[70vh] w-full object-contain"
             />
             <div className="px-6 py-4">
