@@ -12,9 +12,14 @@ interface HeroSectionProps {
 export default function HeroSection({ onConfetti }: HeroSectionProps) {
   // Defer mounting of decorative, animation-heavy layers until after the
   // first paint so the LCP (hero headline) is not delayed by their style
-  // recalculation and ongoing compositing work.
+  // recalculation and ongoing compositing work. Skip them entirely when the
+  // user has opted into reduced motion — these layers exist purely for
+  // ambient animation (blurred floats, twinkling stars, dust motes) and add
+  // continuous compositing work that is wasted for those users.
   const [decorReady, setDecorReady] = useState(false);
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     const w = window as typeof window & {
       requestIdleCallback?: (cb: () => void) => number;
       cancelIdleCallback?: (handle: number) => void;
