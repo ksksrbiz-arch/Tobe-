@@ -17,8 +17,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
-const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ?? "";
 const MAX_DIMENSION = 1600;
 const JPEG_QUALITY = 0.85;
 
@@ -91,10 +89,20 @@ function downscale(file: File): Promise<Blob> {
 }
 
 async function uploadToCloudinary(blob: Blob): Promise<string> {
+  // Get a short-lived signature from our password-gated server route, then
+  // upload directly to Cloudinary. The secret never reaches the browser.
+  const signRes = await fetch("/api/studio/sign", { method: "POST" });
+  const sign = await signRes.json();
+  if (!signRes.ok) throw new Error(sign?.error ?? "Couldn't authorize upload");
+
   const form = new FormData();
   form.append("file", blob);
-  form.append("upload_preset", UPLOAD_PRESET);
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+  form.append("api_key", sign.apiKey);
+  form.append("timestamp", String(sign.timestamp));
+  form.append("folder", sign.folder);
+  form.append("signature", sign.signature);
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${sign.cloudName}/image/upload`, {
     method: "POST",
     body: form,
   });
@@ -113,13 +121,15 @@ export default function StudioPage() {
   const [loading, setLoading] = useState(true);
   const [configured, setConfigured] = useState(true);
   const [authed, setAuthed] = useState(false);
+  const [uploadsReady, setUploadsReady] = useState(false);
 
   const refreshSession = useCallback(async () => {
     try {
       const res = await fetch("/api/studio/session", { cache: "no-store" });
-      const data = (await res.json()) as { authed: boolean; configured: boolean };
+      const data = (await res.json()) as { authed: boolean; configured: boolean; uploads: boolean };
       setAuthed(data.authed);
       setConfigured(data.configured);
+      setUploadsReady(data.uploads);
     } catch {
       setConfigured(false);
     } finally {
@@ -155,10 +165,10 @@ export default function StudioPage() {
   }
 
   if (!authed) {
-    return <PasswordGate onSuccess={() => setAuthed(true)} />;
+    return <PasswordGate onSuccess={() => void refreshSession()} />;
   }
 
-  return <Studio onSignOut={() => setAuthed(false)} />;
+  return <Studio cloudReady={uploadsReady} onSignOut={() => setAuthed(false)} />;
 }
 
 function Centered({ children }: { children: React.ReactNode }) {
@@ -237,14 +247,12 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
   );
 }
 
-function Studio({ onSignOut }: { onSignOut: () => void }) {
+function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () => void }) {
   const [jobs, setJobs] = useState<PhotoJob[]>([]);
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [busy, setBusy] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
-
-  const cloudReady = Boolean(CLOUD_NAME && UPLOAD_PRESET);
 
   const mergeCandidates = useCallback((incoming: Candidate[]) => {
     setCandidates((prev) => {
@@ -378,8 +386,8 @@ function Studio({ onSignOut }: { onSignOut: () => void }) {
             className="mb-5 rounded-2xl border p-4 text-sm"
             style={{ background: "rgba(239,68,68,0.05)", borderColor: "rgba(239,68,68,0.30)", color: "#991B1B" }}
           >
-            Cloudinary isn&apos;t configured. Set <code>NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME</code> and{" "}
-            <code>NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET</code> to enable uploads.
+            Cloudinary isn&apos;t configured. Set <code>CLOUDINARY_URL</code> on the
+            server to enable uploads.
           </div>
         )}
 
