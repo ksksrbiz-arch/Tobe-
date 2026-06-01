@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const MOTE_COUNT = 18;
 
@@ -21,6 +21,21 @@ const MOTES = Array.from({ length: MOTE_COUNT }, (_, i) => {
 });
 
 export default function DustMotes() {
+  // Skip rendering when the user prefers reduced motion: the floating motes
+  // run continuous animations and add ~18 DOM nodes per instance, which is
+  // pure cost for users who opted out.
+  const [enabled, setEnabled] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    // Defer the state update out of the effect body so we don't paint the
+    // motes until after the first frame is on screen.
+    const t = window.setTimeout(() => setEnabled(true), 0);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  if (!enabled) return null;
+
   return (
     <div
       className="pointer-events-none absolute inset-0 overflow-hidden"
