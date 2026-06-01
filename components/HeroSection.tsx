@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowRight, ShoppingBag, Sparkles, Star } from "lucide-react";
 import BookLogo from "./BookLogo";
 import DustMotes from "./DustMotes";
@@ -10,6 +10,23 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ onConfetti }: HeroSectionProps) {
+  // Defer mounting of decorative, animation-heavy layers until after the
+  // first paint so the LCP (hero headline) is not delayed by their style
+  // recalculation and ongoing compositing work.
+  const [decorReady, setDecorReady] = useState(false);
+  useEffect(() => {
+    const w = window as typeof window & {
+      requestIdleCallback?: (cb: () => void) => number;
+    };
+    const idle = w.requestIdleCallback;
+    if (typeof idle === "function") {
+      idle(() => setDecorReady(true));
+    } else {
+      const t = window.setTimeout(() => setDecorReady(true), 0);
+      return () => window.clearTimeout(t);
+    }
+  }, []);
+
   const handleVisit = () => {
     const el = document.querySelector("#visit");
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -40,71 +57,75 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
             WebkitMaskImage: "radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.85), transparent 70%)",
           }}
         />
-        <div
-          className="animate-float absolute left-[6%] top-[18%] h-72 w-72 rounded-full blur-3xl"
-          style={{ background: "rgba(241,187,26,0.30)" }}
-        />
-        <div
-          className="animate-float-slow absolute bottom-[14%] right-[6%] h-80 w-80 rounded-full blur-3xl"
-          style={{ background: "rgba(107,28,111,0.20)" }}
-        />
-        <div
-          className="animate-float absolute left-[40%] top-[6%] h-32 w-32 rounded-full blur-2xl"
-          style={{ background: "rgba(139,46,144,0.18)", animationDelay: "1.4s" }}
-        />
-        {/* Warm extra glow that slowly breathes */}
-        <div
-          className="animate-candle-glow absolute left-[24%] bottom-[22%] h-56 w-56 rounded-full blur-3xl pointer-events-none"
-          style={{ background: "rgba(241,187,26,0.16)" }}
-        />
+        {decorReady && (
+          <>
+            <div
+              className="animate-float absolute left-[6%] top-[18%] h-72 w-72 rounded-full blur-3xl"
+              style={{ background: "rgba(241,187,26,0.30)" }}
+            />
+            <div
+              className="animate-float-slow absolute bottom-[14%] right-[6%] h-80 w-80 rounded-full blur-3xl"
+              style={{ background: "rgba(107,28,111,0.20)" }}
+            />
+            <div
+              className="animate-float absolute left-[40%] top-[6%] h-32 w-32 rounded-full blur-2xl"
+              style={{ background: "rgba(139,46,144,0.18)", animationDelay: "1.4s" }}
+            />
+            {/* Warm extra glow that slowly breathes */}
+            <div
+              className="animate-candle-glow absolute left-[24%] bottom-[22%] h-56 w-56 rounded-full blur-3xl pointer-events-none"
+              style={{ background: "rgba(241,187,26,0.16)" }}
+            />
 
-        {/* Decorative dashed arcs */}
-        <svg
-          className="absolute left-0 top-1/2 -translate-y-1/2 opacity-25"
-          width="240"
-          height="360"
-          viewBox="0 0 220 320"
-          aria-hidden="true"
-        >
-          <path d="M0 160 A160 160 0 0 1 160 0" stroke="#6B1C6F" strokeWidth="1.6" strokeDasharray="6 10" fill="none" />
-          <path d="M0 210 A190 190 0 0 1 190 15" stroke="#F1BB1A" strokeWidth="1.6" strokeDasharray="6 10" fill="none" />
-          <path d="M0 260 A220 220 0 0 1 220 30" stroke="#8B2E90" strokeWidth="1" strokeDasharray="3 8" fill="none" opacity="0.5" />
-        </svg>
-        <svg
-          className="absolute right-0 top-1/2 -translate-y-1/2 opacity-25"
-          width="240"
-          height="360"
-          viewBox="0 0 220 320"
-          aria-hidden="true"
-        >
-          <path d="M220 160 A160 160 0 0 0 60 0" stroke="#6B1C6F" strokeWidth="1.6" strokeDasharray="6 10" fill="none" />
-          <path d="M220 210 A190 190 0 0 0 30 15" stroke="#F1BB1A" strokeWidth="1.6" strokeDasharray="6 10" fill="none" />
-          <path d="M220 260 A220 220 0 0 0 0 30" stroke="#8B2E90" strokeWidth="1" strokeDasharray="3 8" fill="none" opacity="0.5" />
-        </svg>
+            {/* Decorative dashed arcs */}
+            <svg
+              className="absolute left-0 top-1/2 -translate-y-1/2 opacity-25"
+              width="240"
+              height="360"
+              viewBox="0 0 220 320"
+              aria-hidden="true"
+            >
+              <path d="M0 160 A160 160 0 0 1 160 0" stroke="#6B1C6F" strokeWidth="1.6" strokeDasharray="6 10" fill="none" />
+              <path d="M0 210 A190 190 0 0 1 190 15" stroke="#F1BB1A" strokeWidth="1.6" strokeDasharray="6 10" fill="none" />
+              <path d="M0 260 A220 220 0 0 1 220 30" stroke="#8B2E90" strokeWidth="1" strokeDasharray="3 8" fill="none" opacity="0.5" />
+            </svg>
+            <svg
+              className="absolute right-0 top-1/2 -translate-y-1/2 opacity-25"
+              width="240"
+              height="360"
+              viewBox="0 0 220 320"
+              aria-hidden="true"
+            >
+              <path d="M220 160 A160 160 0 0 0 60 0" stroke="#6B1C6F" strokeWidth="1.6" strokeDasharray="6 10" fill="none" />
+              <path d="M220 210 A190 190 0 0 0 30 15" stroke="#F1BB1A" strokeWidth="1.6" strokeDasharray="6 10" fill="none" />
+              <path d="M220 260 A220 220 0 0 0 0 30" stroke="#8B2E90" strokeWidth="1" strokeDasharray="3 8" fill="none" opacity="0.5" />
+            </svg>
 
-        {/* Floating sparkles */}
-        <Sparkles
-          aria-hidden="true"
-          size={22}
-          className="animate-float absolute left-[14%] top-[28%]"
-          style={{ color: "#F1BB1A", animationDelay: "0.6s" }}
-        />
-        <Star
-          aria-hidden="true"
-          size={16}
-          fill="#6B1C6F"
-          className="animate-float-slow absolute right-[18%] top-[26%]"
-          style={{ color: "#6B1C6F", animationDelay: "1s" }}
-        />
-        <Sparkles
-          aria-hidden="true"
-          size={18}
-          className="animate-float absolute right-[12%] bottom-[28%]"
-          style={{ color: "#8B2E90", animationDelay: "1.8s" }}
-        />
+            {/* Floating sparkles */}
+            <Sparkles
+              aria-hidden="true"
+              size={22}
+              className="animate-float absolute left-[14%] top-[28%]"
+              style={{ color: "#F1BB1A", animationDelay: "0.6s" }}
+            />
+            <Star
+              aria-hidden="true"
+              size={16}
+              fill="#6B1C6F"
+              className="animate-float-slow absolute right-[18%] top-[26%]"
+              style={{ color: "#6B1C6F", animationDelay: "1s" }}
+            />
+            <Sparkles
+              aria-hidden="true"
+              size={18}
+              className="animate-float absolute right-[12%] bottom-[28%]"
+              style={{ color: "#8B2E90", animationDelay: "1.8s" }}
+            />
 
-        {/* Ambient dust motes */}
-        <DustMotes />
+            {/* Ambient dust motes */}
+            <DustMotes />
+          </>
+        )}
       </div>
 
       {/* Hero card */}

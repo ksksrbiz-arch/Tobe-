@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import EchoesLaunchBanner from "@/components/EchoesLaunchBanner";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
@@ -108,6 +107,17 @@ function TikTokSkeleton() {
     </div>
   );
 }
+
+const EchoesLaunchBanner = dynamic(() => import("@/components/EchoesLaunchBanner"), {
+  loading: () => (
+    <div className="px-4 py-12 sm:py-16">
+      <div
+        className="mx-auto h-56 max-w-6xl animate-pulse rounded-[32px]"
+        style={{ background: "rgba(107,28,111,0.08)" }}
+      />
+    </div>
+  ),
+});
 
 const TBRLoopEmbed = dynamic(
   () => import("@/components/TBRLoop").then((m) => ({ default: m.TBRLoopEmbed })),
