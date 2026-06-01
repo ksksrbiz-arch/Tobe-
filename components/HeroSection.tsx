@@ -17,14 +17,18 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
   useEffect(() => {
     const w = window as typeof window & {
       requestIdleCallback?: (cb: () => void) => number;
+      cancelIdleCallback?: (handle: number) => void;
     };
-    const idle = w.requestIdleCallback;
-    if (typeof idle === "function") {
-      idle(() => setDecorReady(true));
-    } else {
-      const t = window.setTimeout(() => setDecorReady(true), 0);
-      return () => window.clearTimeout(t);
+    if (typeof w.requestIdleCallback === "function") {
+      const handle = w.requestIdleCallback(() => setDecorReady(true));
+      return () => {
+        if (typeof w.cancelIdleCallback === "function") {
+          w.cancelIdleCallback(handle);
+        }
+      };
     }
+    const t = window.setTimeout(() => setDecorReady(true), 0);
+    return () => window.clearTimeout(t);
   }, []);
 
   const handleVisit = () => {
