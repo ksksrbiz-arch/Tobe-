@@ -6,8 +6,10 @@ type RateLimitState = {
 type RateLimitStore = Map<string, RateLimitState>;
 
 type GlobalWithRateLimitStore = typeof globalThis & {
-  __tobeRateLimitStore?: RateLimitStore;
+  __rateLimitStore?: RateLimitStore;
 };
+
+const MAX_RATE_LIMIT_ENTRIES = 5000;
 
 export function getClientIp(request: Request) {
   const netlifyIp = request.headers.get("x-nf-client-connection-ip");
@@ -24,16 +26,16 @@ export function getClientIp(request: Request) {
 
 function getRateLimitStore() {
   const globalWithStore = globalThis as GlobalWithRateLimitStore;
-  if (!globalWithStore.__tobeRateLimitStore) {
-    globalWithStore.__tobeRateLimitStore = new Map<string, RateLimitState>();
-  }
-  return globalWithStore.__tobeRateLimitStore;
+  globalWithStore.__rateLimitStore ??= new Map<string, RateLimitState>();
+  return globalWithStore.__rateLimitStore;
 }
 
 function cleanupExpiredEntries(store: RateLimitStore, now: number) {
+  const keysToDelete: string[] = [];
   for (const [key, state] of store.entries()) {
-    if (state.resetAt <= now) store.delete(key);
+    if (state.resetAt <= now) keysToDelete.push(key);
   }
+  for (const key of keysToDelete) store.delete(key);
 }
 
 export function checkRateLimit({
@@ -47,7 +49,11 @@ export function checkRateLimit({
 }) {
   const now = Date.now();
   const store = getRateLimitStore();
-  if (store.size > 5000) cleanupExpiredEntries(store, now);
+  cleanupExpiredEntries(store, now);
+  if (store.size > MAX_RATE_LIMIT_ENTRIES) {
+    const oldestKey = store.keys().next().value;
+    if (oldestKey) store.delete(oldestKey);
+  }
 
   const existing = store.get(key);
   if (!existing || existing.resetAt <= now) {
@@ -59,9 +65,7 @@ export function checkRateLimit({
       retryAfterSeconds: Math.ceil(windowMs / 1000),
     };
   }
-
   existing.count += 1;
-  store.set(key, existing);
 
   const retryAfterSeconds = Math.max(1, Math.ceil((existing.resetAt - now) / 1000));
   if (existing.count > maxRequests) {
@@ -81,7 +85,7 @@ export async function fetchWithTimeout(
   timeoutMs = 8000,
 ) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort("upstream_timeout"), timeoutMs);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     return await fetch(input, { ...init, signal: controller.signal });
