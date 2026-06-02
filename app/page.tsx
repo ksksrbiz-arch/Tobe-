@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useCallback } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -121,7 +119,7 @@ const EchoesLaunchBanner = dynamic(() => import("@/components/EchoesLaunchBanner
 
 const TBRLoopEmbed = dynamic(
   () => import("@/components/TBRLoop").then((m) => ({ default: m.TBRLoopEmbed })),
-  { ssr: false },
+  { loading: () => <SectionSkeleton eyebrow="TBR Loop" title="Spinning up the loop..." /> },
 );
 
 const StorySection = dynamic(() => import("@/components/StorySection"), {
@@ -240,20 +238,6 @@ const stats = [
 ];
 
 export default function Home() {
-  const fireConfetti = useCallback(async () => {
-    try {
-      const confetti = (await import("canvas-confetti")).default;
-      confetti({
-        particleCount: 140,
-        spread: 90,
-        origin: { y: 0.5 },
-        colors: ["#6B1C6F", "#F1BB1A", "#ffffff", "#8B2E90", "#F5CC45"],
-      });
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
   return (
     <main
       id="main"
@@ -264,7 +248,7 @@ export default function Home() {
       }}
     >
       <Navbar />
-      <HeroSection onConfetti={fireConfetti} />
+      <HeroSection />
 
       {/* Echoes of Choice launch banner */}
       <EchoesLaunchBanner />

@@ -5,11 +5,7 @@ import { ArrowRight, ShoppingBag, Sparkles, Star } from "lucide-react";
 import BookLogo from "./BookLogo";
 import DustMotes from "./DustMotes";
 
-interface HeroSectionProps {
-  onConfetti?: () => void;
-}
-
-export default function HeroSection({ onConfetti }: HeroSectionProps) {
+export default function HeroSection() {
   // Defer mounting of decorative, animation-heavy layers until after the
   // first paint so the LCP (hero headline) is not delayed by their style
   // recalculation and ongoing compositing work. Skip them entirely when the
@@ -44,6 +40,20 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
   const handleShop = () => {
     const el = document.querySelector("#shop");
     if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleCelebrate = async () => {
+    try {
+      const confetti = (await import("canvas-confetti")).default;
+      confetti({
+        particleCount: 140,
+        spread: 90,
+        origin: { y: 0.5 },
+        colors: ["#6B1C6F", "#F1BB1A", "#ffffff", "#8B2E90", "#F5CC45"],
+      });
+    } catch {
+      /* ignore */
+    }
   };
 
   return (
@@ -231,7 +241,7 @@ export default function HeroSection({ onConfetti }: HeroSectionProps) {
 
         {/* Rebrand pill */}
         <button
-          onClick={onConfetti}
+          onClick={handleCelebrate}
           className="fade-in-up btn-shine animate-pulse-glow mb-7 inline-flex cursor-pointer items-center gap-2 rounded-full border-2 px-5 py-2.5 text-sm font-semibold shadow-md transition-all hover:scale-[1.04]"
           style={{
             background: "#6B1C6F",
