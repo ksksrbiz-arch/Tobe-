@@ -14,11 +14,22 @@ import {
   BookOpen,
   Upload,
   ExternalLink,
+  Pencil,
+  Search,
 } from "lucide-react";
 import { toast } from "sonner";
 
 const MAX_DIMENSION = 1600;
 const JPEG_QUALITY = 0.85;
+
+// Map Gemini's 0–1 read confidence to a small badge. Spines are hardest to
+// read, so anything below ~0.5 is worth a second look before publishing.
+function confidenceMeta(confidence: number): { label: string; color: string; bg: string } | null {
+  if (!confidence || confidence <= 0) return null;
+  if (confidence >= 0.8) return { label: "High confidence", color: "#166534", bg: "rgba(34,197,94,0.14)" };
+  if (confidence >= 0.5) return { label: "Check spelling", color: "#92400E", bg: "rgba(241,187,26,0.20)" };
+  return { label: "Low — verify", color: "#991B1B", bg: "rgba(239,68,68,0.14)" };
+}
 
 interface ResolvedBook {
   isbn: string;
@@ -252,7 +263,57 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [busy, setBusy] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const [editingKey, setEditingKey] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editAuthor, setEditAuthor] = useState("");
+  const [resolving, setResolving] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const startEdit = (c: Candidate) => {
+    setEditingKey(c.key);
+    setEditTitle(c.book?.title ?? c.detectedTitle);
+    setEditAuthor(c.book?.author ?? c.detectedAuthor);
+  };
+
+  const cancelEdit = () => {
+    setEditingKey(null);
+    setEditTitle("");
+    setEditAuthor("");
+  };
+
+  const submitEdit = async (key: string) => {
+    const title = editTitle.trim();
+    if (!title) return;
+    setResolving(true);
+    try {
+      const res = await fetch("/api/studio/resolve", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ title, author: editAuthor.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error ?? "No match found");
+      const book = data.book as ResolvedBook;
+      const newKey = `isbn:${book.isbn}`;
+      setCandidates((prev) =>
+        prev
+          // Drop any other card that already resolves to this ISBN to avoid a
+          // duplicate after the re-match.
+          .filter((c) => c.key === key || c.key !== newKey)
+          .map((c) =>
+            c.key === key
+              ? { ...c, book, matched: true, selected: true, key: newKey }
+              : c,
+          ),
+      );
+      cancelEdit();
+      toast.success(`Matched "${book.title}"`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "No match found");
+    } finally {
+      setResolving(false);
+    }
+  };
 
   const mergeCandidates = useCallback((incoming: Candidate[]) => {
     setCandidates((prev) => {
@@ -468,57 +529,142 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
               </button>
             </div>
             <div className="grid grid-cols-1 gap-2.5">
-              {matched.map((c) => (
-                <button
-                  key={c.key}
-                  type="button"
-                  onClick={() => toggle(c.key)}
-                  className="flex items-center gap-3 rounded-2xl border p-3 text-left transition-all"
-                  style={{
-                    borderColor: c.selected ? "rgba(34,197,94,0.45)" : "rgba(107,28,111,0.12)",
-                    background: c.selected ? "rgba(34,197,94,0.06)" : "white",
-                  }}
-                >
-                  {c.book?.cover_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={c.book.cover_url}
-                      alt={c.book.title}
-                      className="h-16 w-11 flex-shrink-0 rounded object-cover"
-                    />
-                  ) : (
-                    <div
-                      className="flex h-16 w-11 flex-shrink-0 items-center justify-center rounded"
-                      style={{ background: "rgba(107,28,111,0.08)" }}
-                    >
-                      <BookOpen size={18} style={{ color: "rgba(107,28,111,0.4)" }} />
-                    </div>
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-bold" style={{ color: "#1F1A2E" }}>
-                      {c.book?.title}
-                    </p>
-                    {c.book?.author && (
-                      <p className="truncate text-xs" style={{ color: "#6B7280" }}>
-                        {c.book.author}
-                      </p>
-                    )}
-                    <p className="mt-0.5 font-mono text-[10px]" style={{ color: "#9CA3AF" }}>
-                      ISBN {c.book?.isbn}
-                      {c.book && c.book.list_price > 0 ? ` · $${c.book.list_price.toFixed(2)} list` : ""}
-                    </p>
-                  </div>
-                  <span
-                    className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md border-2"
+              {matched.map((c) => {
+                const conf = confidenceMeta(c.confidence);
+                const isEditing = editingKey === c.key;
+                return (
+                  <div
+                    key={c.key}
+                    className="rounded-2xl border p-3 transition-all"
                     style={{
-                      borderColor: c.selected ? "#16A34A" : "rgba(107,28,111,0.18)",
-                      background: c.selected ? "#16A34A" : "white",
+                      borderColor: c.selected ? "rgba(34,197,94,0.45)" : "rgba(107,28,111,0.12)",
+                      background: c.selected ? "rgba(34,197,94,0.06)" : "white",
                     }}
                   >
-                    <Check size={14} strokeWidth={3} style={{ color: "white", opacity: c.selected ? 1 : 0 }} />
-                  </span>
-                </button>
-              ))}
+                    <div className="flex items-start gap-3">
+                      {c.book?.cover_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={c.book.cover_url}
+                          alt={c.book.title}
+                          className="h-16 w-11 flex-shrink-0 rounded object-cover"
+                        />
+                      ) : (
+                        <div
+                          className="flex h-16 w-11 flex-shrink-0 items-center justify-center rounded"
+                          style={{ background: "rgba(107,28,111,0.08)" }}
+                        >
+                          <BookOpen size={18} style={{ color: "rgba(107,28,111,0.4)" }} />
+                        </div>
+                      )}
+
+                      {isEditing ? (
+                        <div className="min-w-0 flex-1 space-y-2">
+                          <input
+                            value={editTitle}
+                            onChange={(e) => setEditTitle(e.target.value)}
+                            placeholder="Title"
+                            autoFocus
+                            className="w-full rounded-lg border px-2.5 py-1.5 text-sm outline-none focus:ring-2"
+                            style={{ borderColor: "rgba(107,28,111,0.25)", color: "#1F1A2E" }}
+                          />
+                          <input
+                            value={editAuthor}
+                            onChange={(e) => setEditAuthor(e.target.value)}
+                            placeholder="Author (optional)"
+                            onKeyDown={(e) => e.key === "Enter" && submitEdit(c.key)}
+                            className="w-full rounded-lg border px-2.5 py-1.5 text-sm outline-none focus:ring-2"
+                            style={{ borderColor: "rgba(107,28,111,0.25)", color: "#1F1A2E" }}
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => submitEdit(c.key)}
+                              disabled={resolving || !editTitle.trim()}
+                              className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
+                              style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                            >
+                              {resolving ? (
+                                <RefreshCw size={12} className="animate-spin" />
+                              ) : (
+                                <Search size={12} />
+                              )}
+                              Re-match
+                            </button>
+                            <button
+                              onClick={cancelEdit}
+                              className="rounded-lg border px-3 py-1.5 text-xs font-medium"
+                              style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B7280" }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => toggle(c.key)}
+                          className="min-w-0 flex-1 text-left"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <p className="truncate text-sm font-bold" style={{ color: "#1F1A2E" }}>
+                              {c.book?.title}
+                            </p>
+                            {conf && (
+                              <span
+                                className="flex-shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide"
+                                style={{ background: conf.bg, color: conf.color }}
+                              >
+                                {conf.label}
+                              </span>
+                            )}
+                          </div>
+                          {c.book?.author && (
+                            <p className="truncate text-xs" style={{ color: "#6B7280" }}>
+                              {c.book.author}
+                            </p>
+                          )}
+                          <p className="mt-0.5 font-mono text-[10px]" style={{ color: "#9CA3AF" }}>
+                            ISBN {c.book?.isbn}
+                            {c.book && c.book.list_price > 0
+                              ? ` · $${c.book.list_price.toFixed(2)} list`
+                              : ""}
+                          </p>
+                        </button>
+                      )}
+
+                      {!isEditing && (
+                        <div className="flex flex-shrink-0 flex-col items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => toggle(c.key)}
+                            aria-label={c.selected ? "Deselect" : "Select"}
+                            className="flex h-6 w-6 items-center justify-center rounded-md border-2"
+                            style={{
+                              borderColor: c.selected ? "#16A34A" : "rgba(107,28,111,0.18)",
+                              background: c.selected ? "#16A34A" : "white",
+                            }}
+                          >
+                            <Check
+                              size={14}
+                              strokeWidth={3}
+                              style={{ color: "white", opacity: c.selected ? 1 : 0 }}
+                            />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => startEdit(c)}
+                            aria-label="Edit title"
+                            className="flex h-6 w-6 items-center justify-center rounded-md border"
+                            style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
+                          >
+                            <Pencil size={12} />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             <button
@@ -539,17 +685,81 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
             <p className="mb-2 text-xs font-bold uppercase tracking-wider" style={{ color: "#9CA3AF" }}>
               Couldn&apos;t match online ({unmatched.length})
             </p>
-            <div className="flex flex-wrap gap-2">
-              {unmatched.map((c) => (
-                <span
-                  key={c.key}
-                  className="rounded-full border px-3 py-1 text-xs"
-                  style={{ borderColor: "rgba(107,28,111,0.14)", color: "#6B7280" }}
-                  title="No confident online match — add these by ISBN on the Trade Desk scanner."
-                >
-                  {c.detectedTitle}
-                </span>
-              ))}
+            <p className="mb-3 text-xs" style={{ color: "#9CA3AF" }}>
+              Tap one to correct the spelling and search again — or add it by ISBN on the Trade Desk.
+            </p>
+            <div className="space-y-2">
+              {unmatched.map((c) => {
+                const isEditing = editingKey === c.key;
+                return (
+                  <div
+                    key={c.key}
+                    className="rounded-xl border p-2.5"
+                    style={{ borderColor: "rgba(107,28,111,0.12)", background: "white" }}
+                  >
+                    {isEditing ? (
+                      <div className="space-y-2">
+                        <input
+                          value={editTitle}
+                          onChange={(e) => setEditTitle(e.target.value)}
+                          placeholder="Title"
+                          autoFocus
+                          className="w-full rounded-lg border px-2.5 py-1.5 text-sm outline-none focus:ring-2"
+                          style={{ borderColor: "rgba(107,28,111,0.25)", color: "#1F1A2E" }}
+                        />
+                        <input
+                          value={editAuthor}
+                          onChange={(e) => setEditAuthor(e.target.value)}
+                          placeholder="Author (optional)"
+                          onKeyDown={(e) => e.key === "Enter" && submitEdit(c.key)}
+                          className="w-full rounded-lg border px-2.5 py-1.5 text-sm outline-none focus:ring-2"
+                          style={{ borderColor: "rgba(107,28,111,0.25)", color: "#1F1A2E" }}
+                        />
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => submitEdit(c.key)}
+                            disabled={resolving || !editTitle.trim()}
+                            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
+                            style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                          >
+                            {resolving ? <RefreshCw size={12} className="animate-spin" /> : <Search size={12} />}
+                            Search
+                          </button>
+                          <button
+                            onClick={cancelEdit}
+                            className="rounded-lg border px-3 py-1.5 text-xs font-medium"
+                            style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B7280" }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => startEdit(c)}
+                        className="flex w-full items-center gap-2 text-left"
+                      >
+                        <Pencil size={12} style={{ color: "#6B1C6F", flexShrink: 0 }} />
+                        <span className="min-w-0 flex-1 truncate text-sm" style={{ color: "#374151" }}>
+                          {c.detectedTitle}
+                        </span>
+                        {confidenceMeta(c.confidence) && (
+                          <span
+                            className="flex-shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide"
+                            style={{
+                              background: confidenceMeta(c.confidence)!.bg,
+                              color: confidenceMeta(c.confidence)!.color,
+                            }}
+                          >
+                            {confidenceMeta(c.confidence)!.label}
+                          </span>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
             </div>
             <Link
               href="/admin"
