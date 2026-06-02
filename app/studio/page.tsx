@@ -16,6 +16,7 @@ import {
   ExternalLink,
   Pencil,
   Search,
+  Plus,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -61,6 +62,7 @@ interface PhotoJob {
   status: PhotoStatus;
   found: number;
   error?: string;
+  thumbUrl?: string;
 }
 
 // ─── Image helpers ───────────────────────────────────────────────────────────
@@ -267,6 +269,9 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
   const [editTitle, setEditTitle] = useState("");
   const [editAuthor, setEditAuthor] = useState("");
   const [resolving, setResolving] = useState(false);
+  const [manualTitle, setManualTitle] = useState("");
+  const [manualAuthor, setManualAuthor] = useState("");
+  const [manualBusy, setManualBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const startEdit = (c: Candidate) => {
@@ -325,6 +330,43 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
     });
   }, []);
 
+  // Add a book that isn't in any photo by typing its title (e.g. a single
+  // walk-in trade). Resolves against Google Books, same as a re-match.
+  const addManual = async () => {
+    const title = manualTitle.trim();
+    if (!title) return;
+    setManualBusy(true);
+    try {
+      const res = await fetch("/api/studio/resolve", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ title, author: manualAuthor.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error ?? "No match found");
+      const book = data.book as ResolvedBook;
+      mergeCandidates([
+        {
+          detectedTitle: title,
+          detectedAuthor: manualAuthor.trim(),
+          confidence: 1,
+          matched: true,
+          book,
+          key: `isbn:${book.isbn}`,
+          selected: true,
+          sourcePhotoUrl: "",
+        },
+      ]);
+      setManualTitle("");
+      setManualAuthor("");
+      toast.success(`Added "${book.title}"`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "No match found");
+    } finally {
+      setManualBusy(false);
+    }
+  };
+
   const processFiles = useCallback(
     async (files: FileList) => {
       if (!cloudReady) {
@@ -334,7 +376,8 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
       setBusy(true);
       for (const file of Array.from(files)) {
         const id = `${file.name}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-        setJobs((prev) => [{ id, name: file.name, status: "uploading", found: 0 }, ...prev]);
+        const thumbUrl = URL.createObjectURL(file);
+        setJobs((prev) => [{ id, name: file.name, status: "uploading", found: 0, thumbUrl }, ...prev]);
         const update = (patch: Partial<PhotoJob>) =>
           setJobs((prev) => prev.map((j) => (j.id === id ? { ...j, ...patch } : j)));
 
@@ -475,6 +518,43 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
           Tip: photograph spines straight-on in good light. You can add several photos at once.
         </p>
 
+        {/* Manual add — for a book that isn't in any photo */}
+        <div
+          className="mt-5 rounded-2xl border p-4"
+          style={{ borderColor: "rgba(107,28,111,0.12)", background: "rgba(107,28,111,0.02)" }}
+        >
+          <p className="mb-2 text-xs font-bold uppercase tracking-wider" style={{ color: "#6B1C6F" }}>
+            Or add a book by title
+          </p>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <input
+              value={manualTitle}
+              onChange={(e) => setManualTitle(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addManual()}
+              placeholder="Title"
+              className="flex-1 rounded-xl border px-3 py-2.5 text-sm outline-none focus:ring-2"
+              style={{ borderColor: "rgba(107,28,111,0.20)", color: "#1F1A2E", background: "white" }}
+            />
+            <input
+              value={manualAuthor}
+              onChange={(e) => setManualAuthor(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addManual()}
+              placeholder="Author (optional)"
+              className="flex-1 rounded-xl border px-3 py-2.5 text-sm outline-none focus:ring-2"
+              style={{ borderColor: "rgba(107,28,111,0.20)", color: "#1F1A2E", background: "white" }}
+            />
+            <button
+              onClick={addManual}
+              disabled={manualBusy || !manualTitle.trim()}
+              className="flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
+              style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+            >
+              {manualBusy ? <RefreshCw size={14} className="animate-spin" /> : <Plus size={14} />}
+              Add
+            </button>
+          </div>
+        </div>
+
         {/* Photo jobs */}
         {jobs.length > 0 && (
           <div className="mt-6 space-y-2">
@@ -488,7 +568,17 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
                   background: job.status === "error" ? "rgba(239,68,68,0.04)" : "white",
                 }}
               >
-                <Upload size={15} style={{ color: "#6B1C6F", flexShrink: 0 }} />
+                {job.thumbUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={job.thumbUrl}
+                    alt=""
+                    className="h-10 w-10 flex-shrink-0 rounded-lg object-cover"
+                    style={{ border: "1px solid rgba(107,28,111,0.12)" }}
+                  />
+                ) : (
+                  <Upload size={15} style={{ color: "#6B1C6F", flexShrink: 0 }} />
+                )}
                 <span className="min-w-0 flex-1 truncate" style={{ color: "#374151" }}>
                   {job.name}
                 </span>
