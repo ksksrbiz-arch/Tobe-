@@ -119,7 +119,7 @@ const EchoesLaunchBanner = dynamic(() => import("@/components/EchoesLaunchBanner
 
 const TBRLoopEmbed = dynamic(
   () => import("@/components/TBRLoop").then((m) => ({ default: m.TBRLoopEmbed })),
-  { ssr: false },
+  { loading: () => <SectionSkeleton eyebrow="TBR Loop" title="Spinning up the loop..." /> },
 );
 
 const StorySection = dynamic(() => import("@/components/StorySection"), {
