@@ -2,6 +2,13 @@
   command = "npm run build"
   publish = ".next"
 
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@google/genai", "@neondatabase/serverless", "next-auth", "resend"]
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
 [build.environment]
   # Firebase API keys are safe to expose publicly; they are meant for client-side use
   # and are restricted via Firebase Security Rules, not secrecy.

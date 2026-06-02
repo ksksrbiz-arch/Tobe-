@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { GoogleGenAI, Type } from "@google/genai";
 import { sql } from "@/lib/db";
+import { checkRateLimit, getClientIp, withTimeout } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
 const MIN_RECOMMENDATIONS = 3;
@@ -96,6 +97,25 @@ Rules:
 }
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const rateLimit = checkRateLimit({
+    key: `recommend:${ip}`,
+    maxRequests: 20,
+    windowMs: 60_000,
+  });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "Too many recommendation requests. Please try again shortly." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(rateLimit.retryAfterSeconds),
+          "X-RateLimit-Remaining": String(rateLimit.remaining),
+        },
+      },
+    );
+  }
+
   const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
@@ -139,17 +159,21 @@ export async function POST(request: Request) {
 
   let recommendations: Recommendation[];
   try {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: buildGroundedPrompt(prompt, inventory),
-      config: {
-        systemInstruction: SYSTEM_PROMPT,
-        responseMimeType: "application/json",
-        responseSchema: RESPONSE_SCHEMA,
-        temperature: MODEL_TEMPERATURE,
-        tools: [{ googleSearch: {} }],
-      },
-    });
+    const response = await withTimeout(
+      ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: buildGroundedPrompt(prompt, inventory),
+        config: {
+          systemInstruction: SYSTEM_PROMPT,
+          responseMimeType: "application/json",
+          responseSchema: RESPONSE_SCHEMA,
+          temperature: MODEL_TEMPERATURE,
+          tools: [{ googleSearch: {} }],
+        },
+      }),
+      15_000,
+      "Recommendation request timed out.",
+    );
     const text = response.text;
     if (!text) {
       return NextResponse.json(
