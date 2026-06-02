@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { checkRateLimit, getClientIp } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
 
@@ -18,7 +19,7 @@ function ownerNotificationHtml(email: string) {
 </body></html>`.trim();
 }
 
-function subscriberConfirmationHtml(email: string) {
+function subscriberConfirmationHtml() {
   return `<!doctype html>
 <html><body style="font-family:Georgia,serif;color:#1F1A2E;background:#FDF8F0;padding:24px;">
   <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;padding:32px;border:1px solid rgba(107,28,111,0.10);">
@@ -36,6 +37,25 @@ function subscriberConfirmationHtml(email: string) {
 }
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rateLimit = checkRateLimit({
+    key: `newsletter:${ip}`,
+    maxRequests: 5,
+    windowMs: 60_000,
+  });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "Too many signup attempts. Please wait a minute and try again." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(rateLimit.retryAfterSeconds),
+          "X-RateLimit-Remaining": String(rateLimit.remaining),
+        },
+      },
+    );
+  }
+
   let email: string;
   try {
     const body = await req.json();
@@ -44,7 +64,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  if (!email || !email.includes("@") || !email.includes(".")) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || email.length > 254 || !emailRegex.test(email)) {
     return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
   }
 
@@ -65,7 +86,7 @@ export async function POST(req: NextRequest) {
       from: fromEmail,
       to: email,
       subject: "You're on the TBR list 📚",
-      html: subscriberConfirmationHtml(email),
+      html: subscriberConfirmationHtml(),
     });
 
     // 2. Owner notification (bcc-style — reply goes to subscriber)

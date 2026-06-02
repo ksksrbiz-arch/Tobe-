@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { checkRateLimit, fetchWithTimeout, getClientIp } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
 
@@ -38,6 +39,25 @@ type GoogleBooksVolume = {
 };
 
 export async function GET(request: Request) {
+  const ip = getClientIp(request);
+  const rateLimit = checkRateLimit({
+    key: `credit-estimate:${ip}`,
+    maxRequests: 60,
+    windowMs: 60_000,
+  });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "Too many lookups. Please try again shortly." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(rateLimit.retryAfterSeconds),
+          "X-RateLimit-Remaining": String(rateLimit.remaining),
+        },
+      },
+    );
+  }
+
   const url = new URL(request.url);
   const rawIsbn = url.searchParams.get("isbn");
 
@@ -64,10 +84,14 @@ export async function GET(request: Request) {
 
   let payload: { items?: GoogleBooksVolume[] };
   try {
-    const upstream = await fetch(lookupUrl, {
+    const upstream = await fetchWithTimeout(
+      lookupUrl,
+      {
       headers: { accept: "application/json" },
       next: { revalidate: 60 * 60 * 24 },
-    });
+      },
+      8000,
+    );
     if (!upstream.ok) {
       return NextResponse.json(
         { error: "Google Books lookup failed." },

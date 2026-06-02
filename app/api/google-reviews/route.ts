@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { checkRateLimit, fetchWithTimeout, getClientIp } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
 // Cache the upstream Google Places response for 1 hour at the route level so we
@@ -25,7 +26,26 @@ type GooglePlace = {
   reviews?: GoogleReview[];
 };
 
-export async function GET() {
+export async function GET(request: Request) {
+  const ip = getClientIp(request);
+  const rateLimit = checkRateLimit({
+    key: `google-reviews:${ip}`,
+    maxRequests: 90,
+    windowMs: 60_000,
+  });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "Too many review requests. Please wait a moment and retry." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(rateLimit.retryAfterSeconds),
+          "X-RateLimit-Remaining": String(rateLimit.remaining),
+        },
+      },
+    );
+  }
+
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
   const placeId = process.env.GOOGLE_PLACES_PLACE_ID;
 
@@ -52,14 +72,18 @@ export async function GET() {
 
   let place: GooglePlace;
   try {
-    const res = await fetch(url, {
-      headers: {
-        "X-Goog-Api-Key": apiKey,
-        "X-Goog-FieldMask":
-          "displayName,rating,userRatingCount,googleMapsUri,reviews",
+    const res = await fetchWithTimeout(
+      url,
+      {
+        headers: {
+          "X-Goog-Api-Key": apiKey,
+          "X-Goog-FieldMask":
+            "displayName,rating,userRatingCount,googleMapsUri,reviews",
+        },
+        next: { revalidate: 3600 },
       },
-      next: { revalidate: 3600 },
-    });
+      8000,
+    );
     if (!res.ok) {
       return NextResponse.json(
         { error: "Couldn't load reviews right now." },
