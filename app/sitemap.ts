@@ -14,6 +14,7 @@ const routes: Array<{
   { path: "/visit", changeFrequency: "monthly", priority: 0.9 },
   { path: "/trade", changeFrequency: "monthly", priority: 0.9 },
   { path: "/shop", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/shelf", changeFrequency: "daily", priority: 0.7 },
   { path: "/connect", changeFrequency: "weekly", priority: 0.8 },
   { path: "/how-it-works", changeFrequency: "monthly", priority: 0.7 },
   { path: "/loop", changeFrequency: "monthly", priority: 0.5 },

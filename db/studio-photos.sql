@@ -8,3 +8,10 @@
 ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS description      TEXT NOT NULL DEFAULT '';
 ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS source           TEXT NOT NULL DEFAULT '';
 ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS source_photo_url TEXT NOT NULL DEFAULT '';
+
+-- Staff Picks: let Jess flag a book as a featured pick with a short note.
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS featured  BOOLEAN NOT NULL DEFAULT FALSE;
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS pick_note TEXT NOT NULL DEFAULT '';
+
+CREATE INDEX IF NOT EXISTS recent_arrivals_featured_idx
+  ON recent_arrivals (added_at DESC) WHERE featured = TRUE;

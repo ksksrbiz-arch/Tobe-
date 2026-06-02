@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { Sparkles, BookOpen } from "lucide-react";
+import { Sparkles, BookOpen, ArrowRight } from "lucide-react";
 
 interface RecentArrival {
   id: string;
@@ -263,6 +263,16 @@ export function JustShelvedSection() {
           <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
         </div>
         <JustShelvedFeed />
+        <div className="mt-8 text-center">
+          <a
+            href="/shelf"
+            className="inline-flex items-center gap-1.5 rounded-2xl border px-5 py-2.5 text-sm font-semibold transition-all hover:scale-[1.03]"
+            style={{ borderColor: "rgba(107,28,111,0.20)", color: "#6B1C6F", background: "white" }}
+          >
+            See the whole wall
+            <ArrowRight size={15} />
+          </a>
+        </div>
       </div>
     </section>
   );

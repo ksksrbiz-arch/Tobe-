@@ -16,6 +16,8 @@ interface PublishBook {
   list_price?: number;
   description?: string;
   source_photo_url?: string;
+  featured?: boolean;
+  pick_note?: string;
 }
 
 function clean(value: unknown): string {
@@ -62,6 +64,8 @@ export async function POST(request: Request) {
     const description = clean(raw.description);
     const photoUrl = clean(raw.source_photo_url) || sourcePhotoUrl;
     const listPrice = typeof raw.list_price === "number" && raw.list_price > 0 ? raw.list_price : 0;
+    const featured = raw.featured === true;
+    const pickNote = featured ? clean(raw.pick_note) : "";
 
     try {
       const existing = (await sql`
@@ -78,7 +82,9 @@ export async function POST(request: Request) {
             cover_url = ${coverUrl},
             description = ${description},
             source = 'studio_photo',
-            source_photo_url = ${photoUrl}
+            source_photo_url = ${photoUrl},
+            featured = ${featured},
+            pick_note = ${pickNote}
           WHERE isbn = ${isbn}
         `;
         resurfaced += 1;
@@ -87,10 +93,11 @@ export async function POST(request: Request) {
 
       await sql`
         INSERT INTO recent_arrivals
-          (isbn, title, author, cover_url, list_price, description, source, source_photo_url, added_at)
+          (isbn, title, author, cover_url, list_price, description, source,
+           source_photo_url, featured, pick_note, added_at)
         VALUES
           (${isbn}, ${title}, ${author}, ${coverUrl}, ${listPrice}, ${description},
-           'studio_photo', ${photoUrl}, NOW())
+           'studio_photo', ${photoUrl}, ${featured}, ${pickNote}, NOW())
       `;
       published += 1;
 

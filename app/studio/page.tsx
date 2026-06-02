@@ -17,6 +17,7 @@ import {
   Pencil,
   Search,
   Plus,
+  Star,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -53,6 +54,8 @@ interface Candidate extends ApiCandidate {
   key: string;
   selected: boolean;
   sourcePhotoUrl: string;
+  featured: boolean;
+  pickNote: string;
 }
 
 type PhotoStatus = "uploading" | "analyzing" | "done" | "error";
@@ -355,6 +358,8 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
           key: `isbn:${book.isbn}`,
           selected: true,
           sourcePhotoUrl: "",
+          featured: false,
+          pickNote: "",
         },
       ]);
       setManualTitle("");
@@ -400,6 +405,8 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
             key: c.book ? `isbn:${c.book.isbn}` : `t:${c.detectedTitle.toLowerCase()}`,
             selected: c.matched,
             sourcePhotoUrl: url,
+            featured: false,
+            pickNote: "",
           }));
           mergeCandidates(mapped);
           update({ status: "done", found: mapped.filter((m) => m.matched).length });
@@ -422,6 +429,16 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
   const toggle = (key: string) =>
     setCandidates((prev) => prev.map((c) => (c.key === key ? { ...c, selected: !c.selected } : c)));
 
+  const toggleFeatured = (key: string) =>
+    setCandidates((prev) =>
+      prev.map((c) =>
+        c.key === key ? { ...c, featured: !c.featured, selected: c.selected || !c.featured } : c,
+      ),
+    );
+
+  const setPickNote = (key: string, note: string) =>
+    setCandidates((prev) => prev.map((c) => (c.key === key ? { ...c, pickNote: note } : c)));
+
   const matched = candidates.filter((c) => c.matched);
   const unmatched = candidates.filter((c) => !c.matched);
   const selectedCount = matched.filter((c) => c.selected).length;
@@ -435,7 +452,12 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          books: toPublish.map((c) => ({ ...c.book, source_photo_url: c.sourcePhotoUrl })),
+          books: toPublish.map((c) => ({
+            ...c.book,
+            source_photo_url: c.sourcePhotoUrl,
+            featured: c.featured,
+            pick_note: c.pickNote,
+          })),
         }),
       });
       const data = await res.json();
@@ -749,9 +771,41 @@ function Studio({ cloudReady, onSignOut }: { cloudReady: boolean; onSignOut: () 
                           >
                             <Pencil size={12} />
                           </button>
+                          <button
+                            type="button"
+                            onClick={() => toggleFeatured(c.key)}
+                            aria-label={c.featured ? "Remove Staff Pick" : "Mark as Staff Pick"}
+                            title="Mark as a Staff Pick"
+                            className="flex h-6 w-6 items-center justify-center rounded-md border"
+                            style={{
+                              borderColor: c.featured ? "#F1BB1A" : "rgba(107,28,111,0.18)",
+                              background: c.featured ? "rgba(241,187,26,0.18)" : "white",
+                            }}
+                          >
+                            <Star
+                              size={12}
+                              style={{ color: c.featured ? "#B8860B" : "#6B1C6F" }}
+                              fill={c.featured ? "#F1BB1A" : "none"}
+                            />
+                          </button>
                         </div>
                       )}
                     </div>
+
+                    {c.featured && !isEditing && (
+                      <input
+                        value={c.pickNote}
+                        onChange={(e) => setPickNote(c.key, e.target.value)}
+                        placeholder="Why it's a pick (e.g. “Jess can't put it down”) — optional"
+                        maxLength={140}
+                        className="mt-2.5 w-full rounded-lg border px-3 py-2 text-xs outline-none focus:ring-2"
+                        style={{
+                          borderColor: "rgba(241,187,26,0.45)",
+                          background: "rgba(241,187,26,0.06)",
+                          color: "#1F1A2E",
+                        }}
+                      />
+                    )}
                   </div>
                 );
               })}

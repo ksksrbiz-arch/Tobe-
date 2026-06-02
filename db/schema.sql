@@ -70,6 +70,9 @@ ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS notes TEXT NOT NULL DEFAULT
 ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS description TEXT NOT NULL DEFAULT '';
 ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT '';
 ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS source_photo_url TEXT NOT NULL DEFAULT '';
+-- Staff Picks (see db/studio-photos.sql).
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS featured BOOLEAN NOT NULL DEFAULT FALSE;
+ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS pick_note TEXT NOT NULL DEFAULT '';
 
 CREATE INDEX IF NOT EXISTS recent_arrivals_added_at_idx ON recent_arrivals (added_at DESC);
 CREATE INDEX IF NOT EXISTS recent_arrivals_isbn_idx ON recent_arrivals (isbn);

@@ -135,6 +135,9 @@ const JustShelvedSection = dynamic(
   { loading: () => <SectionSkeleton eyebrow="Just Shelved" title="Loading live arrivals..." muted /> },
 );
 
+// Renders nothing until there's at least one featured pick, so no skeleton.
+const StaffPicksSection = dynamic(() => import("@/components/StaffPicks"));
+
 const CookbookCurationGallery = dynamic(
   () => import("@/components/CookbookCurationGallery").then((m) => ({ default: m.CookbookCurationGallery })),
   { loading: () => <SectionSkeleton eyebrow="Newly Curated" title="Plating the cookbook area..." /> },
@@ -480,6 +483,7 @@ export default function Home() {
       <ShopSection />
       <SectionDivider variant="sparkle" label="Just Shelved" />
       <JustShelvedSection />
+      <StaffPicksSection />
       <CookbookCurationGallery />
       <NextReadSection />
 

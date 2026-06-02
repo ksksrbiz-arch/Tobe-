@@ -150,6 +150,7 @@ export default function Footer() {
                 { label: "About the store", href: "/about" },
                 { label: "Plan a visit", href: "/visit" },
                 { label: "Trade your books", href: "/trade" },
+                { label: "The Wall — recent arrivals", href: "/shelf" },
                 { label: "Shop online", href: "/shop" },
                 { label: "Connect with us", href: "/connect" },
                 {
