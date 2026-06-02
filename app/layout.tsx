@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
-import LoadingScreen from "@/components/LoadingScreen";
 import CozyAmbience from "@/components/CozyAmbience";
 import PageTransition from "@/components/PageTransition";
 import BookishEasterEgg from "@/components/BookishEasterEgg";
@@ -189,7 +188,6 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <LoadingScreen />
         <CozyAmbience />
         <BookishEasterEgg />
         <div className="relative z-[2]">
