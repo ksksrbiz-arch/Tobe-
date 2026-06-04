@@ -90,7 +90,7 @@ function SectionSkeleton({
 function TikTokSkeleton() {
   return (
     <div
-      className="w-full max-w-[605px] animate-pulse rounded-[32px] border p-5"
+      className="w-full max-w-[605px] animate-pulse rounded-[32px] border p-4 sm:p-5"
       style={{
         background: "rgba(255,255,255,0.9)",
         borderColor: "rgba(107,28,111,0.08)",
@@ -99,7 +99,7 @@ function TikTokSkeleton() {
     >
       <div className="mb-4 h-8 w-32 rounded-full" style={{ background: "rgba(107,28,111,0.1)" }} />
       <div
-        className="h-[420px] rounded-[24px]"
+        className="h-[clamp(20rem,58vw,27rem)] rounded-[24px]"
         style={{ background: "linear-gradient(180deg, rgba(107,28,111,0.08), rgba(241,187,26,0.12))" }}
       />
     </div>

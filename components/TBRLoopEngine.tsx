@@ -269,7 +269,7 @@ export function Stage({
     };
   }, [playing, duration, loop]);
 
-  // Keyboard: space = play/pause, ← → = seek
+  // Keyboard: space = play/pause, ← → = seek 1s, Shift+←/→ = seek 5s.
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
@@ -278,9 +278,9 @@ export function Stage({
         e.preventDefault();
         setPlaying((p) => !p);
       } else if (e.code === "ArrowLeft") {
-        setTime((t) => clamp(t - (e.shiftKey ? 1 : 0.1), 0, duration));
+        setTime((t) => clamp(t - (e.shiftKey ? 5 : 1), 0, duration));
       } else if (e.code === "ArrowRight") {
-        setTime((t) => clamp(t + (e.shiftKey ? 1 : 0.1), 0, duration));
+        setTime((t) => clamp(t + (e.shiftKey ? 5 : 1), 0, duration));
       } else if (e.key === "0" || e.code === "Home") {
         setTime(0);
       }
@@ -377,23 +377,24 @@ function PlaybackBar({
 }: PlaybackBarProps) {
   const trackRef = React.useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = React.useState(false);
+  const timelineHelpId = React.useId();
 
-  const timeFromEvent = React.useCallback(
-    (e: MouseEvent | React.MouseEvent) => {
+  const timeFromClientX = React.useCallback(
+    (clientX: number) => {
       if (!trackRef.current) return 0;
       const rect = trackRef.current.getBoundingClientRect();
-      const x = clamp((e.clientX - rect.left) / rect.width, 0, 1);
+      const x = clamp((clientX - rect.left) / rect.width, 0, 1);
       return x * duration;
     },
     [duration],
   );
 
-  const onTrackMove = (e: React.MouseEvent) => {
+  const onTrackMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!trackRef.current) return;
-    const t = timeFromEvent(e);
+    const t = timeFromClientX(e.clientX);
     if (dragging) {
       onSeek(t);
-    } else {
+    } else if (e.pointerType === "mouse") {
       onHover(t);
     }
   };
@@ -402,27 +403,21 @@ function PlaybackBar({
     if (!dragging) onHover(null);
   };
 
-  const onTrackDown = (e: React.MouseEvent) => {
+  const onTrackDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
     setDragging(true);
-    const t = timeFromEvent(e);
+    const t = timeFromClientX(e.clientX);
     onSeek(t);
     onHover(null);
   };
 
-  React.useEffect(() => {
-    if (!dragging) return;
-    const onUp = () => setDragging(false);
-    const onMove = (e: MouseEvent) => {
-      const t = timeFromEvent(e);
-      onSeek(t);
-    };
-    window.addEventListener("mouseup", onUp);
-    window.addEventListener("mousemove", onMove);
-    return () => {
-      window.removeEventListener("mouseup", onUp);
-      window.removeEventListener("mousemove", onMove);
-    };
-  }, [dragging, timeFromEvent, onSeek]);
+  const onTrackUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+    setDragging(false);
+    onHover(null);
+  };
 
   const pct = duration > 0 ? (time / duration) * 100 : 0;
   const fmt = (t: number) => {
@@ -445,12 +440,13 @@ function PlaybackBar({
         background: "rgba(20,20,20,0.92)",
         borderTop: "1px solid rgba(255,255,255,0.08)",
         width: "100%",
-        maxWidth: 680,
+        maxWidth: "min(680px, 100%)",
         alignSelf: "center",
         borderRadius: 8,
         color: "#f6f4ef",
         fontFamily: "Inter, system-ui, sans-serif",
         userSelect: "none",
+        touchAction: "manipulation",
         flexShrink: 0,
       }}
     >
@@ -493,16 +489,42 @@ function PlaybackBar({
 
       <div
         ref={trackRef}
-        onMouseMove={onTrackMove}
-        onMouseLeave={onTrackLeave}
-        onMouseDown={onTrackDown}
+        role="slider"
+        aria-label="Animation timeline"
+        aria-valuemin={0}
+        aria-valuemax={Math.round(duration * 100)}
+        aria-valuenow={Math.round(time * 100)}
+        aria-valuetext={`${fmt(time)} of ${fmt(duration)}`}
+        aria-describedby={timelineHelpId}
+        tabIndex={0}
+        onPointerMove={onTrackMove}
+        onPointerLeave={onTrackLeave}
+        onPointerDown={onTrackDown}
+        onPointerUp={onTrackUp}
+        onPointerCancel={onTrackUp}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            onSeek(clamp(time - (e.shiftKey ? 5 : 1), 0, duration));
+          } else if (e.key === "ArrowRight") {
+            e.preventDefault();
+            onSeek(clamp(time + (e.shiftKey ? 5 : 1), 0, duration));
+          } else if (e.key === "Home") {
+            e.preventDefault();
+            onSeek(0);
+          } else if (e.key === "End") {
+            e.preventDefault();
+            onSeek(duration);
+          }
+        }}
         style={{
           flex: 1,
-          height: 22,
+          height: 44,
           position: "relative",
-          cursor: "pointer",
+          cursor: dragging ? "grabbing" : "pointer",
           display: "flex",
           alignItems: "center",
+          touchAction: "none",
         }}
       >
         <div
@@ -540,6 +562,9 @@ function PlaybackBar({
           }}
         />
       </div>
+      <span id={timelineHelpId} className="sr-only">
+        Use arrow keys to seek by 1 second, or Shift plus arrow keys to seek by 5 seconds.
+      </span>
 
       <div
         style={{
@@ -574,8 +599,8 @@ function IconButton({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-        width: 28,
-        height: 28,
+        minWidth: 44,
+        minHeight: 44,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -585,6 +610,7 @@ function IconButton({
         color: "#f6f4ef",
         cursor: "pointer",
         padding: 0,
+        touchAction: "manipulation",
         transition: "background 120ms",
       }}
     >

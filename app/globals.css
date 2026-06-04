@@ -47,6 +47,7 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--header-offset);
   background: var(--background);
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -67,6 +68,33 @@ body {
 /* Kill the grey flash on tap for touch devices and keep controls comfy. */
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Faster, predictable tap handling. Gesture-heavy components can override this
+   locally (for example the TBR Loop timeline sets `touch-action: none`). */
+:where(button, a, input, select, textarea, [role="button"]) {
+  touch-action: manipulation;
+}
+
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.viewport-min-height {
+  min-height: 100vh;
+}
+
+@supports (min-height: 100svh) {
+  .viewport-min-height {
+    min-height: 100svh;
+  }
+}
+
+@supports (min-height: 100dvh) {
+  .viewport-min-height {
+    min-height: 100dvh;
+  }
 }
 
 /* Mobile: fixed background-attachment is janky/expensive on iOS; let it scroll

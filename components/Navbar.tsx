@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, MapPin, Phone } from "lucide-react";
@@ -31,29 +31,52 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
+  const rafRef = useRef<number | null>(null);
+  const drawerTouchStartX = useRef<number | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => {
+    const updateScrollState = () => {
       const y = window.scrollY;
       setScrolled(y > 20);
       const docH = document.documentElement.scrollHeight - window.innerHeight;
       setProgress(docH > 0 ? Math.min(100, (y / docH) * 100) : 0);
+      rafRef.current = null;
     };
-    handleScroll();
+    const handleScroll = () => {
+      if (rafRef.current === null) {
+        rafRef.current = window.requestAnimationFrame(updateScrollState);
+      }
+    };
+    updateScrollState();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafRef.current !== null) window.cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (isOpen) {
       const orig = document.body.style.overflow;
+      const origOverscroll = document.body.style.overscrollBehavior;
       document.body.style.overflow = "hidden";
+      document.body.style.overscrollBehavior = "contain";
       return () => {
         document.body.style.overflow = orig;
+        document.body.style.overscrollBehavior = origOverscroll;
       };
     }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [isOpen]);
 
   // Close mobile menu when the route changes — uses the React-recommended
@@ -71,6 +94,18 @@ export default function Navbar() {
       "noopener,noreferrer",
     );
     toast.success("Opening directions in Google Maps!");
+  };
+
+  const handleDrawerTouchStart = (event: React.TouchEvent<HTMLElement>) => {
+    drawerTouchStartX.current = event.touches[0].clientX;
+  };
+
+  const handleDrawerTouchEnd = (event: React.TouchEvent<HTMLElement>) => {
+    const startX = drawerTouchStartX.current;
+    drawerTouchStartX.current = null;
+    if (startX === null) return;
+    const endX = event.changedTouches[0]?.clientX ?? startX;
+    if (endX - startX > 60) setIsOpen(false);
   };
 
   return (
@@ -118,7 +153,7 @@ export default function Navbar() {
         </div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-[60px] items-center justify-between md:h-[68px]">
+          <div className="flex h-[clamp(3.75rem,7vw,4.25rem)] items-center justify-between">
             {/* Logo */}
             <Link href="/" className="group flex items-center gap-2.5" aria-label="To Be Read home">
               <span className="relative inline-flex items-center justify-center">
@@ -213,15 +248,16 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
               <a
                 href="tel:503-659-2559"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border transition-all active:scale-95 lg:hover:scale-110"
+                className="touch-target inline-flex h-11 w-11 items-center justify-center rounded-full border transition-all active:scale-95 lg:hover:scale-110"
                 style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F", background: "rgba(255,255,255,0.72)" }}
               >
                 <Phone size={15} />
                 <span className="sr-only">Call the store</span>
               </a>
               <button
+                type="button"
                 onClick={handleDirections}
-                className="btn-shine hidden items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.04] hover:shadow-lg md:flex"
+                className="touch-target btn-shine hidden items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.04] hover:shadow-lg md:flex"
                 style={{
                   background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
                 }}
@@ -232,7 +268,8 @@ export default function Navbar() {
 
               {/* Mobile Menu Toggle */}
               <button
-                className="rounded-lg p-2 transition-colors md:hidden"
+                type="button"
+                className="touch-target rounded-lg p-2 transition-colors active:scale-95 md:hidden"
                 style={{ color: "#6B1C6F", background: isOpen ? "rgba(107,28,111,0.08)" : "transparent" }}
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label={isOpen ? "Close menu" : "Open menu"}
@@ -282,11 +319,13 @@ export default function Navbar() {
           onClick={() => setIsOpen(false)}
         />
         <nav
-          className={`absolute right-0 top-0 flex h-full w-[86%] max-w-sm flex-col gap-1 rounded-l-[32px] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] shadow-2xl transition-transform duration-300 ${
+          className={`absolute right-0 top-0 flex h-full w-[min(90vw,24rem)] touch-pan-y flex-col gap-1 overflow-y-auto overscroll-contain rounded-l-[32px] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] shadow-2xl transition-transform duration-300 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
           style={{ background: "linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%)", paddingTop: "var(--mobile-menu-offset)" }}
           aria-label="Mobile navigation"
+          onTouchStart={handleDrawerTouchStart}
+          onTouchEnd={handleDrawerTouchEnd}
         >
           <div
             className="mb-3 rounded-2xl border px-4 py-3"
@@ -312,7 +351,7 @@ export default function Navbar() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsOpen(false)}
-                  className="rounded-xl px-4 py-3.5 text-base font-bold transition-all"
+                  className="touch-target rounded-xl px-4 py-3.5 text-base font-bold transition-all active:scale-[0.99]"
                   style={{
                     color: "#6B1C6F",
                     background: "linear-gradient(135deg, rgba(241,187,26,0.12) 0%, rgba(107,28,111,0.08) 100%)",
@@ -329,7 +368,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="rounded-xl px-4 py-3.5 text-base font-medium transition-all"
+                className="touch-target rounded-xl px-4 py-3.5 text-base font-medium transition-all active:scale-[0.99]"
                 style={{
                   color: isActive ? "#6B1C6F" : "#374151",
                   background: isActive ? "rgba(107,28,111,0.08)" : "transparent",
@@ -343,8 +382,9 @@ export default function Navbar() {
             );
           })}
           <button
+            type="button"
             onClick={handleDirections}
-            className="mt-4 flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold text-white shadow-md"
+            className="touch-target mt-4 flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold text-white shadow-md active:scale-[0.98]"
             style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
           >
             <MapPin size={16} />
@@ -352,7 +392,7 @@ export default function Navbar() {
           </button>
           <a
             href="tel:503-659-2559"
-            className="mt-2 flex items-center justify-center gap-2 rounded-xl border-2 px-4 py-3 text-sm font-semibold"
+            className="touch-target mt-2 flex items-center justify-center gap-2 rounded-xl border-2 px-4 py-3 text-sm font-semibold active:scale-[0.98]"
             style={{ borderColor: "#F1BB1A", color: "#6B1C6F" }}
           >
             <Phone size={15} />

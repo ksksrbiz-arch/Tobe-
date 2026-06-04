@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ArrowRight, ShoppingBag, Sparkles, Star } from "lucide-react";
 import BookLogo from "./BookLogo";
 import DustMotes from "./DustMotes";
+import { getMotionSafeScrollBehavior } from "@/lib/motion";
 
 export default function HeroSection() {
   // Defer mounting of decorative, animation-heavy layers until after the
@@ -34,12 +35,12 @@ export default function HeroSection() {
 
   const handleVisit = () => {
     const el = document.querySelector("#visit");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) el.scrollIntoView({ behavior: getMotionSafeScrollBehavior() });
   };
 
   const handleShop = () => {
     const el = document.querySelector("#shop");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) el.scrollIntoView({ behavior: getMotionSafeScrollBehavior() });
   };
 
   const handleCelebrate = async () => {
@@ -58,7 +59,7 @@ export default function HeroSection() {
 
   return (
     <section
-      className="paper-warm relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pb-12 pt-32 sm:pt-36"
+      className="viewport-min-height paper-warm relative flex items-center justify-center overflow-hidden px-4 pb-12 pt-[calc(var(--header-offset,_6.75rem)+2rem)] sm:pb-14 sm:pt-[calc(var(--header-offset,_6.75rem)+3rem)]"
       style={{
         background:
           "radial-gradient(circle at 12% 18%, rgba(241,187,26,0.22), transparent 32%), radial-gradient(circle at 82% 22%, rgba(107,28,111,0.20), transparent 30%), radial-gradient(circle at 50% 90%, rgba(241,187,26,0.10), transparent 50%), linear-gradient(135deg, #FDF8F0 0%, #FFF7EC 36%, #F7F0FF 100%)",
@@ -149,7 +150,7 @@ export default function HeroSection() {
 
       {/* Hero card */}
       <div
-        className="card-cozy relative z-10 mx-auto max-w-4xl rounded-[40px] border px-6 py-12 text-center shadow-[0_40px_120px_rgba(107,28,111,0.18)] backdrop-blur-md md:px-12 md:py-14"
+        className="card-cozy relative z-10 mx-auto max-w-4xl rounded-[28px] border px-5 py-10 text-center shadow-[0_40px_120px_rgba(107,28,111,0.18)] backdrop-blur-md sm:rounded-[34px] sm:px-6 sm:py-12 md:rounded-[40px] md:px-12 md:py-14"
         style={{
           background: "rgba(255,255,255,0.76)",
           borderColor: "rgba(107,28,111,0.10)",
@@ -241,8 +242,9 @@ export default function HeroSection() {
 
         {/* Rebrand pill */}
         <button
+          type="button"
           onClick={handleCelebrate}
-          className="fade-in-up btn-shine animate-pulse-glow mb-7 inline-flex cursor-pointer items-center gap-2 rounded-full border-2 px-5 py-2.5 text-sm font-semibold shadow-md transition-all hover:scale-[1.04]"
+          className="touch-target fade-in-up btn-shine animate-pulse-glow mb-7 inline-flex cursor-pointer items-center gap-2 rounded-full border-2 px-5 py-2.5 text-sm font-semibold shadow-md transition-all hover:scale-[1.04] active:scale-[0.98]"
           style={{
             background: "#6B1C6F",
             color: "#F1BB1A",
@@ -276,16 +278,18 @@ export default function HeroSection() {
           style={{ animationDelay: "500ms" }}
         >
           <button
+            type="button"
             onClick={handleVisit}
-            className="btn-shine flex w-full items-center justify-center gap-2 rounded-2xl px-8 py-4 text-base font-semibold text-white shadow-[0_18px_40px_rgba(107,28,111,0.28)] transition-all hover:scale-105 sm:w-auto"
+            className="touch-target btn-shine flex w-full items-center justify-center gap-2 rounded-2xl px-8 py-4 text-base font-semibold text-white shadow-[0_18px_40px_rgba(107,28,111,0.28)] transition-transform hover:scale-105 active:scale-[0.98] sm:w-auto"
             style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
           >
             Plan Your Visit
             <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
           </button>
           <button
+            type="button"
             onClick={handleShop}
-            className="btn-shine flex w-full items-center justify-center gap-2 rounded-2xl border-2 px-8 py-4 text-base font-semibold shadow-md transition-all hover:scale-105 sm:w-auto"
+            className="touch-target btn-shine flex w-full items-center justify-center gap-2 rounded-2xl border-2 px-8 py-4 text-base font-semibold shadow-md transition-transform hover:scale-105 active:scale-[0.98] sm:w-auto"
             style={{
               backgroundColor: "#F1BB1A",
               color: "#1a1a1a",
@@ -318,7 +322,7 @@ export default function HeroSection() {
               >
                 {item.num}
               </div>
-              <div className="mt-0.5 text-[11px] uppercase tracking-wider" style={{ color: "#6B7280" }}>
+              <div className="mt-0.5 text-[11px] uppercase tracking-wider sm:text-xs" style={{ color: "#6B7280" }}>
                 {item.label}
               </div>
             </div>
@@ -327,8 +331,8 @@ export default function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-70">
-        <span className="text-[10px] uppercase tracking-[0.3em]" style={{ color: "#6B1C6F" }}>
+      <div className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 opacity-70 sm:flex">
+        <span className="text-[11px] uppercase tracking-[0.3em]" style={{ color: "#6B1C6F" }}>
           Scroll to explore
         </span>
         <span

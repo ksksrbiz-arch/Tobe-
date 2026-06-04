@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ArrowUp, BookOpen } from "lucide-react";
+import { getMotionSafeScrollBehavior } from "@/lib/motion";
 
 export default function FloatingButtons() {
   const [showTop, setShowTop] = useState(false);
@@ -16,13 +17,13 @@ export default function FloatingButtons() {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: getMotionSafeScrollBehavior() });
   };
 
   const handleTrade = () => {
     const el = document.querySelector("#trade");
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      el.scrollIntoView({ behavior: getMotionSafeScrollBehavior() });
     } else {
       // If trade section isn't on this page, navigate
       window.location.href = "/trade";
@@ -30,10 +31,11 @@ export default function FloatingButtons() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3 sm:bottom-7 sm:right-7">
+    <div className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-[max(1.25rem,env(safe-area-inset-right))] z-40 flex flex-col items-end gap-3 sm:bottom-[max(1.75rem,env(safe-area-inset-bottom))] sm:right-[max(1.75rem,env(safe-area-inset-right))]">
       <button
+        type="button"
         onClick={handleTrade}
-        className="btn-shine animate-pulse-glow group flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-white shadow-2xl transition-all hover:scale-105"
+        className="touch-target btn-shine animate-pulse-glow group flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-white shadow-2xl transition-transform hover:scale-105 active:scale-95"
         style={{
           background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
         }}
@@ -44,11 +46,12 @@ export default function FloatingButtons() {
       </button>
 
       <button
+        type="button"
         onClick={scrollToTop}
         aria-label="Scroll to top"
         aria-hidden={!showTop}
         tabIndex={showTop ? 0 : -1}
-        className="flex h-11 w-11 items-center justify-center rounded-full text-white shadow-xl transition-all duration-300"
+        className="touch-target flex h-11 w-11 items-center justify-center rounded-full text-white shadow-xl transition-all duration-300 active:scale-95"
         style={{
           background: "linear-gradient(135deg, #6B1C6F 0%, #4A1350 100%)",
           opacity: showTop ? 1 : 0,
