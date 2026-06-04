@@ -159,7 +159,7 @@ export default function StephenKingBanner() {
                     src={book.cover}
                     alt={`${book.title} by Stephen King — ${book.year} book club edition cover`}
                     fill
-                    sizes="(min-width: 1024px) 150px, (min-width: 640px) 22vw, 22vw"
+                    sizes="(min-width: 1280px) 160px, (min-width: 1024px) 14vw, (min-width: 640px) 21vw, 22vw"
                     className="object-cover"
                   />
                 </div>
