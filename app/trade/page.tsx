@@ -28,7 +28,7 @@ const tradeTips = [
     icon: BookCopy,
     title: "Bring Multiples",
     description:
-      "The more titles you bring, the more store credit you can earn. We encourage trading several at once to maximize your session.",
+      "Bring what you can comfortably review with us at the counter. Credit is capped at $200, so you'll need to spend below that before earning more.",
   },
   {
     icon: Sunrise,
@@ -46,13 +46,13 @@ const steps = [
   },
   {
     icon: BookCopy,
-    title: "Drop them off",
-    body: "Bring them to the trade counter. We'll look through them and let you know what we can accept.",
+    title: "Wait while we review",
+    body: "Books cannot be dropped off. Please stay while we review your stack due to limited storage capacity.",
   },
   {
     icon: HandCoins,
     title: "Get store credit",
-    body: "Receive 25% of the original list price as credit on each accepted book. Unused credit expires on December 31 each year.",
+    body: "Receive 25% of the original list price as credit on each accepted book. If you already have credit, trade intake pauses on Nov 1 each year. Credit expires Dec 31, and balances are capped at $200 until spent below that amount.",
   },
   {
     icon: Smile,

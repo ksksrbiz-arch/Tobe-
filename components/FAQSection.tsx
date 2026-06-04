@@ -8,11 +8,11 @@ import JsonLd from "./JsonLd";
 const faqs = [
   {
     q: "Do you really not give cash for trades?",
-    a: "Correct — we operate as a trade-credit shop. Bring books in, get store credit, then use it toward anything in the store. Unused credit stays on your account and expires on December 31 each year.",
+    a: "Correct — we operate as a trade-credit shop. Books cannot be dropped off, so please wait while we review your stack due to limited storage capacity. Credit is store credit only (not cash) and expires each year on Dec 31.",
   },
   {
     q: "How is my trade credit calculated?",
-    a: "You receive 25% of the book's original list price as store credit on books we accept. When you purchase a book using credit, 50% of the list price comes off your credit, plus a small swap fee ($1–$3 depending on price). Unused credit stays on your account and expires on December 31 each year.",
+    a: "You receive 25% of the book's original list price as store credit on books we accept. When you purchase a book using credit, 50% of the list price comes off your credit, plus a small swap fee ($1–$3 depending on price). We cap credit at $200, so you'll need to spend below $200 before earning more. If you already have credit, we stop accepting trade books on Nov 1 each year so we can catch up inventory and give everyone time to use credit.",
   },
   {
     q: "What books do you accept?",
