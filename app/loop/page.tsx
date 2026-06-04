@@ -8,12 +8,8 @@ export default function LoopPage() {
   return (
     <main
       id="main"
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "#0a0a0a",
-        overflow: "hidden",
-      }}
+      className="viewport-min-height relative overflow-hidden"
+      style={{ background: "#0a0a0a" }}
     >
       {/* The loop itself is a canvas animation (client-only), so it carries no
           text for crawlers or screen readers. This visually-hidden block gives

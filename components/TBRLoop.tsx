@@ -1312,7 +1312,7 @@ function TBRVideo() {
 /** Full-page version (used by /loop route). */
 export default function TBRLoop() {
   return (
-    <div style={{ position: "fixed", inset: 0 }}>
+    <div style={{ position: "absolute", inset: 0 }}>
       <Stage width={1080} height={1080} duration={26} background="#FFFDF9" persistKey="tbr-loop">
         <TBRVideo />
       </Stage>

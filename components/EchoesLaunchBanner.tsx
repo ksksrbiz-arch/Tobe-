@@ -5,10 +5,30 @@ import { ArrowRight, Sparkles, BookOpen, Zap, Star } from "lucide-react";
 import Reveal from "./Reveal";
 
 const GENRES = [
-  { label: "Romance", color: "#f43f5e", glow: "rgba(244,63,94,0.35)" },
-  { label: "Crime Noir", color: "#38bdf8", glow: "rgba(56,189,248,0.35)" },
-  { label: "Paranormal", color: "#a78bfa", glow: "rgba(167,139,250,0.35)" },
+  {
+    label: "Romance",
+    color: "#f43f5e",
+    glow: "rgba(244,63,94,0.35)",
+    teaser: "Forbidden vows, stolen glances, and impossible decisions.",
+    choicePressure: "Emotional",
+  },
+  {
+    label: "Crime Noir",
+    color: "#38bdf8",
+    glow: "rgba(56,189,248,0.35)",
+    teaser: "Rain-soaked clues, hidden motives, and midnight reveals.",
+    choicePressure: "Investigative",
+  },
+  {
+    label: "Paranormal",
+    color: "#a78bfa",
+    glow: "rgba(167,139,250,0.35)",
+    teaser: "Ancient rites, haunted bloodlines, and dangerous magic.",
+    choicePressure: "Supernatural",
+  },
 ];
+
+const ECHOES_LAUNCH_URL = "https://echoes-of-choice-167345356687.us-west2.run.app";
 
 const FLOATING_WORDS = [
   "Choose",
@@ -29,9 +49,15 @@ const WORD_CONFIGS = FLOATING_WORDS.map((_, i) => ({
 }));
 
 const FEATURE_BULLETS = [
-  { icon: Zap, text: "AI-generated branching narratives with real images" },
-  { icon: BookOpen, text: "Romance · Crime · Paranormal genres" },
-  { icon: Star, text: "Cloud-synced story saves — pick up anywhere" },
+  { icon: Zap, text: "AI-directed branching scenes with mood-rich visuals" },
+  { icon: BookOpen, text: "Three curated story worlds with weekly prompt drops" },
+  { icon: Star, text: "Save your path and continue from any device instantly" },
+];
+
+const EXPERIENCE_METRICS = [
+  { label: "Branching choices", value: "100+" },
+  { label: "Story paths", value: "Infinite" },
+  { label: "Session length", value: "5–20 min" },
 ];
 
 const SCENE_CONTENT: Record<string, { subtitle: string; title: string; description: string }> = {
@@ -83,6 +109,7 @@ const FloatingWord = React.memo(function FloatingWord({
 export default function EchoesLaunchBanner() {
   const [activeGenre, setActiveGenre] = useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -98,7 +125,7 @@ export default function EchoesLaunchBanner() {
   }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || isPaused) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       intervalRef.current = null;
       return;
@@ -133,12 +160,13 @@ export default function EchoesLaunchBanner() {
       stopInterval();
       document.removeEventListener("visibilitychange", handleVisibility);
     };
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, isPaused]);
 
   const genre = GENRES[activeGenre];
   const scene =
     SCENE_CONTENT[genre.label] ??
     DEFAULT_SCENE;
+  const progressWidth = `${((activeGenre + 1) / GENRES.length) * 100}%`;
 
   return (
     <>
@@ -176,8 +204,12 @@ export default function EchoesLaunchBanner() {
       `}</style>
 
       <section
-        className="relative overflow-hidden px-4 py-12 sm:py-20 sm:px-6 lg:px-8"
+        className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-20 lg:px-8"
         aria-label="Echoes of Choice — new interactive fiction app launch"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onFocusCapture={() => setIsPaused(true)}
+        onBlurCapture={() => setIsPaused(false)}
       >
         {/* Dark cinematic background */}
         <div
@@ -256,6 +288,19 @@ export default function EchoesLaunchBanner() {
                   </span>
                 </div>
 
+                <div
+                  className="mb-5 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.22em]"
+                  style={{
+                    borderColor: `${genre.color}45`,
+                    background: `${genre.color}12`,
+                    color: genre.color,
+                    transition: "all 0.7s ease",
+                  }}
+                >
+                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: genre.color }} />
+                  Spotlight: {genre.label}
+                </div>
+
                 {/* Headline */}
                 <h2
                   className="font-black leading-[1.0]"
@@ -295,9 +340,9 @@ export default function EchoesLaunchBanner() {
                   className="mt-5 max-w-lg text-sm leading-7"
                   style={{ color: "rgba(255,255,255,0.62)" }}
                 >
-                  Step into branching timelines where every choice rewrites fate. Romance, crime noir,
-                  paranormal — AI-generated scenes, images, and soundscapes immerse you in a story
-                  that&apos;s uniquely yours. From your favorite local bookstore.
+                  Step into branching timelines where every choice rewrites fate. AI-generated scenes,
+                  images, and atmospheric storytelling pull you into an experience designed for quick,
+                  replayable story sessions from your favorite local bookstore.
                 </p>
 
                 {/* Genre pills */}
@@ -329,6 +374,27 @@ export default function EchoesLaunchBanner() {
                   ))}
                 </div>
 
+                <p
+                  className="mt-3 max-w-lg text-xs leading-6"
+                  style={{ color: "rgba(255,255,255,0.6)", transition: "color 0.7s ease" }}
+                >
+                  {genre.teaser}
+                </p>
+
+                <div
+                  className="mt-4 h-1.5 w-full max-w-sm overflow-hidden rounded-full"
+                  style={{ background: "rgba(255,255,255,0.12)" }}
+                  aria-hidden="true"
+                >
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: progressWidth,
+                      background: `linear-gradient(90deg, ${genre.color} 0%, #F1BB1A 100%)`,
+                    }}
+                  />
+                </div>
+
                 {/* Feature bullets */}
                 <ul className="mt-6 space-y-2">
                   {FEATURE_BULLETS.map(({ icon: Icon, text }) => (
@@ -346,10 +412,30 @@ export default function EchoesLaunchBanner() {
                   ))}
                 </ul>
 
+                <div className="mt-6 grid max-w-xl grid-cols-1 gap-2 sm:grid-cols-3">
+                  {EXPERIENCE_METRICS.map((metric) => (
+                    <div
+                      key={metric.label}
+                      className="rounded-xl border px-3 py-2"
+                      style={{
+                        borderColor: "rgba(255,255,255,0.12)",
+                        background: "rgba(255,255,255,0.03)",
+                      }}
+                    >
+                      <p className="text-[10px] uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.45)" }}>
+                        {metric.label}
+                      </p>
+                      <p className="mt-1 text-sm font-bold" style={{ color: "white" }}>
+                        {metric.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
                 {/* CTA */}
                 <div className="mt-8 flex flex-wrap items-center gap-4">
                   <a
-                    href="https://echoes-of-choice-167345356687.us-west2.run.app"
+                    href={ECHOES_LAUNCH_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-bold text-black shadow-xl transition-all duration-300 hover:scale-[1.04] hover:shadow-2xl"
@@ -366,11 +452,24 @@ export default function EchoesLaunchBanner() {
                       className="transition-transform duration-300 group-hover:translate-x-1"
                     />
                   </a>
+                  <a
+                    href={ECHOES_LAUNCH_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-2xl border px-5 py-3 text-sm font-semibold transition-all duration-300 hover:scale-[1.03]"
+                    style={{
+                      color: "white",
+                      borderColor: "rgba(255,255,255,0.22)",
+                      background: "rgba(255,255,255,0.04)",
+                    }}
+                  >
+                    Open live preview
+                  </a>
                   <span
                     className="text-xs"
                     style={{ color: "rgba(255,255,255,0.32)" }}
                   >
-                    Free · No download required
+                    Free · Browser-based · No download required
                   </span>
                 </div>
               </Reveal>
@@ -422,6 +521,37 @@ export default function EchoesLaunchBanner() {
                       }}
                       data-echoes-animated="true"
                     />
+                  </div>
+
+                  <div className="mb-5 grid grid-cols-2 gap-2">
+                    <div
+                      className="rounded-xl border px-3 py-2"
+                      style={{
+                        borderColor: "rgba(255,255,255,0.1)",
+                        background: "rgba(255,255,255,0.03)",
+                      }}
+                    >
+                      <p className="text-[9px] uppercase tracking-[0.24em]" style={{ color: "rgba(255,255,255,0.45)" }}>
+                        Genre Focus
+                      </p>
+                      <p className="mt-1 text-xs font-bold" style={{ color: "white" }}>
+                        {genre.label}
+                      </p>
+                    </div>
+                    <div
+                      className="rounded-xl border px-3 py-2"
+                      style={{
+                        borderColor: "rgba(255,255,255,0.1)",
+                        background: "rgba(255,255,255,0.03)",
+                      }}
+                    >
+                      <p className="text-[9px] uppercase tracking-[0.24em]" style={{ color: "rgba(255,255,255,0.45)" }}>
+                        Choice Pressure
+                      </p>
+                      <p className="mt-1 text-xs font-bold" style={{ color: "white" }}>
+                        {genre.choicePressure}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Simulated scene image placeholder */}
