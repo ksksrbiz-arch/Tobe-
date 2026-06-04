@@ -22,7 +22,12 @@ import {
   Mail,
   AtSign,
 } from "lucide-react";
-import { TRADE_POLICY_CAP, TRADE_POLICY_EXPIRY, TRADE_POLICY_NOV1, TRADE_POLICY_WAIT } from "@/lib/tradePolicy";
+import {
+  TRADE_POLICY_EXPIRY_AND_CAP,
+  TRADE_POLICY_EXPIRY,
+  TRADE_POLICY_NOV1,
+  TRADE_POLICY_WAIT,
+} from "@/lib/tradePolicy";
 
 const chapters = [
   {
@@ -36,7 +41,7 @@ const chapters = [
     n: "02",
     eyebrow: "Chapter two",
     title: "Earn store credit",
-    body: `One credit per paperback, two per hardcover. ${TRADE_POLICY_EXPIRY} ${TRADE_POLICY_CAP}`,
+    body: `One credit per paperback, two per hardcover. ${TRADE_POLICY_EXPIRY_AND_CAP}`,
     icon: Coins,
   },
   {
@@ -424,8 +429,7 @@ export default function HowItWorksPage() {
               className="mt-4 max-w-2xl font-serif italic"
               style={{ color: "var(--ink-soft)", fontSize: "1.15rem" }}
             >
-              Credit stays on your account under your name and phone number. {TRADE_POLICY_EXPIRY}{" "}
-              {TRADE_POLICY_CAP}
+              {`Credit stays on your account under your name and phone number. ${TRADE_POLICY_EXPIRY_AND_CAP}`}
             </p>
           </Reveal>
 
