@@ -147,7 +147,7 @@ export default function LoadingScreen() {
           <span
             className="font-serif text-2xl"
             style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
               color: "#4A1350",
               animation: "fadeIn 0.9s ease-out 0.4s both",
             }}

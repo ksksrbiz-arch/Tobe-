@@ -214,7 +214,7 @@ export default function HeroSection() {
         <h1
           className="animate-ink-settle mb-3 font-bold"
           style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
+            fontFamily: "var(--font-serif)",
             color: "#6B1C6F",
             fontSize: "clamp(3rem, 9vw, 6rem)",
             lineHeight: 1.02,
@@ -311,7 +311,7 @@ export default function HeroSection() {
               <div
                 className="font-bold"
                 style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontFamily: "var(--font-serif)",
                   color: "#6B1C6F",
                   fontSize: "clamp(1.1rem, 3vw, 1.6rem)",
                 }}

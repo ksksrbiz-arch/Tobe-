@@ -42,7 +42,7 @@ export default function StorySection() {
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-10 left-[6%] select-none text-[16rem] leading-none opacity-[0.06]"
-        style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+        style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
       >
         “
       </div>
@@ -59,7 +59,7 @@ export default function StorySection() {
           <h2
             className="mb-3 font-bold"
             style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
               color: "#6B1C6F",
               fontSize: "clamp(2.2rem, 5.5vw, 3.4rem)",
               lineHeight: 1.05,
@@ -75,7 +75,7 @@ export default function StorySection() {
           <Reveal delay={80} className="space-y-3">
             <p
               className="text-2xl font-semibold"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+              style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
             >
               A neighborhood story written one book at a time.
             </p>
@@ -95,7 +95,7 @@ export default function StorySection() {
               In <strong style={{ color: "#6B1C6F" }}>2026</strong>, we&apos;ll proudly unveil our new identity:{" "}
               <em
                 className="not-italic font-semibold"
-                style={{ color: "#6B1C6F", fontFamily: "'Playfair Display', Georgia, serif" }}
+                style={{ color: "#6B1C6F", fontFamily: "var(--font-serif)" }}
               >
                 To Be Read (TBR)
               </em>
@@ -153,7 +153,7 @@ export default function StorySection() {
                         <h3
                           className="mb-2 text-lg font-bold"
                           style={{
-                            fontFamily: "'Playfair Display', Georgia, serif",
+                            fontFamily: "var(--font-serif)",
                             color: "#6B1C6F",
                           }}
                         >

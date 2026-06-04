@@ -94,7 +94,7 @@ export default function ConnectSection() {
           <h2
             className="mb-3 font-bold"
             style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
               color: "#6B1C6F",
               fontSize: "clamp(2rem, 5vw, 3rem)",
             }}
@@ -171,7 +171,7 @@ export default function ConnectSection() {
               </div>
               <h3
                 className="mb-2 text-2xl font-bold"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "white" }}
+                style={{ fontFamily: "var(--font-serif)", color: "white" }}
               >
                 Reviews help us grow!
               </h3>
@@ -196,7 +196,7 @@ export default function ConnectSection() {
         <Reveal>
           <h3
             className="mb-8 text-center text-2xl font-bold sm:text-3xl"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+            style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
           >
             What Readers <span className="underline-accent">Say</span> on Google
           </h3>

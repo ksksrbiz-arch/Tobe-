@@ -53,7 +53,7 @@ function AuthPanel() {
         </div>
         <h3
           className="mb-2 text-xl font-bold"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+          style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
         >
           Check your inbox
         </h3>
@@ -75,7 +75,7 @@ function AuthPanel() {
       </div>
       <h3
         className="mb-1 text-xl font-bold"
-        style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+        style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
       >
         Sign in to save your wishlist
       </h3>
@@ -224,7 +224,7 @@ function AddBookPanel({ onAdded }: { onAdded: () => void }) {
             <img src={preview.cover_url} alt={preview.title || "Book cover"} className="h-14 w-10 rounded object-cover flex-shrink-0" />
           )}
           <div className="min-w-0 flex-1">
-            <p className="font-bold text-sm truncate" style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}>{preview.title}</p>
+            <p className="font-bold text-sm truncate" style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}>{preview.title}</p>
             <p className="text-xs" style={{ color: "#6B7280" }}>{preview.author}</p>
           </div>
           <button
@@ -270,7 +270,7 @@ function WishlistRow({ item, onRemove }: { item: WishlistItem; onRemove: () => v
         </div>
       )}
       <div className="min-w-0 flex-1">
-        <p className="font-bold text-sm" style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}>{item.title}</p>
+        <p className="font-bold text-sm" style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}>{item.title}</p>
         <p className="text-xs" style={{ color: "#6B7280" }}>{item.author}</p>
         {item.isbn && <p className="mt-0.5 text-[10px] font-mono" style={{ color: "#9CA3AF" }}>ISBN: {item.isbn}</p>}
         {item.notified && (
@@ -370,7 +370,7 @@ export default function WishlistManager() {
           <div>
             <h3
               className="font-bold"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F", fontSize: "1.15rem" }}
+              style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F", fontSize: "1.15rem" }}
             >
               My Hunting List
             </h3>

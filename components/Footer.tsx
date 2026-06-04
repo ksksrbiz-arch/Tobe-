@@ -104,7 +104,7 @@ export default function Footer() {
               <div>
                 <div
                   className="text-lg font-bold"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#F1BB1A" }}
+                  style={{ fontFamily: "var(--font-serif)", color: "#F1BB1A" }}
                 >
                   To Be Read
                 </div>

@@ -57,7 +57,7 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
         <div className="flex items-start gap-2">
           <p
             className="flex-1 font-bold leading-tight"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F", fontSize: "1rem" }}
+            style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F", fontSize: "1rem" }}
           >
             {rec.title}
           </p>
@@ -157,7 +157,7 @@ export default function NextReadMatchmaker() {
         <div>
           <h3
             className="font-bold"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F", fontSize: "1.15rem" }}
+            style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F", fontSize: "1.15rem" }}
           >
             Next Read Matchmaker
           </h3>
@@ -273,7 +273,7 @@ export function NextReadSection() {
           <h2
             className="mt-4 font-bold"
             style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
               color: "#6B1C6F",
               fontSize: "clamp(2rem, 5vw, 2.8rem)",
             }}

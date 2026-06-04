@@ -72,7 +72,7 @@ export default function TradeSection() {
           <h2
             className="mb-3 font-bold"
             style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
               color: "#6B1C6F",
               fontSize: "clamp(2rem, 5vw, 3rem)",
             }}
@@ -134,7 +134,7 @@ export default function TradeSection() {
                 <h3
                   className="font-bold"
                   style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontFamily: "var(--font-serif)",
                     color: "#6B1C6F",
                     fontSize: "clamp(1.3rem, 3vw, 1.7rem)",
                     letterSpacing: "0.01em",
@@ -152,7 +152,7 @@ export default function TradeSection() {
                   <div
                     className="text-3xl font-bold"
                     style={{
-                      fontFamily: "'Playfair Display', Georgia, serif",
+                      fontFamily: "var(--font-serif)",
                       color: "#6B1C6F",
                     }}
                   >
@@ -172,7 +172,7 @@ export default function TradeSection() {
                   <div
                     className="text-3xl font-bold"
                     style={{
-                      fontFamily: "'Playfair Display', Georgia, serif",
+                      fontFamily: "var(--font-serif)",
                       color: "#6B1C6F",
                     }}
                   >
@@ -213,7 +213,7 @@ export default function TradeSection() {
                         className="text-3xl font-bold"
                         style={{
                           color: "#F1BB1A",
-                          fontFamily: "'Playfair Display', Georgia, serif",
+                          fontFamily: "var(--font-serif)",
                         }}
                       >
                         {tier.fee}
@@ -246,7 +246,7 @@ export default function TradeSection() {
             >
               <h3
                 className="mb-5 flex items-center gap-2 text-lg font-bold"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
               >
                 <span
                   className="flex h-8 w-8 items-center justify-center rounded-full"
@@ -282,7 +282,7 @@ export default function TradeSection() {
             >
               <h3
                 className="mb-5 flex items-center gap-2 text-lg font-bold"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
               >
                 <span
                   className="flex h-8 w-8 items-center justify-center rounded-full"
@@ -336,7 +336,7 @@ export default function TradeSection() {
           >
             <h3
               className="mb-2 text-xl font-bold"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+              style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
             >
               Quick Trade Checklist
             </h3>
