@@ -58,7 +58,7 @@ export default function HeroSection() {
 
   return (
     <section
-      className="paper-warm relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pb-12 pt-32 sm:pt-36"
+      className="paper-warm relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-4 pb-12 pt-[calc(var(--header-offset)+2rem)] sm:pb-14 sm:pt-[calc(var(--header-offset)+3rem)]"
       style={{
         background:
           "radial-gradient(circle at 12% 18%, rgba(241,187,26,0.22), transparent 32%), radial-gradient(circle at 82% 22%, rgba(107,28,111,0.20), transparent 30%), radial-gradient(circle at 50% 90%, rgba(241,187,26,0.10), transparent 50%), linear-gradient(135deg, #FDF8F0 0%, #FFF7EC 36%, #F7F0FF 100%)",
@@ -149,7 +149,7 @@ export default function HeroSection() {
 
       {/* Hero card */}
       <div
-        className="card-cozy relative z-10 mx-auto max-w-4xl rounded-[40px] border px-6 py-12 text-center shadow-[0_40px_120px_rgba(107,28,111,0.18)] backdrop-blur-md md:px-12 md:py-14"
+        className="card-cozy relative z-10 mx-auto max-w-4xl rounded-[28px] border px-5 py-10 text-center shadow-[0_40px_120px_rgba(107,28,111,0.18)] backdrop-blur-md sm:rounded-[34px] sm:px-6 sm:py-12 md:rounded-[40px] md:px-12 md:py-14"
         style={{
           background: "rgba(255,255,255,0.76)",
           borderColor: "rgba(107,28,111,0.10)",
@@ -318,7 +318,7 @@ export default function HeroSection() {
               >
                 {item.num}
               </div>
-              <div className="mt-0.5 text-[11px] uppercase tracking-wider" style={{ color: "#6B7280" }}>
+              <div className="mt-0.5 text-[11px] uppercase tracking-wider sm:text-xs" style={{ color: "#6B7280" }}>
                 {item.label}
               </div>
             </div>
@@ -327,8 +327,8 @@ export default function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-70">
-        <span className="text-[10px] uppercase tracking-[0.3em]" style={{ color: "#6B1C6F" }}>
+      <div className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 opacity-70 sm:flex">
+        <span className="text-[11px] uppercase tracking-[0.3em]" style={{ color: "#6B1C6F" }}>
           Scroll to explore
         </span>
         <span

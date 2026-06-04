@@ -13,7 +13,7 @@ import { Music2 } from "lucide-react";
 const TikTokEmbed = dynamic(() => import("@/components/TikTokEmbed"), {
   loading: () => (
     <div
-      className="w-full max-w-[605px] animate-pulse rounded-[28px] border p-4"
+      className="w-full max-w-[605px] animate-pulse rounded-[28px] border p-4 sm:p-5"
       style={{
         background: "white",
         borderColor: "rgba(107,28,111,0.10)",
@@ -22,7 +22,7 @@ const TikTokEmbed = dynamic(() => import("@/components/TikTokEmbed"), {
     >
       <div className="mb-3 h-7 w-32 rounded-full" style={{ background: "rgba(107,28,111,0.10)" }} />
       <div
-        className="h-[420px] rounded-2xl"
+        className="h-[clamp(20rem,58vw,27rem)] rounded-2xl"
         style={{ background: "linear-gradient(180deg, rgba(107,28,111,0.08), rgba(241,187,26,0.12))" }}
       />
     </div>

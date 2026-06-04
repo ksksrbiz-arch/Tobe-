@@ -118,7 +118,7 @@ export default function Navbar() {
         </div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-[60px] items-center justify-between md:h-[68px]">
+          <div className="flex h-[clamp(3.75rem,7vw,4.25rem)] items-center justify-between">
             {/* Logo */}
             <Link href="/" className="group flex items-center gap-2.5" aria-label="To Be Read home">
               <span className="relative inline-flex items-center justify-center">
@@ -282,7 +282,7 @@ export default function Navbar() {
           onClick={() => setIsOpen(false)}
         />
         <nav
-          className={`absolute right-0 top-0 flex h-full w-[86%] max-w-sm flex-col gap-1 rounded-l-[32px] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] shadow-2xl transition-transform duration-300 ${
+          className={`absolute right-0 top-0 flex h-full w-[min(90vw,24rem)] flex-col gap-1 rounded-l-[32px] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] shadow-2xl transition-transform duration-300 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
           style={{ background: "linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%)", paddingTop: "var(--mobile-menu-offset)" }}

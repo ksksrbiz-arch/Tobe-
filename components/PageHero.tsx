@@ -22,8 +22,7 @@ export default function PageHero({
     <div
       className="relative w-full overflow-hidden"
       style={{
-        height: "52vh",
-        minHeight: "360px",
+        height: "clamp(24rem, 58vh, 42rem)",
       }}
     >
       {/* Deep purple base — sits beneath everything so we never see white flash */}
@@ -97,7 +96,7 @@ export default function PageHero({
       />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-4 pb-10 pt-32 text-center sm:px-6 sm:pt-28">
+      <div className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-4 pb-10 pt-24 text-center sm:px-6 sm:pt-28 lg:pt-32">
         {badge && (
           <span
             className="eyebrow-glow fade-in-up mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] shadow-md"
@@ -152,7 +151,7 @@ export default function PageHero({
       {scrollTargetId && (
         <a
           href={`#${scrollTargetId}`}
-          className="animate-float absolute bottom-14 left-1/2 z-10 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur transition-all hover:scale-110 hover:bg-white/30 sm:bottom-16"
+          className="animate-float absolute bottom-12 left-1/2 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur transition-all hover:scale-110 hover:bg-white/30 sm:bottom-16 sm:h-11 sm:w-11"
           aria-label="Scroll to content"
         >
           <ChevronDown size={20} />
