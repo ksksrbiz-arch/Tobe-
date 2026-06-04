@@ -10,12 +10,13 @@ import { usePathname } from "next/navigation";
 export default function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [stage, setStage] = useState<"in" | "out">("in");
-  const [reduceMotion, setReduceMotion] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
   const firstRender = useRef(true);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduceMotion(media.matches);
     const onChange = () => setReduceMotion(media.matches);
     media.addEventListener("change", onChange);
     return () => media.removeEventListener("change", onChange);
@@ -27,9 +28,12 @@ export default function PageTransition({ children }: { children: React.ReactNode
       return;
     }
     if (reduceMotion) return;
-    setStage("out");
-    const id = window.setTimeout(() => setStage("in"), 180);
-    return () => window.clearTimeout(id);
+    const outId = window.setTimeout(() => setStage("out"), 0);
+    const inId = window.setTimeout(() => setStage("in"), 180);
+    return () => {
+      window.clearTimeout(outId);
+      window.clearTimeout(inId);
+    };
   }, [pathname, reduceMotion]);
 
   return (
