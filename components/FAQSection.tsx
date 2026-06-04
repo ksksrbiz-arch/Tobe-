@@ -6,8 +6,8 @@ import Reveal from "./Reveal";
 import JsonLd from "./JsonLd";
 import {
   TRADE_POLICY_CAP,
+  TRADE_POLICY_CAP_AND_NOV1,
   TRADE_POLICY_EXPIRY,
-  TRADE_POLICY_NOV1,
   TRADE_POLICY_WAIT,
 } from "@/lib/tradePolicy";
 
@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: "How is my trade credit calculated?",
-    a: `You receive 25% of the book's original list price as store credit on books we accept. When you purchase with credit, 50% of the list price comes off your credit plus a small swap fee ($1–$3). ${TRADE_POLICY_CAP} ${TRADE_POLICY_NOV1}`,
+    a: `You receive 25% of the book's original list price as store credit on books we accept. When you purchase with credit, 50% of the list price comes off your credit plus a small swap fee ($1–$3). ${TRADE_POLICY_CAP_AND_NOV1}`,
   },
   {
     q: "What books do you accept?",

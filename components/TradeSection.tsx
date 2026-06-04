@@ -3,7 +3,11 @@
 import React, { useState } from "react";
 import { Check, X as XIcon, AlertTriangle, Receipt, Sparkles } from "lucide-react";
 import Reveal from "./Reveal";
-import { TRADE_POLICY_CAP, TRADE_POLICY_EXPIRY, TRADE_POLICY_NOV1, TRADE_POLICY_WAIT } from "@/lib/tradePolicy";
+import {
+  TRADE_POLICY_CAP,
+  TRADE_POLICY_NOV1,
+  TRADE_POLICY_WAIT_AND_EXPIRY,
+} from "@/lib/tradePolicy";
 
 const acceptItems = [
   "Fiction & literary novels",
@@ -101,7 +105,7 @@ export default function TradeSection() {
                 NO CASH GIVEN FOR BOOKS!
               </p>
               <p className="mt-1 text-sm leading-relaxed" style={{ color: "#374151" }}>
-                We operate on a trade credit system. {TRADE_POLICY_WAIT} {TRADE_POLICY_EXPIRY}
+                {`We operate on a trade credit system. ${TRADE_POLICY_WAIT_AND_EXPIRY}`}
               </p>
             </div>
           </div>
