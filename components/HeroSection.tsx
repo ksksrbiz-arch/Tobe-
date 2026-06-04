@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ArrowRight, ShoppingBag, Sparkles, Star } from "lucide-react";
 import BookLogo from "./BookLogo";
 import DustMotes from "./DustMotes";
+import { getMotionSafeScrollBehavior } from "@/lib/motion";
 
 export default function HeroSection() {
   // Defer mounting of decorative, animation-heavy layers until after the
@@ -13,8 +14,6 @@ export default function HeroSection() {
   // ambient animation (blurred floats, twinkling stars, dust motes) and add
   // continuous compositing work that is wasted for those users.
   const [decorReady, setDecorReady] = useState(false);
-  const scrollBehavior = (): ScrollBehavior =>
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
@@ -36,12 +35,12 @@ export default function HeroSection() {
 
   const handleVisit = () => {
     const el = document.querySelector("#visit");
-    if (el) el.scrollIntoView({ behavior: scrollBehavior() });
+    if (el) el.scrollIntoView({ behavior: getMotionSafeScrollBehavior() });
   };
 
   const handleShop = () => {
     const el = document.querySelector("#shop");
-    if (el) el.scrollIntoView({ behavior: scrollBehavior() });
+    if (el) el.scrollIntoView({ behavior: getMotionSafeScrollBehavior() });
   };
 
   const handleCelebrate = async () => {

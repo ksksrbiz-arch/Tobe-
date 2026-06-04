@@ -517,7 +517,7 @@ function PlaybackBar({
         }}
         style={{
           flex: 1,
-          height: 34,
+          height: 44,
           position: "relative",
           cursor: dragging ? "grabbing" : "pointer",
           display: "flex",

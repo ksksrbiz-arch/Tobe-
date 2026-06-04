@@ -151,7 +151,7 @@ export default function PageHero({
       {scrollTargetId && (
         <a
           href={`#${scrollTargetId}`}
-          className="animate-float absolute bottom-12 left-1/2 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur transition-all hover:scale-110 hover:bg-white/30 sm:bottom-16 sm:h-11 sm:w-11"
+          className="touch-target animate-float absolute bottom-12 left-1/2 z-10 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur transition-all hover:scale-110 hover:bg-white/30 sm:bottom-16"
           aria-label="Scroll to content"
         >
           <ChevronDown size={20} />

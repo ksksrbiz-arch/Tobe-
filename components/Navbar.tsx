@@ -248,7 +248,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
               <a
                 href="tel:503-659-2559"
-                className="touch-target inline-flex h-9 w-9 items-center justify-center rounded-full border transition-all active:scale-95 lg:hover:scale-110"
+                className="touch-target inline-flex h-11 w-11 items-center justify-center rounded-full border transition-all active:scale-95 lg:hover:scale-110"
                 style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F", background: "rgba(255,255,255,0.72)" }}
               >
                 <Phone size={15} />

@@ -2,11 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { ArrowUp, BookOpen } from "lucide-react";
+import { getMotionSafeScrollBehavior } from "@/lib/motion";
 
 export default function FloatingButtons() {
   const [showTop, setShowTop] = useState(false);
-  const scrollBehavior = (): ScrollBehavior =>
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,13 +17,13 @@ export default function FloatingButtons() {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: scrollBehavior() });
+    window.scrollTo({ top: 0, behavior: getMotionSafeScrollBehavior() });
   };
 
   const handleTrade = () => {
     const el = document.querySelector("#trade");
     if (el) {
-      el.scrollIntoView({ behavior: scrollBehavior() });
+      el.scrollIntoView({ behavior: getMotionSafeScrollBehavior() });
     } else {
       // If trade section isn't on this page, navigate
       window.location.href = "/trade";
