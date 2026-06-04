@@ -52,7 +52,7 @@ const steps = [
   {
     icon: HandCoins,
     title: "Get store credit",
-    body: "Receive 25% of the original list price as credit on each accepted book. If you already have credit, trade intake pauses on Nov 1 each year. Credit expires Dec 31, and balances are capped at $200 until spent below that amount.",
+    body: "Receive 25% of the original list price as credit on each accepted book. Balances are capped at $200, and you'll need to spend below that to earn more credit. If you already have credit, trade intake pauses on Nov 1 each year, and all credit expires on Dec 31.",
   },
   {
     icon: Smile,

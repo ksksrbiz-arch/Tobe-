@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     q: "How is my trade credit calculated?",
-    a: "You receive 25% of the book's original list price as store credit on books we accept. When you purchase a book using credit, 50% of the list price comes off your credit, plus a small swap fee ($1–$3 depending on price). We cap credit at $200, so you'll need to spend below $200 before earning more. If you already have credit, we stop accepting trade books on Nov 1 each year so we can catch up inventory and give everyone time to use credit.",
+    a: "You receive 25% of the book's original list price as store credit on books we accept. When you purchase with credit, 50% of the list price comes off your credit plus a small swap fee ($1–$3). Credit is capped at $200, so you must spend below $200 before earning more. If you already have credit, trade intake pauses on Nov 1 each year.",
   },
   {
     q: "What books do you accept?",
