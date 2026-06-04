@@ -28,6 +28,8 @@ export default function PageTransition({ children }: { children: React.ReactNode
       return;
     }
     if (reduceMotion) return;
+    // Defer the route-change state flip to the next task so React's
+    // set-state-in-effect rule does not flag a synchronous cascading render.
     const outId = window.setTimeout(() => setStage("out"), 0);
     const inId = window.setTimeout(() => setStage("in"), 180);
     return () => {

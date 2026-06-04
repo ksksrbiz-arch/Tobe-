@@ -269,7 +269,7 @@ export function Stage({
     };
   }, [playing, duration, loop]);
 
-  // Keyboard: space = play/pause, ← → = seek
+  // Keyboard: space = play/pause, ← → = seek 1s, Shift+←/→ = seek 5s.
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
@@ -377,6 +377,7 @@ function PlaybackBar({
 }: PlaybackBarProps) {
   const trackRef = React.useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = React.useState(false);
+  const timelineHelpId = React.useId();
 
   const timeFromClientX = React.useCallback(
     (clientX: number) => {
@@ -494,6 +495,7 @@ function PlaybackBar({
         aria-valuemax={Math.round(duration * 100)}
         aria-valuenow={Math.round(time * 100)}
         aria-valuetext={`${fmt(time)} of ${fmt(duration)}`}
+        aria-describedby={timelineHelpId}
         tabIndex={0}
         onPointerMove={onTrackMove}
         onPointerLeave={onTrackLeave}
@@ -560,6 +562,9 @@ function PlaybackBar({
           }}
         />
       </div>
+      <span id={timelineHelpId} className="sr-only">
+        Use arrow keys to seek by 1 second, or Shift plus arrow keys to seek by 5 seconds.
+      </span>
 
       <div
         style={{

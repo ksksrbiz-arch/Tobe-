@@ -97,7 +97,7 @@ export default function Navbar() {
   };
 
   const handleDrawerTouchStart = (event: React.TouchEvent<HTMLElement>) => {
-    drawerTouchStartX.current = event.touches.length > 0 ? event.touches[0].clientX : null;
+    drawerTouchStartX.current = event.touches[0].clientX;
   };
 
   const handleDrawerTouchEnd = (event: React.TouchEvent<HTMLElement>) => {
