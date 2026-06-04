@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
 
@@ -7,19 +7,32 @@ import { Toaster } from "sonner";
 // Fonts stylesheet, adds `font-display: swap`, preloads only the glyphs we
 // need, and generates a size-adjusted fallback to minimize CLS. Exposed as
 // CSS variables that globals.css maps to --font-sans / --font-serif.
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+const inter = localFont({
+  src: "./fonts/inter-latin-wght-normal.woff2",
   display: "swap",
   variable: "--font-inter",
+  weight: "300 700",
+  fallback: ["system-ui", "-apple-system", "sans-serif"],
+  adjustFontFallback: "Arial",
 });
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  style: ["normal", "italic"],
+const playfair = localFont({
+  src: [
+    {
+      path: "./fonts/playfair-display-latin-wght-normal.woff2",
+      style: "normal",
+      weight: "400 800",
+    },
+    {
+      path: "./fonts/playfair-display-latin-wght-italic.woff2",
+      style: "italic",
+      weight: "400 800",
+    },
+  ],
   display: "swap",
   variable: "--font-playfair",
+  fallback: ["Georgia", "serif"],
+  adjustFontFallback: "Times New Roman",
 });
 import CozyAmbience from "@/components/CozyAmbience";
 import PageTransition from "@/components/PageTransition";
