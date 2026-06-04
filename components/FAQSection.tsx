@@ -5,7 +5,6 @@ import { ChevronDown, HelpCircle } from "lucide-react";
 import Reveal from "./Reveal";
 import JsonLd from "./JsonLd";
 import {
-  TRADE_POLICY_CAP,
   TRADE_POLICY_CAP_AND_NOV1,
   TRADE_POLICY_EXPIRY,
   TRADE_POLICY_WAIT,
