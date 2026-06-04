@@ -22,20 +22,21 @@ import {
   Mail,
   AtSign,
 } from "lucide-react";
+import { TRADE_POLICY_CAP, TRADE_POLICY_EXPIRY, TRADE_POLICY_NOV1, TRADE_POLICY_WAIT } from "@/lib/tradePolicy";
 
 const chapters = [
   {
     n: "01",
     eyebrow: "Chapter one",
     title: "Bring books in",
-    body: "Bring your books to the counter during open hours and wait while we review them. We cannot accept drop-offs because storage space is limited.",
+    body: `Bring your books to the counter during open hours. ${TRADE_POLICY_WAIT}`,
     icon: BookOpen,
   },
   {
     n: "02",
     eyebrow: "Chapter two",
     title: "Earn store credit",
-    body: "One credit per paperback, two per hardcover. Credit expires on Dec 31 each year, balances are capped at $200, and you'll need to spend below $200 before earning more.",
+    body: `One credit per paperback, two per hardcover. ${TRADE_POLICY_EXPIRY} ${TRADE_POLICY_CAP}`,
     icon: Coins,
   },
   {
@@ -66,7 +67,7 @@ const noList = [
 const fineprint = [
   {
     q: "Daily trade-in limit?",
-    a: "Bring in what we can review while you wait — no drop-offs due to limited storage. If your account already has credit, we stop accepting trade books on Nov 1 each year.",
+    a: `Bring in what we can review while you wait. ${TRADE_POLICY_WAIT} ${TRADE_POLICY_NOV1}`,
   },
   {
     q: "Can I share credit with a partner?",
@@ -423,7 +424,8 @@ export default function HowItWorksPage() {
               className="mt-4 max-w-2xl font-serif italic"
               style={{ color: "var(--ink-soft)", fontSize: "1.15rem" }}
             >
-              Credit stays on your account under your name and phone number, expires on Dec 31 each year, and is capped at $200 until spent below that amount.
+              Credit stays on your account under your name and phone number. {TRADE_POLICY_EXPIRY}{" "}
+              {TRADE_POLICY_CAP}
             </p>
           </Reveal>
 
@@ -490,7 +492,7 @@ export default function HowItWorksPage() {
                 <SideNote
                   icon={Clock}
                   caps="Annual renewal"
-                  body="Trade credit expires each year on Dec 31. If you already have credit, trade intake pauses on Nov 1."
+                  body={`${TRADE_POLICY_EXPIRY} ${TRADE_POLICY_NOV1}`}
                 />
                 <Hairline />
                 <SideNote

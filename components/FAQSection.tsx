@@ -4,15 +4,21 @@ import React, { useState } from "react";
 import { ChevronDown, HelpCircle } from "lucide-react";
 import Reveal from "./Reveal";
 import JsonLd from "./JsonLd";
+import {
+  TRADE_POLICY_CAP,
+  TRADE_POLICY_EXPIRY,
+  TRADE_POLICY_NOV1,
+  TRADE_POLICY_WAIT,
+} from "@/lib/tradePolicy";
 
 const faqs = [
   {
     q: "Do you really not give cash for trades?",
-    a: "Correct — we operate as a trade-credit shop. Books cannot be dropped off, so please wait while we review your stack due to limited storage capacity. Credit is store credit only (not cash) and expires each year on Dec 31.",
+    a: `Correct — we operate as a trade-credit shop. ${TRADE_POLICY_WAIT} Credit is store credit only (not cash). ${TRADE_POLICY_EXPIRY}`,
   },
   {
     q: "How is my trade credit calculated?",
-    a: "You receive 25% of the book's original list price as store credit on books we accept. When you purchase with credit, 50% of the list price comes off your credit plus a small swap fee ($1–$3). Credit is capped at $200, so you must spend below $200 before earning more. If you already have credit, trade intake pauses on Nov 1 each year.",
+    a: `You receive 25% of the book's original list price as store credit on books we accept. When you purchase with credit, 50% of the list price comes off your credit plus a small swap fee ($1–$3). ${TRADE_POLICY_CAP} ${TRADE_POLICY_NOV1}`,
   },
   {
     q: "What books do you accept?",

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Check, X as XIcon, AlertTriangle, Receipt, Sparkles } from "lucide-react";
 import Reveal from "./Reveal";
+import { TRADE_POLICY_CAP, TRADE_POLICY_EXPIRY, TRADE_POLICY_NOV1, TRADE_POLICY_WAIT } from "@/lib/tradePolicy";
 
 const acceptItems = [
   "Fiction & literary novels",
@@ -100,9 +101,7 @@ export default function TradeSection() {
                 NO CASH GIVEN FOR BOOKS!
               </p>
               <p className="mt-1 text-sm leading-relaxed" style={{ color: "#374151" }}>
-                We operate on a trade credit system. Books cannot be dropped off.
-                Please wait while we review your stack due to limited storage capacity.
-                Credit expires on Dec 31 each year.
+                We operate on a trade credit system. {TRADE_POLICY_WAIT} {TRADE_POLICY_EXPIRY}
               </p>
             </div>
           </div>
@@ -234,11 +233,10 @@ export default function TradeSection() {
                   with our store sticker.
                 </p>
                 <p className="mt-2">
-                  If you already have credit, we stop accepting trade books on Nov 1 each year to
-                  catch up inventory and give everyone time to use their credit.
+                  {TRADE_POLICY_NOV1}
                 </p>
                 <p className="mt-2">
-                  Credit balances are capped at $200 until your balance is spent below $200.
+                  {TRADE_POLICY_CAP}
                 </p>
               </div>
             </div>

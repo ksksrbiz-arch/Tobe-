@@ -16,6 +16,7 @@ import {
   HandCoins,
   Smile,
 } from "lucide-react";
+import { TRADE_POLICY_CAP, TRADE_POLICY_EXPIRY, TRADE_POLICY_NOV1, TRADE_POLICY_WAIT } from "@/lib/tradePolicy";
 
 const tradeTips = [
   {
@@ -28,7 +29,7 @@ const tradeTips = [
     icon: BookCopy,
     title: "Bring Multiples",
     description:
-      "Bring what you can comfortably review with us at the counter. Credit is capped at $200, so you'll need to spend below that before earning more.",
+      `Bring what you can comfortably review with us at the counter. ${TRADE_POLICY_CAP}`,
   },
   {
     icon: Sunrise,
@@ -47,12 +48,12 @@ const steps = [
   {
     icon: BookCopy,
     title: "Wait while we review",
-    body: "Books cannot be dropped off. Please stay while we review your stack due to limited storage capacity.",
+    body: TRADE_POLICY_WAIT,
   },
   {
     icon: HandCoins,
     title: "Get store credit",
-    body: "Receive 25% of the original list price as credit on each accepted book. Balances are capped at $200, and you'll need to spend below that to earn more credit. If you already have credit, trade intake pauses on Nov 1 each year, and all credit expires on Dec 31.",
+    body: `Receive 25% of the original list price as credit on each accepted book. ${TRADE_POLICY_CAP} ${TRADE_POLICY_NOV1} ${TRADE_POLICY_EXPIRY}`,
   },
   {
     icon: Smile,
