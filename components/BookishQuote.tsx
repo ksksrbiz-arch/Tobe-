@@ -136,7 +136,7 @@ export default function BookishQuote() {
             <blockquote
               className="text-balance text-xl leading-relaxed sm:text-2xl"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#4A1350",
                 fontStyle: "italic",
               }}

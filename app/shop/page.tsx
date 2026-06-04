@@ -125,7 +125,7 @@ export default function ShopPage() {
             <h2
               className="font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.7rem, 3.5vw, 2.2rem)",
               }}
@@ -174,7 +174,7 @@ export default function ShopPage() {
             <h2
               className="mb-3 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
@@ -208,7 +208,7 @@ export default function ShopPage() {
                     />
                     <p
                       className="relative text-base font-bold leading-tight text-white"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                      style={{ fontFamily: "var(--font-serif)" }}
                     >
                       {book.title}
                     </p>
@@ -230,7 +230,7 @@ export default function ShopPage() {
                       className="mt-3 text-lg font-bold"
                       style={{
                         color: book.accentFrom,
-                        fontFamily: "'Playfair Display', Georgia, serif",
+                        fontFamily: "var(--font-serif)",
                       }}
                     >
                       {book.price}

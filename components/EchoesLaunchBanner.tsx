@@ -260,7 +260,7 @@ export default function EchoesLaunchBanner() {
                 <h2
                   className="font-black leading-[1.0]"
                   style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontFamily: "var(--font-serif)",
                     fontSize: "clamp(2.4rem, 6vw, 4rem)",
                     color: "white",
                     animation: "echoesGlitch 9s ease-in-out infinite",
@@ -455,7 +455,7 @@ export default function EchoesLaunchBanner() {
                   </p>
                   <p
                     className="text-sm font-bold leading-snug"
-                    style={{ color: "white", fontFamily: "'Playfair Display', Georgia, serif" }}
+                    style={{ color: "white", fontFamily: "var(--font-serif)" }}
                   >
                     {scene.title}
                   </p>

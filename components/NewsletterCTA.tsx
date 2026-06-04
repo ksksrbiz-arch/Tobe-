@@ -73,7 +73,7 @@ export default function NewsletterCTA() {
                 <h2
                   className="mb-3 font-bold leading-tight text-white"
                   style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontFamily: "var(--font-serif)",
                     fontSize: "clamp(1.8rem, 4.5vw, 2.6rem)",
                   }}
                 >

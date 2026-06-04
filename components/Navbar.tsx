@@ -140,7 +140,7 @@ export default function Navbar() {
               <div className="hidden sm:block">
                 <div
                   style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontFamily: "var(--font-serif)",
                     color: "#6B1C6F",
                     fontWeight: 700,
                     fontSize: "1.05rem",

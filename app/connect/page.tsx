@@ -67,7 +67,7 @@ export default function ConnectPage() {
             <h2
               className="mb-3 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}

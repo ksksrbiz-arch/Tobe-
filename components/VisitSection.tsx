@@ -123,7 +123,7 @@ export default function VisitSection() {
           <h2
             className="mb-3 font-bold"
             style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
               color: "#6B1C6F",
               fontSize: "clamp(1.85rem, 5vw, 3rem)",
               lineHeight: 1.1,

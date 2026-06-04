@@ -110,7 +110,7 @@ export default function PageHero({
         <h1
           className="fade-in-up mb-4 font-bold text-white"
           style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
+            fontFamily: "var(--font-serif)",
             fontSize: "clamp(2.2rem, 6.5vw, 4rem)",
             lineHeight: 1.05,
             animationDelay: "100ms",

@@ -61,7 +61,7 @@ export default function ShopSection() {
           <h2
             className="mb-3 font-bold"
             style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
               color: "#6B1C6F",
               fontSize: "clamp(2rem, 5vw, 3rem)",
             }}
@@ -113,7 +113,7 @@ export default function ShopSection() {
                   </div>
                   <h3
                     className="mt-4 text-2xl font-bold"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: card.color }}
+                    style={{ fontFamily: "var(--font-serif)", color: card.color }}
                   >
                     {card.name}
                   </h3>

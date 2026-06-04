@@ -57,7 +57,7 @@ export default function EventsSection() {
           <h2
             className="mb-3 font-bold"
             style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
               color: "#6B1C6F",
               fontSize: "clamp(2rem, 5vw, 3rem)",
             }}
@@ -99,7 +99,7 @@ export default function EventsSection() {
                 </p>
                 <h3
                   className="mb-2 text-lg font-bold leading-tight"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                  style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
                 >
                   {ev.title}
                 </h3>

@@ -71,7 +71,7 @@ export default function WishlistPage() {
                   </div>
                   <h3
                     className="mb-2 text-base font-bold"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
                   >
                     {f.title}
                   </h3>
@@ -105,7 +105,7 @@ export default function WishlistPage() {
             <h2
               className="mb-3 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.9rem, 4vw, 2.4rem)",
               }}

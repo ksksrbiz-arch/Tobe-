@@ -124,7 +124,7 @@ export default function AboutPage() {
             <h2
               className="mb-3 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
@@ -151,7 +151,7 @@ export default function AboutPage() {
                   </div>
                   <h3
                     className="mb-2 text-lg font-bold"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
                   >
                     {v.title}
                   </h3>
@@ -181,7 +181,7 @@ export default function AboutPage() {
             <h2
               className="mb-3 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
@@ -310,7 +310,7 @@ export default function AboutPage() {
               <p
                 className="text-lg leading-relaxed sm:text-xl"
                 style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontFamily: "var(--font-serif)",
                   color: "#374151",
                   fontStyle: "italic",
                 }}

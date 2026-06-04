@@ -92,7 +92,7 @@ export default function TradePage() {
             <h2
               className="mb-3 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
@@ -115,7 +115,7 @@ export default function TradePage() {
                   <span
                     className="absolute right-5 top-5 text-3xl font-bold opacity-15 transition-opacity group-hover:opacity-30"
                     style={{
-                      fontFamily: "'Playfair Display', Georgia, serif",
+                      fontFamily: "var(--font-serif)",
                       color: "#6B1C6F",
                     }}
                   >
@@ -129,7 +129,7 @@ export default function TradePage() {
                   </div>
                   <h3
                     className="mb-2 text-base font-bold"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
                   >
                     {step.title}
                   </h3>
@@ -165,7 +165,7 @@ export default function TradePage() {
             <h2
               className="mb-3 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
@@ -200,7 +200,7 @@ export default function TradePage() {
             <h2
               className="mb-3 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
@@ -229,7 +229,7 @@ export default function TradePage() {
                   </div>
                   <h3
                     className="mb-3 text-lg font-bold"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
                   >
                     {tip.title}
                   </h3>

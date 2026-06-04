@@ -1,6 +1,39 @@
 import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
+
+// Self-hosted via next/font: removes the render-blocking third-party Google
+// Fonts stylesheet, adds `font-display: swap`, preloads only the glyphs we
+// need, and generates a size-adjusted fallback to minimize CLS. Exposed as
+// CSS variables that globals.css maps to --font-sans / --font-serif.
+const inter = localFont({
+  src: "./fonts/inter-latin-wght-normal.woff2",
+  display: "swap",
+  variable: "--font-inter",
+  weight: "300 700",
+  fallback: ["system-ui", "-apple-system", "sans-serif"],
+  adjustFontFallback: "Arial",
+});
+
+const playfair = localFont({
+  src: [
+    {
+      path: "./fonts/playfair-display-latin-wght-normal.woff2",
+      style: "normal",
+      weight: "400 800",
+    },
+    {
+      path: "./fonts/playfair-display-latin-wght-italic.woff2",
+      style: "italic",
+      weight: "400 800",
+    },
+  ],
+  display: "swap",
+  variable: "--font-playfair",
+  fallback: ["Georgia", "serif"],
+  adjustFontFallback: "Times New Roman",
+});
 import CozyAmbience from "@/components/CozyAmbience";
 import PageTransition from "@/components/PageTransition";
 import BookishEasterEgg from "@/components/BookishEasterEgg";
@@ -164,14 +197,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -198,7 +225,7 @@ export default function RootLayout({
           richColors
           toastOptions={{
             style: {
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "var(--font-sans)",
             },
           }}
         />

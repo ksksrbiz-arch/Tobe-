@@ -21,8 +21,8 @@ const PAPER_2 = "#FDF8F0";
 const INK = "#1F1A2E";
 const INK_SOFT = "#4B5563";
 
-const SERIF = "'Playfair Display', Georgia, serif";
-const SANS = "'Inter', system-ui, sans-serif";
+const SERIF = "var(--font-serif)";
+const SANS = "var(--font-sans)";
 
 // ─── Shared primitives ────────────────────────────────────────────────────────
 
