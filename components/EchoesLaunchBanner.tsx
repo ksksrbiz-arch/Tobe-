@@ -10,20 +10,25 @@ const GENRES = [
     color: "#f43f5e",
     glow: "rgba(244,63,94,0.35)",
     teaser: "Forbidden vows, stolen glances, and impossible decisions.",
+    choicePressure: "Emotional",
   },
   {
     label: "Crime Noir",
     color: "#38bdf8",
     glow: "rgba(56,189,248,0.35)",
     teaser: "Rain-soaked clues, hidden motives, and midnight reveals.",
+    choicePressure: "Investigative",
   },
   {
     label: "Paranormal",
     color: "#a78bfa",
     glow: "rgba(167,139,250,0.35)",
     teaser: "Ancient rites, haunted bloodlines, and dangerous magic.",
+    choicePressure: "Supernatural",
   },
 ];
+
+const ECHOES_LAUNCH_URL = "https://echoes-of-choice-167345356687.us-west2.run.app";
 
 const FLOATING_WORDS = [
   "Choose",
@@ -199,7 +204,7 @@ export default function EchoesLaunchBanner() {
       `}</style>
 
       <section
-        className="relative overflow-hidden px-4 py-14 sm:px-6 sm:py-24 lg:px-8"
+        className="relative overflow-hidden px-4 py-12 sm:px-6 sm:py-20 lg:px-8"
         aria-label="Echoes of Choice — new interactive fiction app launch"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -430,7 +435,7 @@ export default function EchoesLaunchBanner() {
                 {/* CTA */}
                 <div className="mt-8 flex flex-wrap items-center gap-4">
                   <a
-                    href="https://echoes-of-choice-167345356687.us-west2.run.app"
+                    href={ECHOES_LAUNCH_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-bold text-black shadow-xl transition-all duration-300 hover:scale-[1.04] hover:shadow-2xl"
@@ -448,7 +453,7 @@ export default function EchoesLaunchBanner() {
                     />
                   </a>
                   <a
-                    href="https://echoes-of-choice-167345356687.us-west2.run.app"
+                    href={ECHOES_LAUNCH_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-2xl border px-5 py-3 text-sm font-semibold transition-all duration-300 hover:scale-[1.03]"
@@ -544,7 +549,7 @@ export default function EchoesLaunchBanner() {
                         Choice Pressure
                       </p>
                       <p className="mt-1 text-xs font-bold" style={{ color: "white" }}>
-                        {activeGenre === 0 ? "Emotional" : activeGenre === 1 ? "Investigative" : "Supernatural"}
+                        {genre.choicePressure}
                       </p>
                     </div>
                   </div>
