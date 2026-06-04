@@ -44,7 +44,7 @@ export default function Navbar() {
       rafRef.current = null;
     };
     const handleScroll = () => {
-      if (rafRef.current == null) {
+      if (rafRef.current === null) {
         rafRef.current = window.requestAnimationFrame(updateScrollState);
       }
     };
@@ -52,7 +52,7 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      if (rafRef.current != null) window.cancelAnimationFrame(rafRef.current);
+      if (rafRef.current !== null) window.cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
@@ -103,7 +103,7 @@ export default function Navbar() {
   const handleDrawerTouchEnd = (event: React.TouchEvent<HTMLElement>) => {
     const startX = drawerTouchStartX.current;
     drawerTouchStartX.current = null;
-    if (startX == null) return;
+    if (startX === null) return;
     const endX = event.changedTouches[0]?.clientX ?? startX;
     if (endX - startX > 60) setIsOpen(false);
   };
