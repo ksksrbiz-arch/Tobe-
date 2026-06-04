@@ -100,7 +100,7 @@ export default function LemmyFeatureSection() {
           <h2
             className="mt-4 font-bold"
             style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
               color: "#6B1C6F",
               fontSize: "clamp(2rem, 5.2vw, 3rem)",
               lineHeight: 1.05,
@@ -187,7 +187,7 @@ export default function LemmyFeatureSection() {
                   </span>
                   <h3
                     className="mt-4 text-3xl font-bold text-white"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", lineHeight: 1.1 }}
+                    style={{ fontFamily: "var(--font-serif)", lineHeight: 1.1 }}
                   >
                     Beowolfs of the Webs
                   </h3>
@@ -286,7 +286,7 @@ export default function LemmyFeatureSection() {
                     <h3
                       className="mt-1 text-xl font-bold"
                       style={{
-                        fontFamily: "'Playfair Display', Georgia, serif",
+                        fontFamily: "var(--font-serif)",
                         color: "#6B1C6F",
                       }}
                     >
@@ -318,7 +318,7 @@ export default function LemmyFeatureSection() {
                       <div>
                         <p
                           className="text-sm font-semibold"
-                          style={{ color: "#6B1C6F", fontFamily: "'Playfair Display', Georgia, serif" }}
+                          style={{ color: "#6B1C6F", fontFamily: "var(--font-serif)" }}
                         >
                           {item.title}
                         </p>

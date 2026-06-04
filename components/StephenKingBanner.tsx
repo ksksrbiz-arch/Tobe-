@@ -144,7 +144,7 @@ export default function StephenKingBanner() {
                 <h2
                   className="font-black leading-[1.05]"
                   style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontFamily: "var(--font-serif)",
                     fontSize: "clamp(2rem, 5vw, 3.2rem)",
                     color: "white",
                   }}
@@ -222,7 +222,7 @@ export default function StephenKingBanner() {
                     </span>
                     <p
                       className="mt-3 text-sm font-bold leading-snug sm:text-base"
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "white" }}
+                      style={{ fontFamily: "var(--font-serif)", color: "white" }}
                     >
                       {book.title}
                     </p>

@@ -121,7 +121,7 @@ export default function TradeCreditEstimator() {
         <div>
           <h3
             className="font-bold"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F", fontSize: "1.15rem" }}
+            style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F", fontSize: "1.15rem" }}
           >
             Trade Credit Estimator
           </h3>
@@ -308,7 +308,7 @@ export default function TradeCreditEstimator() {
               </span>
               <span
                 className="font-bold text-sm"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
               >
                 {fmt(Math.max(0, result.credit - result.fee))}
               </span>

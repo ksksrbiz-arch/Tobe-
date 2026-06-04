@@ -71,7 +71,7 @@ function ReviewCard({ review }: { review: GoogleReview }) {
             className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
             style={{
               background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
             }}
           >
             {initial}

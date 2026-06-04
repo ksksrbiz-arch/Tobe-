@@ -75,7 +75,7 @@ function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
       <div className="p-3">
         <p
           className="line-clamp-2 text-xs font-bold leading-tight"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+          style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
         >
           {book.title}
         </p>
@@ -250,7 +250,7 @@ export function JustShelvedSection() {
           <h2
             className="mt-4 font-bold"
             style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
               color: "#6B1C6F",
               fontSize: "clamp(2rem, 5vw, 2.8rem)",
             }}

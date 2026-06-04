@@ -73,7 +73,7 @@ export function CookbookCurationGallery() {
           <h2
             className="mt-4 font-bold"
             style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-serif)",
               color: "#6B1C6F",
               fontSize: "clamp(2rem, 5vw, 2.8rem)",
             }}
@@ -174,7 +174,7 @@ export function CookbookCurationGallery() {
             <div className="px-6 py-4">
               <p
                 className="text-lg font-bold"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
               >
                 {active.caption}
               </p>

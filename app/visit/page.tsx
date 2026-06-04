@@ -73,7 +73,7 @@ export default function VisitPage() {
             <h2
               className="font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.8rem, 4.5vw, 2.6rem)",
               }}
@@ -104,7 +104,7 @@ export default function VisitPage() {
             <h2
               className="mb-3 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
@@ -131,7 +131,7 @@ export default function VisitPage() {
                   </div>
                   <h3
                     className="mb-3 text-lg font-bold"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
                   >
                     {card.title}
                   </h3>
@@ -174,7 +174,7 @@ export default function VisitPage() {
             <h2
               className="mb-2 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.7rem, 3.5vw, 2.2rem)",
               }}
@@ -195,7 +195,7 @@ export default function VisitPage() {
                 >
                   <h3
                     className="mb-2 text-base font-bold"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
                   >
                     {spot.title}
                   </h3>

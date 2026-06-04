@@ -278,7 +278,7 @@ export default function Home() {
             <h2
               className="mt-4 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(2rem, 5vw, 2.8rem)",
               }}
@@ -340,7 +340,7 @@ export default function Home() {
               </span>
               <h2
                 className="mt-4 text-2xl font-bold"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
               >
                 More than a quick landing page.
               </h2>
@@ -367,7 +367,7 @@ export default function Home() {
                 </div>
                 <div
                   className="text-lg font-bold"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                  style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
                 >
                   {stat.label}
                 </div>
@@ -403,7 +403,7 @@ export default function Home() {
             <h2
               className="mt-4 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(2rem, 5vw, 2.8rem)",
               }}
@@ -453,7 +453,7 @@ export default function Home() {
                   </div>
                   <h3
                     className="mt-6 text-xl font-bold"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
                   >
                     {card.title}
                   </h3>
@@ -498,7 +498,7 @@ export default function Home() {
             <h2
               className="mt-4 font-bold"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-serif)",
                 color: "#6B1C6F",
                 fontSize: "clamp(1.9rem, 4vw, 2.7rem)",
               }}

@@ -111,7 +111,7 @@ export default function AdminPage() {
           </div>
           <h1
             className="mb-1 text-xl font-bold"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F" }}
+            style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
           >
             Staff Sign In
           </h1>
@@ -157,7 +157,7 @@ export default function AdminPage() {
           <div>
             <h1
               className="font-bold"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B1C6F", fontSize: "1.8rem" }}
+              style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F", fontSize: "1.8rem" }}
             >
               Trade Desk Scanner
             </h1>
