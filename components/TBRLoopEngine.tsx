@@ -278,9 +278,9 @@ export function Stage({
         e.preventDefault();
         setPlaying((p) => !p);
       } else if (e.code === "ArrowLeft") {
-        setTime((t) => clamp(t - (e.shiftKey ? 1 : 0.1), 0, duration));
+        setTime((t) => clamp(t - (e.shiftKey ? 5 : 1), 0, duration));
       } else if (e.code === "ArrowRight") {
-        setTime((t) => clamp(t + (e.shiftKey ? 1 : 0.1), 0, duration));
+        setTime((t) => clamp(t + (e.shiftKey ? 5 : 1), 0, duration));
       } else if (e.key === "0" || e.code === "Home") {
         setTime(0);
       }
@@ -503,10 +503,10 @@ function PlaybackBar({
         onKeyDown={(e) => {
           if (e.key === "ArrowLeft") {
             e.preventDefault();
-            onSeek(clamp(time - (e.shiftKey ? 1 : 0.1), 0, duration));
+            onSeek(clamp(time - (e.shiftKey ? 5 : 1), 0, duration));
           } else if (e.key === "ArrowRight") {
             e.preventDefault();
-            onSeek(clamp(time + (e.shiftKey ? 1 : 0.1), 0, duration));
+            onSeek(clamp(time + (e.shiftKey ? 5 : 1), 0, duration));
           } else if (e.key === "Home") {
             e.preventDefault();
             onSeek(0);

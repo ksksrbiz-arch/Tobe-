@@ -60,7 +60,7 @@ export default function HeroSection() {
 
   return (
     <section
-      className="paper-warm relative flex min-h-screen min-h-[100svh] min-h-[100dvh] items-center justify-center overflow-hidden px-4 pb-12 pt-[calc(var(--header-offset,_6.75rem)+2rem)] sm:pb-14 sm:pt-[calc(var(--header-offset,_6.75rem)+3rem)]"
+      className="viewport-min-height paper-warm relative flex items-center justify-center overflow-hidden px-4 pb-12 pt-[calc(var(--header-offset,_6.75rem)+2rem)] sm:pb-14 sm:pt-[calc(var(--header-offset,_6.75rem)+3rem)]"
       style={{
         background:
           "radial-gradient(circle at 12% 18%, rgba(241,187,26,0.22), transparent 32%), radial-gradient(circle at 82% 22%, rgba(107,28,111,0.20), transparent 30%), radial-gradient(circle at 50% 90%, rgba(241,187,26,0.10), transparent 50%), linear-gradient(135deg, #FDF8F0 0%, #FFF7EC 36%, #F7F0FF 100%)",
