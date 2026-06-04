@@ -47,6 +47,7 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--header-offset);
   background: var(--background);
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -67,6 +68,20 @@ body {
 /* Kill the grey flash on tap for touch devices and keep controls comfy. */
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+select,
+textarea,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
 }
 
 /* Mobile: fixed background-attachment is janky/expensive on iOS; let it scroll

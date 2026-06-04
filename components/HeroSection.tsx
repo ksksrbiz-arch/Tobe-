@@ -13,6 +13,8 @@ export default function HeroSection() {
   // ambient animation (blurred floats, twinkling stars, dust motes) and add
   // continuous compositing work that is wasted for those users.
   const [decorReady, setDecorReady] = useState(false);
+  const scrollBehavior = (): ScrollBehavior =>
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
@@ -34,12 +36,12 @@ export default function HeroSection() {
 
   const handleVisit = () => {
     const el = document.querySelector("#visit");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) el.scrollIntoView({ behavior: scrollBehavior() });
   };
 
   const handleShop = () => {
     const el = document.querySelector("#shop");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) el.scrollIntoView({ behavior: scrollBehavior() });
   };
 
   const handleCelebrate = async () => {
@@ -241,8 +243,9 @@ export default function HeroSection() {
 
         {/* Rebrand pill */}
         <button
+          type="button"
           onClick={handleCelebrate}
-          className="fade-in-up btn-shine animate-pulse-glow mb-7 inline-flex cursor-pointer items-center gap-2 rounded-full border-2 px-5 py-2.5 text-sm font-semibold shadow-md transition-all hover:scale-[1.04]"
+          className="touch-target fade-in-up btn-shine animate-pulse-glow mb-7 inline-flex cursor-pointer items-center gap-2 rounded-full border-2 px-5 py-2.5 text-sm font-semibold shadow-md transition-all hover:scale-[1.04] active:scale-[0.98]"
           style={{
             background: "#6B1C6F",
             color: "#F1BB1A",
@@ -276,16 +279,18 @@ export default function HeroSection() {
           style={{ animationDelay: "500ms" }}
         >
           <button
+            type="button"
             onClick={handleVisit}
-            className="btn-shine flex w-full items-center justify-center gap-2 rounded-2xl px-8 py-4 text-base font-semibold text-white shadow-[0_18px_40px_rgba(107,28,111,0.28)] transition-all hover:scale-105 sm:w-auto"
+            className="touch-target btn-shine flex w-full items-center justify-center gap-2 rounded-2xl px-8 py-4 text-base font-semibold text-white shadow-[0_18px_40px_rgba(107,28,111,0.28)] transition-transform hover:scale-105 active:scale-[0.98] sm:w-auto"
             style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
           >
             Plan Your Visit
             <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
           </button>
           <button
+            type="button"
             onClick={handleShop}
-            className="btn-shine flex w-full items-center justify-center gap-2 rounded-2xl border-2 px-8 py-4 text-base font-semibold shadow-md transition-all hover:scale-105 sm:w-auto"
+            className="touch-target btn-shine flex w-full items-center justify-center gap-2 rounded-2xl border-2 px-8 py-4 text-base font-semibold shadow-md transition-transform hover:scale-105 active:scale-[0.98] sm:w-auto"
             style={{
               backgroundColor: "#F1BB1A",
               color: "#1a1a1a",
