@@ -106,6 +106,8 @@ function TikTokSkeleton() {
   );
 }
 
+const StephenKingBanner = dynamic(() => import("@/components/StephenKingBanner"));
+
 const EchoesLaunchBanner = dynamic(() => import("@/components/EchoesLaunchBanner"), {
   loading: () => (
     <div className="px-4 py-12 sm:py-16">
@@ -249,6 +251,9 @@ export default function Home() {
     >
       <Navbar />
       <HeroSection />
+
+      {/* Limited-time rare Stephen King hardcovers banner (auto-expires) */}
+      <StephenKingBanner />
 
       {/* Echoes of Choice launch banner */}
       <EchoesLaunchBanner />
