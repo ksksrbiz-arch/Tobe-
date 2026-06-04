@@ -327,7 +327,9 @@ export default function TradeCreditEstimator() {
 
       {/* Disclaimer */}
       <p className="mt-4 text-center text-[10px] leading-4" style={{ color: "#9CA3AF" }}>
-        Credit is issued as store credit, not cash. Unused credit expires on December 31 each year. Final amount may vary based on book condition and staff review.
+        Credit is issued as store credit, not cash. Credit expires Dec 31 each year.
+        Balances are capped at $200, and accounts with existing credit cannot trade in after Nov 1.
+        Final amount may vary based on condition and staff review.
       </p>
     </div>
   );

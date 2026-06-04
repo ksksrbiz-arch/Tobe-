@@ -28,14 +28,14 @@ const chapters = [
     n: "01",
     eyebrow: "Chapter one",
     title: "Bring books in",
-    body: "Drop a bag or box on the counter during open hours. We sort it together — usually about ten minutes.",
+    body: "Bring your books to the counter during open hours and wait while we review them. We cannot accept drop-offs because storage space is limited.",
     icon: BookOpen,
   },
   {
     n: "02",
     eyebrow: "Chapter two",
     title: "Earn store credit",
-    body: "One credit per paperback, two per hardcover. Unused credit stays on your account under your name and expires on December 31 each year.",
+    body: "One credit per paperback, two per hardcover. Credit expires on Dec 31 each year, balances are capped at $200, and you'll need to spend below $200 before earning more.",
     icon: Coins,
   },
   {
@@ -66,7 +66,7 @@ const noList = [
 const fineprint = [
   {
     q: "Daily trade-in limit?",
-    a: "None. Bring as many as you can carry. We may be selective when shelves are full — we'll tell you why.",
+    a: "Bring in what we can review while you wait — no drop-offs due to limited storage. If your account already has credit, we stop accepting trade books on Nov 1 each year.",
   },
   {
     q: "Can I share credit with a partner?",
@@ -423,7 +423,7 @@ export default function HowItWorksPage() {
               className="mt-4 max-w-2xl font-serif italic"
               style={{ color: "var(--ink-soft)", fontSize: "1.15rem" }}
             >
-              Unused credit stays on your account, under your name and phone number, and expires on December 31 each year.
+              Credit stays on your account under your name and phone number, expires on Dec 31 each year, and is capped at $200 until spent below that amount.
             </p>
           </Reveal>
 
@@ -490,7 +490,7 @@ export default function HowItWorksPage() {
                 <SideNote
                   icon={Clock}
                   caps="Annual renewal"
-                  body="Unused trade credit expires on December 31 each year."
+                  body="Trade credit expires each year on Dec 31. If you already have credit, trade intake pauses on Nov 1."
                 />
                 <Hairline />
                 <SideNote

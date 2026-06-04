@@ -100,7 +100,9 @@ export default function TradeSection() {
                 NO CASH GIVEN FOR BOOKS!
               </p>
               <p className="mt-1 text-sm leading-relaxed" style={{ color: "#374151" }}>
-                We operate on a trade credit system. Bring your books in and receive store credit toward any book purchase. Unused credit expires on December 31 each year.
+                We operate on a trade credit system. Books cannot be dropped off.
+                Please wait while we review your stack due to limited storage capacity.
+                Credit expires on Dec 31 each year.
               </p>
             </div>
           </div>
@@ -223,12 +225,22 @@ export default function TradeSection() {
                 </div>
               </div>
 
-              <p
+              <div
                 className="mt-6 border-t pt-4 text-center text-sm italic"
                 style={{ color: "#6B7280", borderColor: "rgba(107,28,111,0.10)" }}
               >
-                Without credit, books are priced at 50% of the list price unless otherwise marked with our store sticker.
-              </p>
+                <p>
+                  Without credit, books are priced at 50% of the list price unless otherwise marked
+                  with our store sticker.
+                </p>
+                <p className="mt-2">
+                  If you already have credit, we stop accepting trade books on Nov 1 each year to
+                  catch up inventory and give everyone time to use their credit.
+                </p>
+                <p className="mt-2">
+                  Credit balances are capped at $200 until your balance is spent below $200.
+                </p>
+              </div>
             </div>
           </div>
         </Reveal>
