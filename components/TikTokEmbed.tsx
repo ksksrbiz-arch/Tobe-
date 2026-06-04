@@ -15,7 +15,7 @@ export default function TikTokEmbed({ videoId, username }: TikTokEmbedProps) {
         className="tiktok-embed mx-auto w-full"
         cite={`https://www.tiktok.com/@${username}/video/${videoId}`}
         data-video-id={videoId}
-        style={{ width: "100%", maxWidth: "min(605px, 100%)", minWidth: 0 }}
+        style={{ width: "100%", maxWidth: "605px", minWidth: 0 }}
       >
         <section></section>
       </blockquote>
