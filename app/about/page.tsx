@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import StorySection from "@/components/StorySection";
@@ -200,11 +201,12 @@ export default function AboutPage() {
               className="group relative mb-3 overflow-hidden rounded-2xl shadow-md sm:mb-4"
               style={{ height: "340px" }}
             >
-              <img
+              <Image
                 src={galleryHero.url}
                 alt={galleryHero.alt}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                fill
+                sizes="(max-width: 1024px) 100vw, 1024px"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div
                 aria-hidden="true"
@@ -227,11 +229,12 @@ export default function AboutPage() {
                   className="group relative overflow-hidden rounded-2xl shadow-md"
                   style={{ height: "180px" }}
                 >
-                  <img
+                  <Image
                     src={item.url}
                     alt={item.alt}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    fill
+                    sizes="(max-width: 1024px) 50vw, 256px"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div
                     aria-hidden="true"
@@ -260,11 +263,12 @@ export default function AboutPage() {
                   className="group relative h-full overflow-hidden rounded-2xl shadow-md"
                   style={{ minHeight: "200px" }}
                 >
-                  <img
+                  <Image
                     src={item.url}
                     alt={item.alt}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    fill
+                    sizes="(max-width: 768px) 50vw, 384px"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div
                     aria-hidden="true"
