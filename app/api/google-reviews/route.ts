@@ -26,6 +26,40 @@ type GooglePlace = {
   reviews?: GoogleReview[];
 };
 
+// Curated, verbatim Google reviews used when the live Places API isn't
+// configured (or hasn't returned review text yet). Angel West's review is
+// trimmed to its praise per the store's request; the two 5-star reviews are
+// unedited.
+const CURATED_REVIEWS = [
+  {
+    rating: 5,
+    text:
+      "They have great resources for local authors. With unbeatable deals. The store selection is quite thorough with many fantastic local and major titles. The staff was very friendly and knowledgeable. Rocky and Bulwinkle (rescue rehab squirrels) were an added bonus!",
+    author: "Ava Altair",
+    photoUri: undefined,
+    relativeTime: "a year ago",
+    publishTime: "",
+  },
+  {
+    rating: 5,
+    text:
+      "Very nice and well managed book store. Good trade in policy and a great selection of quality books. Owner is very friendly and professional. Well worth the drive from Vancouver.",
+    author: "David Sasseen",
+    photoUri: undefined,
+    relativeTime: "a year ago",
+    publishTime: "",
+  },
+  {
+    rating: 4,
+    text:
+      "Very organized with a very large selection. Books cost half the MSRP. They take books in for trade.",
+    author: "Angel West",
+    photoUri: undefined,
+    relativeTime: "a year ago",
+    publishTime: "",
+  },
+];
+
 export async function GET(request: Request) {
   const ip = getClientIp(request);
   const rateLimit = checkRateLimit({
@@ -62,7 +96,7 @@ export async function GET(request: Request) {
       userRatingCount: 112,
       googleMapsUri:
         "https://www.google.com/maps/search/?api=1&query=Clackamas+Book+Exchange+Milwaukie+OR",
-      reviews: [],
+      reviews: CURATED_REVIEWS,
     });
   }
 
@@ -113,6 +147,8 @@ export async function GET(request: Request) {
     rating: place.rating ?? null,
     userRatingCount: place.userRatingCount ?? null,
     googleMapsUri: place.googleMapsUri ?? null,
-    reviews,
+    // Fall back to the curated reviews if Google returns ratings but no review
+    // text (e.g. when the field mask or place has none surfaced).
+    reviews: reviews.length > 0 ? reviews : CURATED_REVIEWS,
   });
 }
