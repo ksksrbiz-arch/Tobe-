@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { ArrowRight, ShoppingBag, Sparkles, Star } from "lucide-react";
 import BookLogo from "./BookLogo";
 import DustMotes from "./DustMotes";
+import RatingBadge from "./RatingBadge";
+import OpenStatusPill from "./OpenStatusPill";
 import { getMotionSafeScrollBehavior } from "@/lib/motion";
 
 export default function HeroSection() {
@@ -302,10 +304,26 @@ export default function HeroSection() {
           </button>
         </div>
 
+        {/* Trust row — live open status + social proof, right under the CTAs */}
+        <div
+          className="fade-in-up mt-7 flex flex-wrap items-center justify-center gap-2.5"
+          style={{ animationDelay: "560ms" }}
+        >
+          <OpenStatusPill />
+          <RatingBadge />
+        </div>
+        <p
+          className="fade-in-up mx-auto mt-3 max-w-md text-sm italic"
+          style={{ color: "#6B7280", animationDelay: "620ms" }}
+        >
+          &ldquo;Well worth the drive from Vancouver.&rdquo;
+          <span className="not-italic" style={{ opacity: 0.7 }}> — David S., Google</span>
+        </p>
+
         {/* Quick facts row */}
         <div
-          className="fade-in-up mt-9 grid grid-cols-1 gap-3 border-t pt-6 text-center sm:grid-cols-3 sm:gap-6 sm:text-left"
-          style={{ borderColor: "rgba(107,28,111,0.10)", animationDelay: "600ms" }}
+          className="fade-in-up mt-8 grid grid-cols-1 gap-3 border-t pt-6 text-center sm:grid-cols-3 sm:gap-6 sm:text-left"
+          style={{ borderColor: "rgba(107,28,111,0.10)", animationDelay: "660ms" }}
         >
           {[
             { num: "45+", label: "Years serving readers" },

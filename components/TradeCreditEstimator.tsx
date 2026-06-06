@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Printer, Search, RefreshCw, Receipt, AlertCircle } from "lucide-react";
+import { Printer, Search, RefreshCw, Receipt, AlertCircle, Navigation, Clock } from "lucide-react";
 import { TRADE_POLICY_ALL_CREDIT_LIMITS } from "@/lib/tradePolicy";
+import { GOOGLE_MAPS_LINK } from "@/lib/storeInfo";
 
 const SWAP_TIERS = [
   { max: 10, fee: 1, label: "$10 or under" },
@@ -322,6 +323,23 @@ export default function TradeCreditEstimator() {
             style={{ borderColor: "rgba(107,28,111,0.10)", borderStyle: "dashed", color: "#9CA3AF" }}
           >
             <Printer size={10} className="mb-1 inline-block" /> Estimate only · Actual credit subject to condition review
+          </div>
+
+          {/* Next step — turn the estimate into a visit */}
+          <div className="mt-4" style={{ fontFamily: "var(--font-sans)" }}>
+            <a
+              href={GOOGLE_MAPS_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-shine flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white shadow-md transition-transform hover:scale-[1.02]"
+              style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+            >
+              <Navigation size={15} />
+              Bring it in — get directions
+            </a>
+            <p className="mt-2 flex items-center justify-center gap-1.5 text-center text-[11px]" style={{ color: "#6B7280" }}>
+              <Clock size={11} /> Mon–Sat 10am–5pm · &ldquo;Good trade-in policy&rdquo; — David S., Google
+            </p>
           </div>
         </div>
       )}

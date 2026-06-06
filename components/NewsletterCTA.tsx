@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Send, BookOpen } from "lucide-react";
+import { Send, BookOpen, Check } from "lucide-react";
 import { toast } from "sonner";
 import Reveal from "./Reveal";
+import RatingBadge from "./RatingBadge";
 
 export default function NewsletterCTA() {
   const [email, setEmail] = useState("");
@@ -82,6 +83,23 @@ export default function NewsletterCTA() {
                 <p className="text-sm leading-relaxed text-white/75">
                   One short email a month. No spam — just the good bookish stuff.
                 </p>
+
+                <ul className="mt-5 space-y-2.5">
+                  {[
+                    "First dibs on rare & collectible finds",
+                    "Just-Shelved arrivals before they hit the floor",
+                    "Author events & community happenings",
+                  ].map((perk) => (
+                    <li key={perk} className="flex items-start gap-2.5 text-sm text-white/90">
+                      <Check size={16} className="mt-0.5 flex-shrink-0" style={{ color: "#F1BB1A" }} />
+                      {perk}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-5">
+                  <RatingBadge tone="dark" />
+                </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-3">
