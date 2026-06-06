@@ -85,7 +85,7 @@ export default function TradePage() {
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-12 text-center">
             <span
-              className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
             >
               How it works
@@ -110,7 +110,7 @@ export default function TradePage() {
                   className="group relative h-full rounded-2xl border bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-xl"
                   style={{
                     borderColor: "rgba(107,28,111,0.10)",
-                    boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
+                    boxShadow: "var(--shadow-md)",
                   }}
                 >
                   <span
@@ -158,7 +158,7 @@ export default function TradePage() {
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-10 text-center">
             <span
-              className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
             >
               Instant estimate
@@ -193,7 +193,7 @@ export default function TradePage() {
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-12 text-center">
             <span
-              className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
             >
               Pro tips
@@ -217,7 +217,7 @@ export default function TradePage() {
                   className="flex h-full flex-col items-center rounded-2xl p-7 text-center transition-all hover:-translate-y-1"
                   style={{
                     background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
-                    boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
+                    boxShadow: "var(--shadow-md)",
                   }}
                 >
                   <div

@@ -32,7 +32,7 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
       style={{
         background: "linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(253,248,240,0.98) 100%)",
         borderColor: "rgba(107,28,111,0.10)",
-        boxShadow: "0 8px 24px rgba(107,28,111,0.06)",
+        boxShadow: "var(--shadow-md)",
         animation: "fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both",
       }}
     >

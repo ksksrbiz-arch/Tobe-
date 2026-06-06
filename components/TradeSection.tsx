@@ -69,7 +69,7 @@ export default function TradeSection() {
         {/* Header */}
         <Reveal className="mb-12 text-center">
           <span
-            className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+            className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
             style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
           >
             Trade With Us

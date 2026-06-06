@@ -238,7 +238,7 @@ export default function TradeCreditEstimator() {
             fontFamily: "'Courier New', Courier, monospace",
             background: "white",
             borderColor: "rgba(107,28,111,0.14)",
-            boxShadow: "0 8px 28px rgba(107,28,111,0.08)",
+            boxShadow: "var(--shadow-md)",
           }}
         >
           {/* Receipt header */}

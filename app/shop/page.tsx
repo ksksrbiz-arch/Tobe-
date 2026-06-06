@@ -192,7 +192,7 @@ export default function ShopPage() {
               <Reveal key={book.title} delay={i * 60}>
                 <article
                   className="group h-full overflow-hidden rounded-2xl border bg-white transition-all hover:-translate-y-1 hover:shadow-xl"
-                  style={{ borderColor: "rgba(107,28,111,0.08)", boxShadow: "0 8px 22px rgba(107,28,111,0.06)" }}
+                  style={{ borderColor: "rgba(107,28,111,0.08)", boxShadow: "var(--shadow-md)" }}
                 >
                   {/* Faux book cover */}
                   <div

@@ -42,7 +42,7 @@ function ReviewCard({ review }: { review: GoogleReview }) {
       className="relative flex h-full flex-col rounded-2xl border bg-white p-6"
       style={{
         borderColor: "rgba(107,28,111,0.10)",
-        boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
+        boxShadow: "var(--shadow-md)",
       }}
     >
       <Quote

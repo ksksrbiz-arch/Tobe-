@@ -86,7 +86,7 @@ export default function ConnectSection() {
       <div className="relative mx-auto max-w-5xl">
         <Reveal className="mb-14 text-center">
           <span
-            className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+            className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
             style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
           >
             Connect
@@ -113,7 +113,7 @@ export default function ConnectSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border bg-white p-5 transition-all hover:-translate-y-1 hover:shadow-xl"
-                style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "0 8px 22px rgba(107,28,111,0.06)" }}
+                style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "var(--shadow-md)" }}
               >
                 <div
                   aria-hidden="true"

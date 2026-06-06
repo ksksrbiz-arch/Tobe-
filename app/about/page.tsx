@@ -117,7 +117,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-14 text-center">
             <span
-              className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
             >
               What guides us
@@ -140,7 +140,7 @@ export default function AboutPage() {
               <Reveal key={v.title} delay={i * 80}>
                 <article
                   className="h-full rounded-2xl border bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-xl"
-                  style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "0 8px 22px rgba(107,28,111,0.06)" }}
+                  style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "var(--shadow-md)" }}
                 >
                   <div
                     className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl"
@@ -174,7 +174,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-12 text-center">
             <span
-              className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
             >
               Sneak peek

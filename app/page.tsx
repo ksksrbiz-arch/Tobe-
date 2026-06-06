@@ -60,7 +60,7 @@ function SectionSkeleton({
               style={{
                 background: "rgba(255,255,255,0.92)",
                 borderColor: "rgba(107,28,111,0.08)",
-                boxShadow: "0 20px 40px rgba(107,28,111,0.06)",
+                boxShadow: "var(--shadow-md)",
               }}
             >
               <div
@@ -270,7 +270,7 @@ export default function Home() {
         <div className="relative z-10 mx-auto max-w-5xl">
           <Reveal className="mb-10 text-center">
             <span
-              className="inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              className="eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
             >
               Swap · Read · Repeat
@@ -388,7 +388,7 @@ export default function Home() {
         <div className="relative z-10 mx-auto max-w-6xl">
           <Reveal className="mb-12 text-center">
             <span
-              className="inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              className="eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
             >
               Explore
@@ -477,7 +477,7 @@ export default function Home() {
         <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
           <Reveal>
             <span
-              className="inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              className="eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
             >
               TikTok spotlight

@@ -115,7 +115,7 @@ export default function VisitSection() {
       <div className="relative mx-auto max-w-6xl">
         <Reveal className="mb-10 text-center sm:mb-14">
           <span
-            className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+            className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
             style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
           >
             Visit Us
@@ -202,7 +202,7 @@ export default function VisitSection() {
                 style={{
                   background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
                   borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+                  boxShadow: "var(--shadow-md)",
                 }}
               >
                 <div className="mb-3 flex items-center gap-3">
@@ -237,7 +237,7 @@ export default function VisitSection() {
                 style={{
                   background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
                   borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+                  boxShadow: "var(--shadow-md)",
                 }}
               >
                 <div className="mb-3 flex items-center gap-3">
@@ -269,7 +269,7 @@ export default function VisitSection() {
                 style={{
                   background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
                   borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+                  boxShadow: "var(--shadow-md)",
                 }}
               >
                 <div className="mb-3 flex items-center gap-3">
@@ -297,7 +297,7 @@ export default function VisitSection() {
                 style={{
                   background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
                   borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+                  boxShadow: "var(--shadow-md)",
                 }}
               >
                 <div className="mb-3 flex items-center gap-3">
@@ -328,7 +328,7 @@ export default function VisitSection() {
               style={{
                 background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
                 borderColor: "rgba(107,28,111,0.10)",
-                boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+                boxShadow: "var(--shadow-md)",
               }}
             >
               <div

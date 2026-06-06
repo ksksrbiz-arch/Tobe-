@@ -53,7 +53,7 @@ export default function ShopSection() {
       <div className="mx-auto max-w-6xl">
         <Reveal className="mb-14 text-center">
           <span
-            className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+            className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
             style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
           >
             Shop Online

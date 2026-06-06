@@ -60,7 +60,7 @@ export default function WishlistPage() {
                   className="flex flex-col items-center rounded-2xl p-6 text-center transition-all hover:-translate-y-1"
                   style={{
                     background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
-                    boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
+                    boxShadow: "var(--shadow-md)",
                   }}
                 >
                   <div
@@ -97,7 +97,7 @@ export default function WishlistPage() {
         <div className="mx-auto max-w-2xl">
           <Reveal className="mb-8 text-center">
             <span
-              className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
             >
               Your list

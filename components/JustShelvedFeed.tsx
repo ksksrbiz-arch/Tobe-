@@ -46,7 +46,7 @@ function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
       style={{
         background: "white",
         borderColor: "rgba(107,28,111,0.10)",
-        boxShadow: "0 8px 24px rgba(107,28,111,0.08)",
+        boxShadow: "var(--shadow-md)",
         animation: isNew ? "fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both" : undefined,
       }}
     >

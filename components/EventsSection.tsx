@@ -77,7 +77,7 @@ export default function EventsSection() {
                 className="group relative h-full overflow-hidden rounded-2xl border bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-xl"
                 style={{
                   borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
+                  boxShadow: "var(--shadow-md)",
                 }}
               >
                 <div

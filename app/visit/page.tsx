@@ -65,7 +65,7 @@ export default function VisitPage() {
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-10 text-center">
             <span
-              className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
             >
               From our neighbors
@@ -96,7 +96,7 @@ export default function VisitPage() {
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-12 text-center">
             <span
-              className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              className="mb-4 eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
             >
               Getting Here
@@ -120,7 +120,7 @@ export default function VisitPage() {
                   className="group h-full rounded-2xl border bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-xl"
                   style={{
                     borderColor: "rgba(107,28,111,0.10)",
-                    boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
+                    boxShadow: "var(--shadow-md)",
                   }}
                 >
                   <div
