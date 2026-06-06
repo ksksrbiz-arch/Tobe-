@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
@@ -145,12 +146,12 @@ export default function HowItWorksPage() {
               className="relative aspect-[4/5] overflow-hidden rounded-3xl"
               style={{ boxShadow: "var(--shadow-lg)" }}
             >
-              <img
+              <Image
                 src="/images/shelves/store-kids-adventure-shelves.jpg"
                 alt="Storefront on SE King Road — warm window light, hand-painted sign."
-                className="absolute inset-0 h-full w-full object-cover"
-                loading="lazy"
-                decoding="async"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
               />
               <div
                 aria-hidden
@@ -524,12 +525,12 @@ export default function HowItWorksPage() {
               className="relative aspect-[4/5] overflow-hidden rounded-3xl"
               style={{ boxShadow: "var(--shadow-lg)" }}
             >
-              <img
+              <Image
                 src="/images/shelves/store-kids-doorway-seuss.jpg"
                 alt="The shelves — fiction wall, reading chair, candle-tone afternoon light."
-                className="absolute inset-0 h-full w-full object-cover"
-                loading="lazy"
-                decoding="async"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
               />
               <div
                 aria-hidden
