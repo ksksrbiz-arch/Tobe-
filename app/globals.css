@@ -2,9 +2,11 @@
 
 :root {
   --background: #FFFDF9;
-  --background-gradient: radial-gradient(ellipse at 0% 0%, rgba(241, 187, 26, 0.06) 0%, transparent 45%),
+  --background-gradient: radial-gradient(ellipse at 0% 0%, rgba(241, 187, 26, 0.08) 0%, transparent 42%),
+    radial-gradient(ellipse at 100% 8%, rgba(107, 28, 111, 0.07) 0%, transparent 40%),
     radial-gradient(ellipse at 100% 100%, rgba(107, 28, 111, 0.06) 0%, transparent 50%),
-    linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%);
+    radial-gradient(ellipse at 18% 88%, rgba(241, 187, 26, 0.05) 0%, transparent 45%),
+    linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 60%, #FBF4F8 100%);
   --foreground: #1F1A2E;
   --muted: #6B7280;
 
@@ -21,16 +23,30 @@
   --paper-dark: #F5EFE0;
 
   --ink: #1F1A2E;
-  --ink-soft: #4B5563;
-  --ink-muted: #6B7280;
+  --ink-soft: #44424F;
+  --ink-muted: #5C5868;
   --line: rgba(107, 28, 111, 0.10);
   --header-offset: 6.75rem;
   --mobile-menu-offset: 6.5rem;
 
-  --shadow-sm: 0 4px 14px rgba(107, 28, 111, 0.06);
-  --shadow-md: 0 10px 28px rgba(107, 28, 111, 0.10);
-  --shadow-lg: 0 24px 60px rgba(107, 28, 111, 0.14);
-  --shadow-xl: 0 36px 90px rgba(107, 28, 111, 0.18);
+  /* Layered, two-tone shadows: a soft cool purple cast for depth plus a faint
+     warm gold undertone so cards feel candle-lit rather than flat grey. Each
+     step stacks an ambient + a key shadow for a more premium, diffuse falloff. */
+  --shadow-sm:
+    0 1px 2px rgba(42, 9, 48, 0.05),
+    0 4px 14px rgba(107, 28, 111, 0.06);
+  --shadow-md:
+    0 2px 6px rgba(42, 9, 48, 0.05),
+    0 12px 30px rgba(107, 28, 111, 0.10),
+    0 4px 12px rgba(241, 187, 26, 0.04);
+  --shadow-lg:
+    0 4px 10px rgba(42, 9, 48, 0.06),
+    0 24px 60px rgba(107, 28, 111, 0.14),
+    0 8px 22px rgba(241, 187, 26, 0.05);
+  --shadow-xl:
+    0 8px 18px rgba(42, 9, 48, 0.07),
+    0 40px 96px rgba(107, 28, 111, 0.18),
+    0 12px 30px rgba(241, 187, 26, 0.06);
 }
 
 @theme inline {
@@ -59,6 +75,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* Enable kerning + common ligatures and let variable fonts optically size
+     themselves for crisper text at every scale. */
+  font-feature-settings: "kern", "liga", "clig", "calt";
+  font-optical-sizing: auto;
+  font-synthesis: none;
+  line-height: 1.6;
   /* Site-wide guard: blurred float/decoration elements must never create a
      horizontal scrollbar on mobile. `clip` doesn't spawn a scroll container,
      so it won't break the fixed header or smooth-scroll anchors. */
@@ -109,9 +131,32 @@ body {
   }
 }
 
-h1, h2, h3, .font-serif {
+h1, h2, h3, h4, .font-serif {
   font-family: var(--font-serif);
-  letter-spacing: -0.01em;
+  /* Playfair has true small-cap/discretionary features; lining figures keep
+     numbers (years, hours) aligned within headings. */
+  font-feature-settings: "kern", "liga", "dlig", "lnum";
+  text-wrap: balance;
+}
+
+/* Tighter optical tracking the larger the type gets — display sizes need less
+   air between glyphs, body-scale headings need a touch more. */
+h1, .font-serif-display {
+  letter-spacing: -0.025em;
+  line-height: 1.04;
+}
+h2 {
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+h3 {
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+/* Keep body copy from leaving orphans/ragged last lines where supported. */
+p {
+  text-wrap: pretty;
 }
 
 ::selection {
@@ -119,11 +164,13 @@ h1, h2, h3, .font-serif {
   color: var(--purple-dark);
 }
 
-/* Accessible focus ring */
+/* Accessible focus ring — a purple outline with a soft gold halo so it reads
+   as part of the brand rather than a default browser ring. */
 :focus-visible {
   outline: 2px solid var(--purple);
   outline-offset: 3px;
   border-radius: 6px;
+  box-shadow: 0 0 0 5px rgba(241, 187, 26, 0.28);
 }
 
 /* Custom scrollbar */
@@ -493,6 +540,30 @@ h1, h2, h3, .font-serif {
     0 28px 64px rgba(107,28,111,0.13),
     0 8px 20px rgba(241,187,26,0.12);
   transform: translateY(-3px);
+}
+
+/* ───── Unified premium surface ───── */
+/* A polished default card: warm paper gradient, hairline brand border, layered
+   two-tone shadow, and a smooth candle-lit lift on hover. Adopt with
+   `.surface-card` anywhere a bespoke inline card style isn't needed. */
+.surface-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(253, 248, 240, 0.96) 100%);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.45s ease;
+}
+.surface-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(107, 28, 111, 0.16);
+}
+
+/* Soft depth for large display headings over warm/blurred backdrops. */
+.display-shadow {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 14px 36px rgba(107, 28, 111, 0.16);
 }
 
 /* ───── Warm sweep (replaces btn-shine on primary buttons) ───── */

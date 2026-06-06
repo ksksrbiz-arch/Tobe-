@@ -213,17 +213,18 @@ export default function HeroSection() {
 
         {/* Title */}
         <h1
-          className="animate-ink-settle mb-3 font-bold"
+          className="animate-ink-settle display-shadow mb-3 font-bold"
           style={{
             fontFamily: "var(--font-serif)",
             color: "#6B1C6F",
             fontSize: "clamp(3rem, 9vw, 6rem)",
             lineHeight: 1.02,
+            letterSpacing: "-0.03em",
             animationDelay: "180ms",
           }}
         >
           To Be{" "}
-          <span className="text-gradient" style={{ fontStyle: "italic" }}>
+          <span className="text-gradient" style={{ fontStyle: "italic", paddingRight: "0.06em" }}>
             Read
           </span>
         </h1>
