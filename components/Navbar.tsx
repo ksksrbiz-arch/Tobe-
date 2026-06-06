@@ -225,7 +225,7 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     aria-current={isActive ? "page" : undefined}
-                    className="relative rounded-lg px-3.5 py-2 text-sm font-medium transition-colors"
+                    className="group relative rounded-lg px-3.5 py-2 text-sm font-medium transition-colors hover:bg-[rgba(107,28,111,0.05)] hover:text-[#6B1C6F]"
                     style={{
                       color: isActive ? "#6B1C6F" : "#374151",
                       fontWeight: isActive ? 700 : 500,
@@ -233,9 +233,10 @@ export default function Navbar() {
                   >
                     {link.label}
                     <span
-                      className="pointer-events-none absolute bottom-0 left-1/2 h-[3px] -translate-x-1/2 rounded-full transition-all duration-300"
+                      className={`pointer-events-none absolute bottom-0 left-1/2 h-[3px] -translate-x-1/2 rounded-full transition-all duration-300 ${
+                        isActive ? "w-[60%]" : "w-0 group-hover:w-2/5"
+                      }`}
                       style={{
-                        width: isActive ? "60%" : "0%",
                         background: "linear-gradient(90deg, #F1BB1A, #F5CC45)",
                       }}
                     />

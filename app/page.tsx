@@ -329,7 +329,7 @@ export default function Home() {
               style={{
                 background: "rgba(255,255,255,0.86)",
                 borderColor: "rgba(107,28,111,0.08)",
-                boxShadow: "0 24px 60px rgba(107,28,111,0.12)",
+                boxShadow: "var(--shadow-lg)",
               }}
             >
               <span
@@ -351,14 +351,7 @@ export default function Home() {
           </Reveal>
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={80 + i * 60}>
-              <div
-                className="flex h-full flex-col justify-between rounded-[28px] border p-5 backdrop-blur transition-all hover:-translate-y-1"
-                style={{
-                  background: "rgba(255,255,255,0.82)",
-                  borderColor: "rgba(107,28,111,0.08)",
-                  boxShadow: "0 20px 45px rgba(107,28,111,0.08)",
-                }}
-              >
+              <div className="surface-card flex h-full flex-col justify-between p-5">
                 <div
                   className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl"
                   style={{ background: "rgba(107,28,111,0.08)" }}
@@ -422,13 +415,7 @@ export default function Home() {
               <Reveal key={card.title} delay={i * 80}>
                 <Link
                   href={card.href}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-7 text-left transition-all hover:-translate-y-2 hover:shadow-2xl"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(253,248,240,0.98) 100%)",
-                    borderColor: "rgba(107,28,111,0.08)",
-                    boxShadow: "0 18px 40px rgba(107,28,111,0.08)",
-                  }}
+                  className="surface-card group relative flex h-full flex-col overflow-hidden p-7 text-left"
                 >
                   <span
                     aria-hidden="true"
