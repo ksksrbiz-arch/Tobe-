@@ -37,6 +37,7 @@ const playfair = localFont({
 import CozyAmbience from "@/components/CozyAmbience";
 import PageTransition from "@/components/PageTransition";
 import BookishEasterEgg from "@/components/BookishEasterEgg";
+import NewsletterPrompts from "@/components/NewsletterPrompts";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://to-be-read-clackamas.netlify.app"),
@@ -220,6 +221,7 @@ export default function RootLayout({
         <div className="relative z-[2]">
           <PageTransition>{children}</PageTransition>
         </div>
+        <NewsletterPrompts />
         <Toaster
           position="bottom-center"
           richColors

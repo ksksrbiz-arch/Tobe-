@@ -4,44 +4,14 @@ import React, { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Copy, Navigation, ExternalLink, Hand } from "lucide-react";
 import { toast } from "sonner";
 import Reveal from "./Reveal";
-
-const STORE_ADDRESS = "7931 SE King Rd, Milwaukie, OR 97222";
-const STORE_ADDRESS_QUERY = encodeURIComponent(STORE_ADDRESS);
-const GOOGLE_MAPS_LINK = `https://maps.google.com/?q=${STORE_ADDRESS_QUERY}`;
-const GOOGLE_MAPS_EMBED = `https://maps.google.com/maps?q=${STORE_ADDRESS_QUERY}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
-const APPLE_MAPS_LINK = `https://maps.apple.com/?q=${STORE_ADDRESS_QUERY}`;
-
-const dayHours = [
-  { day: "Mon", short: "M", hours: "10:00 – 5:00" },
-  { day: "Tue", short: "T", hours: "10:00 – 5:00" },
-  { day: "Wed", short: "W", hours: "10:00 – 5:00" },
-  { day: "Thu", short: "T", hours: "10:00 – 5:00" },
-  { day: "Fri", short: "F", hours: "10:00 – 5:00" },
-  { day: "Sat", short: "S", hours: "10:00 – 5:00" },
-  { day: "Sun", short: "S", hours: "Closed" },
-];
-
-function isOpenNow(): { open: boolean; label: string } {
-  // Always evaluate in America/Los_Angeles so out-of-state visitors see correct status.
-  const ptParts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Los_Angeles",
-    weekday: "short",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: false,
-  }).formatToParts(new Date());
-
-  const get = (type: string) => ptParts.find((p) => p.type === type)?.value ?? "";
-  const weekday = get("weekday"); // "Sun" | "Mon" … "Sat"
-  const hour = parseInt(get("hour"), 10);
-  const minute = parseInt(get("minute"), 10);
-  const time = hour + minute / 60;
-
-  if (weekday === "Sun") return { open: false, label: "Closed today (Sun) · opens Mon 10am" };
-  if (time >= 10 && time < 17) return { open: true, label: "Open now until 5pm" };
-  if (time < 10) return { open: false, label: "Opening at 10am today" };
-  return { open: false, label: "Closed for the day · opens 10am" };
-}
+import {
+  STORE_ADDRESS,
+  GOOGLE_MAPS_LINK,
+  GOOGLE_MAPS_EMBED,
+  APPLE_MAPS_LINK,
+  dayHours,
+  isOpenNow,
+} from "@/lib/storeInfo";
 
 export default function VisitSection() {
   const [mapInteractive, setMapInteractive] = useState(false);

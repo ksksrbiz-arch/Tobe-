@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ArrowUp, BookOpen } from "lucide-react";
+import { ArrowUp, BookOpen, Navigation } from "lucide-react";
 import { getMotionSafeScrollBehavior } from "@/lib/motion";
+import { GOOGLE_MAPS_LINK } from "@/lib/storeInfo";
 
 export default function FloatingButtons() {
   const [showTop, setShowTop] = useState(false);
@@ -44,6 +45,18 @@ export default function FloatingButtons() {
         <BookOpen size={16} className="transition-transform group-hover:rotate-[-8deg]" />
         Trade Now
       </button>
+
+      <a
+        href={GOOGLE_MAPS_LINK}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="touch-target group flex items-center gap-2 rounded-full border-2 px-5 py-3 text-sm font-semibold shadow-xl transition-transform hover:scale-105 active:scale-95"
+        style={{ background: "#F1BB1A", color: "#1a1a1a", borderColor: "#F1BB1A" }}
+        aria-label="Get directions to the store"
+      >
+        <Navigation size={16} className="transition-transform group-hover:translate-x-0.5" />
+        Directions
+      </a>
 
       <button
         type="button"
