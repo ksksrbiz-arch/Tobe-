@@ -25,7 +25,6 @@ const navLinks = [
 ];
 
 const tickerMessage = "WE DO NOT BUY FOR CASH";
-const tickerItems = Array.from({ length: 8 });
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -139,14 +138,22 @@ export default function Navbar() {
           }}
         >
           <span className="sr-only">{tickerMessage}</span>
+          {/* Two copies is the minimum for a seamless loop: the animation
+              translates the track by -50% so copy 2 fills the gap left by
+              copy 1, then snaps back invisibly. 8 copies was 4× more DOM than
+              needed and caused unnecessary layout work on every tick. */}
           <div
             aria-hidden="true"
             className="ticker-track flex min-w-max items-center gap-8 py-2 text-[10px] font-bold uppercase tracking-[0.28em] text-white sm:text-[11px]"
           >
-            {tickerItems.map((_, index) => (
-              <span key={index} className="flex items-center gap-8 whitespace-nowrap">
-                <span style={{ color: "#F1BB1A" }}>Store update</span>
-                <span>{tickerMessage}</span>
+            {[0, 1].map((copy) => (
+              <span key={copy} className="flex items-center gap-8 whitespace-nowrap">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <span key={i} className="flex items-center gap-8 whitespace-nowrap">
+                    <span style={{ color: "#F1BB1A" }}>Store update</span>
+                    <span>{tickerMessage}</span>
+                  </span>
+                ))}
               </span>
             ))}
           </div>

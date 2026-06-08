@@ -106,8 +106,6 @@ function TikTokSkeleton() {
   );
 }
 
-const StephenKingBanner = dynamic(() => import("@/components/StephenKingBanner"));
-
 const PortlandBookWeekBanner = dynamic(() => import("@/components/PortlandBookWeekBanner"));
 
 const EchoesLaunchBanner = dynamic(() => import("@/components/EchoesLaunchBanner"), {
@@ -253,9 +251,6 @@ export default function Home() {
     >
       <Navbar />
       <HeroSection />
-
-      {/* Limited-time rare Stephen King hardcovers banner (auto-expires) */}
-      <StephenKingBanner />
 
       {/* Portland Book Week sale — June 5–13 2026 (auto-expires June 13 midnight) */}
       <PortlandBookWeekBanner />

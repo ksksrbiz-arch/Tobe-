@@ -209,12 +209,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <a
-          href="#main"
-          className="sr-only z-[200] rounded-br-xl bg-[#6B1C6F] px-4 py-3 text-sm font-semibold text-white shadow-lg focus:not-sr-only focus:fixed focus:left-0 focus:top-0"
-        >
-          Skip to content
-        </a>
+        {/* Skip-to-content is rendered by Navbar so it appears at z-50 above
+            the fixed header. A second copy here would cause screen readers to
+            announce it twice — removed. */}
         <CozyAmbience />
         <BookishEasterEgg />
         <div className="relative z-[2]">

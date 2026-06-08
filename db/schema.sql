@@ -69,6 +69,9 @@ ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS notes TEXT NOT NULL DEFAULT
 
 CREATE INDEX IF NOT EXISTS recent_arrivals_added_at_idx ON recent_arrivals (added_at DESC);
 CREATE INDEX IF NOT EXISTS recent_arrivals_isbn_idx ON recent_arrivals (isbn);
+-- Unique constraint enables ON CONFLICT upserts in the admin shelve route:
+-- re-scanning a barcode updates metadata rather than creating duplicate rows.
+ALTER TABLE recent_arrivals ADD CONSTRAINT IF NOT EXISTS recent_arrivals_isbn_unique UNIQUE (isbn);
 
 CREATE TABLE IF NOT EXISTS wishlists (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),

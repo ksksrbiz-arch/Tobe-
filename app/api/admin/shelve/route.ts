@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { auth, isAdminEmail } from "@/lib/auth";
 import { sql } from "@/lib/db";
 import { notifyWishlistMatches } from "@/lib/email";
+import { checkRateLimit, getClientIp, fetchWithTimeout } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
 
@@ -32,10 +33,11 @@ async function lookupBook(isbn: string) {
   url.searchParams.set("maxResults", "1");
   if (apiKey) url.searchParams.set("key", apiKey);
 
-  const res = await fetch(url, {
-    headers: { accept: "application/json" },
-    next: { revalidate: 60 * 60 * 24 },
-  });
+  const res = await fetchWithTimeout(
+    url,
+    { headers: { accept: "application/json" }, next: { revalidate: 86_400 } },
+    8_000,
+  );
   if (!res.ok) throw new Error("Google Books lookup failed.");
   const json = (await res.json()) as { items?: GoogleBooksVolume[] };
   const item = json.items?.[0];
@@ -50,7 +52,8 @@ async function lookupBook(isbn: string) {
   };
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  // ── Auth ──────────────────────────────────────────────────────────────────
   const session = await auth();
   if (!session?.user?.email) {
     return NextResponse.json({ error: "Not signed in." }, { status: 401 });
@@ -59,6 +62,27 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Not authorized." }, { status: 403 });
   }
 
+  // ── Rate limit — 60 shelves/min per admin (protects Google Books API quota) ─
+  const ip = getClientIp(request);
+  const rl = checkRateLimit({
+    key: `admin-shelve:${session.user.email}:${ip}`,
+    maxRequests: 60,
+    windowMs: 60_000,
+  });
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "Slow down — too many requests. Wait a moment and try again." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(rl.retryAfterSeconds),
+          "X-RateLimit-Remaining": "0",
+        },
+      },
+    );
+  }
+
+  // ── Input validation ───────────────────────────────────────────────────────
   let body: { isbn?: unknown };
   try {
     body = await request.json();
@@ -74,6 +98,7 @@ export async function POST(request: Request) {
     );
   }
 
+  // ── Book lookup ────────────────────────────────────────────────────────────
   let book: Awaited<ReturnType<typeof lookupBook>>;
   try {
     book = await lookupBook(isbn);
@@ -87,12 +112,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Book not found." }, { status: 404 });
   }
 
-  const inserted = (await sql`
+  // ── DB insert — ON CONFLICT updates metadata so re-scanning a barcode is ──
+  // ── idempotent; the existing row is returned rather than duplicated.     ──
+  const [inserted] = (await sql`
     INSERT INTO recent_arrivals (isbn, title, author, cover_url, list_price, added_at)
     VALUES (${isbn}, ${book.title}, ${book.author}, ${book.cover_url}, ${book.list_price}, NOW())
+    ON CONFLICT (isbn) DO UPDATE
+      SET title     = EXCLUDED.title,
+          author    = EXCLUDED.author,
+          cover_url = EXCLUDED.cover_url,
+          list_price = EXCLUDED.list_price,
+          added_at  = NOW()
     RETURNING id, isbn, title, author, cover_url, list_price, added_at
-  `) as Array<{ id: string; isbn: string; title: string; author: string; cover_url: string; list_price: number; added_at: string }>;
+  `) as Array<{
+    id: string; isbn: string; title: string; author: string;
+    cover_url: string; list_price: number; added_at: string;
+  }>;
 
+  // ── Wishlist notifications ─────────────────────────────────────────────────
   const notification = await notifyWishlistMatches({
     isbn,
     title: book.title,
@@ -100,5 +137,5 @@ export async function POST(request: Request) {
     cover_url: book.cover_url,
   });
 
-  return NextResponse.json({ arrival: inserted[0], book, notification });
+  return NextResponse.json({ arrival: inserted, book, notification });
 }
