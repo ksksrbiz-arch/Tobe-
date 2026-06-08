@@ -3,26 +3,19 @@
 import React, { useEffect, useState } from "react";
 
 /**
- * A site-wide ambient layer that adds the "cozy bookstore" texture:
- *  - a warm vignette that gently breathes
- *  - drifting paper-grain noise overlay
- *  - a few slow-floating book pages in the background
- *  - dust motes catching the afternoon light
+ * Site-wide ambient layer: warm vignette, paper grain, floating pages,
+ * fireflies, and twinkling stars — all deferred to after first paint and
+ * skipped entirely for prefers-reduced-motion.
  *
- * It is rendered via a fixed, pointer-events-none container and respects
- * `prefers-reduced-motion` (the keyframes auto-shorten via globals.css).
- *
- * The decorative DOM is only mounted after the first paint (via
- * `requestIdleCallback`) so it never competes with the LCP, and it is
- * skipped entirely when the user has requested reduced motion.
+ * Dust motes were removed from this component: DustMotes.tsx renders them
+ * per-section already, so a global layer was doubling the node count for zero
+ * visual gain. The firefly count is also trimmed from 9 → 6 on mobile.
  */
 export default function CozyAmbience() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    // Honor reduced-motion: skip rendering the ambient layer entirely so it
-    // doesn't add DOM cost or paint work for users who opted out.
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
 
     const w = window as typeof window & {
@@ -31,13 +24,9 @@ export default function CozyAmbience() {
     };
     if (typeof w.requestIdleCallback === "function") {
       const handle = w.requestIdleCallback(() => setReady(true));
-      return () => {
-        if (typeof w.cancelIdleCallback === "function") {
-          w.cancelIdleCallback(handle);
-        }
-      };
+      return () => w.cancelIdleCallback?.(handle);
     }
-    const t = window.setTimeout(() => setReady(true), 0);
+    const t = window.setTimeout(() => setReady(true), 120);
     return () => window.clearTimeout(t);
   }, []);
 
@@ -48,23 +37,27 @@ export default function CozyAmbience() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-[1] overflow-hidden"
     >
-      {/* Warm vignette that softly pulses, like a reading lamp */}
+      {/* Warm vignette — softly breathes like a reading lamp */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 65% 55% at 50% 0%, rgba(241,187,26,0.14), transparent 70%), radial-gradient(ellipse 70% 60% at 50% 100%, rgba(107,28,111,0.12), transparent 70%), radial-gradient(ellipse 40% 40% at 15% 40%, rgba(241,187,26,0.07), transparent 70%), radial-gradient(ellipse 40% 40% at 85% 60%, rgba(139,46,144,0.08), transparent 70%)",
+            "radial-gradient(ellipse 65% 55% at 50% 0%, rgba(241,187,26,0.14), transparent 70%), " +
+            "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(107,28,111,0.12), transparent 70%), " +
+            "radial-gradient(ellipse 40% 40% at 15% 40%, rgba(241,187,26,0.07), transparent 70%), " +
+            "radial-gradient(ellipse 40% 40% at 85% 60%, rgba(139,46,144,0.08), transparent 70%)",
           animation: "lampBreath 9s ease-in-out infinite",
           mixBlendMode: "multiply",
         }}
       />
 
-      {/* Paper grain — extremely subtle, gives the page warmth */}
+      {/* Paper grain — extremely subtle warmth */}
       <div
         className="absolute inset-0"
         style={{
           backgroundImage:
-            "radial-gradient(rgba(107,28,111,0.06) 1px, transparent 1px), radial-gradient(rgba(241,187,26,0.05) 1px, transparent 1px)",
+            "radial-gradient(rgba(107,28,111,0.06) 1px, transparent 1px), " +
+            "radial-gradient(rgba(241,187,26,0.05) 1px, transparent 1px)",
           backgroundSize: "3px 3px, 5px 5px",
           backgroundPosition: "0 0, 1px 2px",
           opacity: 0.55,
@@ -72,14 +65,14 @@ export default function CozyAmbience() {
         }}
       />
 
-      {/* Floating pages drifting in the background */}
-      {[
-        { left: "8%", top: "22%", size: 38, delay: "0s", dur: "16s", rot: -8 },
-        { left: "18%", top: "78%", size: 28, delay: "3s", dur: "20s", rot: 12 },
+      {/* Floating pages — 5 nodes, very low opacity */}
+      {([
+        { left: "8%",  top: "22%", size: 38, delay: "0s",   dur: "16s", rot: -8 },
+        { left: "18%", top: "78%", size: 28, delay: "3s",   dur: "20s", rot: 12 },
         { left: "82%", top: "30%", size: 34, delay: "1.5s", dur: "18s", rot: -6 },
         { left: "92%", top: "70%", size: 24, delay: "4.5s", dur: "22s", rot: 16 },
-        { left: "48%", top: "12%", size: 22, delay: "6s", dur: "24s", rot: 4 },
-      ].map((p, i) => (
+        { left: "48%", top: "12%", size: 22, delay: "6s",   dur: "24s", rot:  4 },
+      ] as const).map((p, i) => (
         <svg
           key={i}
           width={p.size}
@@ -107,17 +100,17 @@ export default function CozyAmbience() {
         </svg>
       ))}
 
-      {/* Fireflies — warm pulsing lights drifting upward, magical evening feel */}
-      {Array.from({ length: 9 }).map((_, i) => {
+      {/* Fireflies — 6 on desktop, 3 on mobile via CSS */}
+      {Array.from({ length: 6 }, (_, i) => {
         const left = (i * 41 + 13) % 100;
-        const top = 60 + ((i * 17) % 35);
+        const top  = 60 + ((i * 17) % 35);
         const delay = (i * 1.7) % 8;
-        const dur = 12 + (i % 6) * 2;
+        const dur  = 12 + (i % 6) * 2;
         const size = i % 3 === 0 ? 4 : 3;
         return (
           <span
-            key={`firefly-${i}`}
-            className="cozy-firefly absolute rounded-full"
+            key={`ff-${i}`}
+            className={`cozy-firefly absolute rounded-full${i >= 3 ? " hidden sm:block" : ""}`}
             style={{
               left: `${left}%`,
               top: `${top}%`,
@@ -125,25 +118,23 @@ export default function CozyAmbience() {
               height: size,
               background:
                 "radial-gradient(circle, rgba(255,235,150,1) 0%, rgba(241,187,26,0.85) 45%, rgba(241,187,26,0) 75%)",
-              animation: `fireflyDrift ${dur}s ease-in-out ${delay}s infinite, fireflyPulse ${
-                2 + (i % 3) * 0.6
-              }s ease-in-out infinite`,
+              animation: `fireflyDrift ${dur}s ease-in-out ${delay}s infinite, fireflyPulse ${2 + (i % 3) * 0.6}s ease-in-out infinite`,
             }}
           />
         );
       })}
 
-      {/* Twinkling stars — tiny constellation feel scattered across the upper viewport */}
-      {Array.from({ length: 14 }).map((_, i) => {
-        const left = (i * 71 + 5) % 100;
-        const top = (i * 23 + 4) % 55;
+      {/* Twinkling stars — 10 (down from 14) */}
+      {Array.from({ length: 10 }, (_, i) => {
+        const left  = (i * 71 + 5) % 100;
+        const top   = (i * 23 + 4) % 55;
         const delay = (i * 0.9) % 6;
-        const dur = 3.5 + (i % 4);
-        const size = i % 4 === 0 ? 9 : i % 2 === 0 ? 7 : 5;
+        const dur   = 3.5 + (i % 4);
+        const size  = i % 4 === 0 ? 9 : i % 2 === 0 ? 7 : 5;
         return (
           <svg
             key={`star-${i}`}
-            className="cozy-star absolute"
+            className={`cozy-star absolute${i >= 7 ? " hidden sm:block" : ""}`}
             width={size}
             height={size}
             viewBox="0 0 10 10"
@@ -160,39 +151,6 @@ export default function CozyAmbience() {
               opacity="0.9"
             />
           </svg>
-        );
-      })}
-
-      {/* Dust motes catching light — very subtle */}
-      {Array.from({ length: 18 }).map((_, i) => {
-        const left = (i * 53 + 7) % 100;
-        const top = (i * 37 + 11) % 100;
-        const delay = (i * 0.6) % 6;
-        const dur = 12 + (i % 8);
-        const size = i % 3 === 0 ? 3 : i % 2 === 0 ? 2 : 1.5;
-        return (
-          <span
-            key={`mote-${i}`}
-            className="absolute rounded-full"
-            style={{
-              left: `${left}%`,
-              top: `${top}%`,
-              width: size,
-              height: size,
-              background:
-                i % 3 === 0
-                  ? "rgba(241,187,26,0.55)"
-                  : i % 2 === 0
-                  ? "rgba(255,255,255,0.65)"
-                  : "rgba(107,28,111,0.35)",
-              boxShadow:
-                i % 3 === 0
-                  ? "0 0 6px rgba(241,187,26,0.7)"
-                  : "0 0 4px rgba(255,255,255,0.5)",
-              animation: `dustDrift ${dur}s ease-in-out ${delay}s infinite`,
-              opacity: 0.5,
-            }}
-          />
         );
       })}
     </div>

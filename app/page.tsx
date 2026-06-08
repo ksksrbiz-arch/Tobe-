@@ -483,11 +483,19 @@ export default function Home() {
       <TradeSection />
       <ShopSection />
       <SectionDivider variant="sparkle" label="Just Shelved" />
-      <JustShelvedSection />
-      <CookbookCurationGallery />
-      <NextReadSection />
+
+      {/* content-visibility: auto skips rendering these heavy sections until
+          they're near the viewport, cutting initial paint work significantly. */}
+      <div className="cv-auto-tall">
+        <JustShelvedSection />
+        <CookbookCurationGallery />
+      </div>
+      <div className="cv-auto">
+        <NextReadSection />
+      </div>
 
       {/* TikTok spotlight */}
+      <div className="cv-auto">
       <section
         className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{ background: "rgba(255,255,255,0.78)" }}
@@ -543,14 +551,19 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
+      </div>
 
-      <EventsSection />
-      <LemmyFeatureSection />
-      <BookishQuote />
+      <div className="cv-auto">
+        <EventsSection />
+        <LemmyFeatureSection />
+        <BookishQuote />
+      </div>
       <SectionDivider variant="bookmark" label="Stay in touch" muted />
-      <ConnectSection />
-      <FAQSection />
-      <NewsletterCTA />
+      <div className="cv-auto">
+        <ConnectSection />
+        <FAQSection />
+        <NewsletterCTA />
+      </div>
 
       <Footer />
       <FloatingButtons />

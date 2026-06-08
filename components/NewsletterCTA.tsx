@@ -36,6 +36,7 @@ export default function NewsletterCTA() {
 
   return (
     <section
+      id="newsletter"
       className="px-4 py-12 sm:py-20 sm:px-6 lg:px-8"
       style={{ background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)" }}
     >

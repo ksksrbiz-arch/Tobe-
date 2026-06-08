@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { MapPin, Phone, Mail, Clock, Send, ArrowUpRight } from "lucide-react";
-import { toast } from "sonner";
 import BookLogo from "./BookLogo";
 
 const InstagramIcon = () => (
@@ -45,34 +44,6 @@ const footerSocials = [
 ];
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleNewsletter = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes("@")) {
-      toast.error("Please enter a valid email address.");
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const res = await fetch("/api/newsletter", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error ?? "Unknown error");
-      toast.success("You're on the list! We'll keep you updated on book news and events.");
-      setEmail("");
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Something went wrong — please try again.";
-      toast.error(msg);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   return (
     <footer
       className="relative overflow-hidden text-white"
@@ -240,29 +211,18 @@ export default function Footer() {
             <p className="mb-4 text-sm leading-relaxed opacity-75">
               New arrivals, store events, and behind-the-scenes peeks at our 2026 rebrand — straight to your inbox.
             </p>
-            <form onSubmit={handleNewsletter} className="flex flex-col gap-2.5">
-              <label htmlFor="newsletter-email" className="sr-only">
-                Email
-              </label>
-              <input
-                id="newsletter-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                className="rounded-xl bg-white/95 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-inner outline-none transition focus:ring-2 focus:ring-yellow-400"
-              />
-              <button
-                type="submit"
-                disabled={submitting}
-                className="btn-shine flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-50"
-                style={{ background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)", color: "#1a1a1a" }}
-              >
-                {submitting ? "Subscribing..." : "Subscribe"}
-                <Send size={14} />
-              </button>
-              <p className="text-[11px] opacity-55">No spam. Unsubscribe anytime.</p>
-            </form>
+            {/* The full sign-up form lives in the NewsletterCTA section above;
+                linking there keeps the subscribe flow in one place and avoids
+                duplicate form state / duplicate API calls. */}
+            <a
+              href="#newsletter"
+              className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-[1.03]"
+              style={{ background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)", color: "#1a1a1a" }}
+            >
+              Subscribe above
+              <Send size={14} />
+            </a>
+            <p className="mt-3 text-[11px] opacity-55">No spam. Unsubscribe anytime.</p>
           </div>
         </div>
 

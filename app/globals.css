@@ -425,11 +425,15 @@ p {
   transform: translateY(28px);
   transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
               transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Hint the compositor only before the element has revealed — once it's
+     visible we remove the hint so we don't permanently promote every reveal
+     wrapper to its own layer. */
   will-change: opacity, transform;
 }
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+  will-change: auto;
 }
 
 /* Stagger children */
@@ -743,6 +747,22 @@ p {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ───────── content-visibility: auto ───────── */
+/* Applied to below-the-fold sections to skip rendering work until they're
+   near the viewport. contain-intrinsic-size gives the browser a size hint so
+   layout doesn't collapse while the content is skipped.
+   Not applied to the hero, navbar, or first banner — they must paint
+   immediately for LCP. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px;
+}
+/* Taller sections (galleries, TBR loop timeline) need a taller hint */
+.cv-auto-tall {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 900px;
 }
 
 /* Print: keep things readable */

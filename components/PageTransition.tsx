@@ -46,7 +46,10 @@ export default function PageTransition({ children }: { children: React.ReactNode
         transition: reduceMotion
           ? "none"
           : "opacity 360ms cubic-bezier(0.22, 1, 0.36, 1), transform 360ms cubic-bezier(0.22, 1, 0.36, 1)",
-        willChange: reduceMotion ? "auto" : "opacity, transform",
+        // Only hint the compositor during the active transition — leaving
+        // willChange permanently set promotes the entire page tree to its own
+        // layer indefinitely, wasting GPU memory between navigations.
+        willChange: stage === "out" ? "opacity, transform" : "auto",
       }}
     >
       {children}

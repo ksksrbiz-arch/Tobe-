@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
+import Image from "next/image";
 import { Sparkles, BookOpen } from "lucide-react";
 
 interface RecentArrival {
@@ -42,8 +43,7 @@ const NEW_ITEM_HIGHLIGHT_DURATION_MS = 8_000;
 function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
   return (
     <div
-      className="group relative overflow-hidden rounded-2xl border transition-all hover:-translate-y-1 hover:shadow-2xl"
-      style={{
+      className="group relative overflow-hidden rounded-2xl border transition-all hover:-translate-y-1 hover:shadow-2xl"      style={{
         background: "white",
         borderColor: "rgba(107,28,111,0.10)",
         boxShadow: "0 8px 24px rgba(107,28,111,0.08)",
@@ -58,13 +58,15 @@ function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
           Just in!
         </span>
       )}
-      <div className="aspect-[2/3] w-full overflow-hidden bg-gradient-to-b" style={{ background: "rgba(107,28,111,0.06)" }}>
+      <div className="aspect-[2/3] w-full overflow-hidden" style={{ background: "rgba(107,28,111,0.06)" }}>
         {book.cover_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={book.cover_url}
             alt={book.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, 16vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
           />
         ) : (
           <div className="flex h-full items-center justify-center">
@@ -121,7 +123,7 @@ export default function JustShelvedFeed() {
 
   const fetchArrivals = useCallback(async (markNew: boolean) => {
     try {
-      const res = await fetch("/api/recent-arrivals", { cache: "no-store" });
+      const res = await fetch("/api/recent-arrivals");
       if (!res.ok) {
         setLive(false);
         return;
