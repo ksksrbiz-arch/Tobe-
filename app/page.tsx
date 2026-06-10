@@ -110,17 +110,6 @@ const StephenKingBanner = dynamic(() => import("@/components/StephenKingBanner")
 
 const PortlandBookWeekBanner = dynamic(() => import("@/components/PortlandBookWeekBanner"));
 
-const EchoesLaunchBanner = dynamic(() => import("@/components/EchoesLaunchBanner"), {
-  loading: () => (
-    <div className="px-4 py-12 sm:py-16">
-      <div
-        className="mx-auto h-56 max-w-6xl animate-pulse rounded-[32px]"
-        style={{ background: "rgba(107,28,111,0.08)" }}
-      />
-    </div>
-  ),
-});
-
 const TBRLoopEmbed = dynamic(
   () => import("@/components/TBRLoop").then((m) => ({ default: m.TBRLoopEmbed })),
   { loading: () => <SectionSkeleton eyebrow="TBR Loop" title="Spinning up the loop..." /> },
@@ -259,9 +248,6 @@ export default function Home() {
 
       {/* Portland Book Week sale — June 5–13 2026 (auto-expires June 13 midnight) */}
       <PortlandBookWeekBanner />
-
-      {/* Echoes of Choice launch banner */}
-      <EchoesLaunchBanner />
 
       {/* TBR Loop preview section */}
       <section
