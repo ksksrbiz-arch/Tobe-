@@ -23,6 +23,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "via.placeholder.com",
       },
+      // Unsplash — decorative PageHero backgrounds on /connect and /wishlist
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
     ],
     // Serve modern formats where the browser supports them.
     // AVIF is ~50 % smaller than WebP; WebP is ~30 % smaller than JPEG.
