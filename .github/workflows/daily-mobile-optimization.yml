@@ -1,10 +1,15 @@
-name: Daily Mobile Optimization Check
+name: Weekly Mobile Optimization Check
 
 on:
   schedule:
-    # Run daily at 8:00 AM UTC
-    - cron: "0 8 * * *"
+    # Run weekly on Monday at 8:00 AM UTC. See CI workflow for per-PR gating;
+    # this heavier Lighthouse audit only needs to run periodically.
+    - cron: "0 8 * * 1"
   workflow_dispatch: # Allow manual triggers
+
+concurrency:
+  group: mobile-audit
+  cancel-in-progress: true
 
 permissions:
   contents: read
