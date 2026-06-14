@@ -1,10 +1,16 @@
-name: Daily SEO Audit
+name: Weekly SEO Audit
 
 on:
   schedule:
-    # Run daily at 6:00 AM UTC
-    - cron: "0 6 * * *"
+    # Run weekly on Monday at 6:00 AM UTC. Daily cadence burned runner minutes
+    # without surfacing new findings between content changes; weekly is enough
+    # for a marketing site and PR-time CI already gates regressions.
+    - cron: "0 6 * * 1"
   workflow_dispatch: # Allow manual triggers
+
+concurrency:
+  group: seo-audit
+  cancel-in-progress: true
 
 permissions:
   contents: read

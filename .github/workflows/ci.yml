@@ -1,0 +1,46 @@
+name: CI
+
+# Validates every pull request and push to main *before* merge so broken lint,
+# type errors, or build failures never land on the default branch. This is the
+# fast feedback gate; the heavier audits (SEO, mobile, security) run on a
+# weekly schedule, not on every change.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Cancel superseded runs on the same ref so a force-push or rapid follow-up
+# commit doesn't pile up duplicate jobs and waste runner minutes.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Lint, Typecheck & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build

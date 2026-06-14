@@ -106,10 +106,6 @@ function TikTokSkeleton() {
   );
 }
 
-const StephenKingBanner = dynamic(() => import("@/components/StephenKingBanner"));
-
-const PortlandBookWeekBanner = dynamic(() => import("@/components/PortlandBookWeekBanner"));
-
 const TBRLoopEmbed = dynamic(
   () => import("@/components/TBRLoop").then((m) => ({ default: m.TBRLoopEmbed })),
   { loading: () => <SectionSkeleton eyebrow="TBR Loop" title="Spinning up the loop..." /> },
@@ -242,12 +238,6 @@ export default function Home() {
     >
       <Navbar />
       <HeroSection />
-
-      {/* Limited-time rare Stephen King hardcovers banner (auto-expires) */}
-      <StephenKingBanner />
-
-      {/* Portland Book Week sale — June 5–13 2026 (auto-expires June 13 midnight) */}
-      <PortlandBookWeekBanner />
 
       {/* TBR Loop preview section */}
       <section
