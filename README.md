@@ -103,17 +103,22 @@ errors with appropriate status codes, and degrade gracefully when an upstream
 
 ## CI / CD
 
-| Workflow                          | Trigger                | Purpose                                   |
-| --------------------------------- | ---------------------- | ----------------------------------------- |
-| `ci.yml`                          | every PR + push `main` | Lint, typecheck, build — the merge gate.  |
-| `daily-seo-audit.yml`             | weekly (Mon 06:00 UTC) | SEO metadata checks + Lighthouse SEO.     |
-| `daily-dependency-security.yml`   | weekly (Mon 07:00 UTC) | `npm audit` for root + `echoes`.          |
-| `daily-mobile-optimization.yml`   | weekly (Mon 08:00 UTC) | Viewport/manifest checks + Lighthouse.    |
+| Workflow                          | Trigger                | Purpose                                            |
+| --------------------------------- | ---------------------- | -------------------------------------------------- |
+| `ci.yml`                          | every PR + push `main` | Lint, typecheck, build + schema check — merge gate.|
+| `daily-seo-audit.yml`             | weekly (Mon 06:00 UTC) | SEO metadata checks + Lighthouse SEO.              |
+| `daily-dependency-security.yml`   | weekly (Mon 07:00 UTC) | `npm audit` for root + `echoes`.                   |
+| `daily-mobile-optimization.yml`   | weekly (Mon 08:00 UTC) | Viewport/manifest checks + Lighthouse.             |
+
+`ci.yml` also runs a **schema check**: it applies `db/schema.sql` to a throwaway
+Postgres twice to catch broken SQL and verify the file stays idempotent before
+it reaches the live Neon database.
 
 The scheduled audits run **weekly** (not daily) and use `concurrency` guards to
 avoid stacking runs — per-PR correctness is already enforced by `ci.yml`, so the
-heavier audits only need a periodic cadence. Every scheduled workflow also
-supports `workflow_dispatch` for on-demand runs.
+heavier audits only need a periodic cadence. They also surface Lighthouse scores
+in each run's **Step Summary** with a shareable report link. Every scheduled
+workflow supports `workflow_dispatch` for on-demand runs.
 
 Deployment is handled by Netlify via `netlify.toml` (`npm run build`, published
 from `.next`).
