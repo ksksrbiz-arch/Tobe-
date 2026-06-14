@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { GoogleGenAI, Type } from "@google/genai";
 import { sql } from "@/lib/db";
+import { seedArrivals } from "@/lib/seedArrivals";
 import { checkRateLimit, getClientIp, withTimeout } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
@@ -12,12 +13,11 @@ const MODEL_TEMPERATURE = 0.5;
 const SYSTEM_PROMPT = `You are a knowledgeable bookseller at To Be Read, a small \
 independent bookshop. A reader will describe what they just finished or the \
 mood they're chasing. You will also receive LIVE_SHELF titles from current \
-inventory. Recommend only books from LIVE_SHELF and never invent titles. \
-Use Google Search grounding to ensure each recommendation is a real published \
-book. If there are no strong matches in LIVE_SHELF, return an empty \
-recommendations array. For each recommendation, give a one-sentence "reason" \
-tying the recommendation back to the reader's prompt. Keep descriptions \
-concise (1–2 sentences). Skip preamble — return only the structured payload.`;
+inventory. Recommend only books from LIVE_SHELF and never invent titles. If \
+there are no strong matches in LIVE_SHELF, return an empty recommendations \
+array. For each recommendation, give a one-sentence "reason" tying the \
+recommendation back to the reader's prompt. Keep descriptions concise (1–2 \
+sentences). Skip preamble — return only the structured payload.`;
 
 const RESPONSE_SCHEMA = {
   type: Type.OBJECT,
@@ -51,6 +51,8 @@ interface InventoryBook {
   title: string;
   author: string;
   cover_url: string;
+  category?: string;
+  subcategory?: string;
 }
 
 function normalizeText(s: string) {
@@ -61,16 +63,26 @@ function normalizeText(s: string) {
     .trim();
 }
 
-async function fetchInventoryTitles() {
+// Pull the live shelf from Postgres; when the DB is unprovisioned, empty, or
+// erroring, fall back to the curated static shelf so the matchmaker always has
+// stock to recommend from (mirrors /api/recent-arrivals).
+async function fetchInventoryTitles(): Promise<InventoryBook[]> {
   try {
     const rows = (await sql`
-      SELECT title, author, cover_url FROM recent_arrivals
+      SELECT title, author, cover_url, category, subcategory FROM recent_arrivals
       ORDER BY added_at DESC LIMIT 200
     `) as InventoryBook[];
-    return { rows, unavailable: false };
+    if (rows.length > 0) return rows;
   } catch {
-    return { rows: [] as InventoryBook[], unavailable: true };
+    // fall through to the static shelf
   }
+  return seedArrivals.map((b) => ({
+    title: b.title,
+    author: b.author,
+    cover_url: b.cover_url,
+    category: b.category,
+    subcategory: b.subcategory,
+  }));
 }
 
 function inventoryKey(title: string, author: string) {
@@ -92,8 +104,137 @@ ${inventoryContext}
 Rules:
 - Return ${MIN_RECOMMENDATIONS} to ${MAX_RECOMMENDATIONS} recommendations when possible.
 - Choose only books from LIVE_SHELF.
-- Match title and author exactly to LIVE_SHELF entries.
-- Use Google Search grounding to verify each pick is a real book.`;
+- Match title and author exactly to LIVE_SHELF entries.`;
+}
+
+// ── Gemini (free-tier gemini-2.0-flash) recommender ────────────────────────────
+async function aiRecommend(
+  apiKey: string,
+  prompt: string,
+  inventory: InventoryBook[],
+): Promise<Recommendation[]> {
+  const ai = new GoogleGenAI({ apiKey });
+  const response = await withTimeout(
+    ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: buildGroundedPrompt(prompt, inventory),
+      config: {
+        systemInstruction: SYSTEM_PROMPT,
+        responseMimeType: "application/json",
+        responseSchema: RESPONSE_SCHEMA,
+        temperature: MODEL_TEMPERATURE,
+      },
+    }),
+    15_000,
+    "Recommendation request timed out.",
+  );
+  const text = response.text;
+  if (!text) return [];
+  const parsed = JSON.parse(text) as { recommendations?: Recommendation[] };
+  return parsed.recommendations ?? [];
+}
+
+// ── Keyless heuristic recommender ──────────────────────────────────────────────
+// A deterministic, dependency-free fallback so the matchmaker functions even
+// without an AI key (or when the AI call fails). Scores shelf titles by how well
+// the reader's words and implied genre overlap each book's title/author/category.
+const STOPWORDS = new Set([
+  "a", "an", "the", "and", "or", "with", "of", "for", "to", "in", "on", "my", "me",
+  "we", "that", "this", "like", "love", "loved", "just", "really", "some", "lots",
+  "strong", "next", "read", "reading", "book", "books", "story", "stories", "about",
+  "want", "looking", "something", "anything", "more", "very", "into", "from",
+]);
+
+const GENRE_HINTS: Record<string, string[]> = {
+  mystery: ["thriller", "mystery", "cozy", "suspense"],
+  thriller: ["thriller", "suspense"],
+  suspense: ["thriller", "suspense"],
+  twisty: ["thriller", "suspense"],
+  dark: ["thriller", "suspense"],
+  romance: ["romance"],
+  romantic: ["romance"],
+  romantasy: ["fantasy", "romance", "romantasy"],
+  fantasy: ["fantasy"],
+  magic: ["fantasy"],
+  dragon: ["fantasy", "romantasy"],
+  dragons: ["fantasy", "romantasy"],
+  epic: ["fantasy", "epic"],
+  scifi: ["science"],
+  space: ["science"],
+  historical: ["historical"],
+  history: ["historical"],
+  war: ["historical", "wwii"],
+  classic: ["classic"],
+  literary: ["literary"],
+  memoir: ["memoir", "nonfiction"],
+  nonfiction: ["nonfiction"],
+  cozy: ["cozy"],
+  funny: ["contemporary"],
+  emotional: ["book_club", "literary"],
+  cry: ["book_club", "literary"],
+};
+
+function tokenize(s: string): string[] {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 2 && !STOPWORDS.has(w));
+}
+
+function genreWord(category?: string): string {
+  if (!category) return "shelf";
+  if (category.startsWith("thriller")) return "thriller";
+  if (category === "literary_classic") return "classic";
+  if (category === "literary_nonfiction") return "nonfiction";
+  if (category.startsWith("literary")) return "literary fiction";
+  if (category.startsWith("romance")) return "romance";
+  if (category.startsWith("fantasy")) return "fantasy";
+  if (category.startsWith("historical")) return "historical fiction";
+  if (category === "science_fiction") return "science fiction";
+  return category.split("_")[0];
+}
+
+function heuristicRecommend(prompt: string, inventory: InventoryBook[]): Recommendation[] {
+  const tokens = tokenize(prompt);
+  const hintFrags = new Set<string>();
+  for (const t of tokens) for (const f of GENRE_HINTS[t] ?? []) hintFrags.add(f);
+
+  const scored = inventory.map((book) => {
+    const hay = normalizeText(
+      `${book.title} ${book.author} ${(book.category ?? "").replace(/_/g, " ")} ${(book.subcategory ?? "").replace(/_/g, " ")}`,
+    );
+    const matchedWords: string[] = [];
+    let score = 0;
+    for (const t of tokens) {
+      if (hay.includes(t)) {
+        score += 2;
+        matchedWords.push(t);
+      }
+    }
+    for (const f of hintFrags) if (hay.includes(f)) score += 3;
+    return { book, score, matchedWords };
+  });
+
+  const positives = scored.filter((s) => s.score > 0).sort((a, b) => b.score - a.score);
+  // If we don't have enough genuine matches, top up with recent shelf picks.
+  const chosen = (positives.length >= MIN_RECOMMENDATIONS ? positives : scored.sort((a, b) => b.score - a.score)).slice(
+    0,
+    MAX_RECOMMENDATIONS,
+  );
+
+  return chosen.map(({ book, matchedWords }) => {
+    const genre = genreWord(book.category);
+    const matchPhrase = matchedWords[0];
+    return {
+      title: book.title,
+      author: book.author,
+      description: `A ${genre} pick that's on our shelves right now.`,
+      reason: matchPhrase
+        ? `Picked up on "${matchPhrase}" in what you described — and it's a ${genre} read.`
+        : `A reader-favorite ${genre} title to start your next stack.`,
+    };
+  });
 }
 
 export async function POST(request: Request) {
@@ -113,14 +254,6 @@ export async function POST(request: Request) {
           "X-RateLimit-Remaining": String(rateLimit.remaining),
         },
       },
-    );
-  }
-
-  const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json(
-      { error: "Recommendation service is not configured." },
-      { status: 503 },
     );
   }
 
@@ -144,57 +277,25 @@ export async function POST(request: Request) {
     );
   }
 
-  const ai = new GoogleGenAI({ apiKey });
-  const inventoryState = await fetchInventoryTitles();
-  if (inventoryState.unavailable) {
-    return NextResponse.json(
-      { error: "Our live shelf data is unavailable right now. Please try again shortly." },
-      { status: 503 },
-    );
-  }
-  const inventory = inventoryState.rows;
+  const inventory = await fetchInventoryTitles();
   if (inventory.length === 0) {
     return NextResponse.json({ recommendations: [] });
   }
 
-  let recommendations: Recommendation[];
-  try {
-    const response = await withTimeout(
-      ai.models.generateContent({
-        model: "gemini-2.0-flash",
-        contents: buildGroundedPrompt(prompt, inventory),
-        config: {
-          systemInstruction: SYSTEM_PROMPT,
-          responseMimeType: "application/json",
-          responseSchema: RESPONSE_SCHEMA,
-          temperature: MODEL_TEMPERATURE,
-          tools: [{ googleSearch: {} }],
-        },
-      }),
-      15_000,
-      "Recommendation request timed out.",
-    );
-    const text = response.text;
-    if (!text) {
-      return NextResponse.json(
-        { error: "Couldn't generate recommendations. Try rephrasing." },
-        { status: 502 },
-      );
+  // Prefer the AI matcher when a (free-tier) key is configured; otherwise — or if
+  // the AI call fails or returns nothing — fall back to the keyless heuristic so
+  // the tool always returns picks from our shelf.
+  const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
+  let recommendations: Recommendation[] = [];
+  if (apiKey) {
+    try {
+      recommendations = await aiRecommend(apiKey, prompt, inventory);
+    } catch {
+      recommendations = [];
     }
-    const parsed = JSON.parse(text) as { recommendations?: Recommendation[] };
-    recommendations = parsed.recommendations ?? [];
-    if (recommendations.length === 0) {
-      return NextResponse.json(
-        { error: "Couldn't generate recommendations. Try rephrasing." },
-        { status: 502 },
-      );
-    }
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : "Unexpected error.";
-    return NextResponse.json(
-      { error: `Recommendation service is unavailable: ${msg}` },
-      { status: 502 },
-    );
+  }
+  if (recommendations.length === 0) {
+    recommendations = heuristicRecommend(prompt, inventory);
   }
 
   // Enforce inventory-only output and normalize to canonical inventory metadata.
@@ -226,10 +327,6 @@ export async function POST(request: Request) {
     })
     .filter((rec): rec is NonNullable<typeof rec> => Boolean(rec))
     .slice(0, MAX_RECOMMENDATIONS);
-
-  if (enriched.length === 0) {
-    return NextResponse.json({ recommendations: [] });
-  }
 
   return NextResponse.json({ recommendations: enriched });
 }
