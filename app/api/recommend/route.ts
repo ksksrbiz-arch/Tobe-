@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { GoogleGenAI, Type } from "@google/genai";
 import { sql } from "@/lib/db";
 import { seedArrivals } from "@/lib/seedArrivals";
+import { bookKnowledge } from "@/lib/bookKnowledge";
 import { checkRateLimit, getClientIp, withTimeout } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
@@ -11,13 +12,14 @@ const MAX_INVENTORY_CONTEXT = 120;
 const MODEL_TEMPERATURE = 0.5;
 
 const SYSTEM_PROMPT = `You are a knowledgeable bookseller at To Be Read, a small \
-independent bookshop. A reader will describe what they just finished or the \
-mood they're chasing. You will also receive LIVE_SHELF titles from current \
-inventory. Recommend only books from LIVE_SHELF and never invent titles. If \
-there are no strong matches in LIVE_SHELF, return an empty recommendations \
-array. For each recommendation, give a one-sentence "reason" tying the \
-recommendation back to the reader's prompt. Keep descriptions concise (1–2 \
-sentences). Skip preamble — return only the structured payload.`;
+independent bookshop. A reader will describe what they just finished or the mood \
+they're chasing. You will receive LIVE_SHELF: real titles in stock, each with a \
+short description and mood tags. Recommend ONLY books from LIVE_SHELF — never \
+invent titles or suggest books that aren't listed. Match on substance (mood, \
+theme, read-alikes), not just keywords. If nothing on the shelf is a good fit, \
+return an empty recommendations array rather than a weak guess. For each pick, \
+write a one-sentence "reason" tying it to the reader's request. Keep the \
+"description" to the book's actual premise. Return only the structured payload.`;
 
 const RESPONSE_SCHEMA = {
   type: Type.OBJECT,
@@ -48,11 +50,16 @@ interface Recommendation {
 }
 
 interface InventoryBook {
+  isbn: string;
   title: string;
   author: string;
   cover_url: string;
   category?: string;
   subcategory?: string;
+  blurb?: string;
+  moods?: string[];
+  themes?: string[];
+  readAlikes?: string[];
 }
 
 function normalizeText(s: string) {
@@ -63,48 +70,62 @@ function normalizeText(s: string) {
     .trim();
 }
 
+// Merge a shelf row with its curated knowledge-base entry (by ISBN).
+function withKnowledge(book: Omit<InventoryBook, "blurb" | "moods" | "themes" | "readAlikes">): InventoryBook {
+  const k = bookKnowledge[book.isbn];
+  return { ...book, blurb: k?.blurb, moods: k?.moods, themes: k?.themes, readAlikes: k?.readAlikes };
+}
+
 // Pull the live shelf from Postgres; when the DB is unprovisioned, empty, or
 // erroring, fall back to the curated static shelf so the matchmaker always has
-// stock to recommend from (mirrors /api/recent-arrivals).
+// stock. Either way, every book is enriched with knowledge-base metadata.
 async function fetchInventoryTitles(): Promise<InventoryBook[]> {
   try {
     const rows = (await sql`
-      SELECT title, author, cover_url, category, subcategory FROM recent_arrivals
+      SELECT isbn, title, author, cover_url, category, subcategory FROM recent_arrivals
       ORDER BY added_at DESC LIMIT 200
-    `) as InventoryBook[];
-    if (rows.length > 0) return rows;
+    `) as Omit<InventoryBook, "blurb" | "moods" | "themes" | "readAlikes">[];
+    if (rows.length > 0) return rows.map(withKnowledge);
   } catch {
     // fall through to the static shelf
   }
-  return seedArrivals.map((b) => ({
-    title: b.title,
-    author: b.author,
-    cover_url: b.cover_url,
-    category: b.category,
-    subcategory: b.subcategory,
-  }));
+  return seedArrivals.map((b) =>
+    withKnowledge({
+      isbn: b.isbn,
+      title: b.title,
+      author: b.author,
+      cover_url: b.cover_url,
+      category: b.category,
+      subcategory: b.subcategory,
+    }),
+  );
 }
 
 function inventoryKey(title: string, author: string) {
   return `${normalizeText(title)}::${normalizeText(author)}`;
 }
 
-function buildGroundedPrompt(readerPrompt: string, inventory: InventoryBook[]) {
+function buildShelfPrompt(readerPrompt: string, inventory: InventoryBook[]) {
   const inventoryContext = inventory
-    // Keep context bounded to reduce token usage while still covering recent stock breadth.
+    // Keep context bounded to control token use while covering the shelf breadth.
     .slice(0, MAX_INVENTORY_CONTEXT)
-    .map((book, index) => `${index + 1}. ${book.title} — ${book.author}`)
+    .map((book, index) => {
+      const tags = [...(book.moods ?? []), ...(book.themes ?? [])].slice(0, 6).join(", ");
+      const desc = book.blurb ? ` :: ${book.blurb}` : "";
+      const tagStr = tags ? ` [${tags}]` : "";
+      return `${index + 1}. ${book.title} — ${book.author}${desc}${tagStr}`;
+    })
     .join("\n");
   return `Reader request:
 ${readerPrompt}
 
-LIVE_SHELF:
+LIVE_SHELF (the only books you may recommend):
 ${inventoryContext}
 
 Rules:
-- Return ${MIN_RECOMMENDATIONS} to ${MAX_RECOMMENDATIONS} recommendations when possible.
-- Choose only books from LIVE_SHELF.
-- Match title and author exactly to LIVE_SHELF entries.`;
+- Return ${MIN_RECOMMENDATIONS} to ${MAX_RECOMMENDATIONS} recommendations when there are good fits.
+- Choose only books from LIVE_SHELF; match title and author exactly.
+- Prefer mood/theme fit over surface keyword overlap.`;
 }
 
 // ── Gemini (free-tier gemini-2.0-flash) recommender ────────────────────────────
@@ -117,7 +138,7 @@ async function aiRecommend(
   const response = await withTimeout(
     ai.models.generateContent({
       model: "gemini-2.0-flash",
-      contents: buildGroundedPrompt(prompt, inventory),
+      contents: buildShelfPrompt(prompt, inventory),
       config: {
         systemInstruction: SYSTEM_PROMPT,
         responseMimeType: "application/json",
@@ -135,43 +156,47 @@ async function aiRecommend(
 }
 
 // ── Keyless heuristic recommender ──────────────────────────────────────────────
-// A deterministic, dependency-free fallback so the matchmaker functions even
-// without an AI key (or when the AI call fails). Scores shelf titles by how well
-// the reader's words and implied genre overlap each book's title/author/category.
+// Deterministic fallback so the matchmaker works without an AI key (or if the AI
+// call fails). Scores shelf titles on knowledge-base signal: mood, theme,
+// read-alikes, genre, and title/author overlap with the reader's words.
 const STOPWORDS = new Set([
   "a", "an", "the", "and", "or", "with", "of", "for", "to", "in", "on", "my", "me",
   "we", "that", "this", "like", "love", "loved", "just", "really", "some", "lots",
   "strong", "next", "read", "reading", "book", "books", "story", "stories", "about",
-  "want", "looking", "something", "anything", "more", "very", "into", "from",
+  "want", "looking", "something", "anything", "more", "very", "into", "from", "but",
 ]);
 
 const GENRE_HINTS: Record<string, string[]> = {
   mystery: ["thriller", "mystery", "cozy", "suspense"],
   thriller: ["thriller", "suspense"],
   suspense: ["thriller", "suspense"],
-  twisty: ["thriller", "suspense"],
-  dark: ["thriller", "suspense"],
-  romance: ["romance"],
-  romantic: ["romance"],
-  romantasy: ["fantasy", "romance", "romantasy"],
-  fantasy: ["fantasy"],
-  magic: ["fantasy"],
-  dragon: ["fantasy", "romantasy"],
-  dragons: ["fantasy", "romantasy"],
-  epic: ["fantasy", "epic"],
-  scifi: ["science"],
-  space: ["science"],
-  historical: ["historical"],
+  twisty: ["twisty", "thriller"],
+  dark: ["dark"],
+  romance: ["romance", "swoony", "romantic"],
+  romantic: ["romance", "swoony"],
+  swoony: ["swoony", "romance"],
+  romantasy: ["fae", "dragons", "romance", "steamy"],
+  fantasy: ["fantasy", "magic", "fae", "dragons"],
+  magic: ["magic", "fantasy"],
+  dragon: ["dragons"],
+  dragons: ["dragons"],
+  epic: ["epic", "war"],
+  scifi: ["space", "science"],
+  space: ["space", "science"],
+  historical: ["historical", "war"],
   history: ["historical"],
-  war: ["historical", "wwii"],
+  war: ["war", "wwii"],
   classic: ["classic"],
   literary: ["literary"],
   memoir: ["memoir", "nonfiction"],
-  nonfiction: ["nonfiction"],
-  cozy: ["cozy"],
-  funny: ["contemporary"],
-  emotional: ["book_club", "literary"],
-  cry: ["book_club", "literary"],
+  nonfiction: ["nonfiction", "self-improvement"],
+  cozy: ["cozy", "heartwarming"],
+  funny: ["funny", "witty"],
+  emotional: ["emotional", "heartbreaking"],
+  cry: ["heartbreaking", "emotional", "devastating"],
+  sad: ["heartbreaking", "emotional"],
+  uplifting: ["uplifting", "hopeful"],
+  cozy_food: ["cozy"],
 };
 
 function tokenize(s: string): string[] {
@@ -201,38 +226,49 @@ function heuristicRecommend(prompt: string, inventory: InventoryBook[]): Recomme
   for (const t of tokens) for (const f of GENRE_HINTS[t] ?? []) hintFrags.add(f);
 
   const scored = inventory.map((book) => {
-    const hay = normalizeText(
-      `${book.title} ${book.author} ${(book.category ?? "").replace(/_/g, " ")} ${(book.subcategory ?? "").replace(/_/g, " ")}`,
+    // Weighted haystacks: tag matches (mood/theme/read-alike) count for more
+    // than incidental matches in the blurb or title.
+    const tagHay = normalizeText(
+      [...(book.moods ?? []), ...(book.themes ?? []), ...(book.readAlikes ?? []), book.subcategory ?? ""]
+        .join(" ")
+        .replace(/_/g, " "),
     );
-    const matchedWords: string[] = [];
+    const textHay = normalizeText(`${book.title} ${book.author} ${book.blurb ?? ""} ${(book.category ?? "").replace(/_/g, " ")}`);
+    const matched: string[] = [];
     let score = 0;
     for (const t of tokens) {
-      if (hay.includes(t)) {
+      if (tagHay.includes(t)) {
+        score += 4;
+        matched.push(t);
+      } else if (textHay.includes(t)) {
         score += 2;
-        matchedWords.push(t);
+        matched.push(t);
       }
     }
-    for (const f of hintFrags) if (hay.includes(f)) score += 3;
-    return { book, score, matchedWords };
+    for (const f of hintFrags) {
+      if (tagHay.includes(f)) score += 3;
+      else if (textHay.includes(f)) score += 1;
+    }
+    return { book, score, matched };
   });
 
   const positives = scored.filter((s) => s.score > 0).sort((a, b) => b.score - a.score);
-  // If we don't have enough genuine matches, top up with recent shelf picks.
+  // Only top up with shelf favorites if there genuinely aren't enough fits.
   const chosen = (positives.length >= MIN_RECOMMENDATIONS ? positives : scored.sort((a, b) => b.score - a.score)).slice(
     0,
     MAX_RECOMMENDATIONS,
   );
 
-  return chosen.map(({ book, matchedWords }) => {
+  return chosen.map(({ book, matched }) => {
     const genre = genreWord(book.category);
-    const matchPhrase = matchedWords[0];
+    const hook = matched.find((m) => (book.moods ?? book.themes ?? []).some((tag) => tag.replace(/_/g, " ").includes(m)));
     return {
       title: book.title,
       author: book.author,
-      description: `A ${genre} pick that's on our shelves right now.`,
-      reason: matchPhrase
-        ? `Picked up on "${matchPhrase}" in what you described — and it's a ${genre} read.`
-        : `A reader-favorite ${genre} title to start your next stack.`,
+      description: book.blurb ?? `A ${genre} title from our current shelves.`,
+      reason: hook
+        ? `A strong match for the "${hook}" you're after — and it's on our shelves now.`
+        : `A ${genre} pick our readers love, in stock and ready for your next stack.`,
     };
   });
 }
@@ -283,8 +319,7 @@ export async function POST(request: Request) {
   }
 
   // Prefer the AI matcher when a (free-tier) key is configured; otherwise — or if
-  // the AI call fails or returns nothing — fall back to the keyless heuristic so
-  // the tool always returns picks from our shelf.
+  // the AI call fails or returns nothing — fall back to the keyless heuristic.
   const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
   let recommendations: Recommendation[] = [];
   if (apiKey) {
@@ -298,7 +333,10 @@ export async function POST(request: Request) {
     recommendations = heuristicRecommend(prompt, inventory);
   }
 
-  // Enforce inventory-only output and normalize to canonical inventory metadata.
+  // Ground every recommendation in real inventory metadata. Anything that doesn't
+  // map to a shelf title is dropped, and the description is taken from the
+  // knowledge base (never the model), so the matchmaker cannot surface a made-up
+  // book or a fabricated synopsis.
   const inventoryByKey = new Map(inventory.map((b) => [inventoryKey(b.title, b.author), b]));
   const inventoryByTitle = new Map<string, InventoryBook[]>();
   for (const item of inventory) {
@@ -318,7 +356,7 @@ export async function POST(request: Request) {
       return {
         title: match.title,
         author: match.author,
-        description: rec.description,
+        description: match.blurb ?? rec.description,
         reason: rec.reason,
         cover_url: match.cover_url || undefined,
         in_stock: true,
