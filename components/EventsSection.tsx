@@ -74,10 +74,10 @@ export default function EventsSection() {
           {events.map((ev, i) => (
             <Reveal key={ev.title} delay={i * 80}>
               <article
-                className="group relative h-full overflow-hidden rounded-2xl border bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-xl"
+                className="group relative h-full overflow-hidden rounded-2xl border bg-white p-6 card-cozy"
                 style={{
                   borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
+                  boxShadow: "var(--shadow-sm)",
                 }}
               >
                 <div

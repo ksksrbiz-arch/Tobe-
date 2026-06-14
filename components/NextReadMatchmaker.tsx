@@ -28,7 +28,7 @@ const EXAMPLE_PROMPTS = [
 function RecommendationCard({ rec }: { rec: BookRecommendation }) {
   return (
     <div
-      className="group flex gap-4 rounded-2xl border p-5 transition-all hover:-translate-y-1 hover:shadow-xl"
+      className="group flex gap-4 rounded-2xl border p-5 card-cozy"
       style={{
         background: "linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(253,248,240,0.98) 100%)",
         borderColor: "rgba(107,28,111,0.10)",

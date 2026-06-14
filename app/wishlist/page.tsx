@@ -60,7 +60,7 @@ export default function WishlistPage() {
                   className="flex flex-col items-center rounded-2xl p-6 text-center transition-all hover:-translate-y-1"
                   style={{
                     background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
-                    boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
+                    boxShadow: "var(--shadow-sm)",
                   }}
                 >
                   <div

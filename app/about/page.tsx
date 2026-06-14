@@ -139,8 +139,8 @@ export default function AboutPage() {
             {values.map((v, i) => (
               <Reveal key={v.title} delay={i * 80}>
                 <article
-                  className="h-full rounded-2xl border bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-xl"
-                  style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "0 8px 22px rgba(107,28,111,0.06)" }}
+                  className="h-full rounded-2xl border bg-white p-6 card-cozy"
+                  style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "var(--shadow-sm)" }}
                 >
                   <div
                     className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl"
