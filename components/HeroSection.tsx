@@ -281,7 +281,7 @@ export default function HeroSection() {
           <button
             type="button"
             onClick={handleVisit}
-            className="touch-target btn-shine flex w-full items-center justify-center gap-2 rounded-2xl px-8 py-4 text-base font-semibold text-white shadow-[0_18px_40px_rgba(107,28,111,0.28)] transition-transform hover:scale-105 active:scale-[0.98] sm:w-auto"
+            className="touch-target btn-warm group flex w-full items-center justify-center gap-2 rounded-2xl px-8 py-4 text-base font-semibold text-white shadow-[0_18px_44px_rgba(107,28,111,0.30)] transition-transform hover:scale-105 active:scale-[0.98] sm:w-auto"
             style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
           >
             Plan Your Visit
