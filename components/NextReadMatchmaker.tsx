@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { BookOpen, Send, Sparkles, RefreshCw, ArrowRight } from "lucide-react";
 
 interface BookRecommendation {
@@ -25,6 +26,35 @@ const EXAMPLE_PROMPTS = [
   "Something meditative and slow like Stoner by John Williams",
 ];
 
+function CoverImage({ rec }: { rec: BookRecommendation }) {
+  const [failed, setFailed] = useState(false);
+  if (!rec.cover_url || failed) {
+    return (
+      <div
+        className="flex h-24 w-16 flex-shrink-0 items-center justify-center rounded-lg"
+        style={{ background: "linear-gradient(135deg, rgba(107,28,111,0.10), rgba(241,187,26,0.12))" }}
+      >
+        <BookOpen size={22} style={{ color: "rgba(107,28,111,0.40)" }} />
+      </div>
+    );
+  }
+  return (
+    <div
+      className="relative h-24 w-16 flex-shrink-0 overflow-hidden rounded-lg"
+      style={{ boxShadow: "0 6px 18px rgba(0,0,0,0.15)" }}
+    >
+      <Image
+        src={rec.cover_url}
+        alt={`${rec.title} cover`}
+        fill
+        sizes="64px"
+        className="object-cover"
+        onError={() => setFailed(true)}
+      />
+    </div>
+  );
+}
+
 function RecommendationCard({ rec }: { rec: BookRecommendation }) {
   return (
     <div
@@ -32,26 +62,11 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
       style={{
         background: "linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(253,248,240,0.98) 100%)",
         borderColor: "rgba(107,28,111,0.10)",
-        boxShadow: "0 8px 24px rgba(107,28,111,0.06)",
+        boxShadow: "var(--shadow-sm)",
         animation: "fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both",
       }}
     >
-      {rec.cover_url ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={rec.cover_url}
-          alt={rec.title}
-          className="h-24 w-16 flex-shrink-0 rounded-lg object-cover"
-          style={{ boxShadow: "0 6px 18px rgba(0,0,0,0.15)" }}
-        />
-      ) : (
-        <div
-          className="flex h-24 w-16 flex-shrink-0 items-center justify-center rounded-lg"
-          style={{ background: "linear-gradient(135deg, rgba(107,28,111,0.10), rgba(241,187,26,0.12))" }}
-        >
-          <BookOpen size={22} style={{ color: "rgba(107,28,111,0.40)" }} />
-        </div>
-      )}
+      <CoverImage rec={rec} />
 
       <div className="min-w-0 flex-1">
         <div className="flex items-start gap-2">
