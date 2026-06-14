@@ -281,8 +281,8 @@ export function NextReadSection() {
             Find your <span className="underline-accent">next read</span>
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "#6B7280" }}>
-            Describe what you just finished or the vibe you&apos;re chasing — our AI uses Google Search
-            grounding and our live shelf to find real titles waiting for you.
+            Describe what you just finished or the vibe you&apos;re chasing — we match it against
+            our live shelf to surface real titles waiting for you right now.
           </p>
           <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
         </div>
