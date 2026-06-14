@@ -99,10 +99,15 @@ jobs:
           fi
 
       - name: Run Lighthouse SEO audit
+        id: lighthouse
         uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
             https://to-be-read-clackamas.netlify.app
+          # Upload the full HTML report to temporary public storage so each run
+          # links to a shareable report instead of leaving scores buried in logs.
+          uploadArtifacts: true
+          temporaryPublicStorage: true
           configJson: |
             {
               "ci": {
@@ -120,11 +125,9 @@ jobs:
               }
             }
 
-      - name: SEO audit summary
+      - name: Publish Lighthouse summary
         if: always()
-        run: |
-          echo "=== Daily SEO Audit Complete ==="
-          echo "Sitemap: app/sitemap.ts"
-          echo "Robots: app/robots.ts"
-          echo "Structured Data: JSON-LD in app/layout.tsx"
-          echo "Target URL: https://to-be-read-clackamas.netlify.app"
+        env:
+          LH_MANIFEST: ${{ steps.lighthouse.outputs.manifest }}
+          LH_LINKS: ${{ steps.lighthouse.outputs.links }}
+        run: node .github/scripts/lighthouse-summary.js "SEO (desktop preset)" >> "$GITHUB_STEP_SUMMARY"

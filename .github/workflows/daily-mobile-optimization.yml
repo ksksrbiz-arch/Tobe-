@@ -94,10 +94,15 @@ jobs:
         run: npm run build
 
       - name: Run Lighthouse mobile audit
+        id: lighthouse
         uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
             https://to-be-read-clackamas.netlify.app
+          # Upload the full HTML report to temporary public storage so each run
+          # links to a shareable report instead of leaving scores buried in logs.
+          uploadArtifacts: true
+          temporaryPublicStorage: true
           configJson: |
             {
               "ci": {
@@ -120,16 +125,9 @@ jobs:
               }
             }
 
-      - name: Mobile optimization summary
+      - name: Publish Lighthouse summary
         if: always()
-        run: |
-          echo "=== Daily Mobile Optimization Audit Complete ==="
-          echo "Viewport: configured in app/layout.tsx"
-          echo "Manifest: app/manifest.ts"
-          echo "Theme colors: light (#FFFDF9) / dark (#4A1350)"
-          echo "Target URL: https://to-be-read-clackamas.netlify.app"
-          echo ""
-          echo "Lighthouse categories checked:"
-          echo "  - Performance (mobile preset, 4x CPU slowdown)"
-          echo "  - Accessibility"
-          echo "  - Best Practices"
+        env:
+          LH_MANIFEST: ${{ steps.lighthouse.outputs.manifest }}
+          LH_LINKS: ${{ steps.lighthouse.outputs.links }}
+        run: node .github/scripts/lighthouse-summary.js "Mobile (mobile preset, 4× CPU slowdown)" >> "$GITHUB_STEP_SUMMARY"
