@@ -44,3 +44,43 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  schema:
+    name: Database schema check
+    runs-on: ubuntu-latest
+
+    # Spin up a throwaway Postgres and apply db/schema.sql against it. Catches
+    # broken SQL before it reaches the live Neon database, and applies the file
+    # twice to prove the "idempotent — safe to re-run" contract still holds.
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: tobe_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Apply schema and verify idempotency
+        env:
+          PGPASSWORD: postgres
+          PGHOST: localhost
+          PGPORT: "5432"
+          PGUSER: postgres
+          PGDATABASE: tobe_test
+        run: |
+          echo "── First apply ──"
+          psql -v ON_ERROR_STOP=1 -q -f db/schema.sql
+          echo "── Second apply (must be idempotent) ──"
+          psql -v ON_ERROR_STOP=1 -q -f db/schema.sql
+          echo "✅ db/schema.sql applies cleanly and is idempotent"

@@ -1,36 +1,47 @@
 "use client";
 
 import React, { useState } from "react";
-import { Send, BookOpen } from "lucide-react";
+import { Send, BookOpen, Loader2, CheckCircle2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import Reveal from "./Reveal";
 
+type Status = "idle" | "loading" | "success" | "error";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function NewsletterCTA() {
   const [email, setEmail] = useState("");
-  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const [message, setMessage] = useState("");
+
+  const busy = status === "loading";
+  const invalid = status === "error";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.includes("@")) {
-      toast.error("Please enter a valid email address.");
+    if (!EMAIL_RE.test(email.trim())) {
+      setStatus("error");
+      setMessage("Please enter a valid email address.");
       return;
     }
-    setBusy(true);
+    setStatus("loading");
+    setMessage("");
     try {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: email.trim() }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error ?? "Unknown error");
-      toast.success("You're subscribed! Welcome to the TBR family.");
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.error ?? "Something went wrong — please try again.");
+      setStatus("success");
       setEmail("");
+      toast.success("You're subscribed! Welcome to the TBR family.");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Something went wrong — please try again.";
+      setStatus("error");
+      setMessage(msg);
       toast.error(msg);
-    } finally {
-      setBusy(false);
     }
   };
 
@@ -85,34 +96,96 @@ export default function NewsletterCTA() {
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-3">
-                <label htmlFor="cta-email" className="sr-only">
-                  Email address
-                </label>
-                <input
-                  id="cta-email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  className="w-full rounded-2xl bg-white/95 px-5 py-3.5 text-sm text-gray-900 placeholder-gray-400 shadow-inner outline-none transition focus:ring-2 focus:ring-yellow-300"
-                />
-                <button
-                  type="submit"
-                  disabled={busy}
-                  className="btn-shine flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-bold uppercase tracking-wider shadow-md transition-all hover:scale-[1.02] disabled:opacity-50"
-                  style={{
-                    background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)",
-                    color: "#1a1a1a",
-                  }}
+              {status === "success" ? (
+                <div
+                  className="flex flex-col items-center justify-center rounded-2xl px-5 py-8 text-center animate-page-enter"
+                  style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(241,187,26,0.30)" }}
+                  role="status"
+                  aria-live="polite"
                 >
-                  {busy ? "Subscribing…" : "Subscribe"}
-                  <Send size={14} />
-                </button>
-                <p className="text-center text-[11px] text-white/60">
-                  We respect your inbox. Unsubscribe anytime.
-                </p>
-              </form>
+                  <span
+                    className="mb-3 flex h-12 w-12 items-center justify-center rounded-full"
+                    style={{ background: "rgba(241,187,26,0.2)" }}
+                  >
+                    <CheckCircle2 size={26} style={{ color: "#F1BB1A" }} />
+                  </span>
+                  <p className="text-base font-bold text-white" style={{ fontFamily: "var(--font-serif)" }}>
+                    You&apos;re on the list!
+                  </p>
+                  <p className="mt-1 text-sm text-white/75">
+                    Watch your inbox for our next dispatch from the shelves.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setStatus("idle")}
+                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-white/80 underline-offset-4 hover:underline"
+                  >
+                    <Sparkles size={12} /> Add another email
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-3" noValidate>
+                  <label htmlFor="cta-email" className="sr-only">
+                    Email address
+                  </label>
+                  <input
+                    id="cta-email"
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (status === "error") setStatus("idle");
+                    }}
+                    placeholder="your@email.com"
+                    required
+                    autoComplete="email"
+                    inputMode="email"
+                    disabled={busy}
+                    aria-invalid={invalid}
+                    aria-describedby={invalid ? "cta-email-error" : undefined}
+                    className="w-full rounded-2xl bg-white/95 px-5 py-3.5 text-sm text-gray-900 placeholder-gray-400 shadow-inner outline-none transition focus:ring-2 disabled:opacity-60"
+                    style={{ boxShadow: invalid ? "0 0 0 2px #fca5a5" : undefined }}
+                  />
+                  <button
+                    type="submit"
+                    disabled={busy}
+                    className="btn-warm flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-bold uppercase tracking-wider shadow-md transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
+                    style={{
+                      background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)",
+                      color: "#1a1a1a",
+                    }}
+                  >
+                    {busy ? (
+                      <>
+                        <Loader2 size={14} className="animate-spin" />
+                        Subscribing…
+                      </>
+                    ) : (
+                      <>
+                        Subscribe
+                        <Send size={14} />
+                      </>
+                    )}
+                  </button>
+
+                  {/* Status line: errors announced assertively, hint otherwise. */}
+                  {invalid ? (
+                    <p
+                      id="cta-email-error"
+                      role="alert"
+                      className="text-center text-[12px] font-semibold"
+                      style={{ color: "#FFD7D7" }}
+                    >
+                      {message}
+                    </p>
+                  ) : (
+                    <p className="text-center text-[11px] text-white/60">
+                      We respect your inbox. Unsubscribe anytime.
+                    </p>
+                  )}
+                </form>
+              )}
             </div>
           </div>
         </Reveal>

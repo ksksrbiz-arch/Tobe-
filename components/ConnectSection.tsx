@@ -112,8 +112,8 @@ export default function ConnectSection() {
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border bg-white p-5 transition-all hover:-translate-y-1 hover:shadow-xl"
-                style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "0 8px 22px rgba(107,28,111,0.06)" }}
+                className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border bg-white p-5 card-cozy"
+                style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "var(--shadow-sm)" }}
               >
                 <div
                   aria-hidden="true"

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
-import { Sparkles, BookOpen } from "lucide-react";
+import { Sparkles, BookOpen, Radio } from "lucide-react";
 
 interface RecentArrival {
   id: string;
@@ -37,44 +37,95 @@ function seriesLabel(book: RecentArrival) {
     : book.series;
 }
 
+// Short, human-readable genre tag derived from the internal category slug so
+// the cover can carry a clean label (e.g. "thriller_psychological" → "Thriller").
+function genreLabel(category?: string) {
+  if (!category) return "";
+  if (category.startsWith("thriller")) return "Thriller";
+  if (category === "literary_classic") return "Classic";
+  if (category === "literary_nonfiction") return "Nonfiction";
+  if (category.startsWith("literary")) return "Fiction";
+  if (category.startsWith("romance")) return "Romance";
+  if (category.startsWith("fantasy")) return "Fantasy";
+  if (category.startsWith("historical")) return "Historical";
+  if (category === "science_fiction") return "Sci-Fi";
+  const first = category.split("_")[0];
+  return first.charAt(0).toUpperCase() + first.slice(1);
+}
+
 const POLL_INTERVAL_MS = 15_000;
 const NEW_ITEM_HIGHLIGHT_DURATION_MS = 8_000;
 
 function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
+  const [coverFailed, setCoverFailed] = useState(false);
+  const showCover = Boolean(book.cover_url) && !coverFailed;
+  const genre = genreLabel(book.category);
+  const credit = book.list_price > 0 ? book.list_price * 0.25 : 0;
+
   return (
-    <div
-      className="group relative overflow-hidden rounded-2xl border transition-all hover:-translate-y-1 hover:shadow-2xl"      style={{
-        background: "white",
+    <article
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border card-cozy"
+      style={{
+        background: "linear-gradient(180deg, #ffffff 0%, #fdf8f0 100%)",
         borderColor: "rgba(107,28,111,0.10)",
-        boxShadow: "0 8px 24px rgba(107,28,111,0.08)",
-        animation: isNew ? "fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both" : undefined,
+        boxShadow: "var(--shadow-sm)",
+        animation: isNew ? "fadeInUp 0.6s var(--ease-out) both" : undefined,
       }}
     >
-      {isNew && (
-        <span
-          className="absolute left-2 top-2 z-10 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
-          style={{ background: "#F1BB1A", color: "#1a1a1a" }}
-        >
-          Just in!
-        </span>
-      )}
-      <div className="aspect-[2/3] w-full overflow-hidden" style={{ background: "rgba(107,28,111,0.06)" }}>
-        {book.cover_url ? (
+      <div className="relative aspect-[2/3] w-full overflow-hidden" style={{ background: "rgba(107,28,111,0.06)" }}>
+        {showCover ? (
           <Image
             src={book.cover_url}
-            alt={book.title}
+            alt={`${book.title} cover`}
             fill
             sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, 16vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"
             loading="lazy"
+            onError={() => setCoverFailed(true)}
           />
         ) : (
-          <div className="flex h-full items-center justify-center">
-            <BookOpen size={32} style={{ color: "rgba(107,28,111,0.25)" }} />
+          // Graceful fallback: a styled spine showing the title so a missing
+          // cover still reads as a book rather than a broken image.
+          <div
+            className="flex h-full flex-col items-center justify-center gap-2 p-3 text-center"
+            style={{ background: "linear-gradient(155deg, #6B1C6F 0%, #4A1350 100%)" }}
+          >
+            <BookOpen size={26} style={{ color: "rgba(241,187,26,0.85)" }} />
+            <p
+              className="line-clamp-4 text-[11px] font-bold leading-tight text-white/95"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {book.title}
+            </p>
           </div>
         )}
+
+        {/* Bottom scrim so overlaid chips stay legible on any cover */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
+          style={{ background: "linear-gradient(180deg, transparent, rgba(31,26,46,0.55))" }}
+        />
+
+        {isNew && (
+          <span
+            className="absolute left-2 top-2 z-10 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider shadow-sm"
+            style={{ background: "#F1BB1A", color: "#1a1a1a" }}
+          >
+            <Sparkles size={9} /> Just in
+          </span>
+        )}
+
+        {genre && (
+          <span
+            className="absolute bottom-2 left-2 z-10 rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-white backdrop-blur-sm"
+            style={{ background: "rgba(107,28,111,0.78)" }}
+          >
+            {genre}
+          </span>
+        )}
       </div>
-      <div className="p-3">
+
+      <div className="flex flex-1 flex-col p-3">
         <p
           className="line-clamp-2 text-xs font-bold leading-tight"
           style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
@@ -86,10 +137,7 @@ function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
           {book.co_author ? ` & ${book.co_author}` : ""}
         </p>
         {seriesLabel(book) && (
-          <p
-            className="mt-0.5 truncate text-[9px] italic"
-            style={{ color: "rgba(107,28,111,0.75)" }}
-          >
+          <p className="mt-0.5 truncate text-[9px] italic" style={{ color: "rgba(107,28,111,0.75)" }}>
             {seriesLabel(book)}
           </p>
         )}
@@ -98,18 +146,18 @@ function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
             {[formatLabel(book.format), book.pub_year].filter(Boolean).join(" • ")}
           </p>
         )}
-        {book.publisher && (
-          <p className="mt-0.5 truncate text-[9px]" style={{ color: "#9CA3AF" }}>
-            {book.publisher}
-          </p>
-        )}
-        {book.list_price > 0 && (
-          <p className="mt-1 text-[10px] font-semibold" style={{ color: "#F1BB1A" }}>
-            Credit: ${(book.list_price * 0.25).toFixed(2)}
-          </p>
+
+        {credit > 0 && (
+          <span
+            className="mt-2 inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold"
+            style={{ background: "rgba(241,187,26,0.18)", color: "#9A6B00" }}
+            title="Estimated store credit toward your next trade"
+          >
+            ${credit.toFixed(2)} credit
+          </span>
         )}
       </div>
-    </div>
+    </article>
   );
 }
 
@@ -197,33 +245,46 @@ export default function JustShelvedFeed() {
 
   return (
     <div>
-      <div className="mb-4 flex items-center gap-2">
+      <div className="mb-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
         <span
-          className="flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider"
+          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider"
           style={{
             background: live ? "rgba(34,197,94,0.12)" : "rgba(107,28,111,0.08)",
             color: live ? "#16a34a" : "#6B7280",
           }}
         >
           <span
-            className="h-1.5 w-1.5 rounded-full"
-            style={{
-              background: live ? "#22c55e" : "#9CA3AF",
-              boxShadow: live ? "0 0 6px rgba(34,197,94,0.7)" : undefined,
-            }}
-          />
-          {live ? "Live" : "Loading…"}
+            className="relative flex h-2 w-2"
+            aria-hidden="true"
+          >
+            {live && (
+              <span
+                className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
+                style={{ background: "#22c55e" }}
+              />
+            )}
+            <span
+              className="relative inline-flex h-2 w-2 rounded-full"
+              style={{ background: live ? "#22c55e" : "#9CA3AF" }}
+            />
+          </span>
+          {live ? "Live feed" : "Connecting…"}
         </span>
-        <span className="text-xs" style={{ color: "#9CA3AF" }}>
-          Refreshes every 15 seconds
+        <span
+          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold"
+          style={{ background: "rgba(107,28,111,0.06)", color: "#6B1C6F" }}
+        >
+          <BookOpen size={12} />
+          {books.length} on the shelf
+        </span>
+        <span className="inline-flex items-center gap-1 text-xs" style={{ color: "#9CA3AF" }}>
+          <Radio size={12} /> Refreshes every 15s
         </span>
       </div>
 
-      <div className="columns-3 gap-3 sm:columns-4 md:columns-5 lg:columns-6">
+      <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
         {books.map((book) => (
-          <div key={book.id} className="mb-3 break-inside-avoid">
-            <BookCard book={book} isNew={newIds.has(book.id)} />
-          </div>
+          <BookCard key={book.id} book={book} isNew={newIds.has(book.id)} />
         ))}
       </div>
     </div>
@@ -237,13 +298,13 @@ export function JustShelvedSection() {
       className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
-          "radial-gradient(circle at 10% 80%, rgba(241,187,26,0.08), transparent 40%), linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%)",
+          "radial-gradient(circle at 10% 80%, rgba(241,187,26,0.08), transparent 40%), radial-gradient(circle at 90% 10%, rgba(107,28,111,0.06), transparent 42%), linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%)",
       }}
     >
       <div className="mx-auto max-w-6xl">
         <div className="mb-10 text-center">
           <span
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+            className="eyebrow-glow inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
             style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
           >
             <Sparkles size={12} />
@@ -260,7 +321,8 @@ export function JustShelvedSection() {
             Fresh arrivals at the <span className="underline-accent">trade desk</span>
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "#6B7280" }}>
-            New books arrive at the trade desk in real time — check back to see what just came in.
+            Every title here is on our shelves right now — newly traded in and ready to take home.
+            Bring books of your own and earn store credit toward whatever catches your eye.
           </p>
           <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
         </div>

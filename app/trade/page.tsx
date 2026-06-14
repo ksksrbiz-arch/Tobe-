@@ -107,10 +107,10 @@ export default function TradePage() {
             {steps.map((step, i) => (
               <Reveal key={step.title} delay={i * 80}>
                 <div
-                  className="group relative h-full rounded-2xl border bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-xl"
+                  className="group relative h-full rounded-2xl border bg-white p-6 card-cozy"
                   style={{
                     borderColor: "rgba(107,28,111,0.10)",
-                    boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
+                    boxShadow: "var(--shadow-sm)",
                   }}
                 >
                   <span
@@ -217,7 +217,7 @@ export default function TradePage() {
                   className="flex h-full flex-col items-center rounded-2xl p-7 text-center transition-all hover:-translate-y-1"
                   style={{
                     background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
-                    boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
+                    boxShadow: "var(--shadow-sm)",
                   }}
                 >
                   <div

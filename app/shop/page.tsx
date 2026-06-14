@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import ShopSection from "@/components/ShopSection";
@@ -9,72 +10,87 @@ import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import { Star, Tag } from "lucide-react";
 
-const featuredBooks = [
-  {
-    title: "The Midnight Library",
-    author: "Matt Haig",
-    genre: "Fiction",
-    price: "$6",
-    accentFrom: "#6B1C6F",
-    accentTo: "#8B2E90",
-  },
-  {
-    title: "Educated",
-    author: "Tara Westover",
-    genre: "Memoir",
-    price: "$5",
-    accentFrom: "#1a6b1c",
-    accentTo: "#16a34a",
-  },
-  {
-    title: "Piranesi",
-    author: "Susanna Clarke",
-    genre: "Fantasy",
-    price: "$7",
-    accentFrom: "#1e3a8a",
-    accentTo: "#3b82f6",
-  },
-  {
-    title: "A Gentleman in Moscow",
-    author: "Amor Towles",
-    genre: "Historical",
-    price: "$8",
-    accentFrom: "#b45309",
-    accentTo: "#F1BB1A",
-  },
-  {
-    title: "Tomorrow x3",
-    author: "Gabrielle Zevin",
-    genre: "Fiction",
-    price: "$7",
-    accentFrom: "#6B1C6F",
-    accentTo: "#F1BB1A",
-  },
-  {
-    title: "Project Hail Mary",
-    author: "Andy Weir",
-    genre: "Sci-Fi",
-    price: "$8",
-    accentFrom: "#0f766e",
-    accentTo: "#14b8a6",
-  },
-  {
-    title: "Lessons in Chemistry",
-    author: "Bonnie Garmus",
-    genre: "Fiction",
-    price: "$6",
-    accentFrom: "#9a3412",
-    accentTo: "#f97316",
-  },
-  {
-    title: "The Covenant of Water",
-    author: "Abraham Verghese",
-    genre: "Literary",
-    price: "$9",
-    accentFrom: "#4c1d95",
-    accentTo: "#7c3aed",
-  },
+// Real Open Library covers (verified to exist) keep this grid visually in step
+// with the live "Just Shelved" shelf instead of faux gradient blocks.
+const cover = (isbn: string) => `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
+
+interface FeaturedBook {
+  title: string;
+  author: string;
+  genre: string;
+  price: string;
+  isbn: string;
+  accentFrom: string;
+  accentTo: string;
+}
+
+const featuredBooks: FeaturedBook[] = [
+  { title: "The Midnight Library", author: "Matt Haig", genre: "Fiction", price: "$6", isbn: "9780525559474", accentFrom: "#6B1C6F", accentTo: "#8B2E90" },
+  { title: "Educated", author: "Tara Westover", genre: "Memoir", price: "$5", isbn: "9780399590504", accentFrom: "#1a6b1c", accentTo: "#16a34a" },
+  { title: "Piranesi", author: "Susanna Clarke", genre: "Fantasy", price: "$7", isbn: "9781635575637", accentFrom: "#1e3a8a", accentTo: "#3b82f6" },
+  { title: "A Gentleman in Moscow", author: "Amor Towles", genre: "Historical", price: "$8", isbn: "9780143110439", accentFrom: "#b45309", accentTo: "#F1BB1A" },
+  { title: "Tomorrow, and Tomorrow, and Tomorrow", author: "Gabrielle Zevin", genre: "Fiction", price: "$7", isbn: "9780593321201", accentFrom: "#6B1C6F", accentTo: "#F1BB1A" },
+  { title: "Project Hail Mary", author: "Andy Weir", genre: "Sci-Fi", price: "$8", isbn: "9780593135204", accentFrom: "#0f766e", accentTo: "#14b8a6" },
+  { title: "Lessons in Chemistry", author: "Bonnie Garmus", genre: "Fiction", price: "$6", isbn: "9780385547345", accentFrom: "#9a3412", accentTo: "#f97316" },
+  { title: "The Covenant of Water", author: "Abraham Verghese", genre: "Literary", price: "$9", isbn: "9780802162175", accentFrom: "#4c1d95", accentTo: "#7c3aed" },
 ];
+
+function FeaturedCard({ book }: { book: FeaturedBook }) {
+  const [coverFailed, setCoverFailed] = useState(false);
+  return (
+    <article
+      className="card-cozy group flex h-full flex-col overflow-hidden rounded-2xl border bg-white"
+      style={{ borderColor: "rgba(107,28,111,0.08)", boxShadow: "var(--shadow-sm)" }}
+    >
+      <div className="relative aspect-[2/3] w-full overflow-hidden" style={{ background: "rgba(107,28,111,0.06)" }}>
+        {coverFailed ? (
+          // On a missing cover, fall back to the title on the book's accent gradient.
+          <div
+            className="flex h-full items-end p-4"
+            style={{ background: `linear-gradient(135deg, ${book.accentFrom} 0%, ${book.accentTo} 100%)` }}
+          >
+            <p className="text-base font-bold leading-tight text-white" style={{ fontFamily: "var(--font-serif)" }}>
+              {book.title}
+            </p>
+          </div>
+        ) : (
+          <Image
+            src={cover(book.isbn)}
+            alt={`${book.title} cover`}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+            loading="lazy"
+            onError={() => setCoverFailed(true)}
+          />
+        )}
+        <span
+          className="absolute right-2 top-2 rounded-full px-2 py-0.5 text-xs font-bold text-white shadow-sm backdrop-blur-sm"
+          style={{ background: "rgba(31,26,46,0.62)" }}
+        >
+          {book.price}
+        </span>
+      </div>
+      <div className="flex flex-1 flex-col p-4">
+        <span
+          className="w-fit rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
+          style={{ background: book.accentFrom + "18", color: book.accentFrom }}
+        >
+          {book.genre}
+        </span>
+        <p
+          className="mt-2 line-clamp-2 text-sm font-bold leading-tight"
+          style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+        >
+          {book.title}
+        </p>
+        <p className="mt-0.5 truncate text-xs" style={{ color: "#6B7280" }}>
+          by {book.author}
+        </p>
+      </div>
+    </article>
+  );
+}
 
 const genreChips = [
   "Fiction",
@@ -190,53 +206,7 @@ export default function ShopPage() {
           <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
             {featuredBooks.map((book, i) => (
               <Reveal key={book.title} delay={i * 60}>
-                <article
-                  className="group h-full overflow-hidden rounded-2xl border bg-white transition-all hover:-translate-y-1 hover:shadow-xl"
-                  style={{ borderColor: "rgba(107,28,111,0.08)", boxShadow: "0 8px 22px rgba(107,28,111,0.06)" }}
-                >
-                  {/* Faux book cover */}
-                  <div
-                    className="relative flex h-40 items-end justify-start p-4 transition-transform duration-500 group-hover:scale-[1.02]"
-                    style={{
-                      background: `linear-gradient(135deg, ${book.accentFrom} 0%, ${book.accentTo} 100%)`,
-                    }}
-                  >
-                    <div
-                      aria-hidden="true"
-                      className="absolute right-2 top-2 h-12 w-12 rounded-full opacity-30 blur-2xl"
-                      style={{ background: "white" }}
-                    />
-                    <p
-                      className="relative text-base font-bold leading-tight text-white"
-                      style={{ fontFamily: "var(--font-serif)" }}
-                    >
-                      {book.title}
-                    </p>
-                  </div>
-                  <div className="p-4">
-                    <span
-                      className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
-                      style={{
-                        background: book.accentFrom + "18",
-                        color: book.accentFrom,
-                      }}
-                    >
-                      {book.genre}
-                    </span>
-                    <p className="mt-2.5 text-xs" style={{ color: "#6B7280" }}>
-                      by {book.author}
-                    </p>
-                    <p
-                      className="mt-3 text-lg font-bold"
-                      style={{
-                        color: book.accentFrom,
-                        fontFamily: "var(--font-serif)",
-                      }}
-                    >
-                      {book.price}
-                    </p>
-                  </div>
-                </article>
+                <FeaturedCard book={book} />
               </Reveal>
             ))}
           </div>

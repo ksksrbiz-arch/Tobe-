@@ -2,11 +2,12 @@
 
 :root {
   --background: #FFFDF9;
-  --background-gradient: radial-gradient(ellipse at 0% 0%, rgba(241, 187, 26, 0.08) 0%, transparent 42%),
-    radial-gradient(ellipse at 100% 8%, rgba(107, 28, 111, 0.07) 0%, transparent 40%),
+  --background-gradient: radial-gradient(ellipse at 0% 0%, rgba(241, 187, 26, 0.09) 0%, transparent 42%),
+    radial-gradient(ellipse at 100% 8%, rgba(107, 28, 111, 0.08) 0%, transparent 40%),
     radial-gradient(ellipse at 100% 100%, rgba(107, 28, 111, 0.06) 0%, transparent 50%),
     radial-gradient(ellipse at 18% 88%, rgba(241, 187, 26, 0.05) 0%, transparent 45%),
-    linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 60%, #FBF4F8 100%);
+    radial-gradient(ellipse at 50% 42%, rgba(252, 232, 166, 0.05) 0%, transparent 55%),
+    linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 58%, #FBF4F8 100%);
   --foreground: #1F1A2E;
   --muted: #6B7280;
 
@@ -26,27 +27,38 @@
   --ink-soft: #44424F;
   --ink-muted: #5C5868;
   --line: rgba(107, 28, 111, 0.10);
+  --line-strong: rgba(107, 28, 111, 0.16);
   --header-offset: 6.75rem;
   --mobile-menu-offset: 6.5rem;
 
+  /* Shared motion vocabulary so every hover, lift, and reveal settles with the
+     same hand. `--ease-out` is the gentle decelerate used site-wide; `--ease-spring`
+     adds a hair of overshoot for tactile, living interactions. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.32, 0.5, 1);
+  --dur-fast: 0.22s;
+  --dur-med: 0.42s;
+  --dur-slow: 0.7s;
+
   /* Layered, two-tone shadows: a soft cool purple cast for depth plus a faint
      warm gold undertone so cards feel candle-lit rather than flat grey. Each
-     step stacks an ambient + a key shadow for a more premium, diffuse falloff. */
+     step stacks an ambient + a key shadow, tuned for a softer, more diffuse
+     premium falloff (wider blur, lower opacity) than a single hard drop. */
   --shadow-sm:
-    0 1px 2px rgba(42, 9, 48, 0.05),
-    0 4px 14px rgba(107, 28, 111, 0.06);
+    0 1px 2px rgba(42, 9, 48, 0.04),
+    0 5px 18px rgba(107, 28, 111, 0.06);
   --shadow-md:
-    0 2px 6px rgba(42, 9, 48, 0.05),
-    0 12px 30px rgba(107, 28, 111, 0.10),
-    0 4px 12px rgba(241, 187, 26, 0.04);
+    0 2px 6px rgba(42, 9, 48, 0.045),
+    0 14px 38px rgba(107, 28, 111, 0.10),
+    0 6px 16px rgba(241, 187, 26, 0.045);
   --shadow-lg:
-    0 4px 10px rgba(42, 9, 48, 0.06),
-    0 24px 60px rgba(107, 28, 111, 0.14),
-    0 8px 22px rgba(241, 187, 26, 0.05);
+    0 4px 10px rgba(42, 9, 48, 0.05),
+    0 30px 74px rgba(107, 28, 111, 0.14),
+    0 10px 28px rgba(241, 187, 26, 0.05);
   --shadow-xl:
-    0 8px 18px rgba(42, 9, 48, 0.07),
-    0 40px 96px rgba(107, 28, 111, 0.18),
-    0 12px 30px rgba(241, 187, 26, 0.06);
+    0 10px 24px rgba(42, 9, 48, 0.06),
+    0 52px 120px rgba(107, 28, 111, 0.18),
+    0 16px 40px rgba(241, 187, 26, 0.06);
 }
 
 @theme inline {
@@ -391,12 +403,12 @@ p {
 
 /* Cozy hover lift used on cards */
 .cozy-lift {
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform var(--dur-med) var(--ease-spring),
+              box-shadow var(--dur-med) var(--ease-out);
 }
 .cozy-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 28px 64px rgba(107, 28, 111, 0.16);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Reading lamp glow used behind hero elements */
@@ -500,6 +512,32 @@ p {
   background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
   background-size: 200% auto;
   animation: gradientShift 6s ease infinite;
+  box-shadow: 0 2px 12px rgba(241, 187, 26, 0.35);
+}
+
+/* ───── Desktop nav link: soft hover wash + underline that grows from center.
+   Active state is driven by [aria-current="page"] so it stays in sync with the
+   route without inline width juggling. ───── */
+.nav-link {
+  position: relative;
+  transition: color var(--dur-fast) ease, background-color var(--dur-fast) ease;
+}
+.nav-link:hover {
+  background-color: rgba(107, 28, 111, 0.06);
+}
+.nav-link .nav-underline {
+  width: 0%;
+  transition: width var(--dur-med) var(--ease-spring), opacity var(--dur-fast) ease;
+  opacity: 0;
+}
+.nav-link:hover .nav-underline,
+.nav-link:focus-visible .nav-underline {
+  width: 45%;
+  opacity: 1;
+}
+.nav-link[aria-current="page"] .nav-underline {
+  width: 60%;
+  opacity: 1;
 }
 
 /* Glass card */
@@ -537,13 +575,14 @@ p {
 /* ───── Cozy card warm-glow ───── */
 /* Apply .card-cozy to any card to get a subtle candle-light hover glow */
 .card-cozy {
-  transition: box-shadow 0.4s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: box-shadow var(--dur-med) var(--ease-out),
+              transform var(--dur-med) var(--ease-spring);
 }
 .card-cozy:hover {
   box-shadow:
-    0 28px 64px rgba(107,28,111,0.13),
-    0 8px 20px rgba(241,187,26,0.12);
-  transform: translateY(-3px);
+    0 30px 68px rgba(107,28,111,0.13),
+    0 10px 22px rgba(241,187,26,0.12);
+  transform: translateY(-4px);
 }
 
 /* ───── Unified premium surface ───── */
@@ -555,14 +594,14 @@ p {
   border: 1px solid var(--line);
   border-radius: 28px;
   box-shadow: var(--shadow-md);
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.45s ease;
+  transition: transform var(--dur-med) var(--ease-spring),
+              box-shadow var(--dur-med) var(--ease-out),
+              border-color var(--dur-med) ease;
 }
 .surface-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
   box-shadow: var(--shadow-lg);
-  border-color: rgba(107, 28, 111, 0.16);
+  border-color: var(--line-strong);
 }
 
 /* Soft depth for large display headings over warm/blurred backdrops. */

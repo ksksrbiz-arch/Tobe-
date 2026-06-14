@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 
 interface PageHeroProps {
@@ -35,20 +36,27 @@ export default function PageHero({
         }}
       />
 
-      {/* Background image — heavily desaturated and softened so faces/people read as texture, not portraits */}
+      {/* Background image — heavily desaturated and softened so faces/people read
+          as texture, not portraits. Rendered via next/image with `priority` so
+          it's optimized (AVIF/WebP, sized) and preloaded for a faster LCP. */}
       <div
         aria-hidden="true"
         className="absolute inset-0"
-        style={{
-          backgroundImage: `url(${imageUrl})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          transform: "scale(1.08)",
-          filter: "saturate(0.55) brightness(0.7) contrast(1.05) blur(2px)",
-          mixBlendMode: "overlay",
-          opacity: 0.55,
-        }}
-      />
+        style={{ mixBlendMode: "overlay", opacity: 0.55 }}
+      >
+        <Image
+          src={imageUrl}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+          style={{
+            transform: "scale(1.08)",
+            filter: "saturate(0.55) brightness(0.7) contrast(1.05) blur(2px)",
+          }}
+        />
+      </div>
 
       {/* Primary purple gradient overlay — opaque enough to dominate any underlying photo */}
       <div

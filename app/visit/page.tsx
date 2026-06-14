@@ -117,10 +117,10 @@ export default function VisitPage() {
             {gettingHere.map((card, i) => (
               <Reveal key={card.title} delay={i * 70}>
                 <div
-                  className="group h-full rounded-2xl border bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-xl"
+                  className="group h-full rounded-2xl border bg-white p-6 card-cozy"
                   style={{
                     borderColor: "rgba(107,28,111,0.10)",
-                    boxShadow: "0 8px 22px rgba(107,28,111,0.06)",
+                    boxShadow: "var(--shadow-sm)",
                   }}
                 >
                   <div
