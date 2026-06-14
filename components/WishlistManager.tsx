@@ -44,7 +44,7 @@ function AuthPanel() {
 
   if (sent) {
     return (
-      <div className="py-12 text-center">
+      <div className="py-12 text-center animate-page-enter" role="status" aria-live="polite">
         <div
           className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full"
           style={{ background: "rgba(241,187,26,0.15)" }}
@@ -83,24 +83,47 @@ function AuthPanel() {
         We&apos;ll email you the moment a title from your list arrives.
       </p>
       <div className="mx-auto flex max-w-sm flex-col gap-3">
+        <label htmlFor="wishlist-email" className="sr-only">
+          Email address
+        </label>
         <input
+          id="wishlist-email"
           type="email"
+          name="email"
           placeholder="your@email.com"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (error) setError("");
+          }}
           onKeyDown={(e) => e.key === "Enter" && sendMagicLink()}
-          className="rounded-xl border px-4 py-3 text-sm outline-none transition-all focus:ring-2"
-          style={{ borderColor: "rgba(107,28,111,0.20)", color: "#1F1A2E", background: "white" }}
+          required
+          autoComplete="email"
+          inputMode="email"
+          disabled={loading}
+          aria-invalid={!!error}
+          aria-describedby={error ? "wishlist-email-error" : undefined}
+          className="rounded-xl border px-4 py-3 text-sm outline-none transition-all focus:ring-2 disabled:opacity-60"
+          style={{
+            borderColor: error ? "#fca5a5" : "rgba(107,28,111,0.20)",
+            boxShadow: error ? "0 0 0 2px rgba(252,165,165,0.5)" : undefined,
+            color: "#1F1A2E",
+            background: "white",
+          }}
         />
-        {error && <p className="text-xs" style={{ color: "#B91C1C" }}>{error}</p>}
+        {error && (
+          <p id="wishlist-email-error" role="alert" className="text-xs font-medium" style={{ color: "#B91C1C" }}>
+            {error}
+          </p>
+        )}
         <button
           onClick={sendMagicLink}
           disabled={loading}
-          className="flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-white transition-all hover:scale-[1.02] disabled:opacity-60"
+          className="flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-white transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
           style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
         >
           {loading ? <RefreshCw size={14} className="animate-spin" /> : <Mail size={14} />}
-          Send magic link
+          {loading ? "Sending…" : "Send magic link"}
         </button>
       </div>
     </div>
@@ -190,7 +213,7 @@ function AddBookPanel({ onAdded }: { onAdded: () => void }) {
       className="rounded-2xl border p-5"
       style={{ background: "rgba(107,28,111,0.03)", borderColor: "rgba(107,28,111,0.12)" }}
     >
-      <p className="mb-3 text-sm font-bold" style={{ color: "#6B1C6F" }}>Add a title to your hunt list</p>
+      <p id="hunt-list-label" className="mb-3 text-sm font-bold" style={{ color: "#6B1C6F" }}>Add a title to your hunt list</p>
       <div className="flex gap-2">
         <input
           type="text"
@@ -198,8 +221,17 @@ function AddBookPanel({ onAdded }: { onAdded: () => void }) {
           value={input}
           onChange={(e) => { setInput(e.target.value); setPreview(null); setError(""); }}
           onKeyDown={(e) => e.key === "Enter" && handleLookup()}
+          aria-labelledby="hunt-list-label"
+          autoComplete="off"
+          aria-invalid={!!error}
+          aria-describedby={error ? "hunt-list-error" : undefined}
           className="flex-1 rounded-xl border px-4 py-2.5 text-sm outline-none transition-all focus:ring-2"
-          style={{ borderColor: "rgba(107,28,111,0.18)", color: "#1F1A2E", background: "white" }}
+          style={{
+            borderColor: error ? "#fca5a5" : "rgba(107,28,111,0.18)",
+            boxShadow: error ? "0 0 0 2px rgba(252,165,165,0.5)" : undefined,
+            color: "#1F1A2E",
+            background: "white",
+          }}
         />
         <button
           onClick={handleLookup}
@@ -212,7 +244,7 @@ function AddBookPanel({ onAdded }: { onAdded: () => void }) {
         </button>
       </div>
 
-      {error && <p className="mt-2 text-xs" style={{ color: "#B91C1C" }}>{error}</p>}
+      {error && <p id="hunt-list-error" role="alert" className="mt-2 text-xs font-medium" style={{ color: "#B91C1C" }}>{error}</p>}
 
       {preview && (
         <div
