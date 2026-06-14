@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { ScanLine, Plus, RefreshCw, Check, ShieldAlert, LogIn, LogOut } from "lucide-react";
+import { ScanLine, Plus, RefreshCw, Check, LogIn, LogOut } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 interface ScanEntry {
