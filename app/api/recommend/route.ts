@@ -18,8 +18,11 @@ short description and mood tags. Recommend ONLY books from LIVE_SHELF — never 
 invent titles or suggest books that aren't listed. Match on substance (mood, \
 theme, read-alikes), not just keywords. If nothing on the shelf is a good fit, \
 return an empty recommendations array rather than a weak guess. For each pick, \
-write a one-sentence "reason" tying it to the reader's request. Keep the \
-"description" to the book's actual premise. Return only the structured payload.`;
+write a warm, specific one-to-two-sentence "reason" that echoes what the reader \
+asked for and names the mood or theme that makes it a fit — e.g. "You wanted \
+twisty and unreliable: this one keeps you second-guessing every narrator until \
+the final page." Avoid generic filler like "readers love it" or "a great read." \
+Keep the "description" to the book's actual premise. Return only the structured payload.`;
 
 const RESPONSE_SCHEMA = {
   type: Type.OBJECT,
@@ -217,7 +220,36 @@ function genreWord(category?: string): string {
   if (category.startsWith("fantasy")) return "fantasy";
   if (category.startsWith("historical")) return "historical fiction";
   if (category === "science_fiction") return "science fiction";
+  if (category === "young_adult") return "YA";
+  if (category.startsWith("horror")) return "horror";
   return category.split("_")[0];
+}
+
+const formatTag = (t: string) => t.replace(/[-_]/g, " ");
+const article = (word: string) => (/^[aeiou]/i.test(word) ? "an" : "a");
+
+// Compose a specific, non-repetitive reason that names the mood/theme that made
+// this book a fit — so even the keyless path reads like a bookseller, not a
+// template. A deterministic per-title pick keeps variety within one result set.
+function buildReason(book: InventoryBook, matched: string[], genre: string, didMatch: boolean): string {
+  const moods = book.moods ?? [];
+  const themes = book.themes ?? [];
+  const matchedMood = moods.find((m) => matched.some((t) => m.includes(t)));
+  const matchedTheme = themes.find((th) => matched.some((t) => formatTag(th).includes(t)));
+  const mood = matchedMood ?? moods[0] ?? genre;
+  const theme = formatTag(matchedTheme ?? themes[0] ?? "a story worth sinking into");
+
+  if (!didMatch) {
+    return `A reader-favorite ${genre} title from our shelves — ${mood} and built around ${theme}.`;
+  }
+  const templates = [
+    `If you're chasing something ${mood}, ${book.title} leans right into ${theme}.`,
+    `${article(mood)[0].toUpperCase() + article(mood).slice(1)} ${mood} ${genre} read built around ${theme} — a natural fit for what you described.`,
+    `For that ${mood} vibe, this one delivers ${theme}, and it's on our shelves right now.`,
+    `Right in line with your request: ${mood}, with ${theme} at its heart.`,
+  ];
+  const idx = [...book.title].reduce((a, c) => a + c.charCodeAt(0), 0) % templates.length;
+  return templates[idx];
 }
 
 function heuristicRecommend(prompt: string, inventory: InventoryBook[]): Recommendation[] {
@@ -259,16 +291,13 @@ function heuristicRecommend(prompt: string, inventory: InventoryBook[]): Recomme
     MAX_RECOMMENDATIONS,
   );
 
-  return chosen.map(({ book, matched }) => {
+  return chosen.map(({ book, score, matched }) => {
     const genre = genreWord(book.category);
-    const hook = matched.find((m) => (book.moods ?? book.themes ?? []).some((tag) => tag.replace(/_/g, " ").includes(m)));
     return {
       title: book.title,
       author: book.author,
       description: book.blurb ?? `A ${genre} title from our current shelves.`,
-      reason: hook
-        ? `A strong match for the "${hook}" you're after — and it's on our shelves now.`
-        : `A ${genre} pick our readers love, in stock and ready for your next stack.`,
+      reason: buildReason(book, matched, genre, score > 0),
     };
   });
 }
