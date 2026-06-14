@@ -261,4 +261,193 @@ export const bookKnowledge: Record<string, BookKnowledge> = {
     moods: ["melancholy", "wry", "restless", "classic"],
     themes: ["coming-of-age", "alienation", "grief", "identity"],
   },
+
+  // ── Mystery & crime ──
+  "9781984880963": {
+    blurb: "Four sharp-witted retirement-village friends who meet to solve cold cases stumble onto a real murder.",
+    moods: ["cozy", "witty", "charming", "clever"],
+    themes: ["mystery", "friendship", "aging", "crime"],
+    readAlikes: ["The Maid"],
+  },
+  "9780062868930": {
+    blurb: "A glamorous wedding on a remote Irish island turns deadly when a body is found during the celebration.",
+    moods: ["twisty", "atmospheric", "suspenseful", "tense"],
+    themes: ["murder", "secrets", "marriage", "revenge"],
+    readAlikes: ["Then She Was Gone", "The Silent Patient"],
+  },
+  "9781501154645": {
+    blurb: "Three years after her daughter vanished, a grieving mother meets a man whose young daughter is her uncanny double.",
+    moods: ["dark", "emotional", "twisty", "suspenseful"],
+    themes: ["grief", "missing-person", "obsession", "family"],
+    readAlikes: ["The Girl on the Train"],
+  },
+
+  // ── Literary & book-club fiction ──
+  "9781594631931": {
+    blurb: "A privileged Afghan boy's betrayal of his closest friend haunts him from Kabul to America and back.",
+    moods: ["heartbreaking", "sweeping", "emotional", "redemptive"],
+    themes: ["friendship", "guilt", "redemption", "war", "family"],
+  },
+  "9781476738024": {
+    blurb: "A grumpy, rule-loving widower's plan to give up keeps being interrupted by his irrepressible new neighbors.",
+    moods: ["heartwarming", "funny", "cozy", "bittersweet"],
+    themes: ["grief", "found-family", "community", "loneliness"],
+    readAlikes: ["Remarkably Bright Creatures", "The Maid"],
+  },
+  "9780375842207": {
+    blurb: "In Nazi Germany, a foster girl steals books and shares them aloud while Death itself narrates her story.",
+    moods: ["heartbreaking", "lyrical", "emotional", "immersive"],
+    themes: ["war", "books", "death", "found-family"],
+    readAlikes: ["The Nightingale"],
+  },
+  "9780735224315": {
+    blurb: "An enigmatic artist and her daughter upend a picture-perfect Ohio suburb as a custody battle splits the town.",
+    moods: ["immersive", "thoughtful", "simmering", "emotional"],
+    themes: ["motherhood", "class", "secrets", "identity"],
+  },
+  "9780593318171": {
+    blurb: "An artificial friend watches the human world with tender, searching hope as she's chosen to care for a sick girl.",
+    moods: ["tender", "melancholy", "thoughtful", "quiet"],
+    themes: ["ai", "love", "sacrifice", "humanity"],
+    readAlikes: ["Never Let Me Go"],
+  },
+  "9781455563937": {
+    blurb: "Four generations of a Korean family endure exile, prejudice, and quiet endurance in 20th-century Japan.",
+    moods: ["sweeping", "immersive", "emotional", "sober"],
+    themes: ["family-saga", "immigration", "identity", "resilience"],
+  },
+  "9780316055437": {
+    blurb: "A boy who survives a museum bombing clings to a small Dutch painting through grief, crime, and obsession.",
+    moods: ["immersive", "literary", "melancholy", "sprawling"],
+    themes: ["grief", "art", "addiction", "fate"],
+  },
+  "9781400031702": {
+    blurb: "A clique of brilliant, charismatic classics students at an elite college follow their obsessions into murder.",
+    moods: ["dark", "atmospheric", "immersive", "literary"],
+    themes: ["dark-academia", "murder", "obsession", "guilt"],
+    readAlikes: ["Babel", "The Goldfinch"],
+  },
+
+  // ── Fantasy & sci-fi ──
+  "9780756404741": {
+    blurb: "A legendary wizard, now hiding as a humble innkeeper, recounts how he became the most notorious magician of his age.",
+    moods: ["immersive", "lyrical", "epic", "slow-burn"],
+    themes: ["magic", "music", "coming-of-age", "legend"],
+    readAlikes: ["The Way of Kings", "A Game of Thrones"],
+  },
+  "9780553593716": {
+    blurb: "Noble houses scheme, betray, and war over the Iron Throne while an ancient threat stirs in the frozen north.",
+    moods: ["epic", "gritty", "immersive", "intricate"],
+    themes: ["war", "politics", "power", "betrayal"],
+    readAlikes: ["The Name of the Wind", "The Way of Kings"],
+  },
+  "9780765360960": {
+    blurb: "In a world ruled by an immortal tyrant, a street thief joins a crew of magic-wielding rebels to topple a god.",
+    moods: ["fast-paced", "clever", "immersive", "high-stakes"],
+    themes: ["magic", "rebellion", "heist", "destiny"],
+    readAlikes: ["The Way of Kings", "Six of Crows"],
+  },
+  "9780547928227": {
+    blurb: "A comfort-loving hobbit is swept into a quest to win a dragon's hoard with thirteen dwarves and a wizard.",
+    moods: ["cozy", "adventurous", "charming", "whimsical"],
+    themes: ["adventure", "courage", "greed", "home"],
+  },
+  "9780441013593": {
+    blurb: "On a desert planet prized for a mind-bending spice, a betrayed heir becomes the messiah of its native people.",
+    moods: ["epic", "immersive", "cerebral", "atmospheric"],
+    themes: ["politics", "religion", "ecology", "destiny"],
+  },
+  "9780553418026": {
+    blurb: "Stranded alone on Mars, an astronaut must science the hell out of survival until a rescue can reach him.",
+    moods: ["funny", "propulsive", "clever", "tense"],
+    themes: ["space", "survival", "science", "ingenuity"],
+    readAlikes: ["Project Hail Mary"],
+  },
+  "9780063021426": {
+    blurb: "At a 19th-century Oxford translation institute powered by silver and language, a colonial student faces an impossible choice.",
+    moods: ["dark", "immersive", "cerebral", "angry"],
+    themes: ["dark-academia", "colonialism", "language", "rebellion"],
+    readAlikes: ["The Secret History"],
+  },
+
+  // ── Romance ──
+  "9780062439598": {
+    blurb: "Two executive assistants who claim to despise each other discover the line between hate and desire is razor-thin.",
+    moods: ["swoony", "funny", "witty", "low-angst"],
+    themes: ["enemies-to-lovers", "office", "rivalry", "slow-burn"],
+    readAlikes: ["The Love Hypothesis"],
+  },
+  "9781250316776": {
+    blurb: "The U.S. president's son and the Prince of Wales go from rivals to a secret romance that could shake two nations.",
+    moods: ["swoony", "funny", "heartwarming", "charming"],
+    themes: ["lgbtq", "enemies-to-lovers", "politics", "first-love"],
+  },
+  "9781984806758": {
+    blurb: "Two best friends who haven't spoken in a year take one more summer trip to mend what broke between them.",
+    moods: ["swoony", "warm", "funny", "bittersweet"],
+    themes: ["friends-to-lovers", "travel", "second-chances"],
+    readAlikes: ["Beach Read", "Happy Place"],
+  },
+
+  // ── Young adult ──
+  "9780439023528": {
+    blurb: "A girl volunteers for a televised fight to the death to save her sister — and sparks a rebellion.",
+    moods: ["propulsive", "tense", "gripping", "dark"],
+    themes: ["dystopian", "survival", "rebellion", "sacrifice"],
+  },
+  "9780525478812": {
+    blurb: "Two teens who meet in a cancer support group fall fiercely, wittily in love against the clock.",
+    moods: ["heartbreaking", "funny", "tender", "emotional"],
+    themes: ["illness", "first-love", "mortality", "grief"],
+  },
+  "9781627792127": {
+    blurb: "Six dangerous young outcasts attempt an impossible heist in a city of greed, gambling, and magic.",
+    moods: ["fast-paced", "clever", "gritty", "immersive"],
+    themes: ["heist", "found-family", "magic", "revenge"],
+    readAlikes: ["A Game of Thrones", "Mistborn: The Final Empire"],
+  },
+
+  // ── Horror ──
+  "9780307743657": {
+    blurb: "A struggling writer takes a winter caretaker job at an isolated hotel that preys on his family and his sanity.",
+    moods: ["terrifying", "atmospheric", "tense", "dark"],
+    themes: ["horror", "addiction", "isolation", "family"],
+  },
+  "9780525620808": {
+    blurb: "A glamorous socialite investigates her cousin's haunted marriage in a decaying mansion with a sinister secret.",
+    moods: ["atmospheric", "eerie", "gothic", "creeping"],
+    themes: ["horror", "family", "colonialism", "gothic"],
+    readAlikes: ["Jane Eyre"],
+  },
+
+  // ── Nonfiction ──
+  "9780062316097": {
+    blurb: "A sweeping, provocative history of how Homo sapiens came to dominate the world.",
+    moods: ["thought-provoking", "sweeping", "accessible", "clear"],
+    themes: ["history", "anthropology", "society", "big-ideas"],
+  },
+  "9781524763138": {
+    blurb: "Michelle Obama's intimate memoir of her journey from the South Side of Chicago to the White House.",
+    moods: ["inspiring", "warm", "candid", "reflective"],
+    themes: ["memoir", "identity", "family", "leadership"],
+    readAlikes: ["Educated"],
+  },
+  "9780143127741": {
+    blurb: "A landmark exploration of how trauma reshapes the body and brain — and the paths back to healing.",
+    moods: ["illuminating", "compassionate", "clear"],
+    themes: ["trauma", "psychology", "healing", "science"],
+  },
+
+  // ── Classics ──
+  "9780141441146": {
+    blurb: "An orphaned governess falls for her brooding employer, whose locked attic hides a devastating secret.",
+    moods: ["gothic", "romantic", "atmospheric", "classic"],
+    themes: ["romance", "independence", "secrets", "morality"],
+  },
+  "9780060850524": {
+    blurb: "In an engineered society of pleasure and conformity, a few misfits glimpse the cost of manufactured happiness.",
+    moods: ["bleak", "thought-provoking", "satirical", "dystopian"],
+    themes: ["dystopian", "conformity", "technology", "freedom"],
+    readAlikes: ["1984"],
+  },
 };

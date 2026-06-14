@@ -49,6 +49,8 @@ function genreLabel(category?: string) {
   if (category.startsWith("fantasy")) return "Fantasy";
   if (category.startsWith("historical")) return "Historical";
   if (category === "science_fiction") return "Sci-Fi";
+  if (category === "young_adult") return "YA";
+  if (category.startsWith("horror")) return "Horror";
   const first = category.split("_")[0];
   return first.charAt(0).toUpperCase() + first.slice(1);
 }
