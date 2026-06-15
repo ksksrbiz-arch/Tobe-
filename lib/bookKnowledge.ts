@@ -450,4 +450,149 @@ export const bookKnowledge: Record<string, BookKnowledge> = {
     themes: ["dystopian", "conformity", "technology", "freedom"],
     readAlikes: ["1984"],
   },
+
+  // ── Romance & romantasy (batch 2) ──
+  "9781619630345": {
+    blurb: "A teenage assassin is pulled from a prison camp to fight for her freedom as the king's champion — and uncovers a deadly secret in the glass castle.",
+    moods: ["fast-paced", "adventurous", "immersive", "high-stakes"],
+    themes: ["assassins", "magic", "competition", "court-intrigue"],
+    readAlikes: ["A Court of Thorns and Roses", "Fourth Wing"],
+  },
+  "9780593441282": {
+    blurb: "A jilted woman moves in with her ex's fiancée's ex, and their reluctant fake friendship slowly turns into something real.",
+    moods: ["swoony", "funny", "warm", "charming"],
+    themes: ["breakups", "roommates", "small-town", "slow-burn"],
+    readAlikes: ["Beach Read", "People We Meet on Vacation"],
+  },
+  "9781668026038": {
+    blurb: "A driven figure skater and a cocky college hockey captain forced to share the ice find a lot more than rivalry.",
+    moods: ["swoony", "steamy", "fun", "low-angst"],
+    themes: ["sports", "college", "forced-proximity", "found-family"],
+    readAlikes: ["The Love Hypothesis", "Icebreaker"],
+  },
+  "9781542025607": {
+    blurb: "Fresh out of prison, a young mother fights to reconnect with her daughter against a town — and a man — that won't forgive her.",
+    moods: ["emotional", "heartbreaking", "romantic", "redemptive"],
+    themes: ["motherhood", "second-chances", "grief", "forgiveness"],
+    readAlikes: ["It Ends with Us"],
+  },
+  "9781982137274": {
+    blurb: "A woman recruits her infuriating, gorgeous coworker as a fake date for her sister's wedding in Spain.",
+    moods: ["swoony", "funny", "slow-burn", "banter-y"],
+    themes: ["fake-dating", "enemies-to-lovers", "workplace", "weddings"],
+    readAlikes: ["The Hating Game", "The Love Hypothesis"],
+  },
+
+  // ── Thriller & suspense (batch 2) ──
+  "9781501171345": {
+    blurb: "When her husband vanishes leaving only a note to protect his daughter, a woman and her stepdaughter unravel his hidden past.",
+    moods: ["suspenseful", "emotional", "propulsive"],
+    themes: ["missing-person", "family", "secrets", "stepmother"],
+  },
+  "9781501190100": {
+    blurb: "A young woman inherits a grand London house haunted by the cult that once died inside it.",
+    moods: ["dark", "twisty", "atmospheric", "suspenseful"],
+    themes: ["cult", "family", "secrets", "inheritance"],
+    readAlikes: ["Then She Was Gone"],
+  },
+  "9781524745165": {
+    blurb: "A broke young woman takes a too-good-to-be-true apartment-sitting job in a sinister, secretive Manhattan building.",
+    moods: ["creepy", "twisty", "tense", "atmospheric"],
+    themes: ["mystery", "class", "isolation", "conspiracy"],
+  },
+  "9781982179007": {
+    blurb: "A podcaster's chance meeting with her 'birthday twin' spirals into an obsession that turns deadly.",
+    moods: ["dark", "twisty", "unsettling", "propulsive"],
+    themes: ["obsession", "true-crime", "identity", "manipulation"],
+    readAlikes: ["The Silent Patient", "The Family Upstairs"],
+  },
+
+  // ── Literary & book-club (batch 2) ──
+  "9780063250833": {
+    blurb: "A struggling writer steals her dead friend's manuscript and rides the lie straight into publishing's spotlight.",
+    moods: ["biting", "propulsive", "satirical", "dark"],
+    themes: ["publishing", "racism", "ambition", "fraud"],
+    readAlikes: ["The Secret History"],
+  },
+  "9780063327528": {
+    blurb: "On a Michigan cherry farm during lockdown, a mother tells her grown daughters the story of a long-ago summer romance.",
+    moods: ["warm", "reflective", "nostalgic", "gentle"],
+    themes: ["motherhood", "memory", "theater", "family"],
+  },
+  "9781250178633": {
+    blurb: "An idealistic young nurse serves in Vietnam and comes home to a country that pretends women were never there.",
+    moods: ["sweeping", "emotional", "heartbreaking", "immersive"],
+    themes: ["war", "nursing", "trauma", "sisterhood"],
+    readAlikes: ["The Nightingale", "The Four Winds"],
+  },
+  "9780593422946": {
+    blurb: "In a ramshackle 1930s Pennsylvania neighborhood, Black and immigrant residents band together to protect a deaf orphan.",
+    moods: ["warm", "vivid", "humane", "immersive"],
+    themes: ["community", "race", "found-family", "injustice"],
+  },
+
+  // ── Sci-fi & fantasy (batch 2) ──
+  "9780316229296": {
+    blurb: "On a world wracked by apocalyptic seasons, a woman hunts for her stolen daughter as civilization ends around her.",
+    moods: ["immersive", "intense", "bleak", "inventive"],
+    themes: ["apocalypse", "oppression", "motherhood", "power"],
+  },
+  "9781101904244": {
+    blurb: "A physicist is abducted into a version of his life he never chose and must fight across realities to get home.",
+    moods: ["propulsive", "mind-bending", "tense", "clever"],
+    themes: ["multiverse", "identity", "family", "choices"],
+    readAlikes: ["Project Hail Mary"],
+  },
+  "9780062662569": {
+    blurb: "A war orphan claws into an elite military academy and awakens a god-fueled power that could save or doom her nation.",
+    moods: ["dark", "epic", "brutal", "immersive"],
+    themes: ["war", "magic", "genocide", "power"],
+    readAlikes: ["A Game of Thrones", "Babel"],
+  },
+  "9781635575637": {
+    blurb: "A gentle man lives alone in an endless labyrinth of statues and tides, slowly uncovering the truth of his world.",
+    moods: ["atmospheric", "dreamlike", "mysterious", "quiet"],
+    themes: ["memory", "isolation", "wonder", "identity"],
+    readAlikes: ["The Midnight Library"],
+  },
+
+  // ── Nonfiction (batch 2) ──
+  "9780399588174": {
+    blurb: "Trevor Noah's funny, fierce memoir of growing up mixed-race and 'born a crime' under and after South African apartheid.",
+    moods: ["funny", "candid", "moving", "sharp"],
+    themes: ["memoir", "race", "family", "resilience"],
+    readAlikes: ["Becoming", "Educated"],
+  },
+  "9780807014295": {
+    blurb: "A psychiatrist's account of surviving the concentration camps, and his case that meaning is what keeps us alive.",
+    moods: ["profound", "sober", "humane", "inspiring"],
+    themes: ["suffering", "meaning", "psychology", "survival"],
+  },
+
+  // ── Classics (batch 2) ──
+  "9780147514011": {
+    blurb: "Four sisters come of age in Civil War New England, chasing love, art, and ambition through joy and grief.",
+    moods: ["warm", "nostalgic", "tender", "classic"],
+    themes: ["sisters", "family", "coming-of-age", "ambition"],
+    readAlikes: ["Hello Beautiful"],
+  },
+  "9780141439570": {
+    blurb: "A beautiful young man stays forever youthful while his hidden portrait rots with every sin he commits.",
+    moods: ["gothic", "decadent", "dark", "witty"],
+    themes: ["vanity", "morality", "corruption", "art"],
+  },
+  "9780451526342": {
+    blurb: "Farm animals overthrow their farmer for equality, only to watch new tyrants rise in a razor-sharp political fable.",
+    moods: ["satirical", "bleak", "sharp", "allegorical"],
+    themes: ["politics", "power", "revolution", "corruption"],
+    readAlikes: ["1984"],
+  },
+
+  // ── Horror (batch 2) ──
+  "9781501142970": {
+    blurb: "Seven childhood friends face a shape-shifting evil that haunts their town — and resurfaces decades later to finish them.",
+    moods: ["terrifying", "epic", "nostalgic", "dark"],
+    themes: ["horror", "childhood", "friendship", "evil"],
+    readAlikes: ["The Shining"],
+  },
 };
