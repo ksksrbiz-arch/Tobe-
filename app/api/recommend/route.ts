@@ -3,7 +3,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { sql } from "@/lib/db";
 import { seedArrivals } from "@/lib/seedArrivals";
 import { bookKnowledge } from "@/lib/bookKnowledge";
-import { checkRateLimit, getClientIp, withTimeout } from "@/lib/server/functionHardening";
+import { checkRateLimit, getClientIp, withTimeout, fetchWithTimeout } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
 const MIN_RECOMMENDATIONS = 3;
@@ -153,6 +153,43 @@ async function aiRecommend(
     "Recommendation request timed out.",
   );
   const text = response.text;
+  if (!text) return [];
+  const parsed = JSON.parse(text) as { recommendations?: Recommendation[] };
+  return parsed.recommendations ?? [];
+}
+
+// ── Groq (free, fast OpenAI-compatible inference) recommender ──────────────────
+async function groqRecommend(
+  apiKey: string,
+  prompt: string,
+  inventory: InventoryBook[],
+): Promise<Recommendation[]> {
+  // Default to a current free Groq model; override with GROQ_MODEL if it changes.
+  const model = process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile";
+  const res = await fetchWithTimeout(
+    "https://api.groq.com/openai/v1/chat/completions",
+    {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        model,
+        temperature: MODEL_TEMPERATURE,
+        max_tokens: 1024,
+        response_format: { type: "json_object" },
+        messages: [
+          {
+            role: "system",
+            content: `${SYSTEM_PROMPT}\nRespond with a JSON object of exactly this shape: {"recommendations":[{"title":string,"author":string,"description":string,"reason":string}]}.`,
+          },
+          { role: "user", content: buildShelfPrompt(prompt, inventory) },
+        ],
+      }),
+    },
+    15_000,
+  );
+  if (!res.ok) throw new Error(`Groq request failed (${res.status}).`);
+  const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+  const text = json.choices?.[0]?.message?.content;
   if (!text) return [];
   const parsed = JSON.parse(text) as { recommendations?: Recommendation[] };
   return parsed.recommendations ?? [];
@@ -347,13 +384,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ recommendations: [] });
   }
 
-  // Prefer the AI matcher when a (free-tier) key is configured; otherwise — or if
-  // the AI call fails or returns nothing — fall back to the keyless heuristic.
-  const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
+  // Recommendation providers, in order of preference; each is skipped if its key
+  // is missing, and we fall through on any failure or empty result. The keyless
+  // heuristic is the final, always-available fallback so the tool never errors.
+  const geminiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
+  const groqKey = process.env.GROQ_API_KEY;
   let recommendations: Recommendation[] = [];
-  if (apiKey) {
+
+  if (geminiKey) {
     try {
-      recommendations = await aiRecommend(apiKey, prompt, inventory);
+      recommendations = await aiRecommend(geminiKey, prompt, inventory);
+    } catch {
+      recommendations = [];
+    }
+  }
+  if (recommendations.length === 0 && groqKey) {
+    try {
+      recommendations = await groqRecommend(groqKey, prompt, inventory);
     } catch {
       recommendations = [];
     }
