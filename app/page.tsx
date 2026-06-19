@@ -8,6 +8,7 @@ import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import DustMotes from "@/components/DustMotes";
 import SectionDivider from "@/components/SectionDivider";
+import ReadingRoomTeaser from "@/components/ReadingRoomTeaser";
 import {
   Award,
   BookMarked,
@@ -533,6 +534,9 @@ export default function Home() {
         <EventsSection />
         <LemmyFeatureSection />
         <BookishQuote />
+      </div>
+      <div className="cv-auto">
+        <ReadingRoomTeaser />
       </div>
       <SectionDivider variant="bookmark" label="Stay in touch" muted />
       <div className="cv-auto">
