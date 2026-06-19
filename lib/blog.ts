@@ -7,7 +7,7 @@ import type { ComponentType } from "react";
  *   - `meta`:    a BlogMeta object (the data the hub/SEO needs)
  *   - default:   a `Body` component rendering the article HTML
  *
- * Posts are registered in the `posts` array below. This keeps content
+ * Posts are registered in the `registry` array below. This keeps content
  * type-safe and statically analyzable (no markdown runtime, no MDX build step)
  * while staying simple enough for staff to copy an existing post as a template.
  */
@@ -35,10 +35,18 @@ export type BlogPost = BlogMeta & { Body: ComponentType };
 
 import { meta as tradeInMeta, default as TradeInBody } from "@/content/reading-room/how-trade-in-credit-works";
 import { meta as visitMeta, default as VisitBody } from "@/content/reading-room/used-bookstore-milwaukie-portland";
+import { meta as secretHistoryMeta, default as SecretHistoryBody } from "@/content/reading-room/books-like-the-secret-history";
+import { meta as cozyMeta, default as CozyBody } from "@/content/reading-room/cozy-mystery-starter-shelf";
+import { meta as tradePortlandMeta, default as TradePortlandBody } from "@/content/reading-room/where-to-trade-used-books-portland";
+import { meta as tbrHabitMeta, default as TbrHabitBody } from "@/content/reading-room/build-your-tbr-reading-habit";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
   { ...visitMeta, Body: VisitBody },
+  { ...secretHistoryMeta, Body: SecretHistoryBody },
+  { ...cozyMeta, Body: CozyBody },
+  { ...tradePortlandMeta, Body: TradePortlandBody },
+  { ...tbrHabitMeta, Body: TbrHabitBody },
 ];
 
 /** All posts, newest first. */
@@ -63,4 +71,57 @@ export function formatPostDate(iso: string): string {
     month: "long",
     day: "numeric",
   });
+}
+
+// ── Tags ─────────────────────────────────────────────────────────────────────
+
+/** Convert a human tag ("Cozy mystery") to a URL slug ("cozy-mystery"). */
+export function tagToSlug(tag: string): string {
+  return tag
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+/** All distinct tags across posts, alphabetised. */
+export function getAllTags(): string[] {
+  const set = new Set<string>();
+  for (const post of registry) for (const tag of post.tags) set.add(tag);
+  return [...set].sort((a, b) => a.localeCompare(b));
+}
+
+/** Tag slugs for generateStaticParams. */
+export function getAllTagSlugs(): string[] {
+  return getAllTags().map(tagToSlug);
+}
+
+/** Resolve a tag slug back to its display label, or undefined if unknown. */
+export function getTagBySlug(slug: string): string | undefined {
+  return getAllTags().find((tag) => tagToSlug(tag) === slug);
+}
+
+/** Posts carrying a given tag (by display label), newest first. */
+export function getPostsByTag(tag: string): BlogPost[] {
+  return getAllPosts().filter((post) => post.tags.includes(tag));
+}
+
+/**
+ * Related posts for internal linking: ranked by number of shared tags, then by
+ * recency. Excludes the post itself. Falls back to recent posts when nothing
+ * shares a tag, so the "keep reading" slot is never empty.
+ */
+export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {
+  const current = getPost(slug);
+  if (!current) return [];
+  const tags = new Set(current.tags);
+
+  const scored = getAllPosts()
+    .filter((post) => post.slug !== slug)
+    .map((post) => ({
+      post,
+      shared: post.tags.filter((t) => tags.has(t)).length,
+    }))
+    .sort((a, b) => (b.shared - a.shared) || (a.post.date < b.post.date ? 1 : -1));
+
+  return scored.slice(0, limit).map((s) => s.post);
 }

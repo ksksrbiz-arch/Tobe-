@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import JsonLd from "@/components/JsonLd";
 import BlogProse from "@/components/BlogProse";
-import { getAllSlugs, getPost, formatPostDate } from "@/lib/blog";
+import { getAllSlugs, getPost, formatPostDate, getRelatedPosts, tagToSlug } from "@/lib/blog";
 import { breadcrumbList, SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-static";
@@ -56,6 +56,7 @@ export default async function ReadingRoomPostPage({
   if (!post) notFound();
 
   const { Body } = post;
+  const related = getRelatedPosts(post.slug);
   const url = `${SITE_URL}/reading-room/${post.slug}`;
 
   const articleJsonLd = {
@@ -98,13 +99,14 @@ export default async function ReadingRoomPostPage({
           <header className="mb-10">
             <div className="mb-4 flex flex-wrap items-center gap-2">
               {post.tags.map((tag) => (
-                <span
+                <Link
                   key={tag}
-                  className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide"
+                  href={`/reading-room/tags/${tagToSlug(tag)}`}
+                  className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide transition-colors hover:brightness-95"
                   style={{ background: "rgba(241,187,26,0.16)", color: "#6B1C6F" }}
                 >
                   {tag}
-                </span>
+                </Link>
               ))}
             </div>
             <h1
@@ -125,6 +127,38 @@ export default async function ReadingRoomPostPage({
           <BlogProse>
             <Body />
           </BlogProse>
+
+          {related.length > 0 && (
+            <aside className="mt-16 border-t pt-10" style={{ borderColor: "rgba(107,28,111,0.12)" }}>
+              <h2
+                className="mb-6 text-xl font-bold"
+                style={{ fontFamily: "var(--font-serif)", color: "#4A1350" }}
+              >
+                Keep reading
+              </h2>
+              <ul className="grid gap-4 sm:grid-cols-3">
+                {related.map((r) => (
+                  <li key={r.slug}>
+                    <Link
+                      href={`/reading-room/${r.slug}`}
+                      className="group flex h-full flex-col rounded-2xl border bg-white/70 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                      style={{ borderColor: "rgba(107,28,111,0.10)" }}
+                    >
+                      <h3
+                        className="mb-2 text-base font-bold leading-snug"
+                        style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                      >
+                        {r.title}
+                      </h3>
+                      <p className="line-clamp-3 text-sm leading-6 text-[#4B5563]">
+                        {r.excerpt}
+                      </p>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          )}
         </div>
       </article>
 

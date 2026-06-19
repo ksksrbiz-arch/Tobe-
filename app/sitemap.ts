@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
-import { getAllPosts } from "@/lib/blog";
+import { getAllPosts, getAllTagSlugs } from "@/lib/blog";
 
 // Public, indexable routes. Admin and API routes are intentionally excluded
 // (see robots.ts), as are user-utility surfaces like /wishlist that hold no
@@ -41,5 +41,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...postEntries];
+  // Reading Room topic hubs — indexable category pages that gather posts by tag.
+  const tagEntries: MetadataRoute.Sitemap = getAllTagSlugs().map((tag) => ({
+    url: `${SITE_URL}/reading-room/tags/${tag}`,
+    lastModified,
+    changeFrequency: "weekly",
+    priority: 0.5,
+  }));
+
+  return [...staticEntries, ...postEntries, ...tagEntries];
 }

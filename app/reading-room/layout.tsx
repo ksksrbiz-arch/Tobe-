@@ -7,7 +7,10 @@ export const metadata: Metadata = {
   title: "The Reading Room",
   description:
     "Reading guides, trade-in tips, and bookish notes from To Be Read — an independent used bookstore in Milwaukie, OR.",
-  alternates: { canonical: "/reading-room" },
+  alternates: {
+    canonical: "/reading-room",
+    types: { "application/rss+xml": "/reading-room/feed.xml" },
+  },
   openGraph: {
     title: "The Reading Room · To Be Read",
     description:

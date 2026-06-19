@@ -1,26 +1,77 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, Clock, Rss } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
-import { getAllPosts, getAllTags, tagToSlug, formatPostDate } from "@/lib/blog";
+import JsonLd from "@/components/JsonLd";
+import {
+  getAllTagSlugs,
+  getTagBySlug,
+  getPostsByTag,
+  formatPostDate,
+} from "@/lib/blog";
+import { breadcrumbList } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
-export default function ReadingRoomPage() {
-  const posts = getAllPosts();
-  const tags = getAllTags();
+export function generateStaticParams() {
+  return getAllTagSlugs().map((tag) => ({ tag }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ tag: string }>;
+}): Promise<Metadata> {
+  const { tag: tagSlug } = await params;
+  const tag = getTagBySlug(tagSlug);
+  if (!tag) return {};
+
+  const url = `/reading-room/tags/${tagSlug}`;
+  return {
+    title: `${tag} — The Reading Room`,
+    description: `Reading guides and notes tagged "${tag}" from To Be Read, an independent used bookstore in Milwaukie, OR.`,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `${tag} · The Reading Room`,
+      description: `Posts tagged "${tag}" from To Be Read.`,
+      url,
+      type: "website",
+      images: ["/opengraph-image"],
+    },
+    twitter: { card: "summary_large_image", images: ["/twitter-image"] },
+  };
+}
+
+export default async function TagPage({
+  params,
+}: {
+  params: Promise<{ tag: string }>;
+}) {
+  const { tag: tagSlug } = await params;
+  const tag = getTagBySlug(tagSlug);
+  if (!tag) notFound();
+
+  const posts = getPostsByTag(tag);
 
   return (
     <main id="main">
       <Navbar />
+      <JsonLd
+        data={breadcrumbList([
+          { name: "The Reading Room", path: "/reading-room" },
+          { name: tag, path: `/reading-room/tags/${tagSlug}` },
+        ])}
+      />
 
       <PageHero
         badge="The Reading Room"
-        title="Notes from the shop"
-        subtitle="Reading guides, trade-in tips, and bookish dispatches from the shelves of To Be Read."
+        title={tag}
+        subtitle={`Everything we've written tagged “${tag}.”`}
         imageUrl="/images/shelves/store-front-adult-fiction.jpg"
         scrollTargetId="posts"
       />
@@ -31,33 +82,14 @@ export default function ReadingRoomPage() {
         style={{ background: "var(--background)" }}
       >
         <div className="mx-auto max-w-5xl">
-          <div className="mb-10 flex flex-wrap items-center gap-2">
-            <span className="mr-1 text-xs font-bold uppercase tracking-wider" style={{ color: "#6B1C6F" }}>
-              Browse by topic:
-            </span>
-            {tags.map((tag) => (
-              <Link
-                key={tag}
-                href={`/reading-room/tags/${tagToSlug(tag)}`}
-                className="rounded-full border px-3 py-1 text-xs font-semibold transition-all hover:scale-[1.03]"
-                style={{
-                  borderColor: "rgba(107,28,111,0.15)",
-                  color: "#6B1C6F",
-                  background: "rgba(107,28,111,0.04)",
-                }}
-              >
-                {tag}
-              </Link>
-            ))}
-            <a
-              href="/reading-room/feed.xml"
-              className="ml-auto inline-flex items-center gap-1.5 text-xs font-semibold transition-colors hover:opacity-80"
-              style={{ color: "#6B1C6F" }}
-            >
-              <Rss size={13} aria-hidden="true" />
-              RSS
-            </a>
-          </div>
+          <Link
+            href="/reading-room"
+            className="mb-8 inline-flex items-center gap-1.5 text-sm font-semibold"
+            style={{ color: "#6B1C6F" }}
+          >
+            <ArrowLeft size={15} aria-hidden="true" />
+            All posts
+          </Link>
 
           <ul className="grid gap-6 md:grid-cols-2">
             {posts.map((post, i) => (
@@ -68,17 +100,6 @@ export default function ReadingRoomPage() {
                     className="group flex h-full flex-col rounded-2xl border bg-white/70 p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
                     style={{ borderColor: "rgba(107,28,111,0.10)" }}
                   >
-                    <div className="mb-3 flex flex-wrap items-center gap-2">
-                      {post.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide"
-                          style={{ background: "rgba(241,187,26,0.16)", color: "#6B1C6F" }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
                     <h2
                       className="mb-2 text-xl font-bold leading-snug"
                       style={{ fontFamily: "var(--font-serif)", color: "#4A1350" }}
