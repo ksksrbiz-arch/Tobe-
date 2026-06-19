@@ -39,6 +39,10 @@ import { meta as secretHistoryMeta, default as SecretHistoryBody } from "@/conte
 import { meta as cozyMeta, default as CozyBody } from "@/content/reading-room/cozy-mystery-starter-shelf";
 import { meta as tradePortlandMeta, default as TradePortlandBody } from "@/content/reading-room/where-to-trade-used-books-portland";
 import { meta as tbrHabitMeta, default as TbrHabitBody } from "@/content/reading-room/build-your-tbr-reading-habit";
+import { meta as crawdadsMeta, default as CrawdadsBody } from "@/content/reading-room/books-like-where-the-crawdads-sing";
+import { meta as fantasyMeta, default as FantasyBody } from "@/content/reading-room/fantasy-books-for-beginners";
+import { meta as giftsMeta, default as GiftsBody } from "@/content/reading-room/gifts-for-book-lovers";
+import { meta as cryMeta, default as CryBody } from "@/content/reading-room/literary-fiction-that-makes-you-cry";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -47,6 +51,10 @@ const registry: BlogPost[] = [
   { ...cozyMeta, Body: CozyBody },
   { ...tradePortlandMeta, Body: TradePortlandBody },
   { ...tbrHabitMeta, Body: TbrHabitBody },
+  { ...crawdadsMeta, Body: CrawdadsBody },
+  { ...fantasyMeta, Body: FantasyBody },
+  { ...giftsMeta, Body: GiftsBody },
+  { ...cryMeta, Body: CryBody },
 ];
 
 /** All posts, newest first. */
