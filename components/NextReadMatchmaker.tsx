@@ -1,7 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import { BookOpen, Send, Sparkles, RefreshCw, ArrowRight } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { BookOpen, Send, Sparkles, RefreshCw, ArrowRight, Share2 } from "lucide-react";
+import { toast } from "sonner";
+
+// Query param used to make a set of picks shareable: /?match=<prompt>#next-read
+// Anyone who opens the link re-runs the same prompt, turning a good
+// recommendation into a referral back to the site.
+const MATCH_PARAM = "match";
 
 interface BookRecommendation {
   title: string;
@@ -108,15 +114,17 @@ export default function NextReadMatchmaker() {
   const [results, setResults] = useState<BookRecommendation[]>([]);
   const [error, setError] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [lastPrompt, setLastPrompt] = useState("");
 
-  const submit = async () => {
-    const trimmed = query.trim();
+  const runMatch = useCallback(async (prompt: string) => {
+    const trimmed = prompt.trim();
     if (!trimmed) return;
 
     setLoading(true);
     setError("");
     setResults([]);
     setHasSearched(true);
+    setLastPrompt(trimmed);
 
     try {
       const res = await fetch("/api/recommend", {
@@ -134,6 +142,47 @@ export default function NextReadMatchmaker() {
       setError("Couldn't reach the recommendation engine. Please try again in a moment.");
     } finally {
       setLoading(false);
+    }
+  }, []);
+
+  const submit = () => runMatch(query);
+
+  // Hydrate from a shared ?match= link: prefill the prompt and auto-run it once
+  // on mount. Read straight off window.location to avoid pulling the whole page
+  // into dynamic rendering via useSearchParams.
+  useEffect(() => {
+    const shared = new URLSearchParams(window.location.search).get(MATCH_PARAM);
+    if (shared && shared.trim()) {
+      setQuery(shared);
+      runMatch(shared);
+    }
+  }, [runMatch]);
+
+  // Build a shareable link for the current picks and offer the native share
+  // sheet, falling back to copying the URL to the clipboard.
+  const sharePicks = async () => {
+    if (!lastPrompt) return;
+    const url = `${window.location.origin}/?${MATCH_PARAM}=${encodeURIComponent(
+      lastPrompt,
+    )}#next-read`;
+    const shareData = {
+      title: "Next Read Matchmaker · To Be Read",
+      text: `Book picks for: "${lastPrompt}"`,
+      url,
+    };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch {
+        // Swallow — most often the user simply dismissed the native share sheet.
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("Link copied — share your picks!");
+    } catch {
+      toast.error("Couldn't copy the link. Try again?");
     }
   };
 
@@ -228,9 +277,24 @@ export default function NextReadMatchmaker() {
       {/* Results */}
       {results.length > 0 && (
         <div className="mt-6">
-          <p className="mb-4 text-xs font-bold uppercase tracking-wider" style={{ color: "#6B1C6F" }}>
-            Your personalised picks
-          </p>
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#6B1C6F" }}>
+              Your personalised picks
+            </p>
+            <button
+              type="button"
+              onClick={sharePicks}
+              className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all hover:scale-[1.03]"
+              style={{
+                borderColor: "rgba(107,28,111,0.18)",
+                color: "#6B1C6F",
+                background: "rgba(107,28,111,0.04)",
+              }}
+            >
+              <Share2 size={12} aria-hidden="true" />
+              Share picks
+            </button>
+          </div>
           <div className="space-y-3">
             {results.map((rec, i) => (
               <div key={i} style={{ animationDelay: `${i * 80}ms` }}>
