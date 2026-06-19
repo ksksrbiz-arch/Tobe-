@@ -1,37 +1,40 @@
 import Script from "next/script";
 
 /**
- * Privacy-friendly, cookieless web analytics (Plausible-compatible).
+ * Privacy-friendly, cookieless web analytics (Plausible).
  *
- * Renders nothing unless `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` is set, so local dev and
- * preview builds stay clean and the site works with zero analytics config. No
- * cookies, no consent banner, GDPR/CCPA-friendly.
+ * Uses Plausible's script-init format, where the site is identified by the
+ * script filename (`pa-<id>.js`) and tracking starts via `plausible.init()`.
+ * No cookies, no consent banner, GDPR/CCPA-friendly.
  *
- * Configure via env (see .env.example):
- *   NEXT_PUBLIC_PLAUSIBLE_DOMAIN  the domain registered in your analytics
- *                                 dashboard, e.g. "to-be-read-clackamas.netlify.app".
- *   NEXT_PUBLIC_PLAUSIBLE_SRC     optional script URL. Defaults to Plausible
- *                                 Cloud. Point at a self-hosted Plausible
- *                                 instance, or a Umami script, to switch host.
+ * The script URL contains a public client-side token (it's served to every
+ * visitor), so the project's URL is committed as the default. Override per
+ * environment with NEXT_PUBLIC_PLAUSIBLE_SRC — e.g. point at a self-hosted
+ * Plausible instance, or set it empty to disable analytics for a deploy.
  *
- * Umami note: Umami identifies sites by `data-website-id`, not `data-domain`.
- * To use Umami, set NEXT_PUBLIC_PLAUSIBLE_SRC to your Umami script URL and put
- * the website id in NEXT_PUBLIC_PLAUSIBLE_DOMAIN — Umami reads either attribute.
+ * Plausible only counts hits whose domain matches the site registered in the
+ * dashboard, so preview/localhost traffic is ignored automatically.
  */
-export default function Analytics() {
-  const domain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
-  if (!domain) return null;
+const DEFAULT_PLAUSIBLE_SRC =
+  "https://plausible.io/js/pa-xVSJKrQOeZLNh8avUMWjP.js";
 
-  const src =
-    process.env.NEXT_PUBLIC_PLAUSIBLE_SRC ?? "https://plausible.io/js/script.js";
+export default function Analytics() {
+  // `?? DEFAULT` keeps the committed default when the env var is unset; an
+  // explicitly empty NEXT_PUBLIC_PLAUSIBLE_SRC disables analytics entirely.
+  const envSrc = process.env.NEXT_PUBLIC_PLAUSIBLE_SRC;
+  const src = envSrc === undefined ? DEFAULT_PLAUSIBLE_SRC : envSrc;
+  if (!src) return null;
 
   return (
-    <Script
-      // Load after the page is interactive so analytics never delays content.
-      strategy="afterInteractive"
-      data-domain={domain}
-      data-website-id={domain}
-      src={src}
-    />
+    <>
+      <Script
+        // Load after the page is interactive so analytics never delays content.
+        strategy="afterInteractive"
+        src={src}
+      />
+      <Script id="plausible-init" strategy="afterInteractive">
+        {`window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()`}
+      </Script>
+    </>
   );
 }
