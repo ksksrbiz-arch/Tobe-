@@ -143,6 +143,17 @@ const jsonLd = {
   },
   hasMap:
     "https://www.google.com/maps/search/?api=1&query=Clackamas+Book+Exchange+Milwaukie+OR",
+  // Neighboring communities the single Milwaukie storefront genuinely draws
+  // walk-in and trade customers from. This is the truthful, schema-correct way
+  // to express local reach — not a stand-in for doorway/city landing pages.
+  areaServed: [
+    "Milwaukie, OR",
+    "Clackamas, OR",
+    "Oak Grove, OR",
+    "Gladstone, OR",
+    "Happy Valley, OR",
+    "Portland, OR",
+  ].map((name) => ({ "@type": "City", name })),
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
