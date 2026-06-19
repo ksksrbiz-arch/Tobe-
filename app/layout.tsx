@@ -129,6 +129,14 @@ const jsonLd = {
   priceRange: "$",
   currenciesAccepted: "USD",
   paymentAccepted: "Cash, Credit Card, Store Credit",
+  // Browsing the shop is free; access details mirror the /visit page.
+  isAccessibleForFree: true,
+  smokingAllowed: false,
+  amenityFeature: [
+    { "@type": "LocationFeatureSpecification", name: "Free on-site parking", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Wheelchair-accessible entrance", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Accessible (ADA) parking", value: true },
+  ],
   address: {
     "@type": "PostalAddress",
     streetAddress: "7931 SE King Rd",

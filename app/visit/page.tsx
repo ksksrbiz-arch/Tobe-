@@ -8,7 +8,42 @@ import GoogleReviews from "@/components/GoogleReviews";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
+import FAQSection, { type Faq } from "@/components/FAQSection";
 import { Car, Bus, Bike, ParkingCircle, Coffee, MapPin } from "lucide-react";
+
+// Location FAQ — captures local "near me", hours, parking, and transit queries,
+// and emits FAQPage structured data via <FAQSection>. Grounded entirely in the
+// real NAP, hours, and access details already shown on this page.
+const visitFaqs: Faq[] = [
+  {
+    q: "Where is To Be Read located?",
+    a: "We're at 7931 SE King Rd, Milwaukie, OR 97222 — in the Southeast Portland metro, an easy drive from Clackamas, Oak Grove, Gladstone, Happy Valley, and Portland.",
+  },
+  {
+    q: "What are your hours?",
+    a: "Monday through Saturday, 10am–5pm. We're closed Sundays.",
+  },
+  {
+    q: "Is there parking at the store?",
+    a: "Yes — there's a free on-site parking lot with plenty of spaces, plus ADA parking right out front.",
+  },
+  {
+    q: "Can I get there by public transit?",
+    a: "Yes. TriMet routes 29 and 31 stop nearby, a short walk from the shop. Plan your trip at trimet.org.",
+  },
+  {
+    q: "Is the shop wheelchair accessible?",
+    a: "It is — a step-free entrance, wide aisles between the shelves, and ADA parking out front.",
+  },
+  {
+    q: "What areas do you serve?",
+    a: "We're a neighborhood shop in Milwaukie, and regulars come from across the east side — Clackamas, Oak Grove, Gladstone, Happy Valley, and Southeast Portland.",
+  },
+  {
+    q: "How can I reach the store?",
+    a: "Call us at 503-659-2559 during open hours, or email TBR@tcpbusiness.com.",
+  },
+];
 
 const gettingHere = [
   {
@@ -234,6 +269,35 @@ export default function VisitPage() {
           </Reveal>
         </div>
       </section>
+
+      {/* Map — a strong local signal and a quick way to get directions. */}
+      <section className="px-4 pb-14 sm:px-6 sm:pb-20" style={{ background: "var(--background)" }}>
+        <div className="mx-auto max-w-5xl">
+          <Reveal>
+            <div
+              className="overflow-hidden rounded-2xl border shadow-md"
+              style={{ borderColor: "rgba(107,28,111,0.10)" }}
+            >
+              <iframe
+                title="Map to To Be Read — 7931 SE King Rd, Milwaukie, OR 97222"
+                src="https://www.google.com/maps?q=7931+SE+King+Rd,+Milwaukie,+OR+97222&output=embed"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="h-[360px] w-full border-0"
+              />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <FAQSection
+        faqs={visitFaqs}
+        eyebrow="Plan your visit"
+        titleLead="Finding"
+        titleAccent="the shop"
+        intro="Hours, parking, transit, and how to reach us in Milwaukie."
+        id="visit-faq"
+      />
 
       <Footer />
       <FloatingButtons />

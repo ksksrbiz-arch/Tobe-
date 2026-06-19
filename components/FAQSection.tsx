@@ -10,7 +10,9 @@ import {
   TRADE_POLICY_WAIT,
 } from "@/lib/tradePolicy";
 
-const faqs = [
+export type Faq = { q: string; a: string };
+
+const defaultFaqs: Faq[] = [
   {
     q: "Do you really not give cash for trades?",
     a: `Correct — we operate as a trade-credit shop. ${TRADE_POLICY_WAIT} Credit is store credit only (not cash). ${TRADE_POLICY_EXPIRY}`,
@@ -45,27 +47,46 @@ const faqs = [
   },
 ];
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((faq) => ({
-    "@type": "Question",
-    name: faq.q,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: faq.a,
-    },
-  })),
-};
-
-export default function FAQSection() {
+/**
+ * Accordion FAQ with FAQPage structured data. Defaults to the store's general
+ * trade questions (homepage); pass `faqs` + headings to reuse it elsewhere,
+ * e.g. the location FAQ on /visit.
+ */
+export default function FAQSection({
+  faqs = defaultFaqs,
+  eyebrow = "Frequently asked",
+  titleLead = "Quick",
+  titleAccent = "answers",
+  intro = "The questions we hear most often, in one place.",
+  id = "faq",
+}: {
+  faqs?: Faq[];
+  eyebrow?: string;
+  titleLead?: string;
+  titleAccent?: string;
+  intro?: string;
+  id?: string;
+}) {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    })),
+  };
 
   return (
     <section
       className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{ background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)" }}
-      id="faq"
+      id={id}
     >
       <JsonLd data={faqJsonLd} />
       <div className="mx-auto max-w-3xl">
@@ -75,7 +96,7 @@ export default function FAQSection() {
             style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
           >
             <HelpCircle size={12} />
-            Frequently asked
+            {eyebrow}
           </span>
           <h2
             className="mb-3 font-bold"
@@ -85,10 +106,10 @@ export default function FAQSection() {
               fontSize: "clamp(2rem, 5vw, 3rem)",
             }}
           >
-            Quick <span className="underline-accent">answers</span>
+            {titleLead} <span className="underline-accent">{titleAccent}</span>
           </h2>
           <p className="mx-auto max-w-xl text-sm" style={{ color: "#6B7280" }}>
-            The questions we hear most often, in one place.
+            {intro}
           </p>
         </Reveal>
 
