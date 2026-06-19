@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Strip console.* from production client bundles (keep console.error so real
+  // runtime failures still surface). Trims a little JS and avoids leaking debug
+  // logging to visitors. No effect on local dev.
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
+  },
   images: {
     // Allow next/image to optimise external book cover images (WebP/AVIF,
     // responsive srcset, lazy-loading, blur placeholders). Each domain must be
