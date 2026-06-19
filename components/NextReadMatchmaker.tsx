@@ -120,6 +120,7 @@ export default function NextReadMatchmaker() {
     const trimmed = prompt.trim();
     if (!trimmed) return;
 
+    setQuery(trimmed);
     setLoading(true);
     setError("");
     setResults([]);
@@ -153,8 +154,10 @@ export default function NextReadMatchmaker() {
   useEffect(() => {
     const shared = new URLSearchParams(window.location.search).get(MATCH_PARAM);
     if (shared && shared.trim()) {
-      setQuery(shared);
-      runMatch(shared);
+      // Defer to a microtask so the state updates inside runMatch happen in an
+      // async callback rather than synchronously in the effect body — avoids the
+      // cascading-render path flagged by react-hooks/set-state-in-effect.
+      queueMicrotask(() => runMatch(shared));
     }
   }, [runMatch]);
 
