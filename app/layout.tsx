@@ -37,6 +37,7 @@ const playfair = localFont({
 import CozyAmbience from "@/components/CozyAmbience";
 import PageTransition from "@/components/PageTransition";
 import BookishEasterEgg from "@/components/BookishEasterEgg";
+import Analytics from "@/components/Analytics";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://to-be-read-clackamas.netlify.app"),
@@ -218,6 +219,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
         />
+        <Analytics />
       </head>
       <body>
         <a
