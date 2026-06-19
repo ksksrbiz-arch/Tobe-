@@ -14,6 +14,7 @@ const navLinks = [
   { label: "Trade", href: "/trade" },
   { label: "How it works", href: "/how-it-works" },
   { label: "Shop", href: "/shop" },
+  { label: "Reading Room", href: "/reading-room" },
   { label: "Wishlist", href: "/wishlist" },
   { label: "Connect", href: "/connect" },
   { label: "TBR Loop", href: "/loop" },
