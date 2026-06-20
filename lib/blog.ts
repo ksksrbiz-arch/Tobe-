@@ -55,6 +55,10 @@ import { meta as romantasyMeta, default as RomantasyBody } from "@/content/readi
 import { meta as fourthWingMeta, default as FourthWingBody } from "@/content/reading-room/books-like-fourth-wing";
 import { meta as classicRomanceMeta, default as ClassicRomanceBody } from "@/content/reading-room/best-classic-romance-novels";
 import { meta as classicFantasyMeta, default as ClassicFantasyBody } from "@/content/reading-room/classic-fantasy-novels";
+import { meta as acotarMeta, default as AcotarBody } from "@/content/reading-room/books-like-acotar";
+import { meta as cleanRomantasyMeta, default as CleanRomantasyBody } from "@/content/reading-room/clean-romantasy-low-spice";
+import { meta as shortClassicsMeta, default as ShortClassicsBody } from "@/content/reading-room/short-classic-novels";
+import { meta as classicSciFiMeta, default as ClassicSciFiBody } from "@/content/reading-room/best-classic-science-fiction";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -79,6 +83,10 @@ const registry: BlogPost[] = [
   { ...fourthWingMeta, Body: FourthWingBody },
   { ...classicRomanceMeta, Body: ClassicRomanceBody },
   { ...classicFantasyMeta, Body: ClassicFantasyBody },
+  { ...acotarMeta, Body: AcotarBody },
+  { ...cleanRomantasyMeta, Body: CleanRomantasyBody },
+  { ...shortClassicsMeta, Body: ShortClassicsBody },
+  { ...classicSciFiMeta, Body: ClassicSciFiBody },
 ];
 
 /** All posts, newest first. */
