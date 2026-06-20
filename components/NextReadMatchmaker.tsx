@@ -17,6 +17,8 @@ interface BookRecommendation {
   pango_url?: string;
   reason?: string;
   in_stock?: boolean;
+  source_url?: string;
+  source_name?: string;
 }
 
 interface RecommendResponse {
@@ -92,17 +94,30 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
             {rec.description}
           </p>
         )}
-        {rec.pango_url && !rec.in_stock && (
-          <a
-            href={rec.pango_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider transition-all hover:gap-1.5"
-            style={{ color: "#F1BB1A" }}
-          >
-            Search PangoBooks <ArrowRight size={10} />
-          </a>
-        )}
+        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+          {rec.pango_url && !rec.in_stock && (
+            <a
+              href={rec.pango_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider transition-all hover:gap-1.5"
+              style={{ color: "#F1BB1A" }}
+            >
+              Search PangoBooks <ArrowRight size={10} />
+            </a>
+          )}
+          {rec.source_url && (
+            <a
+              href={rec.source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold transition-all hover:gap-1.5"
+              style={{ color: "#6B7280" }}
+            >
+              More on {rec.source_name ?? "the web"} <ArrowRight size={10} />
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -349,8 +364,8 @@ export function NextReadSection() {
             Find your <span className="underline-accent">next read</span>
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "#6B7280" }}>
-            Describe what you just finished or the vibe you&apos;re chasing — our AI uses Google Search
-            grounding and our live shelf to find real titles waiting for you.
+            Describe what you just finished or the vibe you&apos;re chasing — our AI checks our live
+            shelf and grounds every pick with DuckDuckGo to find real titles waiting for you.
           </p>
           <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
         </div>

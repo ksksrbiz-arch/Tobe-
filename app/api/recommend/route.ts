@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { GoogleGenAI, Type } from "@google/genai";
 import { sql } from "@/lib/db";
 import { seedArrivals } from "@/lib/seedArrivals";
-import { checkRateLimit, getClientIp, withTimeout } from "@/lib/server/functionHardening";
+import { chatJSON, getGroqApiKey } from "@/lib/server/groq";
+import { searchInstantAnswer, ddgSearchUrl } from "@/lib/server/duckduckgo";
+import { checkRateLimit, getClientIp } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
 const MIN_RECOMMENDATIONS = 3;
@@ -13,33 +14,13 @@ const MODEL_TEMPERATURE = 0.5;
 const SYSTEM_PROMPT = `You are a knowledgeable bookseller at To Be Read, a small \
 independent bookshop. A reader will describe what they just finished or the \
 mood they're chasing. You will also receive LIVE_SHELF titles from current \
-inventory. Recommend only books from LIVE_SHELF and never invent titles. \
-Use Google Search grounding to ensure each recommendation is a real published \
-book. If there are no strong matches in LIVE_SHELF, return an empty \
-recommendations array. For each recommendation, give a one-sentence "reason" \
-tying the recommendation back to the reader's prompt. Keep descriptions \
-concise (1–2 sentences). Skip preamble — return only the structured payload.`;
-
-const RESPONSE_SCHEMA = {
-  type: Type.OBJECT,
-  properties: {
-    recommendations: {
-      type: Type.ARRAY,
-      items: {
-        type: Type.OBJECT,
-        properties: {
-          title: { type: Type.STRING },
-          author: { type: Type.STRING },
-          description: { type: Type.STRING },
-          reason: { type: Type.STRING },
-        },
-        required: ["title", "author", "description", "reason"],
-        propertyOrdering: ["title", "author", "description", "reason"],
-      },
-    },
-  },
-  required: ["recommendations"],
-};
+inventory. Recommend only books from LIVE_SHELF and never invent titles. If \
+there are no strong matches in LIVE_SHELF, return an empty recommendations \
+array. For each recommendation, give a one-sentence "reason" tying the pick \
+back to the reader's prompt, and keep "description" concise (1–2 sentences). \
+Respond with ONLY a JSON object of the form: \
+{"recommendations":[{"title":string,"author":string,"description":string,"reason":string}]}. \
+Match each title and author exactly to a LIVE_SHELF entry. Skip all preamble.`;
 
 interface Recommendation {
   title: string;
@@ -101,7 +82,7 @@ function inventoryKey(title: string, author: string) {
   return `${normalizeText(title)}::${normalizeText(author)}`;
 }
 
-function buildGroundedPrompt(readerPrompt: string, inventory: InventoryBook[]) {
+function buildPrompt(readerPrompt: string, inventory: InventoryBook[]) {
   const inventoryContext = inventory
     // Keep context bounded to reduce token usage while still covering recent stock breadth.
     .slice(0, MAX_INVENTORY_CONTEXT)
@@ -117,7 +98,36 @@ Rules:
 - Return ${MIN_RECOMMENDATIONS} to ${MAX_RECOMMENDATIONS} recommendations when possible.
 - Choose only books from LIVE_SHELF.
 - Match title and author exactly to LIVE_SHELF entries.
-- Use Google Search grounding to verify each pick is a real book.`;
+- Respond with a single JSON object and nothing else.`;
+}
+
+// Ground each pick against DuckDuckGo's Instant Answer API. Best-effort: when
+// DDG has a factual abstract we attach it as a "Learn more" source link and use
+// it to enrich a thin LLM description. Runs in parallel and never throws.
+async function groundWithDuckDuckGo(
+  picks: Array<{
+    title: string;
+    author: string;
+    description: string;
+    reason: string;
+    cover_url: string | undefined;
+    in_stock: boolean;
+  }>,
+) {
+  return Promise.all(
+    picks.map(async (pick) => {
+      const query = `${pick.title} ${pick.author} book`;
+      const answer = await searchInstantAnswer(query);
+      const description =
+        pick.description?.trim() || answer?.abstract || "";
+      return {
+        ...pick,
+        description,
+        source_url: answer?.sourceUrl ?? ddgSearchUrl(query),
+        source_name: answer?.sourceName ?? "DuckDuckGo",
+      };
+    }),
+  );
 }
 
 export async function POST(request: Request) {
@@ -140,8 +150,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
-  if (!apiKey) {
+  if (!getGroqApiKey()) {
     return NextResponse.json(
       { error: "Recommendation service is not configured." },
       { status: 503 },
@@ -168,35 +177,17 @@ export async function POST(request: Request) {
     );
   }
 
-  const ai = new GoogleGenAI({ apiKey });
   // Always non-empty: live DB rows merged with a curated seed shelf.
   const inventory = await fetchInventoryTitles();
 
   let recommendations: Recommendation[];
   try {
-    const response = await withTimeout(
-      ai.models.generateContent({
-        model: "gemini-2.0-flash",
-        contents: buildGroundedPrompt(prompt, inventory),
-        config: {
-          systemInstruction: SYSTEM_PROMPT,
-          responseMimeType: "application/json",
-          responseSchema: RESPONSE_SCHEMA,
-          temperature: MODEL_TEMPERATURE,
-          tools: [{ googleSearch: {} }],
-        },
-      }),
-      15_000,
-      "Recommendation request timed out.",
-    );
-    const text = response.text;
-    if (!text) {
-      return NextResponse.json(
-        { error: "Couldn't generate recommendations. Try rephrasing." },
-        { status: 502 },
-      );
-    }
-    const parsed = JSON.parse(text) as { recommendations?: Recommendation[] };
+    const parsed = await chatJSON<{ recommendations?: Recommendation[] }>({
+      system: SYSTEM_PROMPT,
+      user: buildPrompt(prompt, inventory),
+      temperature: MODEL_TEMPERATURE,
+      timeoutMs: 15_000,
+    });
     recommendations = parsed.recommendations ?? [];
     if (recommendations.length === 0) {
       return NextResponse.json(
@@ -222,7 +213,7 @@ export async function POST(request: Request) {
     inventoryByTitle.set(normalizedTitle, existing);
   }
 
-  const enriched = recommendations
+  const matched = recommendations
     .map((rec) => {
       const exactMatch = inventoryByKey.get(inventoryKey(rec.title, rec.author));
       const titleMatches = inventoryByTitle.get(normalizeText(rec.title)) ?? [];
@@ -236,15 +227,17 @@ export async function POST(request: Request) {
         reason: rec.reason,
         cover_url: match.cover_url || undefined,
         in_stock: true,
-        pango_url: undefined,
       };
     })
     .filter((rec): rec is NonNullable<typeof rec> => Boolean(rec))
     .slice(0, MAX_RECOMMENDATIONS);
 
-  if (enriched.length === 0) {
+  if (matched.length === 0) {
     return NextResponse.json({ recommendations: [] });
   }
+
+  // Best-effort DuckDuckGo grounding/enrichment of the in-stock matches.
+  const enriched = await groundWithDuckDuckGo(matched);
 
   return NextResponse.json({ recommendations: enriched });
 }

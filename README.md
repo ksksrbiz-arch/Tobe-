@@ -16,7 +16,7 @@ Production: <https://to-be-read-clackamas.netlify.app>
 | Database       | Neon Postgres (provisioned via **Netlify DB**)                |
 | Auth           | Auth.js / NextAuth v5 (magic-link email)                      |
 | Email          | Resend (magic links + wishlist hunt notifications)            |
-| AI             | Google Gemini (Next Read Matchmaker recommendations)          |
+| AI             | Groq (LLM) + DuckDuckGo grounding (Next Read Matchmaker)       |
 | Hosting        | Netlify (`@netlify/plugin-nextjs`)                            |
 
 > **Note on the database:** the app uses a single Neon Postgres instance reached
@@ -43,7 +43,8 @@ See `.env.example` for the full annotated list. The important ones:
 | `AUTH_SECRET`             | yes      | NextAuth signing secret (`openssl rand -base64 32`). |
 | `RESEND_API_KEY`          | yes      | Magic-link + notification email delivery.        |
 | `RESEND_FROM_EMAIL`       | yes      | Verified sender identity.                        |
-| `GEMINI_API_KEY`          | yes      | Next Read Matchmaker recommendations.            |
+| `GROQ_API_KEY`            | yes      | Next Read Matchmaker LLM (DuckDuckGo grounding is keyless). |
+| `GROQ_MODEL`              | no       | Override the matchmaker model (default `llama-3.3-70b-versatile`). |
 | `ADMIN_EMAILS`            | yes      | Comma-separated allowlist for `/admin`.          |
 | `GOOGLE_BOOKS_API_KEY`    | no       | Lifts the unauthenticated Google Books rate limit. |
 | `GOOGLE_PLACES_*`         | no       | Live Google reviews on `/connect` and `/visit`.  |
@@ -99,7 +100,7 @@ All routes under `app/api/` run on the Node.js runtime and share the hardening
 helpers in `lib/server/functionHardening.ts` (in-memory IP rate limiting,
 `fetchWithTimeout`, `withTimeout`). They validate input, return typed JSON
 errors with appropriate status codes, and degrade gracefully when an upstream
-(DB, Gemini, Google) is unavailable.
+(DB, Groq, DuckDuckGo, Google) is unavailable.
 
 ## CI / CD
 
