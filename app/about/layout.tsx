@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
-import { breadcrumbList } from "@/lib/seo";
+import { breadcrumbList, SITE_URL } from "@/lib/seo";
+
+const aboutPageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "@id": `${SITE_URL}/about`,
+  name: "About To Be Read",
+  url: `${SITE_URL}/about`,
+  mainEntity: { "@id": `${SITE_URL}/#bookstore` },
+};
 
 export const metadata: Metadata = {
   title: "About the Store",
@@ -29,6 +38,7 @@ export default function AboutLayout({
   return (
     <>
       <JsonLd data={breadcrumbList([{ name: "About the Store", path: "/about" }])} />
+      <JsonLd data={aboutPageJsonLd} />
       {children}
     </>
   );

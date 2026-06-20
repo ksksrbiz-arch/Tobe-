@@ -1,6 +1,25 @@
 import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
-import { breadcrumbList } from "@/lib/seo";
+import { breadcrumbList, SITE_URL } from "@/lib/seo";
+
+const contactPageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "@id": `${SITE_URL}/connect`,
+  name: "Connect With To Be Read",
+  url: `${SITE_URL}/connect`,
+  mainEntity: {
+    "@id": `${SITE_URL}/#bookstore`,
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+1-503-659-2559",
+      email: "TBR@tcpbusiness.com",
+      contactType: "customer service",
+      areaServed: "US",
+      availableLanguage: "English",
+    },
+  },
+};
 
 export const metadata: Metadata = {
   title: "Connect With Us",
@@ -29,6 +48,7 @@ export default function ConnectLayout({
   return (
     <>
       <JsonLd data={breadcrumbList([{ name: "Connect With Us", path: "/connect" }])} />
+      <JsonLd data={contactPageJsonLd} />
       {children}
     </>
   );
