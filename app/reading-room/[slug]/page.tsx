@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import JsonLd from "@/components/JsonLd";
 import BlogProse from "@/components/BlogProse";
+import SharePost from "@/components/SharePost";
 import { getAllSlugs, getPost, formatPostDate, getRelatedPosts, tagToSlug } from "@/lib/blog";
 import { breadcrumbList, SITE_URL } from "@/lib/seo";
 
@@ -115,12 +116,15 @@ export default async function ReadingRoomPostPage({
             >
               {post.title}
             </h1>
-            <div className="mt-4 flex items-center gap-3 text-sm text-[#6B7280]">
-              <time dateTime={post.date}>{formatPostDate(post.date)}</time>
-              <span className="inline-flex items-center gap-1">
-                <Clock size={13} aria-hidden="true" />
-                {post.readingMinutes} min read
-              </span>
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-[#6B7280]">
+              <div className="flex items-center gap-3">
+                <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+                <span className="inline-flex items-center gap-1">
+                  <Clock size={13} aria-hidden="true" />
+                  {post.readingMinutes} min read
+                </span>
+              </div>
+              <SharePost url={url} title={post.title} />
             </div>
           </header>
 
