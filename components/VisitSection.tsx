@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { MapPin, Phone, Mail, Clock, Copy, Navigation, ExternalLink, Hand } from "lucide-react";
+import React from "react";
+import { MapPin, Phone, Mail, Clock, Copy, Navigation, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
+import MapEmbed from "./MapEmbed";
 import Reveal from "./Reveal";
 
 const STORE_ADDRESS = "7931 SE King Rd, Ste 1, Milwaukie, OR 97222";
@@ -44,7 +45,6 @@ function isOpenNow(): { open: boolean; label: string } {
 }
 
 export default function VisitSection() {
-  const [mapInteractive, setMapInteractive] = useState(false);
 
   const handleCopyAddress = async () => {
     try {
@@ -445,41 +445,12 @@ export default function VisitSection() {
               }}
             >
               <div className="relative aspect-[4/5] w-full sm:aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px]">
-                <iframe
+                <MapEmbed
+                  fill
                   src={GOOGLE_MAPS_EMBED}
-                  className="absolute inset-0 h-full w-full"
-                  style={{
-                    border: 0,
-                    pointerEvents: mapInteractive ? "auto" : "none",
-                  }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
                   title="To Be Read bookstore location map"
+                  label="7931 SE King Rd, Ste 1 · Milwaukie, OR"
                 />
-
-                {/* Tap-to-interact overlay (lets users scroll past on mobile) */}
-                {!mapInteractive && (
-                  <button
-                    type="button"
-                    onClick={() => setMapInteractive(true)}
-                    className="absolute inset-0 flex items-end justify-center bg-transparent lg:hidden"
-                    aria-label="Activate map interactions"
-                  >
-                    <span
-                      className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold shadow-lg"
-                      style={{
-                        background: "rgba(255,255,255,0.95)",
-                        color: "#6B1C6F",
-                        backdropFilter: "blur(10px)",
-                        WebkitBackdropFilter: "blur(10px)",
-                      }}
-                    >
-                      <Hand size={14} />
-                      Tap to interact with map
-                    </span>
-                  </button>
-                )}
 
                 {/* Floating "open in maps" pill */}
                 <a
