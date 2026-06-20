@@ -124,41 +124,19 @@ export default function Footer() {
                 { label: "Shop online", href: "/shop" },
                 { label: "The Reading Room", href: "/reading-room" },
                 { label: "Connect with us", href: "/connect" },
-                {
-                  label: "✦ Echoes of Choice",
-                  href: "https://echoes-of-choice-167345356687.us-west2.run.app",
-                  external: true,
-                },
               ].map((item) => (
                 <li key={item.label}>
-                  {"external" in item && item.external ? (
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1.5 text-sm transition-all hover:opacity-100"
-                      style={{ opacity: 1, color: "#F1BB1A", fontWeight: 600 }}
-                    >
-                      <span className="transition-colors">{item.label}</span>
-                      <ArrowUpRight
-                        size={12}
-                        className="-translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
-                        style={{ color: "#F1BB1A" }}
-                      />
-                    </a>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      className="group inline-flex items-center gap-1.5 text-sm opacity-75 transition-all hover:opacity-100"
-                    >
-                      <span className="transition-colors group-hover:text-yellow-300">{item.label}</span>
-                      <ArrowUpRight
-                        size={12}
-                        className="-translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
-                        style={{ color: "#F1BB1A" }}
-                      />
-                    </Link>
-                  )}
+                  <Link
+                    href={item.href}
+                    className="group inline-flex items-center gap-1.5 text-sm opacity-75 transition-all hover:opacity-100"
+                  >
+                    <span className="transition-colors group-hover:text-yellow-300">{item.label}</span>
+                    <ArrowUpRight
+                      size={12}
+                      className="-translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
+                      style={{ color: "#F1BB1A" }}
+                    />
+                  </Link>
                 </li>
               ))}
             </ul>
