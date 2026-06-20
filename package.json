@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "node scripts/indexnow.mjs",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "indexnow": "node scripts/indexnow.mjs --force",
     "seed:arrivals": "tsx db/seed-arrivals.ts"
   },
   "dependencies": {
