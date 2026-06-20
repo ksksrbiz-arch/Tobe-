@@ -724,7 +724,7 @@ export default function HowItWorksPage() {
           <div className="mt-14 grid gap-10 md:grid-cols-3">
             <VisitBlock icon={MapPin} caps="Address">
               <div className="font-serif" style={{ fontSize: "1.45rem", fontWeight: 600 }}>
-                7931 SE King Rd
+                7931 SE King Rd, Ste 1
                 <br />
                 Milwaukie, OR 97222
               </div>

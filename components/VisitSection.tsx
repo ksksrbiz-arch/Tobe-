@@ -5,7 +5,7 @@ import { MapPin, Phone, Mail, Clock, Copy, Navigation, ExternalLink, Hand } from
 import { toast } from "sonner";
 import Reveal from "./Reveal";
 
-const STORE_ADDRESS = "7931 SE King Rd, Milwaukie, OR 97222";
+const STORE_ADDRESS = "7931 SE King Rd, Ste 1, Milwaukie, OR 97222";
 const STORE_ADDRESS_QUERY = encodeURIComponent(STORE_ADDRESS);
 const GOOGLE_MAPS_LINK = `https://maps.google.com/?q=${STORE_ADDRESS_QUERY}`;
 const GOOGLE_MAPS_EMBED = `https://maps.google.com/maps?q=${STORE_ADDRESS_QUERY}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
@@ -217,7 +217,7 @@ export default function VisitSection() {
                   </h3>
                 </div>
                 <div className="text-sm leading-relaxed" style={{ color: "#374151" }}>
-                  <p>7931 SE King Rd</p>
+                  <p>7931 SE King Rd, Ste 1</p>
                   <p>Milwaukie, OR 97222</p>
                 </div>
                 <button

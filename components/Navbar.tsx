@@ -399,7 +399,7 @@ export default function Navbar() {
             503-659-2559
           </a>
           <p className="mt-6 px-2 text-center text-xs" style={{ color: "#6B7280" }}>
-            7931 SE King Rd, Milwaukie, OR
+            7931 SE King Rd, Ste 1, Milwaukie, OR
             <br />
             Mon–Sat · 10am – 5pm
           </p>

@@ -1220,7 +1220,7 @@ function Scene5() {
             }}
           >
             <div style={{ fontSize: 26, fontWeight: 600, color: INK, whiteSpace: "nowrap" }}>
-              7931 SE King Rd
+              7931 SE King Rd, Ste 1
             </div>
             <div style={{ fontSize: 22, color: INK_SOFT, whiteSpace: "nowrap" }}>
               Milwaukie, OR 97222
