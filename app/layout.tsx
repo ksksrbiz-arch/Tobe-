@@ -147,8 +147,8 @@ const jsonLd = {
   },
   geo: {
     "@type": "GeoCoordinates",
-    latitude: 45.4445,
-    longitude: -122.5829,
+    latitude: 45.44757,
+    longitude: -122.58092,
   },
   hasMap:
     "https://www.google.com/maps/search/?api=1&query=Clackamas+Book+Exchange+Milwaukie+OR",
