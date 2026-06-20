@@ -8,6 +8,7 @@ import FloatingButtons from "@/components/FloatingButtons";
 import JsonLd from "@/components/JsonLd";
 import BlogProse from "@/components/BlogProse";
 import SharePost from "@/components/SharePost";
+import NewsletterCTA from "@/components/NewsletterCTA";
 import { getAllSlugs, getPost, formatPostDate, getRelatedPosts, tagToSlug } from "@/lib/blog";
 import { breadcrumbList, SITE_URL } from "@/lib/seo";
 
@@ -165,6 +166,8 @@ export default async function ReadingRoomPostPage({
           )}
         </div>
       </article>
+
+      <NewsletterCTA />
 
       <Footer />
       <FloatingButtons />
