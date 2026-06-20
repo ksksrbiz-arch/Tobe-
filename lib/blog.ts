@@ -47,6 +47,10 @@ import { meta as phmMeta, default as PhmBody } from "@/content/reading-room/book
 import { meta as romanceMeta, default as RomanceBody } from "@/content/reading-room/romance-for-people-who-dont-read-romance";
 import { meta as memoirMeta, default as MemoirBody } from "@/content/reading-room/best-memoirs-to-start-with";
 import { meta as shortMeta, default as ShortBody } from "@/content/reading-room/short-books-for-a-weekend";
+import { meta as duneMeta, default as DuneBody } from "@/content/reading-room/books-like-dune";
+import { meta as thrillerMeta, default as ThrillerBody } from "@/content/reading-room/best-thriller-books";
+import { meta as classicsMeta, default as ClassicsBody } from "@/content/reading-room/classic-novels-everyone-should-read";
+import { meta as kidsMeta, default as KidsBody } from "@/content/reading-room/best-chapter-books-for-kids";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -63,6 +67,10 @@ const registry: BlogPost[] = [
   { ...romanceMeta, Body: RomanceBody },
   { ...memoirMeta, Body: MemoirBody },
   { ...shortMeta, Body: ShortBody },
+  { ...duneMeta, Body: DuneBody },
+  { ...thrillerMeta, Body: ThrillerBody },
+  { ...classicsMeta, Body: ClassicsBody },
+  { ...kidsMeta, Body: KidsBody },
 ];
 
 /** All posts, newest first. */
