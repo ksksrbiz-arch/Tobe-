@@ -164,6 +164,7 @@ export default function TradeCreditEstimator() {
             </span>
             <input
               type="number"
+              aria-label="Book list price in dollars"
               min="0"
               step="0.01"
               placeholder="12.99"
@@ -191,6 +192,7 @@ export default function TradeCreditEstimator() {
         <div className="flex gap-2">
           <input
             type="text"
+            aria-label="Book ISBN"
             placeholder="978-0-06-112008-4"
             value={isbnInput}
             onChange={(e) => { setIsbnInput(e.target.value); reset(); }}

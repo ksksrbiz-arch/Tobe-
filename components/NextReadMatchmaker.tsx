@@ -222,6 +222,7 @@ export default function NextReadMatchmaker() {
       {/* Input */}
       <div className="relative">
         <textarea
+          aria-label="Describe a book you loved or the kind of read you're after"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
