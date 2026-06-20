@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { SITE_URL } from "@/lib/seo";
 
 // Self-hosted via next/font: removes the render-blocking third-party Google
 // Fonts stylesheet, adds `font-display: swap`, preloads only the glyphs we
@@ -40,7 +41,7 @@ import BookishEasterEgg from "@/components/BookishEasterEgg";
 import Analytics from "@/components/Analytics";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://to-be-read-clackamas.netlify.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "To Be Read (TBR) | Clackamas Book Exchange – Milwaukie, OR",
     template: "%s · To Be Read",
@@ -74,7 +75,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://to-be-read-clackamas.netlify.app",
+    url: SITE_URL,
     title: "To Be Read (TBR) | Clackamas Book Exchange",
     description:
       "45-year-old beloved used bookstore in Milwaukie, OR. Trade books for store credit, shop online, visit us!",
@@ -118,12 +119,12 @@ export const viewport: Viewport = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "BookStore",
-  "@id": "https://to-be-read-clackamas.netlify.app/#bookstore",
+  "@id": `${SITE_URL}/#bookstore`,
   name: "Clackamas Book Exchange (To Be Read)",
   alternateName: "TBR – To Be Read",
-  url: "https://to-be-read-clackamas.netlify.app",
-  image: "https://to-be-read-clackamas.netlify.app/opengraph-image",
-  logo: "https://to-be-read-clackamas.netlify.app/icon",
+  url: SITE_URL,
+  image: `${SITE_URL}/opengraph-image`,
+  logo: `${SITE_URL}/icon`,
   telephone: "+1-503-659-2559",
   email: "TBR@tcpbusiness.com",
   priceRange: "$",
@@ -203,12 +204,12 @@ const jsonLd = {
 const webSiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://to-be-read-clackamas.netlify.app/#website",
-  url: "https://to-be-read-clackamas.netlify.app",
+  "@id": `${SITE_URL}/#website`,
+  url: SITE_URL,
   name: "To Be Read – Clackamas Book Exchange",
   alternateName: ["To Be Read", "TBR", "Clackamas Book Exchange"],
   inLanguage: "en-US",
-  publisher: { "@id": "https://to-be-read-clackamas.netlify.app/#bookstore" },
+  publisher: { "@id": `${SITE_URL}/#bookstore` },
 };
 
 export default function RootLayout({

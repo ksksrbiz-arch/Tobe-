@@ -1,5 +1,9 @@
 import { ImageResponse } from "next/og";
 import { getAllSlugs, getPost } from "@/lib/blog";
+import { SITE_URL } from "@/lib/seo";
+
+// Display host (no protocol) for the card footer.
+const SITE_HOST = SITE_URL.replace(/^https?:\/\//, "");
 
 // Per-post Open Graph image (Facebook, LinkedIn, Discord, iMessage, Slack…).
 // Generated statically for every post so shared article links carry the post's
@@ -116,7 +120,7 @@ export default async function Image({
         >
           <span>An independent used bookstore · Milwaukie, OR</span>
           <span style={{ color: "#F1BB1A", fontWeight: 700 }}>
-            to-be-read-clackamas.netlify.app
+            {SITE_HOST}
           </span>
         </div>
       </div>
