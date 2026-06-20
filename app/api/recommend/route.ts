@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { GoogleGenAI, Type } from "@google/genai";
 import { sql } from "@/lib/db";
+import { seedArrivals } from "@/lib/seedArrivals";
 import { checkRateLimit, getClientIp, withTimeout } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
@@ -61,16 +62,39 @@ function normalizeText(s: string) {
     .trim();
 }
 
-async function fetchInventoryTitles() {
+// Curated fallback shelf. Mirrors what /api/recent-arrivals does so the
+// Matchmaker always has real, in-stock titles to recommend from — even before
+// Netlify DB is provisioned or seeded. Without this, an empty `recent_arrivals`
+// table makes the Matchmaker silently return nothing.
+const SEED_INVENTORY: InventoryBook[] = seedArrivals.map((b) => ({
+  title: b.title,
+  author: b.author,
+  cover_url: b.cover_url,
+}));
+
+async function fetchInventoryTitles(): Promise<InventoryBook[]> {
+  let dbRows: InventoryBook[] = [];
   try {
-    const rows = (await sql`
+    dbRows = (await sql`
       SELECT title, author, cover_url FROM recent_arrivals
       ORDER BY added_at DESC LIMIT 200
     `) as InventoryBook[];
-    return { rows, unavailable: false };
   } catch {
-    return { rows: [] as InventoryBook[], unavailable: true };
+    // DB unavailable — fall through to the curated seed shelf below.
+    dbRows = [];
   }
+
+  // Merge live rows with the curated seed, de-duplicating by title+author so
+  // the same book never appears twice. Live DB rows take precedence.
+  const merged: InventoryBook[] = [...dbRows];
+  const seen = new Set(dbRows.map((b) => inventoryKey(b.title, b.author)));
+  for (const book of SEED_INVENTORY) {
+    const key = inventoryKey(book.title, book.author);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    merged.push(book);
+  }
+  return merged;
 }
 
 function inventoryKey(title: string, author: string) {
@@ -145,17 +169,8 @@ export async function POST(request: Request) {
   }
 
   const ai = new GoogleGenAI({ apiKey });
-  const inventoryState = await fetchInventoryTitles();
-  if (inventoryState.unavailable) {
-    return NextResponse.json(
-      { error: "Our live shelf data is unavailable right now. Please try again shortly." },
-      { status: 503 },
-    );
-  }
-  const inventory = inventoryState.rows;
-  if (inventory.length === 0) {
-    return NextResponse.json({ recommendations: [] });
-  }
+  // Always non-empty: live DB rows merged with a curated seed shelf.
+  const inventory = await fetchInventoryTitles();
 
   let recommendations: Recommendation[];
   try {
