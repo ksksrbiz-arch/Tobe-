@@ -7,7 +7,7 @@ import { Menu, X, MapPin, Phone } from "lucide-react";
 import { toast } from "sonner";
 import BookLogo from "./BookLogo";
 
-const navLinks = [
+const navLinks: Array<{ label: string; href: string; external?: boolean }> = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Visit", href: "/visit" },
@@ -18,11 +18,6 @@ const navLinks = [
   { label: "Wishlist", href: "/wishlist" },
   { label: "Connect", href: "/connect" },
   { label: "TBR Loop", href: "/loop" },
-  {
-    label: "✦ Echoes",
-    href: "https://echoes-of-choice-167345356687.us-west2.run.app",
-    external: true,
-  },
 ];
 
 const tickerMessage = "WE DO NOT BUY FOR CASH";
