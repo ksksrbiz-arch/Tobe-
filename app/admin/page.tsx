@@ -124,6 +124,7 @@ export default function AdminPage() {
             <>
               <input
                 type="email"
+                aria-label="Staff email address"
                 placeholder="staff@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -190,6 +191,7 @@ export default function AdminPage() {
             <input
               ref={inputRef}
               type="text"
+              aria-label="Book ISBN"
               placeholder="978-0-00-000000-0"
               value={isbnInput}
               onChange={(e) => setIsbnInput(e.target.value)}
