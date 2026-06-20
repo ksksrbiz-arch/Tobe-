@@ -59,6 +59,10 @@ import { meta as acotarMeta, default as AcotarBody } from "@/content/reading-roo
 import { meta as cleanRomantasyMeta, default as CleanRomantasyBody } from "@/content/reading-room/clean-romantasy-low-spice";
 import { meta as shortClassicsMeta, default as ShortClassicsBody } from "@/content/reading-room/short-classic-novels";
 import { meta as classicSciFiMeta, default as ClassicSciFiBody } from "@/content/reading-room/best-classic-science-fiction";
+import { meta as romantasySeriesMeta, default as RomantasySeriesBody } from "@/content/reading-room/romantasy-series-worth-committing-to";
+import { meta as romantasyForFantasyMeta, default as RomantasyForFantasyBody } from "@/content/reading-room/romantasy-for-fantasy-readers";
+import { meta as classicMoviesMeta, default as ClassicMoviesBody } from "@/content/reading-room/classic-novels-that-became-great-movies";
+import { meta as underratedClassicsMeta, default as UnderratedClassicsBody } from "@/content/reading-room/underrated-classic-novels";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -87,6 +91,10 @@ const registry: BlogPost[] = [
   { ...cleanRomantasyMeta, Body: CleanRomantasyBody },
   { ...shortClassicsMeta, Body: ShortClassicsBody },
   { ...classicSciFiMeta, Body: ClassicSciFiBody },
+  { ...romantasySeriesMeta, Body: RomantasySeriesBody },
+  { ...romantasyForFantasyMeta, Body: RomantasyForFantasyBody },
+  { ...classicMoviesMeta, Body: ClassicMoviesBody },
+  { ...underratedClassicsMeta, Body: UnderratedClassicsBody },
 ];
 
 /** All posts, newest first. */
