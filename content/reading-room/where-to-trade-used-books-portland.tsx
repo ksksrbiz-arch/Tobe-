@@ -74,7 +74,7 @@ export default function Body() {
 
       <p>
         If trading sounds like your move, here&rsquo;s{" "}
-        <Link href="/visit">how to find us</Link> — 7931 SE King Rd, Milwaukie,
+        <Link href="/visit">how to find us</Link> — 7931 SE King Rd, Ste 1, Milwaukie,
         open Monday through Saturday, 10am&ndash;5pm.
       </p>
     </>

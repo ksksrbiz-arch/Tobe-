@@ -21,7 +21,7 @@ export default function Body() {
       <p>
         If you&rsquo;re searching for a used bookstore near Milwaukie or
         Southeast Portland, here&rsquo;s the short answer: you&rsquo;ll find us at{" "}
-        <strong>7931 SE King Rd, Milwaukie, OR 97222</strong>, open{" "}
+        <strong>7931 SE King Rd, Ste 1, Milwaukie, OR 97222</strong>, open{" "}
         <strong>Monday through Saturday, 10am&ndash;5pm</strong>. We&rsquo;re a
         neighborhood used bookshop that&rsquo;s been part of the community for
         decades — and we&rsquo;re a quick hop from Clackamas, Oak Grove,

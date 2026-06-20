@@ -27,7 +27,7 @@ function renderEmail(arrival: ArrivalForNotification) {
     <p style="margin:24px 0;">
       <a href="${STORE_URL}/visit" style="background:linear-gradient(135deg,#6B1C6F 0%,#8B2E90 100%);color:#fff;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">Plan a visit</a>
     </p>
-    <p style="font-size:12px;color:#9CA3AF;margin-top:32px;">${STORE_NAME} · 7931 SE King Rd, Milwaukie, OR 97222 · (503) 659-2559</p>
+    <p style="font-size:12px;color:#9CA3AF;margin-top:32px;">${STORE_NAME} · 7931 SE King Rd, Ste 1, Milwaukie, OR 97222 · (503) 659-2559</p>
   </div>
 </body></html>`.trim();
 }
