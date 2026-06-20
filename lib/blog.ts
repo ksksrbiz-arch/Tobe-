@@ -43,6 +43,10 @@ import { meta as crawdadsMeta, default as CrawdadsBody } from "@/content/reading
 import { meta as fantasyMeta, default as FantasyBody } from "@/content/reading-room/fantasy-books-for-beginners";
 import { meta as giftsMeta, default as GiftsBody } from "@/content/reading-room/gifts-for-book-lovers";
 import { meta as cryMeta, default as CryBody } from "@/content/reading-room/literary-fiction-that-makes-you-cry";
+import { meta as phmMeta, default as PhmBody } from "@/content/reading-room/books-like-project-hail-mary";
+import { meta as romanceMeta, default as RomanceBody } from "@/content/reading-room/romance-for-people-who-dont-read-romance";
+import { meta as memoirMeta, default as MemoirBody } from "@/content/reading-room/best-memoirs-to-start-with";
+import { meta as shortMeta, default as ShortBody } from "@/content/reading-room/short-books-for-a-weekend";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -55,6 +59,10 @@ const registry: BlogPost[] = [
   { ...fantasyMeta, Body: FantasyBody },
   { ...giftsMeta, Body: GiftsBody },
   { ...cryMeta, Body: CryBody },
+  { ...phmMeta, Body: PhmBody },
+  { ...romanceMeta, Body: RomanceBody },
+  { ...memoirMeta, Body: MemoirBody },
+  { ...shortMeta, Body: ShortBody },
 ];
 
 /** All posts, newest first. */
