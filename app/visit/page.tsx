@@ -9,7 +9,6 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import FAQSection, { type Faq } from "@/components/FAQSection";
-import MapEmbed from "@/components/MapEmbed";
 import { Car, Bus, Bike, ParkingCircle, Coffee, MapPin } from "lucide-react";
 
 // Location FAQ — captures local "near me", hours, parking, and transit queries,
@@ -266,20 +265,6 @@ export default function VisitPage() {
               >
                 Call 503-659-2559
               </a>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Map — a strong local signal and a quick way to get directions. */}
-      <section className="px-4 pb-14 sm:px-6 sm:pb-20" style={{ background: "var(--background)" }}>
-        <div className="mx-auto max-w-5xl">
-          <Reveal>
-            <div
-              className="overflow-hidden rounded-2xl border shadow-md"
-              style={{ borderColor: "rgba(107,28,111,0.10)" }}
-            >
-              <MapEmbed />
             </div>
           </Reveal>
         </div>
