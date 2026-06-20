@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ArrowRight, ShoppingBag, Sparkles, Star } from "lucide-react";
 import BookLogo from "./BookLogo";
 import DustMotes from "./DustMotes";
+import OpenStatus from "./OpenStatus";
 import { getMotionSafeScrollBehavior } from "@/lib/motion";
 
 export default function HeroSection() {
@@ -300,6 +301,14 @@ export default function HeroSection() {
             Browse Highlights
             <ShoppingBag size={18} />
           </button>
+        </div>
+
+        {/* Live open/closed status */}
+        <div
+          className="fade-in-up mt-6 flex justify-center"
+          style={{ animationDelay: "560ms" }}
+        >
+          <OpenStatus />
         </div>
 
         {/* Quick facts row */}
