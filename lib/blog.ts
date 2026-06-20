@@ -51,6 +51,10 @@ import { meta as duneMeta, default as DuneBody } from "@/content/reading-room/bo
 import { meta as thrillerMeta, default as ThrillerBody } from "@/content/reading-room/best-thriller-books";
 import { meta as classicsMeta, default as ClassicsBody } from "@/content/reading-room/classic-novels-everyone-should-read";
 import { meta as kidsMeta, default as KidsBody } from "@/content/reading-room/best-chapter-books-for-kids";
+import { meta as romantasyMeta, default as RomantasyBody } from "@/content/reading-room/best-romantasy-books";
+import { meta as fourthWingMeta, default as FourthWingBody } from "@/content/reading-room/books-like-fourth-wing";
+import { meta as classicRomanceMeta, default as ClassicRomanceBody } from "@/content/reading-room/best-classic-romance-novels";
+import { meta as classicFantasyMeta, default as ClassicFantasyBody } from "@/content/reading-room/classic-fantasy-novels";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -71,6 +75,10 @@ const registry: BlogPost[] = [
   { ...thrillerMeta, Body: ThrillerBody },
   { ...classicsMeta, Body: ClassicsBody },
   { ...kidsMeta, Body: KidsBody },
+  { ...romantasyMeta, Body: RomantasyBody },
+  { ...fourthWingMeta, Body: FourthWingBody },
+  { ...classicRomanceMeta, Body: ClassicRomanceBody },
+  { ...classicFantasyMeta, Body: ClassicFantasyBody },
 ];
 
 /** All posts, newest first. */
