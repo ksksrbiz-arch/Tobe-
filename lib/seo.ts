@@ -1,8 +1,11 @@
 /**
  * Shared SEO constants and structured-data builders.
  *
- * SITE_URL is the canonical production origin. Keep it in sync with the
- * metadataBase in app/layout.tsx, sitemap.ts, and robots.ts.
+ * SITE_URL is the SINGLE SOURCE OF TRUTH for the production origin. Everything
+ * in the app (metadata, JSON-LD, sitemap, robots, OG images, llms.txt) derives
+ * from it, so changing the domain is a one-line edit here — with one exception:
+ * scripts/indexnow.mjs runs in plain Node and can't import this file, so update
+ * its SITE_URL constant to match when the domain changes.
  */
 export const SITE_URL = "https://to-be-read-clackamas.netlify.app";
 

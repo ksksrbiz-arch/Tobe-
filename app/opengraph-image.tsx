@@ -1,4 +1,8 @@
 import { ImageResponse } from "next/og";
+import { SITE_URL } from "@/lib/seo";
+
+// Display host (no protocol) for the card footer.
+const SITE_HOST = SITE_URL.replace(/^https?:\/\//, "");
 
 // Open Graph image used by Facebook, LinkedIn, Discord, iMessage, etc.
 // 1200×630 is the spec-recommended size.
@@ -96,7 +100,7 @@ export default function OpenGraphImage() {
         >
           <span>7931 SE King Rd, Ste 1 · Milwaukie, OR</span>
           <span style={{ color: "#F1BB1A", fontWeight: 700 }}>
-            to-be-read-clackamas.netlify.app
+            {SITE_HOST}
           </span>
         </div>
       </div>
