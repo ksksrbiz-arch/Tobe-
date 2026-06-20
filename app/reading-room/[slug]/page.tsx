@@ -31,17 +31,17 @@ export async function generateMetadata({
     description: post.description,
     alternates: { canonical: url },
     openGraph: {
+      // og:image is supplied automatically by the colocated opengraph-image.tsx
+      // (a per-post card with the article's title).
       title: `${post.title} · To Be Read`,
       description: post.description,
       url,
       type: "article",
       publishedTime: post.date,
       modifiedTime: post.updated ?? post.date,
-      images: ["/opengraph-image"],
     },
     twitter: {
       card: "summary_large_image",
-      images: ["/twitter-image"],
     },
   };
 }
