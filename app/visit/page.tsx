@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import FAQSection, { type Faq } from "@/components/FAQSection";
+import MapEmbed from "@/components/MapEmbed";
 import { Car, Bus, Bike, ParkingCircle, Coffee, MapPin } from "lucide-react";
 
 // Location FAQ — captures local "near me", hours, parking, and transit queries,
@@ -278,13 +279,7 @@ export default function VisitPage() {
               className="overflow-hidden rounded-2xl border shadow-md"
               style={{ borderColor: "rgba(107,28,111,0.10)" }}
             >
-              <iframe
-                title="Map to To Be Read — 7931 SE King Rd, Ste 1, Milwaukie, OR 97222"
-                src="https://www.google.com/maps?q=7931+SE+King+Rd,+Milwaukie,+OR+97222&output=embed"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="h-[360px] w-full border-0"
-              />
+              <MapEmbed />
             </div>
           </Reveal>
         </div>
