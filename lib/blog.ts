@@ -63,6 +63,10 @@ import { meta as romantasySeriesMeta, default as RomantasySeriesBody } from "@/c
 import { meta as romantasyForFantasyMeta, default as RomantasyForFantasyBody } from "@/content/reading-room/romantasy-for-fantasy-readers";
 import { meta as classicMoviesMeta, default as ClassicMoviesBody } from "@/content/reading-room/classic-novels-that-became-great-movies";
 import { meta as underratedClassicsMeta, default as UnderratedClassicsBody } from "@/content/reading-room/underrated-classic-novels";
+import { meta as enemiesLoversMeta, default as EnemiesLoversBody } from "@/content/reading-room/enemies-to-lovers-romantasy";
+import { meta as dragonsMeta, default as DragonsBody } from "@/content/reading-room/romantasy-books-with-dragons";
+import { meta as gothicMeta, default as GothicBody } from "@/content/reading-room/gothic-classic-novels";
+import { meta as russianMeta, default as RussianBody } from "@/content/reading-room/russian-classic-novels-for-beginners";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -95,6 +99,10 @@ const registry: BlogPost[] = [
   { ...romantasyForFantasyMeta, Body: RomantasyForFantasyBody },
   { ...classicMoviesMeta, Body: ClassicMoviesBody },
   { ...underratedClassicsMeta, Body: UnderratedClassicsBody },
+  { ...enemiesLoversMeta, Body: EnemiesLoversBody },
+  { ...dragonsMeta, Body: DragonsBody },
+  { ...gothicMeta, Body: GothicBody },
+  { ...russianMeta, Body: RussianBody },
 ];
 
 /** All posts, newest first. */
