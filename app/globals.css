@@ -754,6 +754,30 @@ p {
 .animate-glow-pulse { animation: glowPulse 7s ease-in-out infinite; }
 .animate-ribbon-sway { animation: ribbonSway 6s ease-in-out infinite; }
 
+/* ───── Next Read Matchmaker accents ───── */
+/* Slow-shifting gradient halo behind the matchmaker card. */
+.mm-glow {
+  background: linear-gradient(
+    120deg,
+    rgba(241, 187, 26, 0.55),
+    rgba(139, 46, 144, 0.55),
+    rgba(241, 187, 26, 0.55)
+  );
+  background-size: 200% 200%;
+  animation: gradientShift 7s ease infinite;
+}
+/* Twinkling sparkle icon used in the matchmaker header + loading state. */
+.mm-sparkle {
+  animation: twinkle 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mm-glow,
+  .mm-sparkle {
+    animation: none;
+  }
+}
+
 /* Magical glow halo — drop behind any element for a candlelit aura */
 .magical-glow {
   position: relative;

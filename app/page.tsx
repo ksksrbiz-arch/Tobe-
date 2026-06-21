@@ -240,6 +240,10 @@ export default function Home() {
       <Navbar />
       <HeroSection />
 
+      {/* AI Matchmaker — promoted near the top so it's the first interactive
+          feature visitors meet right after the hero. */}
+      <NextReadSection />
+
       {/* TBR Loop preview section */}
       <section
         className="relative overflow-hidden px-4 py-12 sm:py-20 sm:px-6 lg:px-8"
@@ -466,9 +470,6 @@ export default function Home() {
       <div className="cv-auto-tall">
         <JustShelvedSection />
         <CookbookCurationGallery />
-      </div>
-      <div className="cv-auto">
-        <NextReadSection />
       </div>
 
       {/* TikTok spotlight */}
