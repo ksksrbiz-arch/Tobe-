@@ -91,6 +91,10 @@ import { meta as lakeOswegoMeta, default as LakeOswegoBody } from "@/content/rea
 import { meta as sellDonateMeta, default as SellDonateBody } from "@/content/reading-room/where-to-sell-or-donate-books-clackamas-county";
 import { meta as giftMysteryMeta, default as GiftMysteryBody } from "@/content/reading-room/gifts-for-mystery-and-thriller-lovers";
 import { meta as giftKidsMeta, default as GiftKidsBody } from "@/content/reading-room/book-gifts-for-young-readers";
+import { meta as happyValleyMeta, default as HappyValleyBody } from "@/content/reading-room/used-books-near-happy-valley-oregon";
+import { meta as firstVisitMeta, default as FirstVisitBody } from "@/content/reading-room/first-visit-to-be-read-bookstore-guide";
+import { meta as giftSffMeta, default as GiftSffBody } from "@/content/reading-room/gifts-for-fantasy-and-sci-fi-fans";
+import { meta as lastMinuteMeta, default as LastMinuteBody } from "@/content/reading-room/last-minute-book-gifts-for-readers";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -151,6 +155,10 @@ const registry: BlogPost[] = [
   { ...sellDonateMeta, Body: SellDonateBody },
   { ...giftMysteryMeta, Body: GiftMysteryBody },
   { ...giftKidsMeta, Body: GiftKidsBody },
+  { ...happyValleyMeta, Body: HappyValleyBody },
+  { ...firstVisitMeta, Body: FirstVisitBody },
+  { ...giftSffMeta, Body: GiftSffBody },
+  { ...lastMinuteMeta, Body: LastMinuteBody },
 ];
 
 /** All posts, newest first. */
