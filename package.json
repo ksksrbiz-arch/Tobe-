@@ -3,14 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/generate-blog-registry.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/generate-blog-registry.mjs",
     "build": "next build",
     "postbuild": "node scripts/indexnow.mjs",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "indexnow": "node scripts/indexnow.mjs --force",
-    "seed:arrivals": "tsx db/seed-arrivals.ts"
+    "seed:arrivals": "tsx db/seed-arrivals.ts",
+    "gen:blog": "node scripts/generate-blog-registry.mjs",
+    "pretypecheck": "node scripts/generate-blog-registry.mjs",
+    "prelint": "node scripts/generate-blog-registry.mjs"
   },
   "dependencies": {
     "@auth/core": "^0.41.2",

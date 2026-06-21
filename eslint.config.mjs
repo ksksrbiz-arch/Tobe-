@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
       "next-env.d.ts",
       // Echoes of Choice subsite (separate Vite app, has its own lint config)
       "echoes/**",
+      // Auto-generated, gitignored build artifact (see generate-blog-registry.mjs)
+      "lib/blog.generated.ts",
     ]),
 ]);
 
