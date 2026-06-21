@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Calendar, Users, Sparkles, Coffee, BookHeart } from "lucide-react";
+import Link from "next/link";
+import { Calendar, Users, Sparkles, Coffee, BookHeart, ArrowRight } from "lucide-react";
 import Reveal from "./Reveal";
 
 const events = [
@@ -110,6 +111,17 @@ export default function EventsSection() {
             </Reveal>
           ))}
         </div>
+
+        <Reveal delay={120} className="mt-12 text-center">
+          <Link
+            href="/events"
+            className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:scale-105"
+            style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+          >
+            See all upcoming events
+            <ArrowRight size={16} />
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

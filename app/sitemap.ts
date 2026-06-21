@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
 import { getAllPosts, getAllTagSlugs } from "@/lib/blog";
+import { getCollectionSlugs } from "@/lib/collections";
 
 // Public, indexable routes. Admin and API routes are intentionally excluded
 // (see robots.ts), as are user-utility surfaces like /wishlist that hold no
@@ -17,6 +18,8 @@ const routes: Array<{
   { path: "/shop", changeFrequency: "weekly", priority: 0.9 },
   { path: "/connect", changeFrequency: "weekly", priority: 0.8 },
   { path: "/reading-room", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/reading-room/collections", changeFrequency: "weekly", priority: 0.6 },
+  { path: "/events", changeFrequency: "weekly", priority: 0.8 },
   { path: "/how-it-works", changeFrequency: "monthly", priority: 0.7 },
   { path: "/loop", changeFrequency: "monthly", priority: 0.5 },
 ];
@@ -49,5 +52,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticEntries, ...postEntries, ...tagEntries];
+  // Reading Room collection hubs — curated topic clusters across posts.
+  const collectionEntries: MetadataRoute.Sitemap = getCollectionSlugs().map(
+    (slug) => ({
+      url: `${SITE_URL}/reading-room/collections/${slug}`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.55,
+    }),
+  );
+
+  return [...staticEntries, ...postEntries, ...tagEntries, ...collectionEntries];
 }
