@@ -67,6 +67,10 @@ import { meta as enemiesLoversMeta, default as EnemiesLoversBody } from "@/conte
 import { meta as dragonsMeta, default as DragonsBody } from "@/content/reading-room/romantasy-books-with-dragons";
 import { meta as gothicMeta, default as GothicBody } from "@/content/reading-room/gothic-classic-novels";
 import { meta as russianMeta, default as RussianBody } from "@/content/reading-room/russian-classic-novels-for-beginners";
+import { meta as faeMeta, default as FaeBody } from "@/content/reading-room/fae-romantasy-books";
+import { meta as spicyMeta, default as SpicyBody } from "@/content/reading-room/spicy-romantasy-books";
+import { meta as americanClassicsMeta, default as AmericanClassicsBody } from "@/content/reading-room/american-classic-novels";
+import { meta as hatedSchoolMeta, default as HatedSchoolBody } from "@/content/reading-room/classic-novels-for-people-who-hated-them-in-school";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -103,6 +107,10 @@ const registry: BlogPost[] = [
   { ...dragonsMeta, Body: DragonsBody },
   { ...gothicMeta, Body: GothicBody },
   { ...russianMeta, Body: RussianBody },
+  { ...faeMeta, Body: FaeBody },
+  { ...spicyMeta, Body: SpicyBody },
+  { ...americanClassicsMeta, Body: AmericanClassicsBody },
+  { ...hatedSchoolMeta, Body: HatedSchoolBody },
 ];
 
 /** All posts, newest first. */
