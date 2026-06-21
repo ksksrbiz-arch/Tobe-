@@ -6,9 +6,9 @@ export const meta: BlogMeta = {
   slug: "pacific-northwest-authors-to-read",
   title: "Pacific Northwest Authors to Read: Local Pride from Our Shelves",
   description:
-    "A Milwaukie bookshop&rsquo;s guide to Pacific Northwest authors worth reading — Ursula K. Le Guin, Beverly Cleary, Cheryl Strayed, Jon Krakauer and more.",
+    "A Milwaukie bookshop's guide to Pacific Northwest authors worth reading — Ursula K. Le Guin, Beverly Cleary, Cheryl Strayed, Jon Krakauer and more.",
   excerpt:
-    "From Le Guin to Beverly Cleary, the Pacific Northwest has shaped some of America&rsquo;s best writers. Here are local-pride picks, most easy to find used.",
+    "From Le Guin to Beverly Cleary, the Pacific Northwest has shaped some of America's best writers. Here are local-pride picks, most easy to find used.",
   date: "2026-06-21",
   author: "To Be Read",
   tags: ["Local guide", "Recommendations"],

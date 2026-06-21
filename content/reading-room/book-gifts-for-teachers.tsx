@@ -8,7 +8,7 @@ export const meta: BlogMeta = {
   description:
     "Thoughtful book gifts for teachers — classroom-library builders, beloved read-alouds, teacher-appreciation picks, and the gift cards that always fit.",
   excerpt:
-    "Want to thank a teacher with more than a mug? Here&rsquo;s how to give books that build classroom libraries, win read-aloud time, and actually get used.",
+    "Want to thank a teacher with more than a mug? Here's how to give books that build classroom libraries, win read-aloud time, and actually get used.",
   date: "2026-06-21",
   author: "To Be Read",
   tags: ["Gift guide", "Recommendations"],
