@@ -53,7 +53,7 @@ export default function Body() {
         <Link href="/shop">shelves</Link>, ask the{" "}
         <Link href="/#next-read">Matchmaker</Link> for your perfect summer read,
         or browse{" "}
-        <Link href="/reading-room/romance-for-people-who-dont-read-romance">romance for people who don&rsquo;t read romance</Link>.
+        <Link href="/reading-room/romance-novels-for-skeptics">romance for people who don&rsquo;t read romance</Link>.
       </p>
     </>
   );

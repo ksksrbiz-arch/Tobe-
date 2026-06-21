@@ -55,7 +55,7 @@ export default function Body() {
         to commit after all? See our{" "}
         <Link href="/reading-room/romantasy-series-worth-committing-to">romantasy series worth committing to</Link>{" "}
         or the{" "}
-        <Link href="/reading-room/best-romantasy-books">best romantasy guide</Link>.
+        <Link href="/reading-room/best-romantasy-books-to-start-with">best romantasy guide</Link>.
       </p>
     </>
   );

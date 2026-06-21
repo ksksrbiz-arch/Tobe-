@@ -60,7 +60,7 @@ export default function Body() {
         <Link href="/shop">classics shelves</Link> — ask the{" "}
         <Link href="/#next-read">Matchmaker</Link> where to start. Prefer to ease
         in? Try our{" "}
-        <Link href="/reading-room/short-classic-novels">short classic novels</Link>{" "}
+        <Link href="/reading-room/short-classic-novels-under-200-pages">short classic novels</Link>{" "}
         or{" "}
         <Link href="/reading-room/classic-novels-everyone-should-read">classics everyone should read</Link>.
       </p>

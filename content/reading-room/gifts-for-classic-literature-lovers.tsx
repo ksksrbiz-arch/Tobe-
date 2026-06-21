@@ -43,7 +43,7 @@ export default function Body() {
       <p>
         Tailor it to their taste:{" "}
         <Link href="/reading-room/best-classic-romance-novels">classic romance</Link>,{" "}
-        <Link href="/reading-room/best-classic-science-fiction">classic sci-fi</Link>,{" "}
+        <Link href="/reading-room/best-classic-science-fiction-novels">classic sci-fi</Link>,{" "}
         <Link href="/reading-room/gothic-classic-novels">gothic classics</Link>, or{" "}
         <Link href="/reading-room/classic-novels-by-women-authors">classics by women</Link>{" "}
         — there&rsquo;s a list for whatever they love.

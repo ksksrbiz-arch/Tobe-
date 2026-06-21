@@ -50,7 +50,7 @@ export default function Body() {
         Pick a vibe — cozy mysteries, beach reads, sci-fi classics — and build a
         two-or-three-book bundle around it. Personal, and still affordable. Our{" "}
         <Link href="/reading-room/best-beach-reads-summer">beach reads</Link> and{" "}
-        <Link href="/reading-room/best-classic-science-fiction">classic sci-fi</Link>{" "}
+        <Link href="/reading-room/best-classic-science-fiction-novels">classic sci-fi</Link>{" "}
         lists make easy templates.
       </p>
 
