@@ -7,9 +7,12 @@ import type { ComponentType } from "react";
  *   - `meta`:    a BlogMeta object (the data the hub/SEO needs)
  *   - default:   a `Body` component rendering the article HTML
  *
- * Posts are registered in the `registry` array below. This keeps content
- * type-safe and statically analyzable (no markdown runtime, no MDX build step)
- * while staying simple enough for staff to copy an existing post as a template.
+ * Posts are AUTO-DISCOVERED: `scripts/generate-blog-registry.mjs` scans
+ * `content/reading-room/*.tsx` and emits `lib/blog.generated.ts` (run by the
+ * `predev` / `prebuild` npm hooks, or `npm run gen:blog`). Adding a post is just
+ * dropping a new `.tsx` file in that folder — no central edit, so parallel
+ * branches never collide on a shared registry. The generated file is gitignored
+ * since it's a pure build artifact derived from the post files.
  */
 
 export type BlogMeta = {
@@ -33,133 +36,9 @@ export type BlogMeta = {
 
 export type BlogPost = BlogMeta & { Body: ComponentType };
 
-import { meta as tradeInMeta, default as TradeInBody } from "@/content/reading-room/how-trade-in-credit-works";
-import { meta as visitMeta, default as VisitBody } from "@/content/reading-room/used-bookstore-milwaukie-portland";
-import { meta as secretHistoryMeta, default as SecretHistoryBody } from "@/content/reading-room/books-like-the-secret-history";
-import { meta as cozyMeta, default as CozyBody } from "@/content/reading-room/cozy-mystery-starter-shelf";
-import { meta as tradePortlandMeta, default as TradePortlandBody } from "@/content/reading-room/where-to-trade-used-books-portland";
-import { meta as tbrHabitMeta, default as TbrHabitBody } from "@/content/reading-room/build-your-tbr-reading-habit";
-import { meta as crawdadsMeta, default as CrawdadsBody } from "@/content/reading-room/books-like-where-the-crawdads-sing";
-import { meta as fantasyMeta, default as FantasyBody } from "@/content/reading-room/fantasy-books-for-beginners";
-import { meta as giftsMeta, default as GiftsBody } from "@/content/reading-room/gifts-for-book-lovers";
-import { meta as cryMeta, default as CryBody } from "@/content/reading-room/literary-fiction-that-makes-you-cry";
-import { meta as phmMeta, default as PhmBody } from "@/content/reading-room/books-like-project-hail-mary";
-import { meta as romanceMeta, default as RomanceBody } from "@/content/reading-room/romance-for-people-who-dont-read-romance";
-import { meta as memoirMeta, default as MemoirBody } from "@/content/reading-room/best-memoirs-to-start-with";
-import { meta as shortMeta, default as ShortBody } from "@/content/reading-room/short-books-for-a-weekend";
-import { meta as duneMeta, default as DuneBody } from "@/content/reading-room/books-like-dune";
-import { meta as thrillerMeta, default as ThrillerBody } from "@/content/reading-room/best-thriller-books";
-import { meta as classicsMeta, default as ClassicsBody } from "@/content/reading-room/classic-novels-everyone-should-read";
-import { meta as kidsMeta, default as KidsBody } from "@/content/reading-room/best-chapter-books-for-kids";
-import { meta as romantasyMeta, default as RomantasyBody } from "@/content/reading-room/best-romantasy-books";
-import { meta as fourthWingMeta, default as FourthWingBody } from "@/content/reading-room/books-like-fourth-wing";
-import { meta as classicRomanceMeta, default as ClassicRomanceBody } from "@/content/reading-room/best-classic-romance-novels";
-import { meta as classicFantasyMeta, default as ClassicFantasyBody } from "@/content/reading-room/classic-fantasy-novels";
-import { meta as acotarMeta, default as AcotarBody } from "@/content/reading-room/books-like-acotar";
-import { meta as cleanRomantasyMeta, default as CleanRomantasyBody } from "@/content/reading-room/clean-romantasy-low-spice";
-import { meta as shortClassicsMeta, default as ShortClassicsBody } from "@/content/reading-room/short-classic-novels";
-import { meta as classicSciFiMeta, default as ClassicSciFiBody } from "@/content/reading-room/best-classic-science-fiction";
-import { meta as romantasySeriesMeta, default as RomantasySeriesBody } from "@/content/reading-room/romantasy-series-worth-committing-to";
-import { meta as romantasyForFantasyMeta, default as RomantasyForFantasyBody } from "@/content/reading-room/romantasy-for-fantasy-readers";
-import { meta as classicMoviesMeta, default as ClassicMoviesBody } from "@/content/reading-room/classic-novels-that-became-great-movies";
-import { meta as underratedClassicsMeta, default as UnderratedClassicsBody } from "@/content/reading-room/underrated-classic-novels";
-import { meta as enemiesLoversMeta, default as EnemiesLoversBody } from "@/content/reading-room/enemies-to-lovers-romantasy";
-import { meta as dragonsMeta, default as DragonsBody } from "@/content/reading-room/romantasy-books-with-dragons";
-import { meta as gothicMeta, default as GothicBody } from "@/content/reading-room/gothic-classic-novels";
-import { meta as russianMeta, default as RussianBody } from "@/content/reading-room/russian-classic-novels-for-beginners";
-import { meta as faeMeta, default as FaeBody } from "@/content/reading-room/fae-romantasy-books";
-import { meta as spicyMeta, default as SpicyBody } from "@/content/reading-room/spicy-romantasy-books";
-import { meta as americanClassicsMeta, default as AmericanClassicsBody } from "@/content/reading-room/american-classic-novels";
-import { meta as hatedSchoolMeta, default as HatedSchoolBody } from "@/content/reading-room/classic-novels-for-people-who-hated-them-in-school";
-import { meta as standaloneRomantasyMeta, default as StandaloneRomantasyBody } from "@/content/reading-room/standalone-romantasy-books";
-import { meta as yaRomantasyMeta, default as YaRomantasyBody } from "@/content/reading-room/ya-romantasy-books";
-import { meta as womenClassicsMeta, default as WomenClassicsBody } from "@/content/reading-room/classic-novels-by-women-authors";
-import { meta as victorianMeta, default as VictorianBody } from "@/content/reading-room/best-victorian-novels";
-import { meta as milwaukieDayOutMeta, default as MilwaukieDayOutBody } from "@/content/reading-room/milwaukie-oregon-book-lovers-day-out";
-import { meta as sellBooksMeta, default as SellBooksBody } from "@/content/reading-room/how-to-sell-your-used-books";
-import { meta as bookClubMeta, default as BookClubBody } from "@/content/reading-room/best-book-club-books";
-import { meta as beachReadsMeta, default as BeachReadsBody } from "@/content/reading-room/best-beach-reads-summer";
-import { meta as cozyReadMeta, default as CozyReadBody } from "@/content/reading-room/cozy-places-to-read-in-milwaukie-oregon";
-import { meta as nearClackamasMeta, default as NearClackamasBody } from "@/content/reading-room/bookstore-near-clackamas-town-center";
-import { meta as giftByReaderMeta, default as GiftByReaderBody } from "@/content/reading-room/book-gifts-for-every-type-of-reader";
-import { meta as giftsUnder20Meta, default as GiftsUnder20Body } from "@/content/reading-room/bookish-gifts-under-20";
-import { meta as oakGroveMeta, default as OakGroveBody } from "@/content/reading-room/used-books-near-oak-grove-gladstone-oregon";
-import { meta as rainyDayMeta, default as RainyDayBody } from "@/content/reading-room/rainy-day-things-to-do-milwaukie-oregon";
-import { meta as giftRomantasyMeta, default as GiftRomantasyBody } from "@/content/reading-room/gifts-for-romantasy-fans";
-import { meta as giftClassicsMeta, default as GiftClassicsBody } from "@/content/reading-room/gifts-for-classic-literature-lovers";
-import { meta as lakeOswegoMeta, default as LakeOswegoBody } from "@/content/reading-room/used-books-near-lake-oswego-oregon";
-import { meta as sellDonateMeta, default as SellDonateBody } from "@/content/reading-room/where-to-sell-or-donate-books-clackamas-county";
-import { meta as giftMysteryMeta, default as GiftMysteryBody } from "@/content/reading-room/gifts-for-mystery-and-thriller-lovers";
-import { meta as giftKidsMeta, default as GiftKidsBody } from "@/content/reading-room/book-gifts-for-young-readers";
-import { meta as happyValleyMeta, default as HappyValleyBody } from "@/content/reading-room/used-books-near-happy-valley-oregon";
-import { meta as firstVisitMeta, default as FirstVisitBody } from "@/content/reading-room/first-visit-to-be-read-bookstore-guide";
-import { meta as giftSffMeta, default as GiftSffBody } from "@/content/reading-room/gifts-for-fantasy-and-sci-fi-fans";
-import { meta as lastMinuteMeta, default as LastMinuteBody } from "@/content/reading-room/last-minute-book-gifts-for-readers";
-
-const registry: BlogPost[] = [
-  { ...tradeInMeta, Body: TradeInBody },
-  { ...visitMeta, Body: VisitBody },
-  { ...secretHistoryMeta, Body: SecretHistoryBody },
-  { ...cozyMeta, Body: CozyBody },
-  { ...tradePortlandMeta, Body: TradePortlandBody },
-  { ...tbrHabitMeta, Body: TbrHabitBody },
-  { ...crawdadsMeta, Body: CrawdadsBody },
-  { ...fantasyMeta, Body: FantasyBody },
-  { ...giftsMeta, Body: GiftsBody },
-  { ...cryMeta, Body: CryBody },
-  { ...phmMeta, Body: PhmBody },
-  { ...romanceMeta, Body: RomanceBody },
-  { ...memoirMeta, Body: MemoirBody },
-  { ...shortMeta, Body: ShortBody },
-  { ...duneMeta, Body: DuneBody },
-  { ...thrillerMeta, Body: ThrillerBody },
-  { ...classicsMeta, Body: ClassicsBody },
-  { ...kidsMeta, Body: KidsBody },
-  { ...romantasyMeta, Body: RomantasyBody },
-  { ...fourthWingMeta, Body: FourthWingBody },
-  { ...classicRomanceMeta, Body: ClassicRomanceBody },
-  { ...classicFantasyMeta, Body: ClassicFantasyBody },
-  { ...acotarMeta, Body: AcotarBody },
-  { ...cleanRomantasyMeta, Body: CleanRomantasyBody },
-  { ...shortClassicsMeta, Body: ShortClassicsBody },
-  { ...classicSciFiMeta, Body: ClassicSciFiBody },
-  { ...romantasySeriesMeta, Body: RomantasySeriesBody },
-  { ...romantasyForFantasyMeta, Body: RomantasyForFantasyBody },
-  { ...classicMoviesMeta, Body: ClassicMoviesBody },
-  { ...underratedClassicsMeta, Body: UnderratedClassicsBody },
-  { ...enemiesLoversMeta, Body: EnemiesLoversBody },
-  { ...dragonsMeta, Body: DragonsBody },
-  { ...gothicMeta, Body: GothicBody },
-  { ...russianMeta, Body: RussianBody },
-  { ...faeMeta, Body: FaeBody },
-  { ...spicyMeta, Body: SpicyBody },
-  { ...americanClassicsMeta, Body: AmericanClassicsBody },
-  { ...hatedSchoolMeta, Body: HatedSchoolBody },
-  { ...standaloneRomantasyMeta, Body: StandaloneRomantasyBody },
-  { ...yaRomantasyMeta, Body: YaRomantasyBody },
-  { ...womenClassicsMeta, Body: WomenClassicsBody },
-  { ...victorianMeta, Body: VictorianBody },
-  { ...milwaukieDayOutMeta, Body: MilwaukieDayOutBody },
-  { ...sellBooksMeta, Body: SellBooksBody },
-  { ...bookClubMeta, Body: BookClubBody },
-  { ...beachReadsMeta, Body: BeachReadsBody },
-  { ...cozyReadMeta, Body: CozyReadBody },
-  { ...nearClackamasMeta, Body: NearClackamasBody },
-  { ...giftByReaderMeta, Body: GiftByReaderBody },
-  { ...giftsUnder20Meta, Body: GiftsUnder20Body },
-  { ...oakGroveMeta, Body: OakGroveBody },
-  { ...rainyDayMeta, Body: RainyDayBody },
-  { ...giftRomantasyMeta, Body: GiftRomantasyBody },
-  { ...giftClassicsMeta, Body: GiftClassicsBody },
-  { ...lakeOswegoMeta, Body: LakeOswegoBody },
-  { ...sellDonateMeta, Body: SellDonateBody },
-  { ...giftMysteryMeta, Body: GiftMysteryBody },
-  { ...giftKidsMeta, Body: GiftKidsBody },
-  { ...happyValleyMeta, Body: HappyValleyBody },
-  { ...firstVisitMeta, Body: FirstVisitBody },
-  { ...giftSffMeta, Body: GiftSffBody },
-  { ...lastMinuteMeta, Body: LastMinuteBody },
-];
+// The post registry is auto-generated from content/reading-room/*.tsx —
+// see scripts/generate-blog-registry.mjs and the header comment above.
+import { registry } from "./blog.generated";
 
 /** All posts, newest first. */
 export function getAllPosts(): BlogPost[] {
