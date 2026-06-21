@@ -6,7 +6,7 @@ export const meta: BlogMeta = {
   slug: "best-poetry-collections-for-beginners",
   title: "Best poetry collections for beginners: an approachable start",
   description:
-    "New to poetry? Five welcoming collections — from Mary Oliver&rsquo;s Devotions to Billy Collins — that make a wonderful, unintimidating place to begin.",
+    "New to poetry? Five welcoming collections — from Mary Oliver's Devotions to Billy Collins — that make a wonderful, unintimidating place to begin.",
   excerpt:
     "Poetry without the homework. Five approachable collections that make a warm, welcoming place to start reading verse.",
   date: "2026-06-21",
