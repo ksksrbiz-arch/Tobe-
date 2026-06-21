@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import { Sparkles, BookOpen, Radio } from "lucide-react";
+import JsonLd from "@/components/JsonLd";
 
 interface RecentArrival {
   id: string;
@@ -243,8 +244,27 @@ export default function JustShelvedFeed() {
     );
   }
 
+  // Structured data so individual arrivals can surface in search. Rendered only
+  // below (where books.length > 0 is guaranteed), so the ItemList is never empty.
+  const itemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Just Shelved at To Be Read",
+    itemListElement: books.map((b, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "Book",
+        name: b.title,
+        author: { "@type": "Person", name: b.author },
+        ...(b.cover_url ? { image: b.cover_url } : {}),
+      },
+    })),
+  };
+
   return (
     <div>
+      <JsonLd data={itemList} />
       <div className="mb-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
         <span
           className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider"
