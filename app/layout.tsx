@@ -162,6 +162,9 @@ const jsonLd = {
     "Oak Grove, OR",
     "Gladstone, OR",
     "Happy Valley, OR",
+    "Lake Oswego, OR",
+    "West Linn, OR",
+    "Oregon City, OR",
     "Portland, OR",
   ].map((name) => ({ "@type": "City", name })),
   openingHoursSpecification: [
