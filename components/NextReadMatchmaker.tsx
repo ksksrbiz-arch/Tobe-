@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { BookOpen, Send, Sparkles, RefreshCw, ArrowRight, Share2 } from "lucide-react";
 import { toast } from "sonner";
+import DustMotes from "@/components/DustMotes";
 
 // Query param used to make a set of picks shareable: /?match=<prompt>#next-read
 // Anyone who opens the link re-runs the same prompt, turning a good
@@ -205,8 +206,14 @@ export default function NextReadMatchmaker() {
   };
 
   return (
-    <div
-      className="rounded-[28px] border-2 p-7 shadow-xl"
+    <div className="relative">
+      {/* Animated gradient glow ring breathing behind the card */}
+      <div
+        aria-hidden="true"
+        className="mm-glow pointer-events-none absolute -inset-px rounded-[30px] opacity-70 blur-[12px]"
+      />
+      <div
+      className="relative rounded-[28px] border-2 p-7 shadow-xl"
       style={{
         background: "linear-gradient(180deg, rgba(253,248,240,0.98) 0%, rgba(255,255,255,0.98) 100%)",
         borderColor: "rgba(107,28,111,0.14)",
@@ -216,10 +223,10 @@ export default function NextReadMatchmaker() {
       {/* Header */}
       <div className="mb-6 flex items-center gap-3">
         <div
-          className="flex h-11 w-11 items-center justify-center rounded-xl"
+          className="flex h-11 w-11 items-center justify-center rounded-xl animate-pulse-glow"
           style={{ background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)" }}
         >
-          <Sparkles size={20} style={{ color: "#1a1a1a" }} />
+          <Sparkles size={20} className="mm-sparkle" style={{ color: "#1a1a1a" }} />
         </div>
         <div>
           <h3
@@ -262,22 +269,35 @@ export default function NextReadMatchmaker() {
           style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
         >
           {loading ? <RefreshCw size={12} className="animate-spin" /> : <Send size={12} />}
-          {loading ? "Thinking…" : "Match me"}
+          {loading ? (
+            <span className="flex items-center gap-1.5">
+              Thinking
+              <span className="flex gap-0.5" aria-hidden="true">
+                <span className="h-1 w-1 animate-bounce rounded-full bg-white" style={{ animationDelay: "0ms" }} />
+                <span className="h-1 w-1 animate-bounce rounded-full bg-white" style={{ animationDelay: "120ms" }} />
+                <span className="h-1 w-1 animate-bounce rounded-full bg-white" style={{ animationDelay: "240ms" }} />
+              </span>
+            </span>
+          ) : (
+            "Match me"
+          )}
         </button>
       </div>
 
       {/* Example prompts */}
       {!hasSearched && (
         <div className="mt-3 flex flex-wrap gap-2">
-          {EXAMPLE_PROMPTS.map((p) => (
+          {EXAMPLE_PROMPTS.map((p, i) => (
             <button
               key={p}
               onClick={() => setQuery(p)}
-              className="rounded-full border px-3 py-1 text-[11px] font-medium transition-all hover:scale-[1.02]"
+              className="mm-chip rounded-full border px-3 py-1 text-[11px] font-medium transition-all hover:-translate-y-0.5 hover:scale-[1.03] hover:shadow-md"
               style={{
                 borderColor: "rgba(107,28,111,0.15)",
                 color: "#6B1C6F",
                 background: "rgba(107,28,111,0.04)",
+                animation: "fadeInUp 0.5s cubic-bezier(0.22,1,0.36,1) both",
+                animationDelay: `${120 + i * 70}ms`,
               }}
             >
               {p}
@@ -329,6 +349,7 @@ export default function NextReadMatchmaker() {
           No recommendations came back — try rephrasing your prompt.
         </p>
       )}
+      </div>
     </div>
   );
 }
@@ -338,19 +359,20 @@ export function NextReadSection() {
   return (
     <section
       id="next-read"
-      className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
+      className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
           "radial-gradient(circle at 80% 20%, rgba(107,28,111,0.08), transparent 40%), linear-gradient(180deg, rgba(255,255,255,0.50) 0%, rgba(253,248,240,0.90) 100%)",
       }}
     >
-      <div className="mx-auto max-w-4xl">
+      <DustMotes />
+      <div className="relative z-10 mx-auto max-w-4xl">
         <div className="mb-10 text-center">
           <span
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider animate-pulse-glow"
             style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
           >
-            <Sparkles size={12} />
+            <Sparkles size={12} className="mm-sparkle" />
             AI Matchmaker
           </span>
           <h2
