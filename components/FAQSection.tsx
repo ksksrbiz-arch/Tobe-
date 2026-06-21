@@ -45,6 +45,30 @@ const defaultFaqs: Faq[] = [
     q: "Do you do book recommendations?",
     a: "Absolutely — that's the best part of working here. Stop in, tell us what you've been loving lately, and we'll make a stack.",
   },
+  {
+    q: "Do you buy used books?",
+    a: "Yes — we take used books in trade for store credit. Bring them by during open hours and we'll look them over.",
+  },
+  {
+    q: "What are your hours?",
+    a: "We're open Monday through Saturday, 10am to 5pm, and closed on Sunday.",
+  },
+  {
+    q: "Where are you located and is there parking?",
+    a: "We're at 7931 SE King Rd, Ste 1, Milwaukie, OR 97222. There's free on-site parking.",
+  },
+  {
+    q: "Do you offer store credit?",
+    a: "Yes — you earn store credit by trading in your used books, then put it toward your next reads.",
+  },
+  {
+    q: "What kinds of books do you carry?",
+    a: "Thousands of used titles across fiction, classics, romantasy, mystery, sci-fi/fantasy, kids', and nonfiction.",
+  },
+  {
+    q: "Do you have a phone number?",
+    a: "Yes — you can reach us at +1-503-659-2559 during open hours.",
+  },
 ];
 
 /**
