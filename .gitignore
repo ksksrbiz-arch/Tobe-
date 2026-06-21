@@ -42,3 +42,6 @@ next-env.d.ts
 
 # generated Reading Room registry (derived from content/reading-room/*.tsx at build)
 lib/blog.generated.ts
+
+# Claude Code local session / agent-worktree scratch (never commit)
+.claude/
