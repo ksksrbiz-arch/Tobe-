@@ -75,6 +75,10 @@ import { meta as standaloneRomantasyMeta, default as StandaloneRomantasyBody } f
 import { meta as yaRomantasyMeta, default as YaRomantasyBody } from "@/content/reading-room/ya-romantasy-books";
 import { meta as womenClassicsMeta, default as WomenClassicsBody } from "@/content/reading-room/classic-novels-by-women-authors";
 import { meta as victorianMeta, default as VictorianBody } from "@/content/reading-room/best-victorian-novels";
+import { meta as milwaukieDayOutMeta, default as MilwaukieDayOutBody } from "@/content/reading-room/milwaukie-oregon-book-lovers-day-out";
+import { meta as sellBooksMeta, default as SellBooksBody } from "@/content/reading-room/how-to-sell-your-used-books";
+import { meta as bookClubMeta, default as BookClubBody } from "@/content/reading-room/best-book-club-books";
+import { meta as beachReadsMeta, default as BeachReadsBody } from "@/content/reading-room/best-beach-reads-summer";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -119,6 +123,10 @@ const registry: BlogPost[] = [
   { ...yaRomantasyMeta, Body: YaRomantasyBody },
   { ...womenClassicsMeta, Body: WomenClassicsBody },
   { ...victorianMeta, Body: VictorianBody },
+  { ...milwaukieDayOutMeta, Body: MilwaukieDayOutBody },
+  { ...sellBooksMeta, Body: SellBooksBody },
+  { ...bookClubMeta, Body: BookClubBody },
+  { ...beachReadsMeta, Body: BeachReadsBody },
 ];
 
 /** All posts, newest first. */
