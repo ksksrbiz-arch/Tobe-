@@ -9,7 +9,9 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import FAQSection, { type Faq } from "@/components/FAQSection";
-import { Car, Bus, Bike, ParkingCircle, Coffee, MapPin } from "lucide-react";
+import OpenStatusBadge from "@/components/OpenStatusBadge";
+import DirectionsButton from "@/components/DirectionsButton";
+import { Car, Bus, Bike, ParkingCircle, Coffee, MapPin, Phone } from "lucide-react";
 
 // Location FAQ — captures local "near me", hours, parking, and transit queries,
 // and emits FAQPage structured data via <FAQSection>. Grounded entirely in the
@@ -89,6 +91,41 @@ export default function VisitPage() {
         imageUrl="/images/shelves/store-front-adult-fiction.jpg"
         scrollTargetId="visit"
       />
+
+      {/* Top conversion strip: live status + one-tap directions / call */}
+      <section
+        className="px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8"
+        style={{ background: "var(--background)" }}
+      >
+        <Reveal className="mx-auto max-w-5xl">
+          <div
+            className="flex flex-col items-center gap-4 rounded-2xl border p-5 text-center sm:flex-row sm:justify-between sm:gap-6 sm:p-6 sm:text-left"
+            style={{
+              background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+              borderColor: "rgba(107,28,111,0.10)",
+              boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+            }}
+          >
+            <div className="flex flex-col items-center gap-2 sm:items-start">
+              <OpenStatusBadge />
+              <p className="text-sm font-medium" style={{ color: "#374151" }}>
+                7931 SE King Rd, Ste 1, Milwaukie, OR 97222
+              </p>
+            </div>
+            <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
+              <DirectionsButton className="w-full sm:w-auto" />
+              <a
+                href="tel:503-659-2559"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 px-6 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-[0.98] sm:w-auto"
+                style={{ borderColor: "rgba(107,28,111,0.25)", color: "#6B1C6F", background: "rgba(255,255,255,0.7)" }}
+              >
+                <Phone size={16} />
+                Call 503-659-2559
+              </a>
+            </div>
+          </div>
+        </Reveal>
+      </section>
 
       <VisitSection />
 
