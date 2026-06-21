@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { ScanLine, Plus, RefreshCw, Check, LogIn, LogOut } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
@@ -231,8 +232,14 @@ export default function AdminPage() {
                 }}
               >
                 {entry.cover_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={entry.cover_url} alt={entry.title} className="h-14 w-10 flex-shrink-0 rounded object-cover" />
+                  <Image
+                    src={entry.cover_url}
+                    alt={entry.title ? `Cover of ${entry.title}` : `Book cover for ISBN ${entry.isbn}`}
+                    width={40}
+                    height={56}
+                    unoptimized
+                    className="h-14 w-10 flex-shrink-0 rounded object-cover"
+                  />
                 ) : (
                   <div className="h-14 w-10 flex-shrink-0 animate-pulse rounded" style={{ background: "rgba(107,28,111,0.08)" }} />
                 )}

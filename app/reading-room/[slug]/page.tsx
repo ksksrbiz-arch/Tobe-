@@ -72,7 +72,7 @@ export default async function ReadingRoomPostPage({
     author: { "@type": "Organization", name: post.author },
     publisher: { "@id": `${SITE_URL}/#bookstore` },
     mainEntityOfPage: url,
-    image: `${SITE_URL}/opengraph-image`,
+    image: `${SITE_URL}/reading-room/${post.slug}/opengraph-image`,
     keywords: post.tags.join(", "),
   };
 
