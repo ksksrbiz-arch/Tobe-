@@ -79,6 +79,10 @@ import { meta as milwaukieDayOutMeta, default as MilwaukieDayOutBody } from "@/c
 import { meta as sellBooksMeta, default as SellBooksBody } from "@/content/reading-room/how-to-sell-your-used-books";
 import { meta as bookClubMeta, default as BookClubBody } from "@/content/reading-room/best-book-club-books";
 import { meta as beachReadsMeta, default as BeachReadsBody } from "@/content/reading-room/best-beach-reads-summer";
+import { meta as cozyReadMeta, default as CozyReadBody } from "@/content/reading-room/cozy-places-to-read-in-milwaukie-oregon";
+import { meta as nearClackamasMeta, default as NearClackamasBody } from "@/content/reading-room/bookstore-near-clackamas-town-center";
+import { meta as giftByReaderMeta, default as GiftByReaderBody } from "@/content/reading-room/book-gifts-for-every-type-of-reader";
+import { meta as giftsUnder20Meta, default as GiftsUnder20Body } from "@/content/reading-room/bookish-gifts-under-20";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -127,6 +131,10 @@ const registry: BlogPost[] = [
   { ...sellBooksMeta, Body: SellBooksBody },
   { ...bookClubMeta, Body: BookClubBody },
   { ...beachReadsMeta, Body: BeachReadsBody },
+  { ...cozyReadMeta, Body: CozyReadBody },
+  { ...nearClackamasMeta, Body: NearClackamasBody },
+  { ...giftByReaderMeta, Body: GiftByReaderBody },
+  { ...giftsUnder20Meta, Body: GiftsUnder20Body },
 ];
 
 /** All posts, newest first. */
