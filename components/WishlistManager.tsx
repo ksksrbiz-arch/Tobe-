@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { BookMarked, Plus, Trash2, RefreshCw, Search, LogIn, LogOut, Mail } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
@@ -252,8 +253,14 @@ function AddBookPanel({ onAdded }: { onAdded: () => void }) {
           style={{ background: "white", borderColor: "rgba(107,28,111,0.12)" }}
         >
           {preview.cover_url && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={preview.cover_url} alt={preview.title || "Book cover"} className="h-14 w-10 rounded object-cover flex-shrink-0" />
+            <Image
+              src={preview.cover_url}
+              alt={preview.title ? `Cover of ${preview.title}` : "Book cover"}
+              width={40}
+              height={56}
+              unoptimized
+              className="h-14 w-10 rounded object-cover flex-shrink-0"
+            />
           )}
           <div className="min-w-0 flex-1">
             <p className="font-bold text-sm truncate" style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}>{preview.title}</p>
@@ -294,8 +301,15 @@ function WishlistRow({ item, onRemove }: { item: WishlistItem; onRemove: () => v
       }}
     >
       {item.cover_url ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={item.cover_url} alt={item.title} className="h-16 w-11 flex-shrink-0 rounded object-cover" style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12)" }} />
+        <Image
+          src={item.cover_url}
+          alt={item.title ? `Cover of ${item.title}` : "Book cover"}
+          width={44}
+          height={64}
+          unoptimized
+          className="h-16 w-11 flex-shrink-0 rounded object-cover"
+          style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.12)" }}
+        />
       ) : (
         <div className="flex h-16 w-11 flex-shrink-0 items-center justify-center rounded" style={{ background: "rgba(107,28,111,0.08)" }}>
           <BookMarked size={18} style={{ color: "rgba(107,28,111,0.40)" }} />
