@@ -49,9 +49,16 @@ export default function ReadingRoomPage() {
                 {tag}
               </Link>
             ))}
+            <Link
+              href="/reading-room/collections"
+              className="ml-auto inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition-all hover:scale-[1.03]"
+              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+            >
+              Browse collections
+            </Link>
             <a
               href="/reading-room/feed.xml"
-              className="ml-auto inline-flex items-center gap-1.5 text-xs font-semibold transition-colors hover:opacity-80"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold transition-colors hover:opacity-80"
               style={{ color: "#6B1C6F" }}
             >
               <Rss size={13} aria-hidden="true" />
