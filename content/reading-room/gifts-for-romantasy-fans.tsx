@@ -34,7 +34,7 @@ export default function Body() {
       <h2>If they&rsquo;re already deep in</h2>
       <p>
         Branch them sideways. Pull from our{" "}
-        <Link href="/reading-room/best-romantasy-books">best romantasy guide</Link>{" "}
+        <Link href="/reading-room/best-romantasy-books-to-start-with">best romantasy guide</Link>{" "}
         or our{" "}
         <Link href="/reading-room/fae-romantasy-books">fae romantasy</Link> and{" "}
         <Link href="/reading-room/romantasy-books-with-dragons">dragon romantasy</Link>{" "}

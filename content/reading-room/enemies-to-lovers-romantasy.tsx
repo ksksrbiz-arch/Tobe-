@@ -54,9 +54,9 @@ export default function Body() {
         Browse our <Link href="/shop">romantasy shelves</Link> or tell the{" "}
         <Link href="/#next-read">Matchmaker</Link> you want enemies-to-lovers with
         a real slow burn. Newer to the genre? Begin with our{" "}
-        <Link href="/reading-room/best-romantasy-books">best romantasy guide</Link>{" "}
+        <Link href="/reading-room/best-romantasy-books-to-start-with">best romantasy guide</Link>{" "}
         or{" "}
-        <Link href="/reading-room/books-like-acotar">books like ACOTAR</Link>.
+        <Link href="/reading-room/books-like-a-court-of-thorns-and-roses">books like ACOTAR</Link>.
       </p>
     </>
   );

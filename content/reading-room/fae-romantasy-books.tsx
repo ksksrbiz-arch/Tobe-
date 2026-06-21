@@ -53,9 +53,9 @@ export default function Body() {
         Browse our <Link href="/shop">romantasy shelves</Link> or ask the{" "}
         <Link href="/#next-read">Matchmaker</Link> for fae-court romantasy. New to
         the genre? Start with our{" "}
-        <Link href="/reading-room/best-romantasy-books">best romantasy guide</Link>{" "}
+        <Link href="/reading-room/best-romantasy-books-to-start-with">best romantasy guide</Link>{" "}
         or our{" "}
-        <Link href="/reading-room/books-like-acotar">books like ACOTAR</Link> list.
+        <Link href="/reading-room/books-like-a-court-of-thorns-and-roses">books like ACOTAR</Link> list.
       </p>
     </>
   );

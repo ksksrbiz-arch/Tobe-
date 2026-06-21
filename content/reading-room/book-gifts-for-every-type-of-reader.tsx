@@ -29,7 +29,7 @@ export default function Body() {
         They&rsquo;ve read <em>Fourth Wing</em> twice. Gift{" "}
         <em>A Court of Thorns and Roses</em> if they somehow haven&rsquo;t, or
         branch them out with our{" "}
-        <Link href="/reading-room/best-romantasy-books">best romantasy guide</Link>.
+        <Link href="/reading-room/best-romantasy-books-to-start-with">best romantasy guide</Link>.
       </p>
 
       <h2>For the classics buff</h2>

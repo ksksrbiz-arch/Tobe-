@@ -59,7 +59,7 @@ export default function Body() {
         <Link href="/shop">classics shelves</Link> — low-risk way to retry one.
         Ask the <Link href="/#next-read">Matchmaker</Link> for a gateway classic,
         or browse our{" "}
-        <Link href="/reading-room/short-classic-novels">short classic novels</Link>{" "}
+        <Link href="/reading-room/short-classic-novels-under-200-pages">short classic novels</Link>{" "}
         and{" "}
         <Link href="/reading-room/underrated-classic-novels">underrated classics</Link>.
       </p>

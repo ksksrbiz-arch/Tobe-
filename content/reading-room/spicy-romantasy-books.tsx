@@ -63,7 +63,7 @@ export default function Body() {
         the opposite? We also have a{" "}
         <Link href="/reading-room/clean-romantasy-low-spice">clean, low-spice romantasy</Link>{" "}
         guide and our{" "}
-        <Link href="/reading-room/best-romantasy-books">best romantasy</Link> list.
+        <Link href="/reading-room/best-romantasy-books-to-start-with">best romantasy</Link> list.
       </p>
     </>
   );
