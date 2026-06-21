@@ -1,0 +1,161 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
+import Footer from "@/components/Footer";
+import FloatingButtons from "@/components/FloatingButtons";
+import Reveal from "@/components/Reveal";
+import JsonLd from "@/components/JsonLd";
+import { formatPostDate } from "@/lib/blog";
+import { breadcrumbList, SITE_URL } from "@/lib/seo";
+import {
+  getCollection,
+  getCollectionSlugs,
+  getCollectionPosts,
+} from "@/lib/collections";
+
+export const dynamic = "force-static";
+
+export function generateStaticParams() {
+  return getCollectionSlugs().map((collection) => ({ collection }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ collection: string }>;
+}): Promise<Metadata> {
+  const { collection: slug } = await params;
+  const collection = getCollection(slug);
+  if (!collection) return {};
+
+  const url = `/reading-room/collections/${slug}`;
+  return {
+    title: `${collection.title} — The Reading Room`,
+    description: collection.description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `${collection.title} · The Reading Room`,
+      description: collection.description,
+      url,
+      type: "website",
+      images: ["/opengraph-image"],
+    },
+    twitter: { card: "summary_large_image", images: ["/twitter-image"] },
+  };
+}
+
+export default async function CollectionPage({
+  params,
+}: {
+  params: Promise<{ collection: string }>;
+}) {
+  const { collection: slug } = await params;
+  const collection = getCollection(slug);
+  if (!collection) notFound();
+
+  const posts = getCollectionPosts(slug);
+  const url = `/reading-room/collections/${slug}`;
+
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${collection.title} — The Reading Room`,
+    description: collection.description,
+    url: `${SITE_URL}${url}`,
+    isPartOf: { "@id": `${SITE_URL}/reading-room#blog` },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: posts.map((post, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `${SITE_URL}/reading-room/${post.slug}`,
+        name: post.title,
+      })),
+    },
+  };
+
+  return (
+    <main id="main">
+      <Navbar />
+      <JsonLd
+        data={breadcrumbList([
+          { name: "The Reading Room", path: "/reading-room" },
+          { name: "Collections", path: "/reading-room/collections" },
+          { name: collection.title, path: url },
+        ])}
+      />
+      <JsonLd data={collectionJsonLd} />
+
+      <PageHero
+        badge="The Reading Room"
+        title={collection.title}
+        subtitle={collection.description}
+        imageUrl="/images/shelves/store-front-adult-fiction.jpg"
+        scrollTargetId="posts"
+      />
+
+      <section
+        id="posts"
+        className="px-4 py-12 sm:px-6 sm:py-20 md:py-28"
+        style={{ background: "var(--background)" }}
+      >
+        <div className="mx-auto max-w-5xl">
+          <Link
+            href="/reading-room"
+            className="mb-8 inline-flex items-center gap-1.5 text-sm font-semibold"
+            style={{ color: "#6B1C6F" }}
+          >
+            <ArrowLeft size={15} aria-hidden="true" />
+            All posts
+          </Link>
+
+          <ul className="grid gap-6 md:grid-cols-2">
+            {posts.map((post, i) => (
+              <li key={post.slug}>
+                <Reveal delay={i * 70}>
+                  <Link
+                    href={`/reading-room/${post.slug}`}
+                    className="group flex h-full flex-col rounded-2xl border bg-white/70 p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                    style={{ borderColor: "rgba(107,28,111,0.10)" }}
+                  >
+                    <h2
+                      className="mb-2 text-xl font-bold leading-snug"
+                      style={{ fontFamily: "var(--font-serif)", color: "#4A1350" }}
+                    >
+                      {post.title}
+                    </h2>
+                    <p className="mb-4 flex-1 text-sm leading-6 text-[#4B5563]">
+                      {post.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-[#6B7280]">
+                      <span className="flex items-center gap-3">
+                        <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+                        <span className="inline-flex items-center gap-1">
+                          <Clock size={12} aria-hidden="true" />
+                          {post.readingMinutes} min read
+                        </span>
+                      </span>
+                      <span
+                        className="inline-flex items-center gap-1 font-semibold transition-transform group-hover:translate-x-0.5"
+                        style={{ color: "#6B1C6F" }}
+                      >
+                        Read
+                        <ArrowRight size={14} aria-hidden="true" />
+                      </span>
+                    </div>
+                  </Link>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <Footer />
+      <FloatingButtons />
+    </main>
+  );
+}
