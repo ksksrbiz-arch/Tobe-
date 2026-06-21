@@ -71,6 +71,10 @@ import { meta as faeMeta, default as FaeBody } from "@/content/reading-room/fae-
 import { meta as spicyMeta, default as SpicyBody } from "@/content/reading-room/spicy-romantasy-books";
 import { meta as americanClassicsMeta, default as AmericanClassicsBody } from "@/content/reading-room/american-classic-novels";
 import { meta as hatedSchoolMeta, default as HatedSchoolBody } from "@/content/reading-room/classic-novels-for-people-who-hated-them-in-school";
+import { meta as standaloneRomantasyMeta, default as StandaloneRomantasyBody } from "@/content/reading-room/standalone-romantasy-books";
+import { meta as yaRomantasyMeta, default as YaRomantasyBody } from "@/content/reading-room/ya-romantasy-books";
+import { meta as womenClassicsMeta, default as WomenClassicsBody } from "@/content/reading-room/classic-novels-by-women-authors";
+import { meta as victorianMeta, default as VictorianBody } from "@/content/reading-room/best-victorian-novels";
 
 const registry: BlogPost[] = [
   { ...tradeInMeta, Body: TradeInBody },
@@ -111,6 +115,10 @@ const registry: BlogPost[] = [
   { ...spicyMeta, Body: SpicyBody },
   { ...americanClassicsMeta, Body: AmericanClassicsBody },
   { ...hatedSchoolMeta, Body: HatedSchoolBody },
+  { ...standaloneRomantasyMeta, Body: StandaloneRomantasyBody },
+  { ...yaRomantasyMeta, Body: YaRomantasyBody },
+  { ...womenClassicsMeta, Body: WomenClassicsBody },
+  { ...victorianMeta, Body: VictorianBody },
 ];
 
 /** All posts, newest first. */
