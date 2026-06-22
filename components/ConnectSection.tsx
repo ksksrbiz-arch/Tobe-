@@ -3,7 +3,7 @@
 import React from "react";
 import { ExternalLink, Star } from "lucide-react";
 import Reveal from "./Reveal";
-import GoogleReviews from "./GoogleReviews";
+import CustomerReviews from "./CustomerReviews";
 
 const InstagramIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -201,7 +201,7 @@ export default function ConnectSection() {
             What Readers <span className="underline-accent">Say</span> on Google
           </h3>
         </Reveal>
-        <GoogleReviews />
+        <CustomerReviews />
       </div>
     </section>
   );

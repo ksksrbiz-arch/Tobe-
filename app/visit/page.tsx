@@ -5,7 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import VisitSection from "@/components/VisitSection";
-import GoogleReviews from "@/components/GoogleReviews";
+import CustomerReviews from "@/components/CustomerReviews";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
@@ -154,7 +154,7 @@ export default function VisitPage() {
               What readers <span className="underline-accent">say on Google</span>
             </h2>
           </Reveal>
-          <GoogleReviews />
+          <CustomerReviews />
           <Reveal className="mt-10 text-center">
             <Link
               href="/reviews"
