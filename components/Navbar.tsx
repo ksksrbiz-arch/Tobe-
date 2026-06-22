@@ -121,8 +121,8 @@ export default function Navbar() {
         }`}
         style={{
           background: scrolled ? "rgba(255,253,249,0.92)" : "rgba(255,253,249,0.78)",
-          backdropFilter: "saturate(160%) blur(14px)",
-          WebkitBackdropFilter: "saturate(160%) blur(14px)",
+          backdropFilter: "saturate(140%) blur(8px)",
+          WebkitBackdropFilter: "saturate(140%) blur(8px)",
           borderBottom: scrolled ? "1px solid rgba(107,28,111,0.10)" : "1px solid transparent",
         }}
       >

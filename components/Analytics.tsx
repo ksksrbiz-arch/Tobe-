@@ -16,7 +16,7 @@
  * dashboard, so preview/localhost traffic is ignored automatically.
  */
 const DEFAULT_PLAUSIBLE_SRC =
-  "https://plausible.io/js/pa-xVSJKrQOeZLNh8avUMWjP.js";
+  "https://plausible.io/js/pa-d1LKp7ImHdF-xeG-XFJFP.js";
 
 // Stub queue + init, per Plausible's install snippet. Runs before the async
 // script finishes loading; queued calls are flushed once it does.
