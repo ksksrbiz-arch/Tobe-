@@ -39,7 +39,7 @@ import CozyAmbience from "@/components/CozyAmbience";
 import PageTransition from "@/components/PageTransition";
 import BookishEasterEgg from "@/components/BookishEasterEgg";
 import Analytics from "@/components/Analytics";
-import { GoogleTagManager } from "@next/third-parties/google";
+import DeferredGTM from "@/components/DeferredGTM";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -226,11 +226,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
-      {/* Google Tag Manager — injects the head <script> and the post-<body>
-          <noscript> iframe automatically, so individual pages don't need any
-          GTM markup. Container ID GTM-WC2RGMNS owns the site's analytics +
-          tag deployment; configure tags inside the GTM workspace itself. */}
-      <GoogleTagManager gtmId="GTM-WC2RGMNS" />
       <head>
         <script
           type="application/ld+json"
@@ -250,10 +245,10 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {/* GTM noscript fallback. The <GoogleTagManager> component above emits
-            the head <script> (App-Router-correct via next/script) but
-            deliberately omits the iframe; we add it here so users with JS
-            disabled still match Google's documented install pattern. */}
+        {/* GTM is loaded off the critical path by <DeferredGTM> (on idle / first
+            interaction) to keep it out of the initial Total Blocking Time. The
+            <noscript> iframe stays here so no-JS visitors still match Google's
+            documented install pattern. */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-WC2RGMNS"
@@ -262,6 +257,7 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
+        <DeferredGTM gtmId="GTM-WC2RGMNS" />
         <a
           href="#main"
           className="sr-only z-[200] rounded-br-xl bg-[#6B1C6F] px-4 py-3 text-sm font-semibold text-white shadow-lg focus:not-sr-only focus:fixed focus:left-0 focus:top-0"
