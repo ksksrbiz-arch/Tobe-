@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { ArrowRight, ShoppingBag, Sparkles, Star } from "lucide-react";
-import BookLogo from "./BookLogo";
+import FlippingBook from "./FlippingBook";
 import DustMotes from "./DustMotes";
 import OpenStatus from "./OpenStatus";
 import { getMotionSafeScrollBehavior } from "@/lib/motion";
@@ -198,11 +198,7 @@ export default function HeroSection() {
                 <path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill={s.color} />
               </svg>
             ))}
-            <BookLogo
-              size={170}
-              showText={false}
-              className="animate-float-slow drop-shadow-[0_18px_28px_rgba(107,28,111,0.18)]"
-            />
+            <FlippingBook size={210} live={decorReady} />
             <span
               className="absolute -right-3 -top-2 inline-flex h-7 items-center rounded-full px-2.5 text-[10px] font-bold uppercase tracking-widest text-white animate-wiggle"
               style={{ background: "#F1BB1A", color: "#1a1a1a", boxShadow: "0 8px 20px rgba(241,187,26,0.35)" }}
