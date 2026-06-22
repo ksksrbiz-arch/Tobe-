@@ -487,12 +487,10 @@ export default function FlippingBook({ size = 210, className = "", live = true }
   }));
 
   const embers = [
-    { left: 30, drift: 10, size: 6, delay: 0, dur: 5.2 },
-    { left: 46, drift: -8, size: 5, delay: 1.1, dur: 6.0 },
-    { left: 58, drift: 12, size: 7, delay: 2.0, dur: 5.6 },
-    { left: 40, drift: -12, size: 4, delay: 3.0, dur: 6.4 },
-    { left: 64, drift: 6, size: 5, delay: 3.8, dur: 5.0 },
-    { left: 52, drift: -6, size: 6, delay: 4.6, dur: 6.2 },
+    { left: 32, drift: 10, size: 6, delay: 0, dur: 5.4 },
+    { left: 50, drift: -8, size: 5, delay: 1.4, dur: 6.2 },
+    { left: 60, drift: 12, size: 6, delay: 2.8, dur: 5.8 },
+    { left: 44, drift: -10, size: 5, delay: 4.0, dur: 6.6 },
   ];
 
   const accents = [
