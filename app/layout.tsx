@@ -39,6 +39,7 @@ import CozyAmbience from "@/components/CozyAmbience";
 import PageTransition from "@/components/PageTransition";
 import BookishEasterEgg from "@/components/BookishEasterEgg";
 import Analytics from "@/components/Analytics";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -222,6 +223,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
+      {/* Google Tag Manager — injects the head <script> and the post-<body>
+          <noscript> iframe automatically, so individual pages don't need any
+          GTM markup. Container ID GTM-WC2RGMNS owns the site's analytics +
+          tag deployment; configure tags inside the GTM workspace itself. */}
+      <GoogleTagManager gtmId="GTM-WC2RGMNS" />
       <head>
         <script
           type="application/ld+json"
@@ -241,6 +247,18 @@ export default function RootLayout({
         />
       </head>
       <body>
+        {/* GTM noscript fallback. The <GoogleTagManager> component above emits
+            the head <script> (App-Router-correct via next/script) but
+            deliberately omits the iframe; we add it here so users with JS
+            disabled still match Google's documented install pattern. */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WC2RGMNS"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <a
           href="#main"
           className="sr-only z-[200] rounded-br-xl bg-[#6B1C6F] px-4 py-3 text-sm font-semibold text-white shadow-lg focus:not-sr-only focus:fixed focus:left-0 focus:top-0"
