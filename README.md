@@ -4,7 +4,7 @@ Marketing site and lightweight commerce tooling for **To Be Read**, an
 independent bookshop in Clackamas, Oregon. Built with the Next.js App Router and
 deployed on Netlify.
 
-Production: <https://to-be-read-clackamas.netlify.app>
+Production: <https://tobereadshop.com>
 
 ## Stack
 
