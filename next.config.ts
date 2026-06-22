@@ -1,6 +1,61 @@
 import type { NextConfig } from "next";
 
+// Site-wide security headers. Applied to every route by the `headers()` hook
+// below and honored in production by @netlify/plugin-nextjs.
+//
+// The Content-Security-Policy is intentionally "permissive but meaningful": it
+// allows any https: source for scripts/styles/images/frames/connections so the
+// third-party integrations the site genuinely needs keep working (Google Tag
+// Manager, cookieless Plausible, the Google Maps embed, and the TikTok embed
+// widget, which each pull from several rotating CDNs). What it DOES lock down is
+// the high-value, low-risk surface: no plugins (object-src 'none'), no <base>
+// hijacking (base-uri 'self'), forms can only post to us (form-action 'self'),
+// the site can't be framed by others (frame-ancestors 'self' — clickjacking),
+// and any stray http:// subresource is upgraded to https. 'unsafe-inline' is
+// required because the app emits inline JSON-LD, the Consent Mode bootstrap, and
+// the Plausible/GTM init snippets, none of which can carry a nonce under static
+// prerendering.
+const CSP = [
+  "default-src 'self' https: data: blob:",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:",
+  "style-src 'self' 'unsafe-inline' https:",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data: https:",
+  "connect-src 'self' https:",
+  "frame-src 'self' https:",
+  "media-src 'self' https: data: blob:",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'self'",
+  "upgrade-insecure-requests",
+].join("; ");
+
+const SECURITY_HEADERS = [
+  { key: "Content-Security-Policy", value: CSP },
+  // Force HTTPS for two years, including subdomains, and allow preload listing.
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
+  // Defense-in-depth against clickjacking alongside frame-ancestors above.
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  // Stop browsers from MIME-sniffing responses away from the declared type.
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  // Send only the origin on cross-origin navigations; full path same-origin.
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  // Drop powerful APIs the site never uses, and opt out of ad-topics profiling.
+  {
+    key: "Permissions-Policy",
+    value:
+      "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=(), interest-cohort=()",
+  },
+];
+
 const nextConfig: NextConfig = {
+  async headers() {
+    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
+  },
   // Strip console.* from production client bundles (keep console.error so real
   // runtime failures still surface). Trims a little JS and avoids leaking debug
   // logging to visitors. No effect on local dev.
