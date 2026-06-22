@@ -538,21 +538,22 @@ p {
   top: 0;
 }
 
+/* The resting pages are pop-up dioramas too, so they stack like a face. */
 .flip-book__base {
-  overflow: hidden;
-  box-shadow: 0 12px 24px rgba(46, 12, 51, 0.16);
+  transform-style: preserve-3d;
 }
-.flip-book__base--left  { border-radius: 9px 2px 2px 9px; }
-.flip-book__base--right { border-radius: 2px 9px 9px 2px; }
+.flip-book__base--left  .flip-book__bg { border-radius: 9px 2px 2px 9px; }
+.flip-book__base--right .flip-book__bg { border-radius: 2px 9px 9px 2px; }
+.flip-book__base .flip-book__bg { box-shadow: 0 12px 24px rgba(46, 12, 51, 0.16); }
 /* Gutter shading toward the spine on each resting page. */
-.flip-book__base--left::after,
-.flip-book__base--right::after {
+.flip-book__base::after {
   content: "";
   position: absolute;
   top: 0;
   bottom: 0;
   width: 30%;
   pointer-events: none;
+  transform: translateZ(1px);
 }
 .flip-book__base--left::after {
   right: 0;
@@ -595,16 +596,37 @@ p {
   animation-delay: var(--delay, 0s);
 }
 
+/* A face is a 3D stack: a clipped page (bg) + a foreground that pops forward.
+   It must NOT clip (overflow:hidden flattens 3D) — the bg layer does the
+   clipping instead. */
 .flip-book__face {
   position: absolute;
   inset: 0;
+  transform-style: preserve-3d;
+}
+.flip-book__face--back { transform: rotateY(180deg); }
+
+/* The clipped page surface that carries the backdrop art. */
+.flip-book__bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  overflow: hidden;
   border-radius: 2px 9px 9px 2px;
   box-shadow: 0 14px 30px rgba(46, 12, 51, 0.24);
 }
-.flip-book__face--back { transform: rotateY(180deg); }
+
+/* The foreground subject, standing off the page like a pop-up book. */
+.flip-book__pop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(9px);
+}
 
 /* Soft curl shadow along the hinged (spine) edge of each leaf. */
 .flip-book__curl {
