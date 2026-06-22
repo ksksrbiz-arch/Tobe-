@@ -23,6 +23,9 @@ const routes: Array<{
   { path: "/reviews", changeFrequency: "weekly", priority: 0.7 },
   { path: "/how-it-works", changeFrequency: "monthly", priority: 0.7 },
   { path: "/loop", changeFrequency: "monthly", priority: 0.5 },
+  { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/cookies", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/terms", changeFrequency: "yearly", priority: 0.3 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Send, BookOpen, Loader2, CheckCircle2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import Reveal from "./Reveal";
@@ -181,7 +182,12 @@ export default function NewsletterCTA() {
                     </p>
                   ) : (
                     <p className="text-center text-[11px] text-white/60">
-                      We respect your inbox. Unsubscribe anytime.
+                      We respect your inbox. Unsubscribe anytime. By subscribing
+                      you agree to our{" "}
+                      <Link href="/privacy" className="underline hover:text-white/90">
+                        Privacy Policy
+                      </Link>
+                      .
                     </p>
                   )}
                 </form>
