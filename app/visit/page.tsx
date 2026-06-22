@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import VisitSection from "@/components/VisitSection";
@@ -154,6 +155,15 @@ export default function VisitPage() {
             </h2>
           </Reveal>
           <GoogleReviews />
+          <Reveal className="mt-10 text-center">
+            <Link
+              href="/reviews"
+              className="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white transition-all hover:scale-105 active:scale-[0.98]"
+              style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+            >
+              Read &amp; leave a review
+            </Link>
+          </Reveal>
         </div>
       </section>
 

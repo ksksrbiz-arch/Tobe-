@@ -85,3 +85,25 @@ CREATE TABLE IF NOT EXISTS wishlists (
 
 CREATE INDEX IF NOT EXISTS wishlists_isbn_pending_idx
   ON wishlists (isbn) WHERE notified = FALSE;
+
+-- Customer reviews submitted on the site (first-party). Reviews land as
+-- 'pending' and only surface publicly once a staff member approves them in the
+-- admin moderation queue. `ip_hash` is a salted SHA-256 of the submitter IP —
+-- kept for light abuse mitigation only, never the raw address.
+CREATE TABLE IF NOT EXISTS reviews (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  author_name  TEXT NOT NULL,
+  rating       SMALLINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  title        TEXT NOT NULL DEFAULT '',
+  body         TEXT NOT NULL,
+  status       TEXT NOT NULL DEFAULT 'pending'
+                 CHECK (status IN ('pending', 'approved', 'rejected')),
+  ip_hash      TEXT,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  approved_at  TIMESTAMPTZ
+);
+
+-- Public reads hit (status='approved' ORDER BY created_at DESC); the moderation
+-- queue hits (status='pending' ...). A single composite index serves both.
+CREATE INDEX IF NOT EXISTS reviews_status_created_idx
+  ON reviews (status, created_at DESC);

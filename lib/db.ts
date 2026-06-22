@@ -39,3 +39,17 @@ export interface WishlistItem {
   notified: boolean;
   created_at: string;
 }
+
+export type ReviewStatus = "pending" | "approved" | "rejected";
+
+export interface Review {
+  id: string;
+  author_name: string;
+  rating: number;
+  title: string;
+  body: string;
+  status: ReviewStatus;
+  ip_hash: string | null;
+  created_at: string;
+  approved_at: string | null;
+}
