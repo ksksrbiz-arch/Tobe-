@@ -464,7 +464,9 @@ p {
   inset: -26% -20%;
   z-index: 0;
   pointer-events: none;
-  filter: blur(8px);
+  /* No `filter: blur()` — the radial gradient is already soft, and blurring a
+     scaling element forces a full re-rasterisation every animation frame
+     (a major mobile paint cost). */
 }
 .flip-book--live .flip-book__halo {
   animation: candleGlow 4.8s ease-in-out infinite;
@@ -485,8 +487,8 @@ p {
   bottom: -9%;
   transform: translateX(-50%) translateZ(-14px);
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(46, 12, 51, 0.42), transparent 72%);
-  filter: blur(6px);
+  /* Soft falloff baked into the gradient instead of a `filter: blur()` pass. */
+  background: radial-gradient(ellipse at center, rgba(46, 12, 51, 0.4) 0%, rgba(46, 12, 51, 0.18) 45%, transparent 70%);
 }
 
 /* Ornate leather cover sitting behind the open spread. */
@@ -648,8 +650,10 @@ p {
   height: 120%;
   pointer-events: none;
   opacity: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
-  mix-blend-mode: screen;
+  /* Plain translucent white instead of `mix-blend-mode: screen` — blend modes
+     force the element onto its own isolated compositing layer, an expensive
+     extra pass on mobile. A semi-opaque white sweep reads the same here. */
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
 }
 .flip-book--live .flip-book__sheen {
   animation: leafSheen var(--dur, 6s) cubic-bezier(0.62, 0.04, 0.34, 1) infinite;
@@ -670,10 +674,11 @@ p {
   pointer-events: none;
   transform: translateZ(6px);
   border-radius: 10px;
+  /* Toned-down opacities so a plain overlay reads like the old soft-light
+     blend without the isolated-layer compositing cost. */
   background:
-    radial-gradient(ellipse at 50% 18%, rgba(255, 255, 255, 0.4), transparent 55%),
-    radial-gradient(ellipse at 50% 120%, rgba(46, 12, 51, 0.28), transparent 60%);
-  mix-blend-mode: soft-light;
+    radial-gradient(ellipse at 50% 18%, rgba(255, 255, 255, 0.18), transparent 55%),
+    radial-gradient(ellipse at 50% 120%, rgba(46, 12, 51, 0.16), transparent 60%);
 }
 
 /* Rising gold embers. */
