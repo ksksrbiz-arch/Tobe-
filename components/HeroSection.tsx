@@ -15,22 +15,32 @@ export default function HeroSection() {
   // ambient animation (blurred floats, twinkling stars, dust motes) and add
   // continuous compositing work that is wasted for those users.
   const [decorReady, setDecorReady] = useState(false);
+  // The hero book comes alive even under reduced motion — it just runs a
+  // calmer, slower variant there (see the prefers-reduced-motion rules in
+  // globals.css). The heavy ambient decor (blurred floats, dust motes) stays
+  // gated behind reduced motion. Both are deferred past first paint so the LCP
+  // headline is never blocked.
+  const [bookLive, setBookLive] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
     const w = window as typeof window & {
       requestIdleCallback?: (cb: () => void) => number;
       cancelIdleCallback?: (handle: number) => void;
     };
+    const start = () => {
+      setBookLive(true);
+      if (!reduce) setDecorReady(true);
+    };
     if (typeof w.requestIdleCallback === "function") {
-      const handle = w.requestIdleCallback(() => setDecorReady(true));
+      const handle = w.requestIdleCallback(start);
       return () => {
         if (typeof w.cancelIdleCallback === "function") {
           w.cancelIdleCallback(handle);
         }
       };
     }
-    const t = window.setTimeout(() => setDecorReady(true), 0);
+    const t = window.setTimeout(start, 0);
     return () => window.clearTimeout(t);
   }, []);
 
@@ -198,7 +208,7 @@ export default function HeroSection() {
                 <path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill={s.color} />
               </svg>
             ))}
-            <FlippingBook size={210} live={decorReady} />
+            <FlippingBook size={210} live={bookLive} />
             <span
               className="absolute -right-3 -top-2 inline-flex h-7 items-center rounded-full px-2.5 text-[10px] font-bold uppercase tracking-widest text-white animate-wiggle"
               style={{ background: "#F1BB1A", color: "#1a1a1a", boxShadow: "0 8px 20px rgba(241,187,26,0.35)" }}
