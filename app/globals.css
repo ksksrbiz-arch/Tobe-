@@ -411,17 +411,43 @@ p {
   }
 }
 
-/* ───────── Flipping adventure book (hero) ───────── */
+/* ───────── Flipping adventure book (hero) ─────────
+   A magical leather-bound tome: gilded pages riffle past the spine, each leaf
+   flashing a tiny adventure, while gold embers drift up from the open spread.
+   Every animation is transform/opacity only (GPU-composited) and gated behind
+   `.flip-book--live`, which the hero only adds after first paint — so the LCP
+   headline is never blocked by the book coming alive. */
 
-/* A leaf lifts from the right page, sweeps across the spine, and lays down on
-   the left — fading out at the wrap point so the loop is seamless. */
 @keyframes leafTurn {
-  0%   { transform: translateZ(2px) rotateY(0deg); opacity: 0; }
-  5%   { opacity: 1; }
-  8%   { transform: translateZ(2px) rotateY(-12deg); }
-  46%  { transform: translateZ(2px) rotateY(-180deg); opacity: 1; }
-  53%  { transform: translateZ(2px) rotateY(-180deg); opacity: 0; }
-  100% { transform: translateZ(2px) rotateY(-180deg); opacity: 0; }
+  0%   { transform: translateZ(3px) rotateY(0deg); opacity: 0; }
+  4%   { opacity: 1; }
+  8%   { transform: translateZ(3px) rotateY(-14deg); }
+  46%  { transform: translateZ(3px) rotateY(-180deg); opacity: 1; }
+  53%  { transform: translateZ(3px) rotateY(-180deg); opacity: 0; }
+  100% { transform: translateZ(3px) rotateY(-180deg); opacity: 0; }
+}
+
+/* A specular highlight that sweeps across a leaf as it lifts toward you. */
+@keyframes leafSheen {
+  0%   { transform: translateX(-140%) skewX(-18deg); opacity: 0; }
+  14%  { opacity: 0; }
+  24%  { opacity: 0.9; }
+  44%  { transform: translateX(240%) skewX(-18deg); opacity: 0; }
+  100% { transform: translateX(240%) skewX(-18deg); opacity: 0; }
+}
+
+/* Gold embers rising out of the open book. */
+@keyframes emberRise {
+  0%   { transform: translate3d(0, 0, 0) scale(0.5); opacity: 0; }
+  14%  { opacity: 1; }
+  70%  { opacity: 0.85; }
+  100% { transform: translate3d(var(--drift, 8px), -118px, 0) scale(1.15); opacity: 0; }
+}
+
+/* The whole tome breathes — a gentle 3D bob with a touch of parallax sway. */
+@keyframes bookFloat {
+  0%, 100% { transform: rotateX(12deg) rotateZ(-1.2deg) translateY(0); }
+  50%      { transform: rotateX(9.5deg) rotateZ(1.2deg) translateY(-10px); }
 }
 
 .flip-book-stage {
@@ -429,34 +455,81 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  perspective: 1500px;
-  perspective-origin: 50% 38%;
+  perspective: 1700px;
+  perspective-origin: 50% 30%;
 }
 
 .flip-book__halo {
   position: absolute;
-  inset: -22% -16%;
+  inset: -26% -20%;
   z-index: 0;
   pointer-events: none;
-  filter: blur(6px);
-  animation: candleGlow 4.5s ease-in-out infinite;
+  filter: blur(8px);
+}
+.flip-book--live .flip-book__halo {
+  animation: candleGlow 4.8s ease-in-out infinite;
 }
 
 .flip-book {
   position: relative;
   transform-style: preserve-3d;
-  transform: rotateX(8deg);
-  animation: floatSlow 9s ease-in-out infinite;
+  transform: rotateX(12deg) rotateZ(-1.2deg);
+}
+.flip-book--live {
+  animation: bookFloat 10s ease-in-out infinite;
 }
 
 .flip-book__shadow {
   position: absolute;
   left: 50%;
-  bottom: -6%;
-  transform: translateX(-50%);
+  bottom: -9%;
+  transform: translateX(-50%) translateZ(-14px);
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(74, 19, 80, 0.32), transparent 72%);
-  filter: blur(4px);
+  background: radial-gradient(ellipse at center, rgba(46, 12, 51, 0.42), transparent 72%);
+  filter: blur(6px);
+}
+
+/* Ornate leather cover sitting behind the open spread. */
+.flip-book__cover {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateZ(-12px);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #3a0f40 0%, #6b1c6f 48%, #3a0f40 100%);
+  box-shadow:
+    0 30px 70px rgba(46, 12, 51, 0.5),
+    inset 0 0 0 2px rgba(241, 187, 26, 0.45),
+    inset 0 0 26px rgba(0, 0, 0, 0.35);
+}
+.flip-book__cover::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(241, 187, 26, 0.4);
+}
+.flip-book__flourish {
+  position: absolute;
+  color: #F1BB1A;
+  opacity: 0.85;
+}
+.flip-book__flourish--tl { top: 9px; left: 9px; }
+.flip-book__flourish--tr { top: 9px; right: 9px; transform: scaleX(-1); }
+.flip-book__flourish--bl { bottom: 9px; left: 9px; transform: scaleY(-1); }
+.flip-book__flourish--br { bottom: 9px; right: 9px; transform: scale(-1, -1); }
+
+/* Gilded fore-edges (the stack of page edges) on each side. */
+.flip-book__edge {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateZ(-1px);
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    to right,
+    #F7D769 0px, #F1BB1A 1px, #d39e08 2px, #F7D769 3px
+  );
+  box-shadow: 0 10px 20px rgba(46, 12, 51, 0.28);
 }
 
 .flip-book__base,
@@ -466,20 +539,11 @@ p {
 }
 
 .flip-book__base {
-  border-radius: 3px;
   overflow: hidden;
-  box-shadow: 0 10px 22px rgba(74, 19, 80, 0.18);
+  box-shadow: 0 12px 24px rgba(46, 12, 51, 0.16);
 }
-.flip-book__base--left {
-  border-radius: 10px 3px 3px 10px;
-  transform: translateZ(-3px) rotateY(4deg);
-  transform-origin: right center;
-}
-.flip-book__base--right {
-  border-radius: 3px 10px 10px 3px;
-  transform: translateZ(-3px) rotateY(-4deg);
-  transform-origin: left center;
-}
+.flip-book__base--left  { border-radius: 9px 2px 2px 9px; }
+.flip-book__base--right { border-radius: 2px 9px 9px 2px; }
 /* Gutter shading toward the spine on each resting page. */
 .flip-book__base--left::after,
 .flip-book__base--right::after {
@@ -487,35 +551,48 @@ p {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 28%;
+  width: 30%;
   pointer-events: none;
 }
 .flip-book__base--left::after {
   right: 0;
-  background: linear-gradient(to right, transparent, rgba(74, 19, 80, 0.22));
+  background: linear-gradient(to right, transparent, rgba(46, 12, 51, 0.26));
 }
 .flip-book__base--right::after {
   left: 0;
-  background: linear-gradient(to left, transparent, rgba(74, 19, 80, 0.22));
+  background: linear-gradient(to left, transparent, rgba(46, 12, 51, 0.26));
 }
 
 .flip-book__spine {
   position: absolute;
   top: 0;
-  z-index: 6;
   border-radius: 2px;
-  background: linear-gradient(to bottom, #5a1860, #3a0f40);
-  box-shadow: 0 0 8px rgba(74, 19, 80, 0.5);
+  transform: translateZ(2px);
+  background: linear-gradient(to bottom, #6b1c6f, #2e0c33);
+  box-shadow: 0 0 12px rgba(46, 12, 51, 0.6);
+}
+
+/* Twinkling accents over the resting night-sky spread. */
+.flip-book__accent {
+  position: absolute;
+  pointer-events: none;
+  transform: translateZ(4px);
+  color: #F1BB1A;
+}
+.flip-book--live .flip-book__accent {
+  animation: twinkle 2.8s ease-in-out infinite;
 }
 
 .flip-book__leaf {
   transform-style: preserve-3d;
   transform-origin: left center;
+  transform: translateZ(3px) rotateY(0deg);
+  opacity: 0;
+}
+.flip-book--live .flip-book__leaf {
   will-change: transform, opacity;
-  animation-name: leafTurn;
-  animation-timing-function: cubic-bezier(0.62, 0.04, 0.34, 1);
-  animation-iteration-count: infinite;
-  z-index: 5;
+  animation: leafTurn var(--dur, 6s) cubic-bezier(0.62, 0.04, 0.34, 1) infinite;
+  animation-delay: var(--delay, 0s);
 }
 
 .flip-book__face {
@@ -524,12 +601,10 @@ p {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   overflow: hidden;
-  border-radius: 3px 10px 10px 3px;
-  box-shadow: 0 12px 26px rgba(74, 19, 80, 0.22);
+  border-radius: 2px 9px 9px 2px;
+  box-shadow: 0 14px 30px rgba(46, 12, 51, 0.24);
 }
-.flip-book__face--back {
-  transform: rotateY(180deg);
-}
+.flip-book__face--back { transform: rotateY(180deg); }
 
 /* Soft curl shadow along the hinged (spine) edge of each leaf. */
 .flip-book__curl {
@@ -537,9 +612,26 @@ p {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 22%;
+  width: 26%;
   pointer-events: none;
-  background: linear-gradient(to right, rgba(74, 19, 80, 0.26), transparent);
+  background: linear-gradient(to right, rgba(46, 12, 51, 0.32), transparent);
+}
+
+/* Sweeping sheen, on the front face only. */
+.flip-book__sheen {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 55%;
+  height: 120%;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+  mix-blend-mode: screen;
+}
+.flip-book--live .flip-book__sheen {
+  animation: leafSheen var(--dur, 6s) cubic-bezier(0.62, 0.04, 0.34, 1) infinite;
+  animation-delay: var(--delay, 0s);
 }
 
 .flip-book__face svg {
@@ -548,22 +640,55 @@ p {
   height: 100%;
 }
 
+/* Reading-lamp highlight + vignette laid over the open spread. */
+.flip-book__light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transform: translateZ(6px);
+  border-radius: 10px;
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(255, 255, 255, 0.4), transparent 55%),
+    radial-gradient(ellipse at 50% 120%, rgba(46, 12, 51, 0.28), transparent 60%);
+  mix-blend-mode: soft-light;
+}
+
+/* Rising gold embers. */
+.flip-book__embers {
+  position: absolute;
+  left: 0;
+  bottom: 8%;
+  transform: translateZ(28px);
+  pointer-events: none;
+}
+.flip-book__ember {
+  position: absolute;
+  bottom: 0;
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(circle, #FFF4CC 0%, #F1BB1A 55%, transparent 75%);
+  box-shadow: 0 0 8px rgba(241, 187, 26, 0.85);
+}
+.flip-book--live .flip-book__ember {
+  animation: emberRise var(--dur, 5s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .flip-book {
+  .flip-book--live,
+  .flip-book--live .flip-book__halo,
+  .flip-book--live .flip-book__accent,
+  .flip-book--live .flip-book__leaf,
+  .flip-book--live .flip-book__sheen,
+  .flip-book--live .flip-book__ember {
     animation: none;
-    transform: rotateX(0deg);
   }
-  .flip-book__halo {
-    animation: none;
-  }
-  .flip-book__leaf {
-    animation: none;
+  /* Resting tome: the base spread carries the artwork, leaves stay hidden. */
+  .flip-book--live .flip-book__leaf,
+  .flip-book--live .flip-book__ember,
+  .flip-book--live .flip-book__sheen {
     opacity: 0;
-  }
-  /* Keep one leaf resting open so the artwork is still visible. */
-  .flip-book__leaf--rest {
-    opacity: 1;
-    transform: rotateY(0deg);
   }
 }
 
