@@ -26,6 +26,7 @@ const routes: Array<{
   { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
   { path: "/cookies", changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/accessibility", changeFrequency: "yearly", priority: 0.3 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
