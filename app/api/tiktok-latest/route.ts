@@ -60,11 +60,10 @@ export async function GET(request: Request) {
     );
   }
 
-  const feedUrl = process.env.TIKTOK_RSS_URL;
-  if (!feedUrl) {
-    // Not wired up yet — the UI keeps showing its built-in featured videos.
-    return NextResponse.json({ configured: false, videos: [] });
-  }
+  // RSS.app bridge for @clackamas.book.ex (newest-first). Public feed, safe to
+  // commit; override with TIKTOK_RSS_URL if the feed is ever regenerated.
+  const feedUrl =
+    process.env.TIKTOK_RSS_URL || "https://rss.app/feeds/D158DMy3y63EI3a2.xml";
 
   try {
     const res = await fetchWithTimeout(
