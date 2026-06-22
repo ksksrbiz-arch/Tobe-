@@ -67,7 +67,7 @@ export default function PrivacyPolicyPage() {
         <p>
           If you have any questions about this policy or how we handle your data,
           contact us using the details in{" "}
-          <a href="#contact">Section 13 (Contact us)</a>.
+          <a href="#contact">Section 14 (Contact us)</a>.
         </p>
 
         <h2>2. Information we collect</h2>
@@ -191,9 +191,19 @@ export default function PrivacyPolicyPage() {
         <p>
           We use reasonable administrative and technical safeguards, including
           encryption in transit (HTTPS), access controls, salted hashing for IP
-          data, and reputable service providers. No method of transmission or
-          storage is 100% secure, but we work to protect your information and
-          limit what we collect in the first place.
+          data, and reputable service providers. We also practice data
+          minimization — we limit what we collect in the first place.
+        </p>
+        <p>
+          However, <strong>no method of transmission over the internet or
+          electronic storage is completely secure</strong>, and we cannot and do
+          not guarantee absolute security. You provide information to us at your
+          own risk, and you are responsible for keeping any sign-in link or
+          credentials confidential. To the fullest extent permitted by law, and
+          except for obligations we cannot disclaim under applicable data-protection
+          law, we are not liable for any unauthorized access to, alteration of, or
+          loss of data that occurs despite reasonable safeguards, including events
+          beyond our reasonable control or acts of third parties.
         </p>
 
         <h2>9. Your privacy rights</h2>
@@ -261,7 +271,29 @@ export default function PrivacyPolicyPage() {
           protection laws than your country.
         </p>
 
-        <h2 id="contact">13. Contact us</h2>
+        <h2>13. Third parties, limitations &amp; your acknowledgment</h2>
+        <p>
+          We share information with the service providers described in Section 5
+          so they can perform services for us, and we require them to protect it.
+          However, those providers and any other third party operate
+          independently, and — except as required by applicable data-protection
+          law — we are not responsible or liable for the independent acts,
+          omissions, security practices, or privacy practices of any third party,
+          including third-party sites or embeds you reach from the Site.
+        </p>
+        <p>
+          This Privacy Policy is provided for transparency and does not create any
+          contractual right or warranty beyond what applicable law requires.
+          Except for rights that cannot be waived or limited under applicable
+          data-protection law, your use of the Site is also subject to the
+          disclaimers, limitation of liability, indemnification, and dispute-resolution
+          provisions in our <Link href="/terms">Terms of Service</Link>, which are
+          incorporated here by reference. By using the Site and providing
+          information to us, you acknowledge and consent to the collection, use,
+          and disclosure of information as described in this Policy.
+        </p>
+
+        <h2 id="contact">14. Contact us</h2>
         <p>To exercise your rights or ask a privacy question, reach us at:</p>
         <address>
           <strong>To Be Read · Clackamas Book Exchange</strong>
@@ -275,7 +307,7 @@ export default function PrivacyPolicyPage() {
           Phone: <a href="tel:+15036592559">503-659-2559</a>
         </address>
 
-        <h2>14. Changes to this policy</h2>
+        <h2>15. Changes to this policy</h2>
         <p>
           We may update this Privacy Policy from time to time. When we do, we will
           revise the &ldquo;Last updated&rdquo; date at the top of this page.
