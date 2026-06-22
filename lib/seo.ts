@@ -7,7 +7,7 @@
  * scripts/indexnow.mjs runs in plain Node and can't import this file, so update
  * its SITE_URL constant to match when the domain changes.
  */
-export const SITE_URL = "https://to-be-read-clackamas.netlify.app";
+export const SITE_URL = "https://tobereadshop.com";
 
 export const SITE_NAME = "To Be Read – Clackamas Book Exchange";
 

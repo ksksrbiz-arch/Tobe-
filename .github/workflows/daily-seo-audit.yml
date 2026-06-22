@@ -103,7 +103,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
-            https://to-be-read-clackamas.netlify.app
+            https://tobereadshop.com
           # Upload the full HTML report to temporary public storage so each run
           # links to a shareable report instead of leaving scores buried in logs.
           uploadArtifacts: true

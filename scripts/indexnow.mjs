@@ -15,7 +15,7 @@ import { readFile } from "node:fs/promises";
 
 // Keep in sync with SITE_URL in lib/seo.ts (this plain-Node script can't import
 // the TypeScript module). Update both when the domain changes.
-const SITE_URL = "https://to-be-read-clackamas.netlify.app";
+const SITE_URL = "https://tobereadshop.com";
 const KEY = process.env.INDEXNOW_KEY ?? "b77ed2e4fd0f6c50a89d84dab5727f56";
 const FORCE = process.argv.includes("--force") || process.env.INDEXNOW_FORCE === "1";
 const CONTEXT = process.env.CONTEXT; // Netlify: production | deploy-preview | branch-deploy

@@ -255,7 +255,7 @@ const PREMADE_PREMISES: Record<
   ],
 };
 
-const TBR_BASE_URL = "https://to-be-read-clackamas.netlify.app";
+const TBR_BASE_URL = "https://tobereadshop.com";
 const TBR_NAV_LINKS = [
   { label: "Home", href: `${TBR_BASE_URL}/` },
   { label: "Visit", href: `${TBR_BASE_URL}/visit` },
@@ -2886,7 +2886,7 @@ function App() {
           <span className="hidden sm:inline-block h-6 w-[1px] bg-white/10 mx-2" />
           {/* Back to Bookstore — visible on all screen sizes */}
           <a
-            href="https://to-be-read-clackamas.netlify.app/"
+            href="https://tobereadshop.com/"
             target="_blank"
             rel="noopener noreferrer"
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-wider transition-all font-sans cursor-pointer hover:scale-105 active:scale-95 ${genre === "romance" ? "text-rose-800 border-rose-300 bg-rose-50 hover:bg-rose-100" : "text-amber-400 border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 hover:border-amber-500/50"}`}
@@ -3485,7 +3485,7 @@ function App() {
                 <div className="pt-6 border-t border-white/5 w-full flex flex-col items-center gap-1">
                   <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">A Scholarly Companion Project</span>
                   <a
-                    href="https://to-be-read-clackamas.netlify.app/"
+                    href="https://tobereadshop.com/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-xs text-amber-500/70 hover:text-amber-400 font-bold transition-all hover:underline cursor-pointer"
@@ -5482,7 +5482,7 @@ function App() {
               © 2026 To Be Read · Clackamas Book Exchange · All rights reserved
             </p>
             <a
-              href="https://to-be-read-clackamas.netlify.app/"
+              href="https://tobereadshop.com/"
               target="_blank"
               rel="noopener noreferrer"
               className={`text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 transition-all hover:scale-105 ${genre === "romance" ? "text-rose-700" : "text-amber-400/70 hover:text-amber-400"}`}
