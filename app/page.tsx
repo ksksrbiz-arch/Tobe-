@@ -311,9 +311,9 @@ export default function Home() {
         >
           <Reveal>
             <div
-              className="h-full rounded-[28px] border p-6 backdrop-blur"
+              className="h-full rounded-[28px] border p-6"
               style={{
-                background: "rgba(255,255,255,0.86)",
+                background: "rgba(255,255,255,0.93)",
                 borderColor: "rgba(107,28,111,0.08)",
                 boxShadow: "0 24px 60px rgba(107,28,111,0.12)",
               }}
@@ -338,9 +338,9 @@ export default function Home() {
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={80 + i * 60}>
               <div
-                className="flex h-full flex-col justify-between rounded-[28px] border p-5 backdrop-blur transition-all hover:-translate-y-1"
+                className="flex h-full flex-col justify-between rounded-[28px] border p-5 transition-all hover:-translate-y-1"
                 style={{
-                  background: "rgba(255,255,255,0.82)",
+                  background: "rgba(255,255,255,0.93)",
                   borderColor: "rgba(107,28,111,0.08)",
                   boxShadow: "0 20px 45px rgba(107,28,111,0.08)",
                 }}

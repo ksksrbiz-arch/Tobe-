@@ -153,7 +153,7 @@ export default function HeroSection() {
       <div
         className="card-cozy relative z-10 mx-auto max-w-4xl rounded-[28px] border px-5 py-10 text-center shadow-[0_40px_120px_rgba(107,28,111,0.18)] backdrop-blur-md sm:rounded-[34px] sm:px-6 sm:py-12 md:rounded-[40px] md:px-12 md:py-14"
         style={{
-          background: "rgba(255,255,255,0.76)",
+          background: "rgba(255,255,255,0.88)",
           borderColor: "rgba(107,28,111,0.10)",
         }}
       >
