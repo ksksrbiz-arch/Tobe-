@@ -10,7 +10,7 @@ import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import { Music2 } from "lucide-react";
 
-const TikTokEmbed = dynamic(() => import("@/components/TikTokEmbed"), {
+const LatestTikTok = dynamic(() => import("@/components/LatestTikTok"), {
   loading: () => (
     <div
       className="w-full max-w-[605px] animate-pulse rounded-[28px] border p-4 sm:p-5"
@@ -79,9 +79,7 @@ export default function ConnectPage() {
             </p>
           </Reveal>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3 justify-items-center">
-            {tiktokVideos.map((video) => (
-              <TikTokEmbed key={video.videoId} videoId={video.videoId} username={video.username} />
-            ))}
+            <LatestTikTok fallback={tiktokVideos} limit={3} />
           </div>
           <Reveal className="mt-10 text-center">
             <a
