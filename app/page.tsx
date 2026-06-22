@@ -183,7 +183,7 @@ const NewsletterCTA = dynamic(() => import("@/components/NewsletterCTA"), {
   ),
 });
 
-const TikTokEmbed = dynamic(() => import("@/components/TikTokEmbed"), {
+const LatestTikTok = dynamic(() => import("@/components/LatestTikTok"), {
   loading: () => <TikTokSkeleton />,
 });
 
@@ -525,7 +525,12 @@ export default function Home() {
           </Reveal>
 
           <Reveal delay={120} className="flex justify-center">
-            <TikTokEmbed videoId="7321516299899703557" username="clackamas.book.ex" />
+            {/* Newest TikTok via /api/tiktok-latest (TIKTOK_RSS_URL); falls back
+                to a known-good recent clip until the feed is configured. */}
+            <LatestTikTok
+              fallback={[{ videoId: "7647996870769331469", username: "clackamas.book.ex" }]}
+              limit={1}
+            />
           </Reveal>
         </div>
       </section>
