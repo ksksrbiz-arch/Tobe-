@@ -232,6 +232,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
         />
         <Analytics />
+        {/* Plausible Analytics */}
+        <script async src="https://plausible.io/js/pa-d1LKp7ImHdF-xeG-XFJFP.js"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()`,
+          }}
+        />
       </head>
       <body>
         <a
