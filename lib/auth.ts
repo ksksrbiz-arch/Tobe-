@@ -154,6 +154,11 @@ export function isAdminEmail(email: string | null | undefined) {
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: neonAdapter(),
+  // Auth.js v5 only auto-trusts the request host on Vercel. This app is
+  // deployed on Netlify, so without `trustHost` every /api/auth/* request
+  // fails with `UntrustedHost` ("There was a problem with the server
+  // configuration"), which silently breaks sign-in and the whole wishlist.
+  trustHost: true,
   session: { strategy: "database" },
   providers: [
     Resend({
