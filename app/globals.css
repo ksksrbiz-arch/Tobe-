@@ -702,20 +702,25 @@ p {
   animation-delay: var(--delay, 0s);
 }
 
+/* Reduced motion (this also covers iOS Low Power Mode, which makes Safari
+   report `reduce`): keep the book gently alive with a slow, calm page-turn,
+   but drop the busy effects — no breathing, halo pulse, embers, sheen flashes,
+   or twinkles. The static pop-up depth stays; only the riffle moves. */
 @media (prefers-reduced-motion: reduce) {
   .flip-book--live,
   .flip-book--live .flip-book__halo,
-  .flip-book--live .flip-book__accent,
-  .flip-book--live .flip-book__leaf,
-  .flip-book--live .flip-book__sheen,
-  .flip-book--live .flip-book__ember {
+  .flip-book--live .flip-book__accent {
     animation: none;
   }
-  /* Resting tome: the base spread carries the artwork, leaves stay hidden. */
-  .flip-book--live .flip-book__leaf,
   .flip-book--live .flip-book__ember,
   .flip-book--live .flip-book__sheen {
+    animation: none;
     opacity: 0;
+  }
+  /* A single calm, slow turn cadence. */
+  .flip-book--live .flip-book__leaf {
+    animation: leafTurn 13s cubic-bezier(0.5, 0.12, 0.4, 1) infinite;
+    animation-delay: var(--delay, 0s);
   }
 }
 
