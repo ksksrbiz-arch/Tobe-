@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { MapPin, Phone, Mail, Clock, Send, ArrowUpRight } from "lucide-react";
 import BookLogo from "./BookLogo";
+import CookieSettingsButton from "./CookieSettingsButton";
 
 const InstagramIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -205,10 +206,34 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Legal links */}
+        <nav
+          aria-label="Legal"
+          className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t pt-7 text-sm"
+          style={{ borderColor: "rgba(255,255,255,0.14)" }}
+        >
+          {[
+            { label: "Privacy Policy", href: "/privacy" },
+            { label: "Cookie Policy", href: "/cookies" },
+            { label: "Terms of Service", href: "/terms" },
+          ].map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="opacity-70 transition-opacity hover:opacity-100 hover:text-yellow-300"
+            >
+              {item.label}
+            </Link>
+          ))}
+          <CookieSettingsButton
+            variant="link"
+            className="cursor-pointer opacity-70 transition-opacity hover:opacity-100 hover:text-yellow-300"
+          />
+        </nav>
+
         {/* Bottom bar */}
         <div
-          className="flex flex-col items-center justify-between gap-3 border-t pt-7 text-sm sm:flex-row"
-          style={{ borderColor: "rgba(255,255,255,0.14)" }}
+          className="mt-6 flex flex-col items-center justify-between gap-3 text-sm sm:flex-row"
         >
           <p className="opacity-60">© 2026 To Be Read · Clackamas Book Exchange</p>
           <p className="text-xs opacity-60">

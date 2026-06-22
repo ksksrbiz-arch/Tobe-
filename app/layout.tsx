@@ -40,6 +40,8 @@ import PageTransition from "@/components/PageTransition";
 import BookishEasterEgg from "@/components/BookishEasterEgg";
 import Analytics from "@/components/Analytics";
 import DeferredGTM from "@/components/DeferredGTM";
+import ConsentInit from "@/components/ConsentInit";
+import CookieConsent from "@/components/CookieConsent";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -227,6 +229,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
       <head>
+        {/* Consent Mode v2 defaults — MUST be the first thing in <head> so the
+            denied-by-default signals are set before GTM (and any tags it loads)
+            execute. The <CookieConsent> banner issues the consent update. */}
+        <ConsentInit />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -278,6 +284,7 @@ export default function RootLayout({
             },
           }}
         />
+        <CookieConsent />
       </body>
     </html>
   );

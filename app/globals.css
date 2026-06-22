@@ -859,3 +859,110 @@ p {
     scroll-behavior: auto !important;
   }
 }
+/* ─── Legal documents (Privacy, Cookies, Terms) ──────────────────────────────
+   Self-contained typography for the static policy pages rendered through
+   <LegalPageLayout>. Scoped under .legal-prose so it never leaks into the
+   marketing pages. Tuned for long-form reading: comfortable measure, clear
+   heading rhythm, and the site's purple/gold accents. */
+.legal-prose {
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.legal-prose > p,
+.legal-prose > ul,
+.legal-prose > ol {
+  margin-bottom: 1.15rem;
+}
+.legal-prose h2 {
+  font-family: var(--font-serif);
+  color: var(--purple);
+  font-size: clamp(1.4rem, 3.5vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+  scroll-margin-top: var(--header-offset);
+}
+.legal-prose h2:first-child {
+  margin-top: 0;
+}
+.legal-prose h3 {
+  font-family: var(--font-serif);
+  color: var(--purple-light);
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  font-weight: 700;
+  margin-top: 1.85rem;
+  margin-bottom: 0.65rem;
+  scroll-margin-top: var(--header-offset);
+}
+.legal-prose p {
+  margin-bottom: 1.15rem;
+}
+.legal-prose a {
+  color: var(--purple);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(241, 187, 26, 0.65);
+}
+.legal-prose a:hover {
+  text-decoration-color: var(--gold);
+}
+.legal-prose strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+.legal-prose ul,
+.legal-prose ol {
+  padding-left: 1.4rem;
+}
+.legal-prose ul {
+  list-style: disc;
+}
+.legal-prose ol {
+  list-style: decimal;
+}
+.legal-prose li {
+  margin-bottom: 0.5rem;
+}
+.legal-prose li::marker {
+  color: var(--gold);
+}
+.legal-prose hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 2.5rem 0;
+}
+.legal-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0 1.5rem;
+  font-size: 0.9rem;
+}
+.legal-prose th,
+.legal-prose td {
+  border: 1px solid var(--line-strong);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.legal-prose th {
+  background: rgba(107, 28, 111, 0.05);
+  color: var(--purple);
+  font-weight: 700;
+}
+.legal-prose address {
+  font-style: normal;
+  line-height: 1.7;
+}
+.legal-prose .legal-callout {
+  background: rgba(241, 187, 26, 0.08);
+  border: 1px solid rgba(241, 187, 26, 0.35);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+.legal-prose .legal-callout p:last-child {
+  margin-bottom: 0;
+}

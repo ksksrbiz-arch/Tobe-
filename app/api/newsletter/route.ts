@@ -5,7 +5,7 @@ import { checkRateLimit, getClientIp } from "@/lib/server/functionHardening";
 export const runtime = "nodejs";
 
 const STORE_NAME = "To Be Read · Clackamas Book Exchange";
-const STORE_URL = "https://tobereadbooks.com";
+const STORE_URL = "https://tobereadshop.com";
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function escapeHtml(text: string) {

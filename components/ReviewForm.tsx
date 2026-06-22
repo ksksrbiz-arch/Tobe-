@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Star, Check, Loader2 } from "lucide-react";
 
 const NAME_MAX = 60;
@@ -217,7 +218,12 @@ export default function ReviewForm() {
         )}
       </button>
       <p className="mt-3 text-[11px]" style={{ color: "#9CA3AF" }}>
-        Reviews are read by our team before they&apos;re published.
+        Reviews are read by our team before they&apos;re published. The name you
+        enter is shown publicly with your review. See our{" "}
+        <Link href="/privacy" className="underline hover:text-purple">
+          Privacy Policy
+        </Link>
+        .
       </p>
     </form>
   );
