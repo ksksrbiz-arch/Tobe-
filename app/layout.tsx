@@ -149,11 +149,13 @@ const jsonLd = {
   },
   geo: {
     "@type": "GeoCoordinates",
-    latitude: 45.44757,
-    longitude: -122.58092,
+    // Authoritative coordinates from the Google Business Profile listing.
+    latitude: 45.4473932,
+    longitude: -122.5808603,
   },
-  hasMap:
-    "https://www.google.com/maps/search/?api=1&query=Clackamas+Book+Exchange+Milwaukie+OR",
+  // Canonical Google Maps URL for the GBP listing (by CID), so the website
+  // entity links back to the same place Google already knows.
+  hasMap: "https://maps.google.com/?cid=5188254409265281028",
   // Neighboring communities the single Milwaukie storefront genuinely draws
   // walk-in and trade customers from. This is the truthful, schema-correct way
   // to express local reach — not a stand-in for doorway/city landing pages.
@@ -191,6 +193,7 @@ const jsonLd = {
     worstRating: "1",
   },
   sameAs: [
+    "https://maps.google.com/?cid=5188254409265281028",
     "https://instagram.com/toberead_clackamas",
     "https://www.tiktok.com/@clackamas.book.ex",
     "https://www.facebook.com/ClackamasBooksExchange/",
