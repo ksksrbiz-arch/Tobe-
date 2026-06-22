@@ -1,11 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { ArrowRight, ShoppingBag, Sparkles, Star } from "lucide-react";
-import FlippingBook from "./FlippingBook";
+import BookLogo from "./BookLogo";
 import DustMotes from "./DustMotes";
 import OpenStatus from "./OpenStatus";
 import { getMotionSafeScrollBehavior } from "@/lib/motion";
+
+// The animated tome is ~300 SVG nodes and purely decorative. Load it
+// client-only (no SSR) so it stays out of the initial HTML, the document DOM
+// stays smaller, and the hero headline (LCP) isn't competing with it during
+// parse + hydration. A lightweight <BookLogo /> holds the exact same slot
+// until it mounts, so there is no layout shift.
+const FlippingBook = dynamic(() => import("./FlippingBook"), { ssr: false });
 
 export default function HeroSection() {
   // Defer mounting of decorative, animation-heavy layers until after the
@@ -208,7 +216,19 @@ export default function HeroSection() {
                 <path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill={s.color} />
               </svg>
             ))}
-            <FlippingBook size={210} live={bookLive} />
+            {/* Fixed-size slot keeps the placeholder and the book the same
+                footprint, so swapping them in causes no layout shift. */}
+            <div className="relative flex items-center justify-center" style={{ width: 220, height: 180 }}>
+              {bookLive ? (
+                <FlippingBook size={210} live className="fade-in" />
+              ) : (
+                <BookLogo
+                  size={150}
+                  showText={false}
+                  className="drop-shadow-[0_18px_28px_rgba(107,28,111,0.18)]"
+                />
+              )}
+            </div>
             <span
               className="absolute -right-3 -top-2 inline-flex h-7 items-center rounded-full px-2.5 text-[10px] font-bold uppercase tracking-widest text-white animate-wiggle"
               style={{ background: "#F1BB1A", color: "#1a1a1a", boxShadow: "0 8px 20px rgba(241,187,26,0.35)" }}
