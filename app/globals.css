@@ -79,9 +79,7 @@ html {
 }
 
 body {
-  background: var(--background-gradient);
   background-color: var(--background);
-  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -97,6 +95,20 @@ body {
      horizontal scrollbar on mobile. `clip` doesn't spawn a scroll container,
      so it won't break the fixed header or smooth-scroll anchors. */
   overflow-x: clip;
+}
+
+/* The site's ambient gradient lives on a single fixed, GPU-composited layer
+   instead of `background-attachment: fixed` on <body>. Fixed-attachment
+   repaints the whole multi-radial gradient on every scroll frame (a major
+   desktop scroll-jank + paint cost); a fixed ::before paints once and is just
+   composited thereafter, for the same viewport-anchored look. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--background-gradient);
+  pointer-events: none;
 }
 
 /* Kill the grey flash on tap for touch devices and keep controls comfy. */
@@ -131,12 +143,10 @@ body {
   }
 }
 
-/* Mobile: fixed background-attachment is janky/expensive on iOS; let it scroll
-   normally and shrink the chunky custom scrollbar that wastes space. */
+/* Mobile: shrink the chunky custom scrollbar that wastes space. (The ambient
+   gradient is a fixed composited ::before layer now, so there's no
+   background-attachment cost to undo here.) */
 @media (max-width: 768px) {
-  body {
-    background-attachment: scroll;
-  }
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -832,4 +842,20 @@ p {
 @media print {
   header, footer, .no-print { display: none !important; }
   body { background: #fff; color: #000; }
+}
+
+/* Global reduced-motion safety net. Many decorative elements run infinite
+   keyframe animations; for visitors who ask for less motion (OS setting) — and
+   the low-power devices that usually set it — collapse all animation/transition
+   work so the page is static and cheap to render. Component-level guards above
+   still remove the heaviest layers (DustMotes, CozyAmbience) entirely. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

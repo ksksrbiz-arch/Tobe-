@@ -2,7 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 
-const MOTE_COUNT = 18;
+// Kept deliberately low: each mote is an absolutely-positioned, infinitely
+// animated node, and DustMotes renders in several sections — so the count is a
+// direct, continuous compositor/paint cost. 10 reads as "atmosphere" without
+// the per-frame tax of 18+.
+const MOTE_COUNT = 10;
 
 const MOTES = Array.from({ length: MOTE_COUNT }, (_, i) => {
   const r1 = (i * 9301 + 49297) % 233280;
