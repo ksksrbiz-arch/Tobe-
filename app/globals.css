@@ -411,6 +411,162 @@ p {
   }
 }
 
+/* ───────── Flipping adventure book (hero) ───────── */
+
+/* A leaf lifts from the right page, sweeps across the spine, and lays down on
+   the left — fading out at the wrap point so the loop is seamless. */
+@keyframes leafTurn {
+  0%   { transform: translateZ(2px) rotateY(0deg); opacity: 0; }
+  5%   { opacity: 1; }
+  8%   { transform: translateZ(2px) rotateY(-12deg); }
+  46%  { transform: translateZ(2px) rotateY(-180deg); opacity: 1; }
+  53%  { transform: translateZ(2px) rotateY(-180deg); opacity: 0; }
+  100% { transform: translateZ(2px) rotateY(-180deg); opacity: 0; }
+}
+
+.flip-book-stage {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1500px;
+  perspective-origin: 50% 38%;
+}
+
+.flip-book__halo {
+  position: absolute;
+  inset: -22% -16%;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(6px);
+  animation: candleGlow 4.5s ease-in-out infinite;
+}
+
+.flip-book {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(8deg);
+  animation: floatSlow 9s ease-in-out infinite;
+}
+
+.flip-book__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -6%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(74, 19, 80, 0.32), transparent 72%);
+  filter: blur(4px);
+}
+
+.flip-book__base,
+.flip-book__leaf {
+  position: absolute;
+  top: 0;
+}
+
+.flip-book__base {
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 10px 22px rgba(74, 19, 80, 0.18);
+}
+.flip-book__base--left {
+  border-radius: 10px 3px 3px 10px;
+  transform: translateZ(-3px) rotateY(4deg);
+  transform-origin: right center;
+}
+.flip-book__base--right {
+  border-radius: 3px 10px 10px 3px;
+  transform: translateZ(-3px) rotateY(-4deg);
+  transform-origin: left center;
+}
+/* Gutter shading toward the spine on each resting page. */
+.flip-book__base--left::after,
+.flip-book__base--right::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28%;
+  pointer-events: none;
+}
+.flip-book__base--left::after {
+  right: 0;
+  background: linear-gradient(to right, transparent, rgba(74, 19, 80, 0.22));
+}
+.flip-book__base--right::after {
+  left: 0;
+  background: linear-gradient(to left, transparent, rgba(74, 19, 80, 0.22));
+}
+
+.flip-book__spine {
+  position: absolute;
+  top: 0;
+  z-index: 6;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #5a1860, #3a0f40);
+  box-shadow: 0 0 8px rgba(74, 19, 80, 0.5);
+}
+
+.flip-book__leaf {
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  will-change: transform, opacity;
+  animation-name: leafTurn;
+  animation-timing-function: cubic-bezier(0.62, 0.04, 0.34, 1);
+  animation-iteration-count: infinite;
+  z-index: 5;
+}
+
+.flip-book__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  border-radius: 3px 10px 10px 3px;
+  box-shadow: 0 12px 26px rgba(74, 19, 80, 0.22);
+}
+.flip-book__face--back {
+  transform: rotateY(180deg);
+}
+
+/* Soft curl shadow along the hinged (spine) edge of each leaf. */
+.flip-book__curl {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 22%;
+  pointer-events: none;
+  background: linear-gradient(to right, rgba(74, 19, 80, 0.26), transparent);
+}
+
+.flip-book__face svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-book {
+    animation: none;
+    transform: rotateX(0deg);
+  }
+  .flip-book__halo {
+    animation: none;
+  }
+  .flip-book__leaf {
+    animation: none;
+    opacity: 0;
+  }
+  /* Keep one leaf resting open so the artwork is still visible. */
+  .flip-book__leaf--rest {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+}
+
 /* Cozy hover lift used on cards */
 .cozy-lift {
   transition: transform var(--dur-med) var(--ease-spring),
