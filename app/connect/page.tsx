@@ -30,9 +30,9 @@ const TikTokEmbed = dynamic(() => import("@/components/TikTokEmbed"), {
 });
 
 const tiktokVideos = [
-  { videoId: "7321516299899703557", username: "clackamas.book.ex" },
-  { videoId: "7350198374850041131", username: "clackamas.book.ex" },
-  { videoId: "7378029413929937195", username: "clackamas.book.ex" },
+  { videoId: "7647996870769331469", username: "clackamas.book.ex" },
+  { videoId: "7629794604249894157", username: "clackamas.book.ex" },
+  { videoId: "7627245220534422797", username: "clackamas.book.ex" },
 ];
 
 export default function ConnectPage() {
@@ -83,6 +83,18 @@ export default function ConnectPage() {
               <TikTokEmbed key={video.videoId} videoId={video.videoId} username={video.username} />
             ))}
           </div>
+          <Reveal className="mt-10 text-center">
+            <a
+              href="https://www.tiktok.com/@clackamas.book.ex"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all hover:scale-105"
+              style={{ background: "#6B1C6F", color: "white", boxShadow: "0 12px 30px rgba(107,28,111,0.25)" }}
+            >
+              <Music2 size={14} />
+              See all videos on TikTok
+            </a>
+          </Reveal>
         </div>
       </section>
 
