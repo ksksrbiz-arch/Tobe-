@@ -6,9 +6,16 @@ import React from "react";
  * written as plain semantic HTML (<p>, <h2>, <ul>, <a>…) with zero per-element
  * classes — no @tailwindcss/typography dependency required.
  */
-export default function BlogProse({ children }: { children: React.ReactNode }) {
+export default function BlogProse({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id?: string;
+}) {
   return (
     <div
+      id={id}
       className={[
         "mx-auto max-w-2xl text-[1.0625rem] leading-8 text-[#374151]",
         "[&_p]:mb-6",

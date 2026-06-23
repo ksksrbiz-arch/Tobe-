@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import JsonLd from "@/components/JsonLd";
 import BlogProse from "@/components/BlogProse";
+import ArticleToc from "@/components/ArticleToc";
 import SharePost from "@/components/SharePost";
 import NewsletterCTA from "@/components/NewsletterCTA";
 import { getAllSlugs, getPost, formatPostDate, getRelatedPosts, tagToSlug } from "@/lib/blog";
@@ -129,7 +130,9 @@ export default async function ReadingRoomPostPage({
             </div>
           </header>
 
-          <BlogProse>
+          <ArticleToc targetId="article-body" />
+
+          <BlogProse id="article-body">
             <Body />
           </BlogProse>
 
