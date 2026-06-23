@@ -78,11 +78,6 @@ export function getReadingList(): SavedPick[] {
   return ensure();
 }
 
-export function isSaved(title: string, author: string): boolean {
-  const key = pickKey(title, author);
-  return ensure().some((p) => pickKey(p.title, p.author) === key);
-}
-
 export function addPick(pick: Omit<SavedPick, "savedAt">): SavedPick[] {
   const key = pickKey(pick.title, pick.author);
   const existing = ensure();
