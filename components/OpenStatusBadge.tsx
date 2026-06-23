@@ -1,58 +1,26 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { getStoreStatus, type StoreStatus } from "@/lib/storeHours";
 
 /**
- * Live "Open now / Closed" badge for the Visit page, computed from the store's
- * real hours (Mon–Sat 10:00–17:00, closed Sunday) in America/Los_Angeles — so
- * it's correct regardless of where the visitor is.
+ * Live "Open now / Closed" badge for the Visit page, with a countdown to the
+ * next open/close. Hours logic lives in lib/storeHours (store timezone).
  *
  * To avoid a hydration mismatch, a neutral placeholder is rendered on the first
- * paint (server + initial client render). The live status is computed inside
- * useEffect and applied via state only after mount.
+ * paint (server + initial client render). The live status is applied after
+ * mount and refreshed every minute so the countdown stays accurate.
  */
-
-const TIME_ZONE = "America/Los_Angeles";
-const OPEN_MIN = 10 * 60; // 10:00
-const CLOSE_MIN = 17 * 60; // 17:00
-
-type Status = { open: boolean; label: string };
-
-function computeStatus(now: Date): Status {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: TIME_ZONE,
-    weekday: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).formatToParts(now);
-
-  const weekday = parts.find((p) => p.type === "weekday")?.value ?? "";
-  const hour = Number(parts.find((p) => p.type === "hour")?.value ?? "0");
-  const minute = Number(parts.find((p) => p.type === "minute")?.value ?? "0");
-  const minutes = (hour % 24) * 60 + minute;
-  const isSunday = weekday === "Sun";
-
-  if (!isSunday && minutes >= OPEN_MIN && minutes < CLOSE_MIN) {
-    return { open: true, label: "Open now · closes 5 PM" };
-  }
-  if (!isSunday && minutes < OPEN_MIN) {
-    return { open: false, label: "Closed · opens at 10 AM" };
-  }
-  // After close today, or any time Sunday: opens next business day.
-  const next = weekday === "Sat" || weekday === "Sun" ? "Mon" : "tomorrow";
-  return { open: false, label: `Closed · opens ${next} 10 AM` };
-}
-
 export default function OpenStatusBadge({ className = "" }: { className?: string }) {
   // null until mounted → render a neutral, non-color-coded placeholder that
   // matches the server markup, then swap in the live status after mount.
-  const [status, setStatus] = useState<Status | null>(null);
+  const [status, setStatus] = useState<StoreStatus | null>(null);
 
   useEffect(() => {
-    // Defer the update out of the effect body so it doesn't run synchronously
-    // during the effect (lint-safe; avoids the cascading-render path).
-    queueMicrotask(() => setStatus(computeStatus(new Date())));
+    const update = () => setStatus(getStoreStatus());
+    queueMicrotask(update);
+    const id = window.setInterval(update, 60_000);
+    return () => window.clearInterval(id);
   }, []);
 
   const open = status?.open ?? false;

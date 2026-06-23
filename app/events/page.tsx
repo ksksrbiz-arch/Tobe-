@@ -5,6 +5,7 @@ import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
+import AddToCalendarButton from "@/components/AddToCalendarButton";
 import JsonLd from "@/components/JsonLd";
 import { SITE_URL, breadcrumbList } from "@/lib/seo";
 import { getUpcomingEvents, type EventOccurrence } from "@/lib/events";
@@ -185,6 +186,17 @@ export default function EventsPage() {
                     >
                       {ev.description}
                     </p>
+                    <div className="mt-4">
+                      <AddToCalendarButton
+                        event={{
+                          id: ev.id,
+                          title: ev.title,
+                          description: ev.description,
+                          startDate: ev.startDate,
+                          endDate: ev.endDate,
+                        }}
+                      />
+                    </div>
                   </article>
                 </Reveal>
               ))}
