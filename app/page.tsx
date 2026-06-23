@@ -161,6 +161,10 @@ const FAQSection = dynamic(() => import("@/components/FAQSection"), {
   loading: () => <SectionSkeleton eyebrow="FAQ" title="Gathering common questions..." muted />,
 });
 
+const ShelfPicks = dynamic(() => import("@/components/ShelfPicks"), {
+  loading: () => <SectionSkeleton eyebrow="Staff Shelf" title="Stocking the staff shelf..." />,
+});
+
 const BookishQuote = dynamic(() => import("@/components/BookishQuote"), {
   loading: () => (
     <div className="px-4 py-12 sm:py-20">
@@ -534,6 +538,11 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
+      </div>
+
+      <SectionDivider variant="book" label="Staff Shelf" muted />
+      <div className="cv-auto">
+        <ShelfPicks />
       </div>
 
       <div className="cv-auto">

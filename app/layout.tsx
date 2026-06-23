@@ -36,6 +36,7 @@ const playfair = localFont({
   adjustFontFallback: "Times New Roman",
 });
 import CozyAmbience from "@/components/CozyAmbience";
+import CursorGlow from "@/components/CursorGlow";
 import PageTransition from "@/components/PageTransition";
 import BookishEasterEgg from "@/components/BookishEasterEgg";
 import Analytics from "@/components/Analytics";
@@ -264,6 +265,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <CozyAmbience />
+        <CursorGlow />
         <BookishEasterEgg />
         <div className="relative z-[2]">
           <PageTransition>{children}</PageTransition>
