@@ -1,9 +1,78 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { BookOpen, Send, Sparkles, RefreshCw, ArrowRight, Share2 } from "lucide-react";
+import {
+  BookOpen,
+  Send,
+  Sparkles,
+  RefreshCw,
+  ArrowRight,
+  Share2,
+  Bookmark,
+  BookmarkCheck,
+  BellRing,
+  Trash2,
+  Copy,
+  ChevronDown,
+} from "lucide-react";
 import { toast } from "sonner";
 import DustMotes from "@/components/DustMotes";
+import { useReadingList } from "@/lib/useReadingList";
+
+/**
+ * Resolve a pick to an ISBN (via /api/book-search) and add it to the
+ * sign-in-gated database wishlist so it joins the inventory "hunt" emails.
+ * Falls back to a helpful nudge when the visitor isn't signed in or no edition
+ * with an ISBN can be found.
+ */
+async function trackRestock(pick: { title: string; author: string }) {
+  const id = toast.loading(`Looking up “${pick.title}”…`);
+  const toWishlist = () => {
+    window.location.href = "/wishlist";
+  };
+  try {
+    const params = new URLSearchParams({ title: pick.title, author: pick.author });
+    const res = await fetch(`/api/book-search?${params.toString()}`);
+    if (res.status === 404) {
+      toast.error("Couldn't find an exact edition.", {
+        id,
+        description: "Add it by ISBN on the Wishlist page to track restocks.",
+        action: { label: "Wishlist", onClick: toWishlist },
+      });
+      return;
+    }
+    if (!res.ok) {
+      toast.error("Book lookup failed. Try again in a moment.", { id });
+      return;
+    }
+    const { book } = (await res.json()) as {
+      book: { isbn: string; title: string; author: string; cover_url: string; list_price: number | null };
+    };
+    const save = await fetch("/api/wishlist", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(book),
+    });
+    if (save.status === 401) {
+      toast.message("Sign in to track restocks", {
+        id,
+        description: "Your wishlist watches for incoming copies and emails you.",
+        action: { label: "Go to Wishlist", onClick: toWishlist },
+      });
+      return;
+    }
+    if (!save.ok) {
+      toast.error("Couldn't add to your wishlist. Try again.", { id });
+      return;
+    }
+    toast.success(`Now tracking “${book.title}”`, {
+      id,
+      description: "We'll watch for a copy and email you when one lands.",
+    });
+  } catch {
+    toast.error("Something went wrong. Try again.", { id });
+  }
+}
 
 // Query param used to make a set of picks shareable: /?match=<prompt>#next-read
 // Anyone who opens the link re-runs the same prompt, turning a good
@@ -35,6 +104,24 @@ const EXAMPLE_PROMPTS = [
 ];
 
 function RecommendationCard({ rec }: { rec: BookRecommendation }) {
+  const { save, remove, has } = useReadingList();
+  const saved = has(rec.title, rec.author);
+
+  const toggleSave = () => {
+    if (saved) {
+      remove(rec.title, rec.author);
+    } else {
+      save({
+        title: rec.title,
+        author: rec.author,
+        description: rec.description,
+        cover_url: rec.cover_url,
+        reason: rec.reason,
+      });
+      toast.success(`Saved “${rec.title}” to your reading list`);
+    }
+  };
+
   return (
     <div
       className="group flex gap-4 rounded-2xl border p-5 card-cozy"
@@ -119,6 +206,40 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
             </a>
           )}
         </div>
+
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleSave}
+            aria-pressed={saved}
+            className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all hover:scale-[1.03]"
+            style={{
+              borderColor: saved ? "#6B1C6F" : "rgba(107,28,111,0.18)",
+              color: saved ? "#FFFFFF" : "#6B1C6F",
+              background: saved ? "#6B1C6F" : "rgba(107,28,111,0.04)",
+            }}
+          >
+            {saved ? (
+              <BookmarkCheck size={12} aria-hidden="true" />
+            ) : (
+              <Bookmark size={12} aria-hidden="true" />
+            )}
+            {saved ? "Saved" : "Save"}
+          </button>
+          <button
+            type="button"
+            onClick={() => trackRestock({ title: rec.title, author: rec.author })}
+            className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all hover:scale-[1.03]"
+            style={{
+              borderColor: "rgba(241,187,26,0.40)",
+              color: "#6B1C6F",
+              background: "rgba(241,187,26,0.12)",
+            }}
+          >
+            <BellRing size={12} aria-hidden="true" />
+            Track restock
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -131,6 +252,24 @@ export default function NextReadMatchmaker() {
   const [error, setError] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const [lastPrompt, setLastPrompt] = useState("");
+
+  const {
+    items: savedItems,
+    count: savedCount,
+    remove: removeSaved,
+    clear: clearSaved,
+  } = useReadingList();
+  const [showSaved, setShowSaved] = useState(false);
+
+  const copySavedList = async () => {
+    const text = savedItems.map((p) => `• ${p.title} — ${p.author}`).join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success("Reading list copied!");
+    } catch {
+      toast.error("Couldn't copy the list. Try again?");
+    }
+  };
 
   const runMatch = useCallback(async (prompt: string) => {
     const trimmed = prompt.trim();
@@ -240,6 +379,102 @@ export default function NextReadMatchmaker() {
           </p>
         </div>
       </div>
+
+      {/* Saved picks (reading list) */}
+      {savedCount > 0 && (
+        <div className="mb-5">
+          <button
+            type="button"
+            onClick={() => setShowSaved((s) => !s)}
+            aria-expanded={showSaved}
+            className="flex w-full items-center justify-between gap-3 rounded-xl border px-4 py-2.5 text-left transition-colors"
+            style={{ borderColor: "rgba(107,28,111,0.14)", background: "rgba(107,28,111,0.04)" }}
+          >
+            <span
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider"
+              style={{ color: "#6B1C6F" }}
+            >
+              <BookmarkCheck size={14} aria-hidden="true" />
+              Saved picks ({savedCount})
+            </span>
+            <ChevronDown
+              size={16}
+              aria-hidden="true"
+              className="transition-transform duration-300"
+              style={{ color: "#6B1C6F", transform: showSaved ? "rotate(180deg)" : "none" }}
+            />
+          </button>
+          {showSaved && (
+            <div
+              className="mt-2 rounded-xl border p-3"
+              style={{ borderColor: "rgba(107,28,111,0.10)", background: "rgba(255,255,255,0.7)" }}
+            >
+              <ul className="space-y-2">
+                {savedItems.map((p) => (
+                  <li
+                    key={`${p.title}-${p.author}`}
+                    className="flex items-start justify-between gap-3 rounded-lg px-2 py-1.5"
+                    style={{ background: "rgba(253,248,240,0.7)" }}
+                  >
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold" style={{ color: "#4A1350" }}>
+                        {p.title}
+                      </p>
+                      <p className="truncate text-xs" style={{ color: "#6B7280" }}>
+                        {p.author}
+                      </p>
+                    </div>
+                    <div className="flex flex-shrink-0 items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => trackRestock({ title: p.title, author: p.author })}
+                        aria-label={`Track restock for ${p.title}`}
+                        className="touch-target rounded-lg p-1.5 transition-colors hover:bg-[rgba(241,187,26,0.16)]"
+                        style={{ color: "#6B1C6F" }}
+                      >
+                        <BellRing size={14} aria-hidden="true" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => removeSaved(p.title, p.author)}
+                        aria-label={`Remove ${p.title} from saved picks`}
+                        className="touch-target rounded-lg p-1.5 transition-colors hover:bg-[rgba(239,68,68,0.10)]"
+                        style={{ color: "#9CA3AF" }}
+                      >
+                        <Trash2 size={14} aria-hidden="true" />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div
+                className="mt-3 flex items-center justify-end gap-4 border-t pt-3"
+                style={{ borderColor: "rgba(107,28,111,0.08)" }}
+              >
+                <button
+                  type="button"
+                  onClick={copySavedList}
+                  className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider transition-opacity hover:opacity-70"
+                  style={{ color: "#6B1C6F" }}
+                >
+                  <Copy size={12} aria-hidden="true" /> Copy list
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearSaved();
+                    toast.success("Reading list cleared");
+                  }}
+                  className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider transition-opacity hover:opacity-70"
+                  style={{ color: "#B91C1C" }}
+                >
+                  <Trash2 size={12} aria-hidden="true" /> Clear
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Input */}
       <div className="relative">
