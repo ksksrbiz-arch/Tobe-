@@ -74,7 +74,7 @@ export default function Body() {
 
       <h2>Easy to get to, easy to park</h2>
       <p>
-        We&rsquo;re at 7931 SE King Rd, Ste 1 in Milwaukie, with free parking
+        We&rsquo;re at 7931 SE King Rd, Unit 1 in Milwaukie, with free parking
         right out front &mdash; no garage hunting, no meters. That makes us an
         easy stop for readers across the Portland and Clackamas metro. If
         you&rsquo;re coming from the mall side of town, see our{" "}

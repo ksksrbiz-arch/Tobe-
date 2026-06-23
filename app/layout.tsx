@@ -144,8 +144,8 @@ const jsonLd = {
   ],
   address: {
     "@type": "PostalAddress",
-    streetAddress: "7931 SE King Rd, Ste 1",
-    addressLocality: "Milwaukie",
+    streetAddress: "7931 SE King Rd, Unit 1",
+    addressLocality: "Portland",
     addressRegion: "OR",
     postalCode: "97222",
     addressCountry: "US",

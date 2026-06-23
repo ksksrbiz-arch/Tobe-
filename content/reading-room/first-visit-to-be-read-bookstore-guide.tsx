@@ -26,7 +26,7 @@ export default function Body() {
 
       <h2>Where to find us &amp; when</h2>
       <p>
-        We&rsquo;re at <Link href="/visit">7931 SE King Rd, Ste 1</Link>, with free
+        We&rsquo;re at <Link href="/visit">7931 SE King Rd, Unit 1</Link>, with free
         parking right out front. Check our{" "}
         <Link href="/visit">current hours and directions</Link> before you head
         over — it&rsquo;s a quick trip from Portland, Clackamas, Oak Grove, and

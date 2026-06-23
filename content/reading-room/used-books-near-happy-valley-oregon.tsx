@@ -28,7 +28,7 @@ export default function Body() {
       <p>
         <strong>To Be Read</strong> (formerly the Clackamas Book Exchange) has
         served Clackamas County readers for 45+ years from{" "}
-        <Link href="/visit">7931 SE King Rd, Ste 1 in Milwaukie</Link>. From Happy
+        <Link href="/visit">7931 SE King Rd, Unit 1 in Milwaukie</Link>. From Happy
         Valley or Damascus it&rsquo;s a quick trip down toward the river — past
         the Clackamas Town Center area — with free parking when you arrive.
       </p>

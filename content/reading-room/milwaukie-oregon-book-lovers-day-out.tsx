@@ -29,7 +29,7 @@ export default function Body() {
       <p>
         Begin at <strong>To Be Read</strong> (the longtime Clackamas Book
         Exchange) at{" "}
-        <Link href="/visit">7931 SE King Rd, Ste 1</Link>. We&rsquo;ve been the
+        <Link href="/visit">7931 SE King Rd, Unit 1</Link>. We&rsquo;ve been the
         neighborhood&rsquo;s used bookstore for over 45 years — thousands of
         titles across fiction, classics, romantasy, mystery, kids&rsquo; books
         and more. Bring a box of books you&rsquo;re done with and{" "}

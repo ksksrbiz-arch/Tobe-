@@ -29,7 +29,7 @@ export default function Body() {
       <h2>To Be Read &mdash; the closest real used bookstore</h2>
       <p>
         <strong>To Be Read</strong> has served the area for more than 45 years
-        from <Link href="/visit">7931 SE King Rd, Ste 1 in Milwaukie</Link>. It
+        from <Link href="/visit">7931 SE King Rd, Unit 1 in Milwaukie</Link>. It
         is not in Oregon City &mdash; it&rsquo;s a quick hop up the road in
         Milwaukie &mdash; but for Oregon City readers it&rsquo;s the closest
         bricks-and-mortar shop stacked floor to ceiling with used books.

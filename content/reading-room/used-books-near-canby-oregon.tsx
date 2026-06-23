@@ -31,7 +31,7 @@ export default function Body() {
       <p>
         <strong>To Be Read</strong> (formerly the Clackamas Book Exchange) has
         served Clackamas County readers for 45+ years from{" "}
-        <Link href="/visit">7931 SE King Rd, Ste 1 in Milwaukie</Link>. Just so
+        <Link href="/visit">7931 SE King Rd, Unit 1 in Milwaukie</Link>. Just so
         it&rsquo;s clear: we&rsquo;re not in Canby &mdash; we&rsquo;re a real
         secondhand bookstore up the road in Milwaukie, and the drive is about as
         easy as it gets. From Canby, just follow 99E north through Oregon City and

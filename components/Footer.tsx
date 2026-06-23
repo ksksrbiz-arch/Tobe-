@@ -152,9 +152,9 @@ export default function Footer() {
               <li className="flex items-start gap-2.5">
                 <MapPin size={16} className="mt-0.5 flex-shrink-0" style={{ color: "#F1BB1A" }} />
                 <span className="leading-relaxed">
-                  7931 SE King Rd, Ste 1
+                  7931 SE King Rd, Unit 1
                   <br />
-                  Milwaukie, OR 97222
+                  Portland, OR 97222
                 </span>
               </li>
               <li className="flex items-center gap-2.5">

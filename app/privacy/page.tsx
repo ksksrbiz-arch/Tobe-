@@ -298,9 +298,9 @@ export default function PrivacyPolicyPage() {
         <address>
           <strong>To Be Read · Clackamas Book Exchange</strong>
           <br />
-          7931 SE King Rd, Ste 1
+          7931 SE King Rd, Unit 1
           <br />
-          Milwaukie, OR 97222, USA
+          Portland, OR 97222, USA
           <br />
           Email: <a href="mailto:TBR@tcpbusiness.com">TBR@tcpbusiness.com</a>
           <br />

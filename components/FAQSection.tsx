@@ -55,7 +55,7 @@ const defaultFaqs: Faq[] = [
   },
   {
     q: "Where are you located and is there parking?",
-    a: "We're at 7931 SE King Rd, Ste 1, Milwaukie, OR 97222. There's free on-site parking.",
+    a: "We're at 7931 SE King Rd, Unit 1, Portland, OR 97222. There's free on-site parking.",
   },
   {
     q: "Do you offer store credit?",

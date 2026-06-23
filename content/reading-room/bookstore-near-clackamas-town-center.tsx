@@ -30,7 +30,7 @@ export default function Body() {
         <strong>To Be Read</strong> (the longtime Clackamas Book Exchange) is a
         used bookstore that&rsquo;s served the area for over 45 years. We&rsquo;re
         a short drive from the Clackamas Town Center area in neighboring
-        Milwaukie, at <Link href="/visit">7931 SE King Rd, Ste 1</Link>, with free
+        Milwaukie, at <Link href="/visit">7931 SE King Rd, Unit 1</Link>, with free
         parking out front.
       </p>
 

@@ -12,10 +12,10 @@ import { MapPin } from "lucide-react";
 // card in VisitSection); otherwise it renders at a fixed height.
 
 const DEFAULT_SRC =
-  "https://www.google.com/maps?q=7931+SE+King+Rd,+Milwaukie,+OR+97222&output=embed";
+  "https://www.google.com/maps?q=7931+SE+King+Rd,+Portland,+OR+97222&output=embed";
 const DEFAULT_TITLE =
-  "Map to To Be Read — 7931 SE King Rd, Ste 1, Milwaukie, OR 97222";
-const DEFAULT_LABEL = "7931 SE King Rd, Ste 1 · Milwaukie, OR";
+  "Map to To Be Read — 7931 SE King Rd, Unit 1, Portland, OR 97222";
+const DEFAULT_LABEL = "7931 SE King Rd, Unit 1 · Portland, OR";
 
 export default function MapEmbed({
   src = DEFAULT_SRC,

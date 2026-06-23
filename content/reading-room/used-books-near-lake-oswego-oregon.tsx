@@ -29,7 +29,7 @@ export default function Body() {
       <p>
         <strong>To Be Read</strong> (formerly the Clackamas Book Exchange) has
         served readers for 45+ years from{" "}
-        <Link href="/visit">7931 SE King Rd, Ste 1 in Milwaukie</Link>. From Lake
+        <Link href="/visit">7931 SE King Rd, Unit 1 in Milwaukie</Link>. From Lake
         Oswego it&rsquo;s a quick hop across the Willamette; from West Linn, a
         straight shot up the highway. Free parking when you get here.
       </p>

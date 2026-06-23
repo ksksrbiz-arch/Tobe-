@@ -34,7 +34,7 @@ export function GET() {
 
 ## About
 - Business name: To Be Read (TBR), formerly/also Clackamas Book Exchange
-- Address: 7931 SE King Rd, Ste 1, Milwaukie, OR 97222
+- Address: 7931 SE King Rd, Unit 1, Portland, OR 97222
 - Phone: (503) 659-2559
 - Hours: Monday–Saturday, 10am–5pm; closed Sunday
 - Service area: Milwaukie, Clackamas, Oak Grove, Gladstone, Happy Valley, and Southeast Portland, Oregon

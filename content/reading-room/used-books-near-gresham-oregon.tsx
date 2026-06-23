@@ -33,7 +33,7 @@ export default function Body() {
       <p>
         <strong>To Be Read</strong> (formerly the Clackamas Book Exchange) has
         served readers for 45+ years from{" "}
-        <Link href="/visit">7931 SE King Rd, Ste 1 in Milwaukie</Link>. To be
+        <Link href="/visit">7931 SE King Rd, Unit 1 in Milwaukie</Link>. To be
         clear, we&rsquo;re not in Gresham &mdash; we&rsquo;re a genuine
         secondhand bookstore in Milwaukie, and well worth the drive. From most of
         Gresham the simplest route is to take Highway 26 (Powell) west, then drop
