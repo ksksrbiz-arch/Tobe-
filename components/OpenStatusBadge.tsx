@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { getStoreStatus, type StoreStatus } from "@/lib/storeHours";
+import React from "react";
+import { useStoreStatus } from "@/lib/useStoreStatus";
 
 /**
  * Live "Open now / Closed" badge for the Visit page, with a countdown to the
@@ -12,16 +12,7 @@ import { getStoreStatus, type StoreStatus } from "@/lib/storeHours";
  * mount and refreshed every minute so the countdown stays accurate.
  */
 export default function OpenStatusBadge({ className = "" }: { className?: string }) {
-  // null until mounted → render a neutral, non-color-coded placeholder that
-  // matches the server markup, then swap in the live status after mount.
-  const [status, setStatus] = useState<StoreStatus | null>(null);
-
-  useEffect(() => {
-    const update = () => setStatus(getStoreStatus());
-    queueMicrotask(update);
-    const id = window.setInterval(update, 60_000);
-    return () => window.clearInterval(id);
-  }, []);
+  const status = useStoreStatus();
 
   const open = status?.open ?? false;
   const label = status?.label ?? "Mon–Sat · 10am–5pm";

@@ -1,25 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { getStoreStatus, type StoreStatus } from "@/lib/storeHours";
+import React from "react";
+import { useStoreStatus } from "@/lib/useStoreStatus";
 
 /**
  * Live "Open now / Closed" badge with a countdown to the next open/close,
  * computed from the store's real hours in its own timezone (see lib/storeHours).
  *
  * Renders a neutral hours label on the server and during hydration, then swaps
- * in the live status after mount (deferred via queueMicrotask to avoid the
- * react-hooks/set-state-in-effect cascading-render path) and ticks every minute.
+ * in the live status after mount and ticks every minute.
  */
 export default function OpenStatus({ className = "" }: { className?: string }) {
-  const [status, setStatus] = useState<StoreStatus | null>(null);
-
-  useEffect(() => {
-    const update = () => setStatus(getStoreStatus());
-    queueMicrotask(update);
-    const id = window.setInterval(update, 60_000);
-    return () => window.clearInterval(id);
-  }, []);
+  const status = useStoreStatus();
 
   const open = status?.open ?? false;
   // Until mounted, show a neutral, non-color-coded label (matches SSR markup).

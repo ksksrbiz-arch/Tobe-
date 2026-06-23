@@ -5,7 +5,6 @@ import {
   addPick,
   clearReadingList,
   getReadingList,
-  isSaved,
   pickKey,
   removePick,
   subscribeReadingList,
@@ -37,5 +36,5 @@ export function useReadingList() {
     [items],
   );
 
-  return { items, count: items.length, save, remove, clear, has, isSaved };
+  return { items, count: items.length, save, remove, clear, has };
 }
