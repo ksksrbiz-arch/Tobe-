@@ -3,6 +3,7 @@
 import React from "react";
 import { ExternalLink, ShoppingBag, BookOpen, Store, ArrowRight } from "lucide-react";
 import Reveal from "./Reveal";
+import Tilt from "./Tilt";
 
 const shopCards = [
   {
@@ -77,11 +78,12 @@ export default function ShopSection() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-7">
           {shopCards.map((card, i) => (
             <Reveal key={card.name} delay={i * 80}>
+              <Tilt className="h-full rounded-3xl" max={7} scale={1.02}>
               <a
                 href={card.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                className="group relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-shadow duration-300 hover:shadow-2xl"
                 style={{
                   borderColor: "rgba(107,28,111,0.10)",
                   boxShadow: "0 12px 30px rgba(107,28,111,0.08)",
@@ -142,6 +144,7 @@ export default function ShopSection() {
                   style={{ background: card.color, opacity: 0.05 }}
                 />
               </a>
+              </Tilt>
             </Reveal>
           ))}
         </div>

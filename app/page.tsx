@@ -6,6 +6,7 @@ import HeroSection from "@/components/HeroSection";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
+import Tilt from "@/components/Tilt";
 import DustMotes from "@/components/DustMotes";
 import SectionDivider from "@/components/SectionDivider";
 import ReadingRoomTeaser from "@/components/ReadingRoomTeaser";
@@ -341,8 +342,9 @@ export default function Home() {
           </Reveal>
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={80 + i * 60}>
+              <Tilt className="h-full rounded-[28px]" max={6} scale={1.02}>
               <div
-                className="flex h-full flex-col justify-between rounded-[28px] border p-5 transition-all hover:-translate-y-1"
+                className="flex h-full flex-col justify-between rounded-[28px] border p-5 transition-shadow"
                 style={{
                   background: "rgba(255,255,255,0.93)",
                   borderColor: "rgba(107,28,111,0.08)",
@@ -365,6 +367,7 @@ export default function Home() {
                   {stat.sub}
                 </div>
               </div>
+              </Tilt>
             </Reveal>
           ))}
         </div>
@@ -410,9 +413,10 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {exploreCards.map((card, i) => (
               <Reveal key={card.title} delay={i * 80}>
+                <Tilt className="h-full rounded-[28px]" max={7} scale={1.02}>
                 <Link
                   href={card.href}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-7 text-left transition-all hover:-translate-y-2 hover:shadow-2xl"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-7 text-left transition-shadow hover:shadow-2xl"
                   style={{
                     background:
                       "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(253,248,240,0.98) 100%)",
@@ -458,6 +462,7 @@ export default function Home() {
                     <ArrowRight size={13} />
                   </span>
                 </Link>
+                </Tilt>
               </Reveal>
             ))}
           </div>
