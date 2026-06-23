@@ -1,56 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { getStoreStatus, type StoreStatus } from "@/lib/storeHours";
 
 /**
- * Live "Open now / Closed" badge, computed from the store's real hours
- * (Mon–Sat 10am–5pm, closed Sunday) in the store's timezone — so it's correct
- * regardless of the visitor's location.
+ * Live "Open now / Closed" badge with a countdown to the next open/close,
+ * computed from the store's real hours in its own timezone (see lib/storeHours).
  *
  * Renders a neutral hours label on the server and during hydration, then swaps
  * in the live status after mount (deferred via queueMicrotask to avoid the
- * react-hooks/set-state-in-effect cascading-render path).
+ * react-hooks/set-state-in-effect cascading-render path) and ticks every minute.
  */
-
-const TIME_ZONE = "America/Los_Angeles";
-const OPEN_MIN = 10 * 60; // 10:00
-const CLOSE_MIN = 17 * 60; // 17:00
-
-type Status = { open: boolean; label: string };
-
-function computeStatus(now: Date): Status {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: TIME_ZONE,
-    weekday: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).formatToParts(now);
-
-  const weekday = parts.find((p) => p.type === "weekday")?.value ?? "";
-  const hour = Number(parts.find((p) => p.type === "hour")?.value ?? "0");
-  const minute = Number(parts.find((p) => p.type === "minute")?.value ?? "0");
-  const minutes = (hour % 24) * 60 + minute;
-  const isSunday = weekday === "Sun";
-
-  if (!isSunday && minutes >= OPEN_MIN && minutes < CLOSE_MIN) {
-    return { open: true, label: "Open now · closes 5 PM" };
-  }
-  if (!isSunday && minutes < OPEN_MIN) {
-    return { open: false, label: "Closed · opens 10 AM today" };
-  }
-  // After close today, or any time Sunday: opens next business day.
-  const next = weekday === "Sat" || weekday === "Sun" ? "Monday" : "tomorrow";
-  return { open: false, label: `Closed · opens 10 AM ${next}` };
-}
-
 export default function OpenStatus({ className = "" }: { className?: string }) {
-  const [status, setStatus] = useState<Status | null>(null);
+  const [status, setStatus] = useState<StoreStatus | null>(null);
 
   useEffect(() => {
-    const update = () => setStatus(computeStatus(new Date()));
-    // Defer the first update out of the effect body (lint-safe), then refresh
-    // every minute so the badge flips at opening/closing time without a reload.
+    const update = () => setStatus(getStoreStatus());
     queueMicrotask(update);
     const id = window.setInterval(update, 60_000);
     return () => window.clearInterval(id);
