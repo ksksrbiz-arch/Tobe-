@@ -1278,7 +1278,9 @@ p {
     inset 3px 0 4px rgba(255, 255, 255, 0.12),
     0 10px 18px rgba(46, 12, 51, 0.18);
   filter: saturate(0.96);
-  will-change: transform;
+  /* No permanent `will-change`: the spines sit below the fold and only move on
+     a (rare) tap/hover, so a standing layer-promotion hint for every spine is
+     pure cost — same stance as the `.reveal` helper above. */
 }
 .spine:hover {
   transform: translateY(-10px) rotate(0deg);
