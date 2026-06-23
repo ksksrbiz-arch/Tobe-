@@ -32,7 +32,7 @@ export default function Body() {
       <p>
         <strong>To Be Read</strong> (formerly the Clackamas Book Exchange) has
         served readers for 45+ years from{" "}
-        <Link href="/visit">7931 SE King Rd, Ste 1 in Milwaukie</Link>. To set
+        <Link href="/visit">7931 SE King Rd, Unit 1 in Milwaukie</Link>. To set
         expectations: we&rsquo;re not in Tigard &mdash; we&rsquo;re an
         honest-to-goodness secondhand bookstore in Milwaukie, and easy to reach.
         From Tigard the natural route is Highway 217 down to 99W, then over toward

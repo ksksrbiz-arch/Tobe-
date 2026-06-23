@@ -7,7 +7,7 @@ import { Navigation } from "lucide-react";
  */
 
 const DIRECTIONS_URL =
-  "https://www.google.com/maps/dir/?api=1&destination=7931%20SE%20King%20Rd%20Ste%201%20Milwaukie%20OR%2097222";
+  "https://www.google.com/maps/dir/?api=1&destination=7931%20SE%20King%20Rd%20Unit%201%20Portland%20OR%2097222";
 
 export default function DirectionsButton({ className = "" }: { className?: string }) {
   return (

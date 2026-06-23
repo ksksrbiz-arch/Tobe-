@@ -25,7 +25,7 @@ function ownerNotificationHtml(email: string) {
     <p style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#F1BB1A;margin:0 0 8px;font-weight:bold;">New Newsletter Signup</p>
     <h1 style="font-family:'Playfair Display',Georgia,serif;color:#6B1C6F;font-size:22px;margin:0 0 16px;">📬 New subscriber</h1>
     <p style="font-size:15px;color:#374151;"><strong>${safeEmail}</strong> just signed up for the TBR newsletter from the website.</p>
-    <p style="font-size:12px;color:#9CA3AF;margin-top:32px;">${STORE_NAME} · 7931 SE King Rd, Ste 1, Milwaukie, OR 97222</p>
+    <p style="font-size:12px;color:#9CA3AF;margin-top:32px;">${STORE_NAME} · 7931 SE King Rd, Unit 1, Portland, OR 97222</p>
   </div>
 </body></html>`.trim();
 }
@@ -39,11 +39,11 @@ function subscriberConfirmationHtml(email: string) {
     <h1 style="font-family:'Playfair Display',Georgia,serif;color:#6B1C6F;font-size:28px;margin:0 0 16px;">You're on the list! 📚</h1>
     <p style="font-size:15px;line-height:1.7;color:#374151;">Thanks for signing up — we'll keep you in the loop on new arrivals, events, and anything else worth knowing from the shelves of <strong>To Be Read</strong>.</p>
     <p style="font-size:14px;color:#6B7280;">Signed up as <strong>${safeEmail}</strong></p>
-    <p style="font-size:15px;line-height:1.7;color:#374151;margin-top:16px;">In the meantime, come say hi — we're open <strong>Monday–Saturday, 10am – 5pm</strong> at 7931 SE King Rd, Ste 1, Milwaukie, OR.</p>
+    <p style="font-size:15px;line-height:1.7;color:#374151;margin-top:16px;">In the meantime, come say hi — we're open <strong>Monday–Saturday, 10am – 5pm</strong> at 7931 SE King Rd, Unit 1, Portland, OR.</p>
     <p style="margin:28px 0;">
       <a href="${STORE_URL}/visit" style="background:linear-gradient(135deg,#6B1C6F 0%,#8B2E90 100%);color:#fff;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">Plan a visit →</a>
     </p>
-    <p style="font-size:12px;color:#9CA3AF;margin-top:32px;">${STORE_NAME} · 7931 SE King Rd, Ste 1, Milwaukie, OR 97222 · (503) 659-2559</p>
+    <p style="font-size:12px;color:#9CA3AF;margin-top:32px;">${STORE_NAME} · 7931 SE King Rd, Unit 1, Portland, OR 97222 · (503) 659-2559</p>
     <p style="font-size:11px;color:#9CA3AF;margin-top:8px;">You signed up at ${STORE_URL}. Reply to this email at any time to unsubscribe.</p>
   </div>
 </body></html>`.trim();

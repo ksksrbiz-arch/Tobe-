@@ -51,7 +51,7 @@ export default function Body() {
         This is Oregon, so have a plan B. Browsing the stacks at{" "}
         <strong>To Be Read</strong> is its own slow pleasure on a wet afternoon —
         come find your next read, then take it somewhere warm. We&rsquo;re at{" "}
-        <Link href="/visit">7931 SE King Rd, Ste 1</Link>.
+        <Link href="/visit">7931 SE King Rd, Unit 1</Link>.
       </p>
 
       <h2>Fill your bag first</h2>

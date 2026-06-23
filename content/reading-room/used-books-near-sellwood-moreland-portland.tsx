@@ -28,7 +28,7 @@ export default function Body() {
       <h2>To Be Read &mdash; a short drive south</h2>
       <p>
         <strong>To Be Read</strong> has served readers for more than 45 years
-        from <Link href="/visit">7931 SE King Rd, Ste 1 in Milwaukie</Link>.
+        from <Link href="/visit">7931 SE King Rd, Unit 1 in Milwaukie</Link>.
         It&rsquo;s not in Sellwood-Moreland &mdash; it&rsquo;s a few minutes south
         in Milwaukie &mdash; but for SE Portland readers it&rsquo;s a close,
         easygoing trip to a shop packed with used books.

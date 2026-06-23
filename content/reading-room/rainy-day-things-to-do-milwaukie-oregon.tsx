@@ -29,7 +29,7 @@ export default function Body() {
         There&rsquo;s no better rainy-day ritual than browsing a used bookstore
         with nowhere to be. Come lose an hour in the stacks at{" "}
         <strong>To Be Read</strong>,{" "}
-        <Link href="/visit">7931 SE King Rd, Ste 1</Link> — thousands of titles,
+        <Link href="/visit">7931 SE King Rd, Unit 1</Link> — thousands of titles,
         and a trade counter if you&rsquo;re clearing shelf space while you&rsquo;re
         at it.
       </p>

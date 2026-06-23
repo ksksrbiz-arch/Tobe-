@@ -38,7 +38,7 @@ const shopCards = [
     description:
       "Nothing beats wandering our shelves in person. Come browse thousands of titles, smell that wonderful old-book smell, and chat with fellow book lovers.",
     cta: "Get Directions",
-    href: "https://maps.google.com/?q=7931+SE+King+Rd,+Milwaukie,+OR+97222",
+    href: "https://maps.google.com/?q=7931+SE+King+Rd,+Portland,+OR+97222",
     badge: "Best Experience",
   },
 ] as const;

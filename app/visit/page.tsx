@@ -20,7 +20,7 @@ import { Car, Bus, Bike, ParkingCircle, Coffee, MapPin, Phone } from "lucide-rea
 const visitFaqs: Faq[] = [
   {
     q: "Where is To Be Read located?",
-    a: "We're at 7931 SE King Rd, Ste 1, Milwaukie, OR 97222 — in the Southeast Portland metro, an easy drive from Clackamas, Oak Grove, Gladstone, Happy Valley, and Portland.",
+    a: "We're at 7931 SE King Rd, Unit 1, Portland, OR 97222 — in the Southeast Portland metro, an easy drive from Clackamas, Oak Grove, Gladstone, Happy Valley, and Portland.",
   },
   {
     q: "What are your hours?",
@@ -110,7 +110,7 @@ export default function VisitPage() {
             <div className="flex flex-col items-center gap-2 sm:items-start">
               <OpenStatusBadge />
               <p className="text-sm font-medium" style={{ color: "#374151" }}>
-                7931 SE King Rd, Ste 1, Milwaukie, OR 97222
+                7931 SE King Rd, Unit 1, Portland, OR 97222
               </p>
             </div>
             <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
@@ -301,7 +301,7 @@ export default function VisitPage() {
               <div className="flex items-center justify-center gap-3 sm:justify-start">
                 <MapPin size={22} style={{ color: "#F1BB1A" }} className="flex-shrink-0" />
                 <div className="text-left">
-                  <p className="text-sm font-semibold leading-snug">7931 SE King Rd, Ste 1, Milwaukie, OR 97222</p>
+                  <p className="text-sm font-semibold leading-snug">7931 SE King Rd, Unit 1, Portland, OR 97222</p>
                   <p className="text-xs opacity-80">Open Mon–Sat · 10am – 5pm</p>
                 </div>
               </div>

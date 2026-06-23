@@ -98,7 +98,7 @@ export default function OpenGraphImage() {
             color: "rgba(255,253,249,0.85)",
           }}
         >
-          <span>7931 SE King Rd, Ste 1 · Milwaukie, OR</span>
+          <span>7931 SE King Rd, Unit 1 · Portland, OR</span>
           <span style={{ color: "#F1BB1A", fontWeight: 700 }}>
             {SITE_HOST}
           </span>

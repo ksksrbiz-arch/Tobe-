@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import MapEmbed from "./MapEmbed";
 import Reveal from "./Reveal";
 
-const STORE_ADDRESS = "7931 SE King Rd, Ste 1, Milwaukie, OR 97222";
+const STORE_ADDRESS = "7931 SE King Rd, Unit 1, Portland, OR 97222";
 const STORE_ADDRESS_QUERY = encodeURIComponent(STORE_ADDRESS);
 const GOOGLE_MAPS_LINK = `https://maps.google.com/?q=${STORE_ADDRESS_QUERY}`;
 const GOOGLE_MAPS_EMBED = `https://maps.google.com/maps?q=${STORE_ADDRESS_QUERY}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
@@ -217,8 +217,8 @@ export default function VisitSection() {
                   </h3>
                 </div>
                 <div className="text-sm leading-relaxed" style={{ color: "#374151" }}>
-                  <p>7931 SE King Rd, Ste 1</p>
-                  <p>Milwaukie, OR 97222</p>
+                  <p>7931 SE King Rd, Unit 1</p>
+                  <p>Portland, OR 97222</p>
                 </div>
                 <button
                   onClick={handleCopyAddress}
@@ -449,7 +449,7 @@ export default function VisitSection() {
                   fill
                   src={GOOGLE_MAPS_EMBED}
                   title="To Be Read bookstore location map"
-                  label="7931 SE King Rd, Ste 1 · Milwaukie, OR"
+                  label="7931 SE King Rd, Unit 1 · Portland, OR"
                 />
 
                 {/* Floating "open in maps" pill */}

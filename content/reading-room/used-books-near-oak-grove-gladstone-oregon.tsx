@@ -29,7 +29,7 @@ export default function Body() {
       <p>
         <strong>To Be Read</strong> (formerly the Clackamas Book Exchange) has
         served the area for over 45 years from{" "}
-        <Link href="/visit">7931 SE King Rd, Ste 1 in Milwaukie</Link>. From Oak
+        <Link href="/visit">7931 SE King Rd, Unit 1 in Milwaukie</Link>. From Oak
         Grove or Jennings Lodge it&rsquo;s a quick trip up McLoughlin or River
         Road; from Gladstone, a short hop across the river. Free parking when you
         arrive.

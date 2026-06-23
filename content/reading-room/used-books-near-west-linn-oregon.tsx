@@ -29,7 +29,7 @@ export default function Body() {
       <p>
         <strong>To Be Read</strong> has been part of the area for more than 45
         years, at{" "}
-        <Link href="/visit">7931 SE King Rd, Ste 1 in Milwaukie</Link>. To be
+        <Link href="/visit">7931 SE King Rd, Unit 1 in Milwaukie</Link>. To be
         clear, it&rsquo;s in Milwaukie, not West Linn &mdash; but it&rsquo;s a
         quick drive away, and it&rsquo;s the closest shop with the kind of
         floor-to-ceiling used-book selection that makes the trip worthwhile.

@@ -85,7 +85,7 @@ export default function Navbar() {
 
   const handleDirections = () => {
     window.open(
-      "https://maps.google.com/?q=7931+SE+King+Rd,+Milwaukie,+OR+97222",
+      "https://maps.google.com/?q=7931+SE+King+Rd,+Portland,+OR+97222",
       "_blank",
       "noopener,noreferrer",
     );
@@ -394,7 +394,7 @@ export default function Navbar() {
             503-659-2559
           </a>
           <p className="mt-6 px-2 text-center text-xs" style={{ color: "#6B7280" }}>
-            7931 SE King Rd, Ste 1, Milwaukie, OR
+            7931 SE King Rd, Unit 1, Portland, OR
             <br />
             Mon–Sat · 10am – 5pm
           </p>

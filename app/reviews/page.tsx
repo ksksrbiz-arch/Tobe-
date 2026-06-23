@@ -223,7 +223,7 @@ export default async function ReviewsPage() {
                 <MapPin size={22} style={{ color: "#F1BB1A" }} className="flex-shrink-0" />
                 <div className="text-left">
                   <p className="text-sm font-semibold leading-snug">
-                    7931 SE King Rd, Ste 1, Milwaukie, OR 97222
+                    7931 SE King Rd, Unit 1, Portland, OR 97222
                   </p>
                   <p className="text-xs opacity-80">Open Mon–Sat · 10am – 5pm · Free parking</p>
                 </div>
