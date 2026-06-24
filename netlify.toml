@@ -4,7 +4,7 @@
 
 [functions]
   node_bundler = "esbuild"
-  external_node_modules = ["@google/genai", "@neondatabase/serverless", "next-auth", "resend"]
+  external_node_modules = ["@neondatabase/serverless", "next-auth", "resend"]
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
