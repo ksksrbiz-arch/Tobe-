@@ -5,10 +5,31 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import ShopSection from "@/components/ShopSection";
+import FAQSection, { type Faq } from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import { Star, Tag } from "lucide-react";
+
+// Visible shop FAQ — also emits FAQPage structured data via <FAQSection>.
+const shopFaqs: Faq[] = [
+  {
+    q: "Where can I buy your books online?",
+    a: "Browse our curated online inventory on PangoBooks, and shop through Bookshop.org to support independent bookstores. Both are linked at the top of this page.",
+  },
+  {
+    q: "Can I order online for in-store pickup?",
+    a: "Right now we recommend browsing PangoBooks for our online inventory. For in-store pickup, give us a call and we'll happily set books aside for you.",
+  },
+  {
+    q: "How does shopping Bookshop.org support the store?",
+    a: "Bookshop.org shares a portion of every sale with the independent bookshops listed on it, so ordering through our storefront supports To Be Read even when you shop online.",
+  },
+  {
+    q: "Do the online listings match what's on the shelves?",
+    a: "Our in-store shelves change daily and are separate from the online listings, so if you're after a specific title it's best to call ahead or stop in.",
+  },
+];
 
 // Real Open Library covers (verified to exist) keep this grid visually in step
 // with the live "Just Shelved" shelf instead of faux gradient blocks.
@@ -212,6 +233,15 @@ export default function ShopPage() {
           </div>
         </div>
       </section>
+
+      <FAQSection
+        faqs={shopFaqs}
+        eyebrow="Shopping FAQ"
+        titleLead="Shopping"
+        titleAccent="questions"
+        intro="How to buy online, pick up in store, and support the shop."
+        id="shop-faq"
+      />
 
       <Footer />
       <FloatingButtons />
