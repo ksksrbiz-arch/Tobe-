@@ -1,8 +1,9 @@
-"use client";
-
-import React, { useState } from "react";
-import { ChevronDown, HelpCircle } from "lucide-react";
+// Server Component: the only interactive part (the accordion) lives in the
+// <FaqAccordion> client island; the heading + FAQPage JSON-LD render to HTML.
+import React from "react";
+import { HelpCircle } from "lucide-react";
 import Reveal from "./Reveal";
+import FaqAccordion from "./FaqAccordion";
 import JsonLd from "./JsonLd";
 import {
   TRADE_POLICY_CAP_AND_NOV1,
@@ -91,8 +92,6 @@ export default function FAQSection({
   intro?: string;
   id?: string;
 }) {
-  const [openIdx, setOpenIdx] = useState<number | null>(0);
-
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -137,62 +136,7 @@ export default function FAQSection({
           </p>
         </Reveal>
 
-        <Reveal>
-          <div
-            className="overflow-hidden rounded-2xl border bg-white shadow-md"
-            style={{ borderColor: "rgba(107,28,111,0.10)" }}
-          >
-            {faqs.map((faq, i) => {
-              const open = openIdx === i;
-              return (
-                <div
-                  key={faq.q}
-                  className="border-b last:border-b-0"
-                  style={{ borderColor: "rgba(107,28,111,0.08)" }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => setOpenIdx(open ? null : i)}
-                    aria-expanded={open}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-[#FDF8F0]"
-                  >
-                    <span
-                      className="text-sm font-semibold sm:text-base"
-                      style={{ color: open ? "#6B1C6F" : "#1a1a1a" }}
-                    >
-                      {faq.q}
-                    </span>
-                    <span
-                      className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full transition-all"
-                      style={{
-                        background: open ? "#6B1C6F" : "rgba(107,28,111,0.08)",
-                        color: open ? "white" : "#6B1C6F",
-                        transform: open ? "rotate(180deg)" : "rotate(0deg)",
-                      }}
-                    >
-                      <ChevronDown size={14} />
-                    </span>
-                  </button>
-                  <div
-                    className="grid transition-all duration-300"
-                    style={{
-                      gridTemplateRows: open ? "1fr" : "0fr",
-                    }}
-                  >
-                    <div className="overflow-hidden">
-                      <p
-                        className="px-5 pb-5 text-sm leading-relaxed"
-                        style={{ color: "#4B5563" }}
-                      >
-                        {faq.a}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </Reveal>
+        <FaqAccordion faqs={faqs} />
 
         <Reveal>
           <p className="mt-8 text-center text-sm" style={{ color: "#6B7280" }}>
