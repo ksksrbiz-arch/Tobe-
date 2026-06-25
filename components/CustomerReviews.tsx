@@ -90,6 +90,8 @@ function ReviewCard({ review }: { review: ExternalReview }) {
           <img
             src={review.photoUri}
             alt={review.author}
+            loading="lazy"
+            decoding="async"
             className="h-9 w-9 flex-shrink-0 rounded-full object-cover"
           />
         ) : (
