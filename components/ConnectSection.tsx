@@ -1,5 +1,6 @@
-"use client";
-
+// Server Component: purely presentational, so it renders to HTML with no
+// hydration of its own — only its <Reveal>/<CustomerReviews> children are
+// client islands.
 import React from "react";
 import { ExternalLink, Star } from "lucide-react";
 import Reveal from "./Reveal";

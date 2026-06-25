@@ -1,5 +1,5 @@
-"use client";
-
+// Server Component: static decorative SVG (animation is pure CSS/SMIL), so it
+// renders to HTML and never hydrates — it's rendered several times per page.
 import React from "react";
 
 type Variant = "book" | "sparkle" | "bookmark";
