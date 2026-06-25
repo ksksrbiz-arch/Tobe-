@@ -5,10 +5,31 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import StorySection from "@/components/StorySection";
+import FAQSection, { type Faq } from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import { Heart, BookOpen, Sparkles, Users, Quote } from "lucide-react";
+
+// Visible about FAQ — also emits FAQPage structured data via <FAQSection>.
+const aboutFaqs: Faq[] = [
+  {
+    q: "Is Clackamas Book Exchange the same store as To Be Read?",
+    a: "Yes — To Be Read (TBR) is the new name for the long-running Clackamas Book Exchange. Same shop, same shelves, same trade-in counter; the new name rolls out in 2026.",
+  },
+  {
+    q: "How long has the store been around?",
+    a: "Over 45 years — the shop was founded in 1981 and has been a neighborhood fixture ever since.",
+  },
+  {
+    q: "Where are you located?",
+    a: "7931 SE King Rd, Unit 1, Portland, OR 97222, with free on-site parking. We're open Monday–Saturday, 10am–5pm.",
+  },
+  {
+    q: "Do you only sell used books?",
+    a: "We specialize in secondhand books across every genre, and you can also trade your own used books for store credit toward your next reads.",
+  },
+];
 
 // Hero shot — spans the full first row
 const galleryHero = {
@@ -334,6 +355,15 @@ export default function AboutPage() {
           </Reveal>
         </div>
       </section>
+
+      <FAQSection
+        faqs={aboutFaqs}
+        eyebrow="About FAQ"
+        titleLead="Common"
+        titleAccent="questions"
+        intro="A few things people often ask about the shop."
+        id="about-faq"
+      />
 
       <Footer />
       <FloatingButtons />
