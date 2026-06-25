@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import BookLogo from "@/components/BookLogo";
+import JsonLd from "@/components/JsonLd";
 import {
   BookOpen,
   Coins,
@@ -95,9 +96,23 @@ const fineprint = [
 
 export const dynamic = "force-static";
 
+// FAQPage structured data, derived from the visible `fineprint` content above
+// so the schema always matches what's on the page. (The trade HowTo lives in
+// how-it-works/layout.tsx.)
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: fineprint.map((row) => ({
+    "@type": "Question",
+    name: row.q,
+    acceptedAnswer: { "@type": "Answer", text: row.a },
+  })),
+};
+
 export default function HowItWorksPage() {
   return (
     <main id="main">
+      <JsonLd data={faqJsonLd} />
       <Navbar />
 
       <PageHero
