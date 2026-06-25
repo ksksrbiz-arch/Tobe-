@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 
 export const metadata: Metadata = {
   title: "Staff Admin",
@@ -14,5 +15,6 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  // Admin pages use useSession() — provide the SessionProvider here.
+  return <SessionProviderWrapper>{children}</SessionProviderWrapper>;
 }
