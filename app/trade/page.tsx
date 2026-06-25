@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import TradeSection from "@/components/TradeSection";
 import TradeCreditEstimator from "@/components/TradeCreditEstimator";
+import FAQSection, { type Faq } from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
@@ -36,6 +37,30 @@ const tradeTips = [
     title: "Come Early",
     description:
       "Mornings are quieter — easier to chat, easier to browse. We're open Mon–Sat 10am–5pm.",
+  },
+];
+
+// Visible trade FAQ — also emits FAQPage structured data via <FAQSection>.
+const tradeFaqs: Faq[] = [
+  {
+    q: "Do you give cash for trades?",
+    a: `No — we're a trade-credit shop, so trades earn store credit rather than cash. ${TRADE_POLICY_WAIT}`,
+  },
+  {
+    q: "How is my trade credit calculated?",
+    a: "You receive 25% of the book's original list price as store credit on books we accept. When you buy with credit, 50% of the list price comes off your credit plus a small swap fee ($1–$3).",
+  },
+  {
+    q: "What books do you accept?",
+    a: "Fiction, non-fiction, biographies, kids/YA, sci-fi/fantasy, mystery, history, self-help, cookbooks, and more — as long as they're in good readable shape. Hardbacks must include their dust jackets.",
+  },
+  {
+    q: "What books don't you accept?",
+    a: "Magazines, Harlequin romance novels, hardbacks without dust jackets, encyclopedias and most textbooks, and anything heavily damaged, water-stained, or dated media like VHS tapes.",
+  },
+  {
+    q: "Does my store credit expire?",
+    a: `${TRADE_POLICY_EXPIRY} ${TRADE_POLICY_CAP}`,
   },
 ];
 
@@ -243,6 +268,15 @@ export default function TradePage() {
           </div>
         </div>
       </section>
+
+      <FAQSection
+        faqs={tradeFaqs}
+        eyebrow="Trade FAQ"
+        titleLead="Trade"
+        titleAccent="questions"
+        intro="The questions we hear most often about trading in books."
+        id="trade-faq"
+      />
 
       <Footer />
       <FloatingButtons />

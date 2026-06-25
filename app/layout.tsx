@@ -75,6 +75,13 @@ export const metadata: Metadata = {
   publisher: "To Be Read – Clackamas Book Exchange",
   alternates: {
     canonical: "/",
+    // Feed autodiscovery so readers/aggregators (and crawlers) find the
+    // Reading Room RSS feed from any page's <head>.
+    types: {
+      "application/rss+xml": [
+        { url: "/reading-room/feed.xml", title: "The Reading Room — To Be Read" },
+      ],
+    },
   },
   openGraph: {
     type: "website",

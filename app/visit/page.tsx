@@ -301,7 +301,7 @@ export default function VisitPage() {
               <div className="flex items-center justify-center gap-3 sm:justify-start">
                 <MapPin size={22} style={{ color: "#F1BB1A" }} className="flex-shrink-0" />
                 <div className="text-left">
-                  <p className="text-sm font-semibold leading-snug">7931 SE King Rd, Unit 1, Portland, OR 97222</p>
+                  <address className="text-sm font-semibold not-italic leading-snug">7931 SE King Rd, Unit 1, Portland, OR 97222</address>
                   <p className="text-xs opacity-80">Open Mon–Sat · 10am – 5pm</p>
                 </div>
               </div>
