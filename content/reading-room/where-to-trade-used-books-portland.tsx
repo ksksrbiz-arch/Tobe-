@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import {
-  TRADE_POLICY_EXPIRY,
+  TRADE_POLICY_ROLLOVER,
   TRADE_POLICY_CAP,
 } from "@/lib/tradePolicy";
 import type { BlogMeta } from "@/lib/blog";
@@ -35,7 +35,7 @@ export default function Body() {
         readable books to the counter, and paperbacks earn one credit each,
         hardcovers two, toward anything in the shop. It keeps books circulating in
         the neighborhood and keeps your next read cheap. A couple of things worth
-        knowing: {TRADE_POLICY_EXPIRY} {TRADE_POLICY_CAP} Full details are on the{" "}
+        knowing: {TRADE_POLICY_ROLLOVER} {TRADE_POLICY_CAP} Full details are on the{" "}
         <Link href="/how-it-works">how-it-works page</Link>, and a plain-English
         walkthrough lives in our{" "}
         <Link href="/reading-room/how-book-trade-in-credit-works">

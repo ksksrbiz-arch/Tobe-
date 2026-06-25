@@ -134,7 +134,8 @@ export default function TermsOfServicePage() {
           We do not buy books for cash. We may accept, decline, or limit any
           trade, and may change or discontinue trade and credit policies, rates,
           and store-credit terms at any time without notice. Store credit has no
-          cash value, is non-transferable, and may expire as permitted by law.
+          cash value, is non-transferable, and does not expire — it rolls over
+          year to year, subject to the $200 cap and applicable law.
         </p>
 
         <h2>6. Online purchases &amp; third-party shops</h2>

@@ -6,7 +6,7 @@ import Reveal from "./Reveal";
 import JsonLd from "./JsonLd";
 import {
   TRADE_POLICY_CAP_AND_NOV1,
-  TRADE_POLICY_EXPIRY,
+  TRADE_POLICY_ROLLOVER,
   TRADE_POLICY_WAIT,
 } from "@/lib/tradePolicy";
 
@@ -15,7 +15,7 @@ export type Faq = { q: string; a: string };
 const defaultFaqs: Faq[] = [
   {
     q: "Do you really not give cash for trades?",
-    a: `Correct — we operate as a trade-credit shop. ${TRADE_POLICY_WAIT} Credit is store credit only (not cash). ${TRADE_POLICY_EXPIRY}`,
+    a: `Correct — we operate as a trade-credit shop. ${TRADE_POLICY_WAIT} Credit is store credit only (not cash). ${TRADE_POLICY_ROLLOVER}`,
   },
   {
     q: "How is my trade credit calculated?",

@@ -38,7 +38,7 @@ export function GET() {
 - Phone: (503) 659-2559
 - Hours: Monday–Saturday, 10am–5pm; closed Sunday
 - Service area: Milwaukie, Clackamas, Oak Grove, Gladstone, Happy Valley, and Southeast Portland, Oregon
-- Trade-in: bring readable used books for store credit — one credit per paperback, two per hardcover. Store credit only (we do not buy for cash). Credit expires December 31 each year and is capped at $200.
+- Trade-in: bring readable used books for store credit — one credit per paperback, two per hardcover. Store credit only (we do not buy for cash). Credit never expires and rolls over year to year, capped at $200.
 - Shop online: PangoBooks and Bookshop.org
 - Website: ${SITE_URL}
 
