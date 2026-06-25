@@ -212,7 +212,7 @@ export default function AdminPage() {
               Add
             </button>
           </div>
-          <p className="mt-2 text-[11px]" style={{ color: "#9CA3AF" }}>
+          <p className="mt-2 text-[11px]" style={{ color: "#6B7280" }}>
             Press Enter or scan with a barcode reader. Each scan instantly publishes to the live feed.
           </p>
         </div>

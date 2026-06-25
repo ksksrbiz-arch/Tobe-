@@ -279,7 +279,7 @@ export default function HeroSection() {
             borderColor: "#F1BB1A",
             animationDelay: "340ms",
           }}
-          aria-label="Rebrand announcement - click for celebration"
+          aria-label="Becoming TBR in 2026 — click for celebration"
         >
           <Sparkles size={14} />
           Becoming TBR in 2026

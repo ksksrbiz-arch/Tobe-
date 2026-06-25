@@ -114,9 +114,9 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
+            <h3 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
               Explore
-            </h4>
+            </h3>
             <ul className="space-y-2.5">
               {[
                 { label: "About the store", href: "/about" },
@@ -145,9 +145,9 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
+            <h3 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
               Contact
-            </h4>
+            </h3>
             <ul className="space-y-3 text-sm opacity-85">
               <li className="flex items-start gap-2.5">
                 <MapPin size={16} className="mt-0.5 flex-shrink-0" style={{ color: "#F1BB1A" }} />
@@ -185,9 +185,9 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h4 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
+            <h3 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
               Stay updated
-            </h4>
+            </h3>
             <p className="mb-4 text-sm leading-relaxed opacity-75">
               New arrivals, store events, and behind-the-scenes peeks at our 2026 rebrand — straight to your inbox.
             </p>

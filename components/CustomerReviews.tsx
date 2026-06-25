@@ -30,7 +30,7 @@ interface ReviewsPayload {
 
 function StarRow({ rating }: { rating: number }) {
   return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating} out of 5 stars`}>
+    <div className="flex items-center gap-0.5" role="img" aria-label={`${rating} out of 5 stars`}>
       {[0, 1, 2, 3, 4].map((i) => (
         <Star
           key={i}
@@ -46,7 +46,7 @@ function StarRow({ rating }: { rating: number }) {
 function SourceBadge({ source }: { source: ExternalReview["source"] }) {
   if (source === "facebook") {
     return (
-      <span className="inline-flex items-center gap-1 text-xs" style={{ color: "#1877F2" }}>
+      <span className="inline-flex items-center gap-1 text-xs" style={{ color: "#0C5EC9" }}>
         <FacebookGlyph size={12} /> Facebook
       </span>
     );
@@ -109,7 +109,7 @@ function ReviewCard({ review }: { review: ExternalReview }) {
           </p>
           <div className="flex items-center gap-1.5">
             {review.relativeTime && (
-              <span className="text-xs" style={{ color: "#9CA3AF" }}>
+              <span className="text-xs" style={{ color: "#6B7280" }}>
                 {review.relativeTime} ·
               </span>
             )}
@@ -206,7 +206,7 @@ export default function CustomerReviews() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider"
-            style={{ color: "#1877F2" }}
+            style={{ color: "#0C5EC9" }}
           >
             <FacebookGlyph size={12} /> Reviews on Facebook
           </a>
@@ -231,7 +231,7 @@ export default function CustomerReviews() {
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold underline"
-            style={{ color: "#1877F2" }}
+            style={{ color: "#0C5EC9" }}
           >
             Facebook
           </a>

@@ -439,7 +439,7 @@ export default function NextReadMatchmaker() {
                         onClick={() => removeSaved(p.title, p.author)}
                         aria-label={`Remove ${p.title} from saved picks`}
                         className="touch-target rounded-lg p-1.5 transition-colors hover:bg-[rgba(239,68,68,0.10)]"
-                        style={{ color: "#9CA3AF" }}
+                        style={{ color: "#6B7280" }}
                       >
                         <Trash2 size={14} aria-hidden="true" />
                       </button>

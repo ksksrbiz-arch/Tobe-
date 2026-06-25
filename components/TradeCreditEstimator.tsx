@@ -248,7 +248,7 @@ export default function TradeCreditEstimator() {
             <p className="text-[10px] uppercase tracking-[0.28em]" style={{ color: "#6B7280" }}>
               To Be Read · Clackamas Book Exchange
             </p>
-            <p className="text-[9px] uppercase tracking-widest" style={{ color: "#9CA3AF" }}>
+            <p className="text-[9px] uppercase tracking-widest" style={{ color: "#6B7280" }}>
               Trade Credit Estimate
             </p>
           </div>
@@ -321,7 +321,7 @@ export default function TradeCreditEstimator() {
           {/* Footer */}
           <div
             className="mt-4 border-t pt-3 text-center text-[9px] uppercase tracking-widest"
-            style={{ borderColor: "rgba(107,28,111,0.10)", borderStyle: "dashed", color: "#9CA3AF" }}
+            style={{ borderColor: "rgba(107,28,111,0.10)", borderStyle: "dashed", color: "#6B7280" }}
           >
             <Printer size={10} className="mb-1 inline-block" /> Estimate only · Actual credit subject to condition review
           </div>
@@ -329,7 +329,7 @@ export default function TradeCreditEstimator() {
       )}
 
       {/* Disclaimer */}
-      <p className="mt-4 text-center text-[10px] leading-4" style={{ color: "#9CA3AF" }}>
+      <p className="mt-4 text-center text-[10px] leading-4" style={{ color: "#6B7280" }}>
         {`Credit is issued as store credit, not cash. ${TRADE_POLICY_ALL_CREDIT_LIMITS} Final amount may vary based on condition and staff review.`}
       </p>
     </div>

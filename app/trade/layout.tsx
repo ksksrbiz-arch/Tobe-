@@ -3,7 +3,7 @@ import JsonLd from "@/components/JsonLd";
 import { breadcrumbList, SITE_URL } from "@/lib/seo";
 import {
   TRADE_POLICY_CAP,
-  TRADE_POLICY_EXPIRY,
+  TRADE_POLICY_ROLLOVER,
   TRADE_POLICY_NOV1,
   TRADE_POLICY_WAIT,
 } from "@/lib/tradePolicy";
@@ -54,7 +54,7 @@ const howToJsonLd = {
       "@type": "HowToStep",
       position: 3,
       name: "Get store credit",
-      text: `Receive 25% of the original list price as credit on each accepted book. ${TRADE_POLICY_CAP} ${TRADE_POLICY_NOV1} ${TRADE_POLICY_EXPIRY}`,
+      text: `Receive 25% of the original list price as credit on each accepted book. ${TRADE_POLICY_CAP} ${TRADE_POLICY_NOV1} ${TRADE_POLICY_ROLLOVER}`,
       url: `${SITE_URL}/trade#trade`,
     },
     {

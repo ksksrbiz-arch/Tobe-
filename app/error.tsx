@@ -75,7 +75,7 @@ export default function Error({
           </Link>
         </div>
         {error?.digest && (
-          <p className="mt-6 text-[11px]" style={{ color: "#9CA3AF" }}>
+          <p className="mt-6 text-[11px]" style={{ color: "#6B7280" }}>
             Reference: {error.digest}
           </p>
         )}
