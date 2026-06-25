@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 
 export const metadata: Metadata = {
   title: "Your Wishlist",
@@ -17,5 +18,6 @@ export default function WishlistLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  // WishlistManager uses useSession() — provide the SessionProvider here.
+  return <SessionProviderWrapper>{children}</SessionProviderWrapper>;
 }
