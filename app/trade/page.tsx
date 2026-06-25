@@ -60,7 +60,7 @@ const tradeFaqs: Faq[] = [
   },
   {
     q: "Does my store credit expire?",
-    a: `${TRADE_POLICY_EXPIRY} ${TRADE_POLICY_CAP}`,
+    a: `No — ${TRADE_POLICY_ROLLOVER.charAt(0).toLowerCase()}${TRADE_POLICY_ROLLOVER.slice(1)} ${TRADE_POLICY_CAP}`,
   },
 ];
 
