@@ -16,7 +16,7 @@ import {
   HandCoins,
   Smile,
 } from "lucide-react";
-import { TRADE_POLICY_CAP, TRADE_POLICY_EXPIRY, TRADE_POLICY_NOV1, TRADE_POLICY_WAIT } from "@/lib/tradePolicy";
+import { TRADE_POLICY_CAP, TRADE_POLICY_ROLLOVER, TRADE_POLICY_NOV1, TRADE_POLICY_WAIT } from "@/lib/tradePolicy";
 
 const tradeTips = [
   {
@@ -53,7 +53,7 @@ const steps = [
   {
     icon: HandCoins,
     title: "Get store credit",
-    body: `Receive 25% of the original list price as credit on each accepted book. ${TRADE_POLICY_CAP} ${TRADE_POLICY_NOV1} ${TRADE_POLICY_EXPIRY}`,
+    body: `Receive 25% of the original list price as credit on each accepted book. ${TRADE_POLICY_CAP} ${TRADE_POLICY_NOV1} ${TRADE_POLICY_ROLLOVER}`,
   },
   {
     icon: Smile,

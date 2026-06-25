@@ -6,7 +6,7 @@ import Reveal from "./Reveal";
 import {
   TRADE_POLICY_CAP,
   TRADE_POLICY_NOV1,
-  TRADE_POLICY_WAIT_AND_EXPIRY,
+  TRADE_POLICY_WAIT_AND_ROLLOVER,
 } from "@/lib/tradePolicy";
 
 const acceptItems = [
@@ -105,7 +105,7 @@ export default function TradeSection() {
                 NO CASH GIVEN FOR BOOKS!
               </p>
               <p className="mt-1 text-sm leading-relaxed" style={{ color: "#374151" }}>
-                {`We operate on a trade credit system. ${TRADE_POLICY_WAIT_AND_EXPIRY}`}
+                {`We operate on a trade credit system. ${TRADE_POLICY_WAIT_AND_ROLLOVER}`}
               </p>
             </div>
           </div>

@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import {
   TRADE_POLICY_WAIT,
-  TRADE_POLICY_EXPIRY,
+  TRADE_POLICY_ROLLOVER,
   TRADE_POLICY_CAP,
   TRADE_POLICY_NOV1,
 } from "@/lib/tradePolicy";
@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
   slug: "how-book-trade-in-credit-works",
   title: "How book trade-in credit works at To Be Read",
   description:
-    "A plain-English guide to trading used books for store credit at To Be Read in Milwaukie, OR — what we take, how credit is earned, and the fine print on caps and expiry.",
+    "A plain-English guide to trading used books for store credit at To Be Read in Milwaukie, OR — what we take, how credit is earned, and the fine print on the $200 cap and how credit rolls over.",
   excerpt:
     "Bring books, earn store credit, take home your next read the same afternoon. Here's exactly how our trade-in works — what we accept, how credit adds up, and the rules worth knowing first.",
   date: "2026-06-19",
@@ -55,7 +55,7 @@ export default function Body() {
         fair and the shelves healthy:
       </p>
       <ul>
-        <li>{TRADE_POLICY_EXPIRY}</li>
+        <li>{TRADE_POLICY_ROLLOVER}</li>
         <li>{TRADE_POLICY_CAP}</li>
         <li>{TRADE_POLICY_NOV1}</li>
       </ul>
