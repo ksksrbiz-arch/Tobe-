@@ -1,5 +1,6 @@
-"use client";
-
+// Server Component: purely presentational. The social-link hover is pure CSS
+// (.footer-social), so the footer renders to HTML with no hydration of its own
+// — the <CookieSettingsButton> is the only client island.
 import React from "react";
 import Link from "next/link";
 import { MapPin, Phone, Mail, Clock, Send, ArrowUpRight } from "lucide-react";
@@ -95,16 +96,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Visit us on ${s.name}`}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg transition-all hover:scale-110"
-                  style={{ background: "rgba(255,255,255,0.10)", color: "white" }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.background = "#F1BB1A";
-                    (e.currentTarget as HTMLAnchorElement).style.color = "#1a1a1a";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.10)";
-                    (e.currentTarget as HTMLAnchorElement).style.color = "white";
-                  }}
+                  className="footer-social flex h-9 w-9 items-center justify-center rounded-lg transition-all hover:scale-110"
                 >
                   <s.icon />
                 </a>

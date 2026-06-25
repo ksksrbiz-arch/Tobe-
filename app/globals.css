@@ -871,6 +871,19 @@ p {
   border: 1px solid rgba(107, 28, 111, 0.08);
 }
 
+/* Footer social link: gold fill on hover. Pure CSS (was an imperative
+   onMouseEnter/Leave handler) so the footer can render as a Server Component. */
+.footer-social {
+  background: rgba(255, 255, 255, 0.10);
+  color: #ffffff;
+  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease,
+    transform var(--dur-fast) ease;
+}
+.footer-social:hover {
+  background: var(--gold);
+  color: #1a1a1a;
+}
+
 /* Button shine on hover */
 .btn-shine {
   position: relative;
