@@ -1,5 +1,6 @@
-"use client";
-
+// Server Component: purely presentational (string props, CSS animations, a
+// native anchor for the scroll control). Reused across many page heroes, so
+// rendering it server-side removes that hydration everywhere it appears.
 import React from "react";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
