@@ -242,7 +242,7 @@ export default function AdminReviewsPage() {
           </div>
         ) : reviews.length === 0 ? (
           <div className="flex flex-col items-center gap-2 rounded-2xl border bg-white py-16 text-center" style={{ borderColor: "rgba(107,28,111,0.10)" }}>
-            <Inbox size={28} style={{ color: "#9CA3AF" }} />
+            <Inbox size={28} style={{ color: "#6B7280" }} />
             <p className="text-sm" style={{ color: "#6B7280" }}>
               No {filter === "all" ? "" : filter} reviews.
             </p>
@@ -288,7 +288,7 @@ export default function AdminReviewsPage() {
                   {r.body}
                 </p>
                 <div className="flex items-center justify-between gap-2">
-                  <p className="text-xs" style={{ color: "#9CA3AF" }}>
+                  <p className="text-xs" style={{ color: "#6B7280" }}>
                     {r.author_name} · {new Date(r.created_at).toLocaleDateString()}
                   </p>
                   <div className="flex gap-2">

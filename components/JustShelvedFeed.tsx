@@ -143,7 +143,7 @@ function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
           </p>
         )}
         {(book.pub_year || book.format) && (
-          <p className="mt-0.5 truncate text-[9px]" style={{ color: "#9CA3AF" }}>
+          <p className="mt-0.5 truncate text-[9px]" style={{ color: "#6B7280" }}>
             {[formatLabel(book.format), book.pub_year].filter(Boolean).join(" • ")}
           </p>
         )}
@@ -297,7 +297,7 @@ export default function JustShelvedFeed() {
           <BookOpen size={12} />
           {books.length} on the shelf
         </span>
-        <span className="inline-flex items-center gap-1 text-xs" style={{ color: "#9CA3AF" }}>
+        <span className="inline-flex items-center gap-1 text-xs" style={{ color: "#6B7280" }}>
           <Radio size={12} /> Refreshes every 15s
         </span>
       </div>

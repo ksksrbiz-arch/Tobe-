@@ -26,7 +26,7 @@ function formatDate(iso: string): string {
 
 function StarRow({ rating, size = 16 }: { rating: number; size?: number }) {
   return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating} out of 5 stars`}>
+    <div className="flex items-center gap-0.5" role="img" aria-label={`${rating} out of 5 stars`}>
       {[0, 1, 2, 3, 4].map((i) => (
         <Star
           key={i}
@@ -81,7 +81,7 @@ function ReviewCard({ review }: { review: Review }) {
           <p className="truncate text-sm font-semibold" style={{ color: "#6B1C6F" }}>
             {review.author_name}
           </p>
-          <p className="text-xs" style={{ color: "#9CA3AF" }}>
+          <p className="text-xs" style={{ color: "#6B7280" }}>
             {formatDate(review.created_at)}
           </p>
         </div>
