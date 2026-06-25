@@ -1471,6 +1471,18 @@ p {
   margin: 1.25rem 0 1.5rem;
   font-size: 0.9rem;
 }
+/* On narrow screens the multi-column policy tables would otherwise be squished
+   (and clipped by the body's `overflow-x: clip`). Make them horizontally
+   scrollable instead — the standard responsive-table pattern — so every column
+   stays readable. Desktop keeps the normal full-width table. */
+@media (max-width: 600px) {
+  .legal-prose table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+}
 .legal-prose th,
 .legal-prose td {
   border: 1px solid var(--line-strong);
