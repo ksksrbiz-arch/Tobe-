@@ -59,7 +59,7 @@ export default async function ReadingRoomPostPage({
   if (!post) notFound();
 
   const { Body } = post;
-  const related = getRelatedPosts(post.slug);
+  const related = getRelatedPosts(post.slug, 6);
   const url = `${SITE_URL}/reading-room/${post.slug}`;
 
   const articleJsonLd = {

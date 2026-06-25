@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import {
   TRADE_POLICY_WAIT,
   TRADE_POLICY_ROLLOVER,
@@ -24,6 +25,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Bring in readable used books, we review them at the counter, and accepted books earn store credit to spend the same day toward your next stack — store credit only, not cash.
+      </QuickAnswer>
       <p>
         One of the most common questions we hear at the counter is simply:{" "}
         <em>&ldquo;How does the trade-in thing actually work?&rdquo;</em> It&rsquo;s a fair

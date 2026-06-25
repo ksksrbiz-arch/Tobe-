@@ -7,9 +7,30 @@ import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import AddToCalendarButton from "@/components/AddToCalendarButton";
 import JsonLd from "@/components/JsonLd";
+import FAQSection, { type Faq } from "@/components/FAQSection";
 import { SITE_URL, breadcrumbList } from "@/lib/seo";
 import { getUpcomingEvents, type EventOccurrence } from "@/lib/events";
 import { Calendar, Clock, MapPin } from "lucide-react";
+
+// Visible events FAQ — also emits FAQPage structured data via <FAQSection>.
+const eventsFaqs: Faq[] = [
+  {
+    q: "Are your events free?",
+    a: "Yes — our events are free and open to the community. Just come by.",
+  },
+  {
+    q: "Do I need to register or RSVP?",
+    a: "Most events are casual and drop-in, so no sign-up is needed. If a particular event asks you to reserve a spot, we'll say so in its details.",
+  },
+  {
+    q: "Where do events take place?",
+    a: "At the shop — 7931 SE King Rd, Unit 1, Portland, OR 97222, with free on-site parking — unless an event says otherwise.",
+  },
+  {
+    q: "How do I hear about new events?",
+    a: "Check this page, follow us on Instagram (@toberead_clackamas), or stop in and ask — we post upcoming happenings here and in the shop.",
+  },
+];
 
 // Statically prerendered, but revalidated daily so the upcoming-event dates
 // and their Event structured data stay fresh as occurrences pass.
@@ -47,6 +68,8 @@ function eventJsonLd(ev: EventOccurrence): Record<string, unknown> {
     endDate: ev.endDate,
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     eventStatus: "https://schema.org/EventScheduled",
+    isAccessibleForFree: true,
+    inLanguage: "en-US",
     location: { "@id": `${SITE_URL}/#bookstore` },
     organizer: { "@id": `${SITE_URL}/#bookstore` },
     image: `${SITE_URL}/opengraph-image`,
@@ -247,6 +270,15 @@ export default function EventsPage() {
           </Reveal>
         </div>
       </section>
+
+      <FAQSection
+        faqs={eventsFaqs}
+        eyebrow="Events FAQ"
+        titleLead="Event"
+        titleAccent="questions"
+        intro="The practical details for joining us at the shop."
+        id="events-faq"
+      />
 
       <Footer />
       <FloatingButtons />

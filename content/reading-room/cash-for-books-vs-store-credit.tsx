@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Store credit almost always pays more than cash for the same books. Take credit if you will be back for more reading; take cash only if you simply want money in hand.
+      </QuickAnswer>
       <p>
         When you bring a box of books to a used bookstore, you&rsquo;ll usually
         face a choice: take cash, or take store credit. They are not worth the

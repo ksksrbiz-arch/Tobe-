@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Yes. A good used bookstore beats one-click retail on three things the internet cannot match: real savings, genuine discovery, and community — well worth the trip.
+      </QuickAnswer>
       <p>
         In a world where any book is one click and two days away, it&rsquo;s fair
         to ask: are used bookstores still worth it? The short answer is yes

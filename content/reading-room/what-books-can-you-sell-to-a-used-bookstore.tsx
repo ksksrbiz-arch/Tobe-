@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Used bookstores take what they can resell: clean, readable copies in current demand and a sellable format. Hardcovers should keep their dust jackets; skip textbooks, magazines, and damaged books.
+      </QuickAnswer>
       <p>
         Before you haul a box to the counter, it helps to know what a used
         bookstore is actually looking for. Stores buy what they can resell, so

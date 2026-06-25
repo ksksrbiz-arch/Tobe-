@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Buying used stretches your reading budget much further, keeps good books in circulation, and turns every visit into a hunt for something unexpected.
+      </QuickAnswer>
       <p>
         New books are wonderful, and we&rsquo;ll never tell you to stop buying
         them. But if you read a lot &mdash; or want to &mdash; buying used is one
