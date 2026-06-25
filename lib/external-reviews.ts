@@ -38,10 +38,18 @@ export const FACEBOOK_REVIEWS_URL =
 /**
  * Curated, verbatim Google reviews used when the live Places API isn't
  * configured (or returns ratings without review text). Angel West's review is
- * trimmed to its praise per the store's request; the two 5-star reviews are
+ * trimmed to its praise per the store's request; the 5-star reviews are
  * unedited.
  */
 export const CURATED_GOOGLE_REVIEWS: ExternalReview[] = [
+  {
+    rating: 5,
+    text:
+      "Very friendly staff. The store has a great collection of classics, science fiction, cookbooks, non-fiction, and more! 😍 I found it really cute that they bundle books and movies with candy and/or popcorn for movie nights. Highly recommend for book lovers to stop by; my husband and I look forward to visiting again.",
+    author: "Daisy Cheung-Figueredo",
+    relativeTime: "2 weeks ago",
+    source: "google",
+  },
   {
     rating: 5,
     text:
