@@ -75,6 +75,15 @@ export default async function ReadingRoomPostPage({
     mainEntityOfPage: url,
     image: `${SITE_URL}/reading-room/${post.slug}/opengraph-image`,
     keywords: post.tags.join(", "),
+    inLanguage: "en-US",
+    // Tie each post to the Reading Room blog entity for topical consolidation.
+    isPartOf: { "@type": "Blog", "@id": `${SITE_URL}/reading-room#blog` },
+    ...(post.tags[0] ? { articleSection: post.tags[0] } : {}),
+    // Help voice/AI assistants pick the headline + body as the spoken answer.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", "#article-body"],
+    },
   };
 
   return (
