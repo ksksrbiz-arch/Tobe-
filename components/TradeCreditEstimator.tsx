@@ -260,6 +260,8 @@ export default function TradeCreditEstimator() {
               <img
                 src={book.coverUrl}
                 alt={book.title}
+                loading="lazy"
+                decoding="async"
                 className="h-16 w-11 rounded object-cover flex-shrink-0"
                 style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
               />
