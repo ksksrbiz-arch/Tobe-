@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Yes — plenty of used bookstores take in books every day. At To Be Read we accept readable used books in trade for store credit (we are a trade-credit shop, not cash).
+      </QuickAnswer>
       <p>
         Short answer: yes. Plenty of bookstores buy used books, and a good used
         bookstore does it every single day. If you have a shelf or a few boxes
