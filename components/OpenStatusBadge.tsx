@@ -38,6 +38,8 @@ export default function OpenStatusBadge({ className = "" }: { className?: string
           boxShadow: status && open ? "0 0 0 3px rgba(34,197,94,0.18)" : "none",
         }}
       />
+      {/* Explicit textual status so open/closed is never conveyed by color alone */}
+      {status && <span className="sr-only">{open ? "Open: " : "Closed: "}</span>}
       {label}
     </span>
   );

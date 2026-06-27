@@ -15,10 +15,11 @@ export default function DirectionsButton({ className = "" }: { className?: strin
       href={DIRECTIONS_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className={`btn-shine inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-md transition-all hover:scale-105 active:scale-[0.98] ${className}`}
+      aria-label="Get driving directions to To Be Read, 7931 SE King Rd, Unit 1, Portland, OR 97222 (opens in a new tab)"
+      className={`btn-shine inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-md transition-all hover:scale-105 active:scale-[0.97] ${className}`}
       style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
     >
-      <Navigation size={16} />
+      <Navigation size={16} aria-hidden="true" />
       Get Directions
     </a>
   );
