@@ -9,7 +9,7 @@ import AddToCalendarButton from "@/components/AddToCalendarButton";
 import SummerReadingBanner from "@/components/SummerReadingBanner";
 import JsonLd from "@/components/JsonLd";
 import FAQSection, { type Faq } from "@/components/FAQSection";
-import { SITE_URL, breadcrumbList } from "@/lib/seo";
+import { SITE_URL, breadcrumbList, storeEventLocation } from "@/lib/seo";
 import { getUpcomingEvents, type EventOccurrence } from "@/lib/events";
 import { Calendar, Clock, MapPin } from "lucide-react";
 
@@ -71,8 +71,13 @@ function eventJsonLd(ev: EventOccurrence): Record<string, unknown> {
     eventStatus: "https://schema.org/EventScheduled",
     isAccessibleForFree: true,
     inLanguage: "en-US",
-    location: { "@id": `${SITE_URL}/#bookstore` },
-    organizer: { "@id": `${SITE_URL}/#bookstore` },
+    location: storeEventLocation(),
+    organizer: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#bookstore`,
+      name: "To Be Read (Clackamas Book Exchange)",
+      url: SITE_URL,
+    },
     image: `${SITE_URL}/opengraph-image`,
     offers: {
       "@type": "Offer",
@@ -143,8 +148,8 @@ export default function EventsPage() {
               className="mx-auto max-w-xl text-sm leading-relaxed"
               style={{ color: "#6B7280" }}
             >
-              Drop in to read, browse fresh staff picks, or trade your books for
-              extra credit. No tickets, no fuss.
+              Drop in to read, browse fresh staff picks, or join our free
+              Summer Reading Programs. No tickets, no fuss.
             </p>
             <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
           </Reveal>

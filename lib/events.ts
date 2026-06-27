@@ -11,6 +11,8 @@
  * schema.org Event startDate/endDate are unambiguous.
  */
 
+import { SITE_URL, storeEventLocation } from "@/lib/seo";
+
 export interface EventOccurrence {
   /** Stable identifier for this concrete occurrence (slug + date). */
   id: string;
@@ -79,17 +81,6 @@ const RULES: RecurrenceRule[] = [
       "On the first Saturday of every month our booksellers set out their favorite recent finds across the store — handwritten notes and all. Come browse the picks and ask us why we loved them.",
     recurrence: "First Saturday monthly",
     matches: (p) => p.weekday === SATURDAY && nthWeekdayOfMonth(p.day) === 1,
-    startHour: 10,
-    startMinute: 0,
-    durationMinutes: 7 * 60, // all day: 10am–5pm
-  },
-  {
-    slug: "trade-in-day",
-    title: "Trade-In Day",
-    description:
-      "On the third Saturday of every month, trade-in credit gets a friendly boost. Bring in the books you're ready to pass along and walk out with extra credit toward your next stack.",
-    recurrence: "Third Saturday monthly",
-    matches: (p) => p.weekday === SATURDAY && nthWeekdayOfMonth(p.day) === 3,
     startHour: 10,
     startMinute: 0,
     durationMinutes: 7 * 60, // all day: 10am–5pm
@@ -300,6 +291,18 @@ const SPECIAL_EVENTS: SpecialEvent[] = [
   },
 ];
 
+/** All defined special events (regardless of date), ordered by start date. */
+export function getAllSpecialEvents(): SpecialEvent[] {
+  return [...SPECIAL_EVENTS].sort((a, b) =>
+    a.startDate.localeCompare(b.startDate),
+  );
+}
+
+/** The special events belonging to a named program (regardless of date). */
+export function getProgramEvents(program: string): SpecialEvent[] {
+  return getAllSpecialEvents().filter((ev) => ev.program === program);
+}
+
 /**
  * Special events that haven't finished yet, ordered by start date. An event is
  * "active" through its end instant, so a program shows for its whole window and
@@ -309,6 +312,45 @@ export function getActiveSpecialEvents(now: Date = new Date()): SpecialEvent[] {
   return SPECIAL_EVENTS.filter(
     (ev) => new Date(ev.endDate).getTime() > now.getTime(),
   ).sort((a, b) => a.startDate.localeCompare(b.startDate));
+}
+
+/**
+ * schema.org Event for a seasonal program — self-contained (inline location +
+ * named organizer + free Offer) so it qualifies for Google's Event rich result
+ * on whatever page emits it. Shared by the homepage banner and the dedicated
+ * Summer Reading landing page so the two never drift apart.
+ */
+export function specialEventJsonLd(ev: SpecialEvent): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: ev.title,
+    description: ev.description,
+    startDate: ev.startDate,
+    endDate: ev.endDate,
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    isAccessibleForFree: true,
+    inLanguage: "en-US",
+    ...(ev.audience
+      ? { audience: { "@type": "Audience", audienceType: ev.audience } }
+      : {}),
+    location: storeEventLocation(),
+    organizer: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#bookstore`,
+      name: "To Be Read (Clackamas Book Exchange)",
+      url: SITE_URL,
+    },
+    image: `${SITE_URL}/opengraph-image`,
+    offers: {
+      "@type": "Offer",
+      price: 0,
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      url: `${SITE_URL}/events/summer-reading`,
+    },
+  };
 }
 
 /**

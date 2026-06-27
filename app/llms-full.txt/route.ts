@@ -14,7 +14,8 @@ const PAGES: Array<{ title: string; path: string; note: string }> = [
   { title: "How It Works", path: "/how-it-works", note: "Step-by-step explanation of trading books and earning/spending store credit." },
   { title: "Shop Online", path: "/shop", note: "Curated used books on PangoBooks and Bookshop.org, plus the in-store experience." },
   { title: "About the Store", path: "/about", note: "The 45-year history and story of the shop and its rebrand to To Be Read." },
-  { title: "Events & Happenings", path: "/events", note: "Free in-store events — weekly Cozy Reading Hour, Staff Picks Saturday, monthly Trade-In Days, and the seasonal Summer Reading Programs for youth." },
+  { title: "Events & Happenings", path: "/events", note: "Free in-store events — weekly Cozy Reading Hour, Staff Picks Saturday, and the seasonal Summer Reading Programs for youth." },
+  { title: "Summer Reading Programs", path: "/events/summer-reading", note: "Dedicated landing page for the two free youth programs (Reading Circle + Reading Challenge), July 1–August 21, 2026, with how-to-join and FAQ." },
   { title: "Connect", path: "/connect", note: "Contact details, email, phone, and social channels." },
   { title: "The Reading Room", path: "/reading-room", note: "Blog hub: reading guides, recommendations, gift guides, trade tips, and local guides." },
 ];
@@ -58,7 +59,7 @@ export function GET() {
 - How does trade-in credit work? Bring in readable used books and receive store credit (store credit only — not cash). Credit can be spent on anything in the shop; it never expires and rolls over year to year, capped at $200.
 - How do I get a book recommendation? Use the free Next Read Matchmaker on the home page, or stop in and ask a bookseller.
 - Where can I buy the books online? On PangoBooks and Bookshop.org (linked from the Shop page); for in-store pickup, call ahead and we'll set titles aside.
-- Are there events? Yes — free in-store events: weekly Cozy Reading Hour, Staff Picks Saturday, and monthly Trade-In Days. See ${SITE_URL}/events.
+- Are there events? Yes — free in-store events: weekly Cozy Reading Hour and Staff Picks Saturday. See ${SITE_URL}/events.
 - Summer Reading Programs (Summer 2026): two free programs for youth running July 1 – August 21, 2026. The Summer Reading Circle is a drop-in reading group where kids share what they're reading and discover new favorites; the Summer Reading Challenge lets readers set a goal, track the books they finish, and earn rewards. Both are free, held at the shop (7931 SE King Rd, Unit 1, Portland, OR 97222), and require no registration. Details at ${SITE_URL}/events.
 
 ## Key pages
