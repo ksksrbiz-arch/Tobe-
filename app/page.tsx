@@ -10,6 +10,7 @@ import Tilt from "@/components/Tilt";
 import DustMotes from "@/components/DustMotes";
 import SectionDivider from "@/components/SectionDivider";
 import ReadingRoomTeaser from "@/components/ReadingRoomTeaser";
+import SummerReadingBanner from "@/components/SummerReadingBanner";
 import {
   Award,
   BookMarked,
@@ -232,6 +233,10 @@ const stats = [
   { icon: Clock, label: "Mon–Sat", sub: "10am – 5pm" },
 ];
 
+// Statically prerendered, but revalidated daily so the date-gated seasonal
+// banner (e.g. Summer Reading Programs) appears and retires on schedule.
+export const revalidate = 86400;
+
 export default function Home() {
   return (
     <main
@@ -244,6 +249,9 @@ export default function Home() {
     >
       <Navbar />
       <HeroSection />
+
+      {/* Seasonal program spotlight — date-gated, renders only while active. */}
+      <SummerReadingBanner />
 
       {/* AI Matchmaker — promoted near the top so it's the first interactive
           feature visitors meet right after the hero. */}

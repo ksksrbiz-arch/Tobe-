@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import AddToCalendarButton from "@/components/AddToCalendarButton";
+import SummerReadingBanner from "@/components/SummerReadingBanner";
 import JsonLd from "@/components/JsonLd";
 import FAQSection, { type Faq } from "@/components/FAQSection";
 import { SITE_URL, breadcrumbList } from "@/lib/seo";
@@ -107,6 +108,9 @@ export default function EventsPage() {
         imageUrl="/images/shelves/store-front-adult-fiction.jpg"
         scrollTargetId="events-list"
       />
+
+      {/* Featured seasonal program — date-gated; emits its own Event JSON-LD. */}
+      <SummerReadingBanner />
 
       <section
         id="events-list"

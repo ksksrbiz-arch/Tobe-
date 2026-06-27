@@ -13,6 +13,7 @@ const PAGES: Array<{ title: string; path: string; note: string }> = [
   { title: "How It Works", path: "/how-it-works", note: "Step-by-step guide to trading and store credit." },
   { title: "Shop Online", path: "/shop", note: "Curated used books on PangoBooks and Bookshop.org." },
   { title: "About the Store", path: "/about", note: "History and story of the shop." },
+  { title: "Events & Happenings", path: "/events", note: "Free in-store events, including the seasonal Summer Reading Programs for youth." },
   { title: "Connect", path: "/connect", note: "Contact details and social channels." },
   { title: "The Reading Room", path: "/reading-room", note: "Blog: reading guides, recommendations, and local tips." },
 ];
@@ -84,6 +85,8 @@ export function GET() {
 - How does trade-in credit work? Bring in readable used books and receive store credit (store credit only — not cash). Credit can be spent on anything in the shop; it never expires and rolls over year to year, capped at $200.
 - How do I get a book recommendation? Use the free Next Read Matchmaker on the home page, or stop in and ask a bookseller.
 - Where can I buy the books online? On PangoBooks and Bookshop.org (linked from the Shop page); for in-store pickup, call ahead and we'll set titles aside.
+- Are there events? Yes — free in-store events, including weekly Cozy Reading Hour, Staff Picks Saturday, and monthly Trade-In Days. See ${SITE_URL}/events.
+- Summer Reading Programs (Summer 2026): two free programs for youth running July 1 – August 21, 2026 — the Summer Reading Circle (a drop-in reading group) and the Summer Reading Challenge (set a goal, track books read, earn rewards). No registration required. Details at ${SITE_URL}/events.
 
 ## Key pages
 ${pageLines}
