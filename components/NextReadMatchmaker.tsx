@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import {
   BookOpen,
   Send,
@@ -133,10 +134,14 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
       }}
     >
       {rec.cover_url ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        // next/image ships intrinsic width/height so the cover slot is reserved
+        // before the image loads (no layout shift). Covers come from the live
+        // shelf's configured CDNs (Open Library / Google Books); lazy by default.
+        <Image
           src={rec.cover_url}
-          alt={rec.title}
+          alt={`${rec.title} cover`}
+          width={64}
+          height={96}
           className="h-24 w-16 flex-shrink-0 rounded-lg object-cover"
           style={{ boxShadow: "0 6px 18px rgba(0,0,0,0.15)" }}
         />

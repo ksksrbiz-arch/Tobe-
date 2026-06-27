@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { Star, Quote, ExternalLink } from "lucide-react";
 import {
   type ExternalReview,
@@ -86,12 +87,16 @@ function ReviewCard({ review }: { review: ExternalReview }) {
         style={{ borderColor: "rgba(107,28,111,0.08)" }}
       >
         {review.photoUri ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          // next/image reserves the 36×36 avatar slot (no layout shift) and is
+          // lazy by default. Google supplies these avatars from its user-content
+          // CDN, which isn't in next.config's remotePatterns, so opt out of the
+          // optimizer with `unoptimized` rather than route them through it.
+          <Image
             src={review.photoUri}
-            alt={review.author}
-            loading="lazy"
-            decoding="async"
+            alt={`${review.author}'s profile photo`}
+            width={36}
+            height={36}
+            unoptimized
             className="h-9 w-9 flex-shrink-0 rounded-full object-cover"
           />
         ) : (
