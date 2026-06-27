@@ -99,6 +99,39 @@ export default async function ReadingRoomPostPage({
 
       <article className="px-4 pb-20 pt-28 sm:px-6 sm:pt-32" style={{ background: "var(--background)" }}>
         <div className="mx-auto max-w-2xl">
+          {/* Visible breadcrumb trail — mirrors the BreadcrumbList JSON-LD above. */}
+          <nav aria-label="Breadcrumb" className="mb-6">
+            <ol className="flex flex-wrap items-center gap-1.5 text-xs font-semibold text-[#6B7280]">
+              <li>
+                <Link
+                  href="/"
+                  className="rounded transition-colors hover:underline"
+                  style={{ color: "#6B1C6F" }}
+                >
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true" style={{ color: "rgba(107,28,111,0.45)" }}>
+                ›
+              </li>
+              <li>
+                <Link
+                  href="/reading-room"
+                  className="rounded transition-colors hover:underline"
+                  style={{ color: "#6B1C6F" }}
+                >
+                  The Reading Room
+                </Link>
+              </li>
+              <li aria-hidden="true" style={{ color: "rgba(107,28,111,0.45)" }}>
+                ›
+              </li>
+              <li aria-current="page" style={{ color: "#4A1350" }}>
+                {post.title}
+              </li>
+            </ol>
+          </nav>
+
           <Link
             href="/reading-room"
             className="mb-8 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors"

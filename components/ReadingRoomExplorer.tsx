@@ -77,7 +77,8 @@ export default function ReadingRoomExplorer({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search notes by title, topic, or keyword…"
-          className="w-full rounded-2xl border bg-white/80 py-3.5 pl-11 pr-11 text-sm font-medium shadow-sm outline-none transition-shadow focus:shadow-md"
+          aria-label="Search the Reading Room by title, topic, or keyword"
+          className="w-full rounded-2xl border bg-white/80 py-3.5 pl-11 pr-11 text-sm font-medium shadow-sm transition-shadow focus:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B1C6F]"
           style={{ borderColor: "rgba(107,28,111,0.16)", color: "#374151" }}
           autoComplete="off"
         />
@@ -110,7 +111,8 @@ export default function ReadingRoomExplorer({
               type="button"
               onClick={() => toggleTag(tag)}
               aria-pressed={active}
-              className="rounded-full border px-3 py-1 text-xs font-semibold transition-all hover:scale-[1.03]"
+              aria-label={`Filter by ${tag}`}
+              className="rounded-full border px-3 py-1 text-xs font-semibold transition-all hover:scale-[1.03] active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
               style={{
                 borderColor: active ? "#6B1C6F" : "rgba(107,28,111,0.15)",
                 color: active ? "#FFFFFF" : "#6B1C6F",

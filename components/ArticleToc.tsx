@@ -130,13 +130,15 @@ export default function ArticleToc({
               <li key={item.id} className={item.level === 3 ? "pl-4" : ""}>
                 <a
                   href={`#${item.id}`}
-                  aria-current={active ? "true" : undefined}
-                  className="block rounded-lg border-l-2 py-1 pl-3 pr-2 text-sm transition-colors"
+                  aria-current={active ? "location" : undefined}
+                  className="block rounded-lg border-l-2 py-1 pl-3 pr-2 text-sm transition-colors hover:bg-[rgba(107,28,111,0.06)] hover:text-[#4A1350] focus-visible:bg-[rgba(107,28,111,0.06)]"
                   style={{
                     borderColor: active ? "#F1BB1A" : "transparent",
                     color: active ? "#4A1350" : "#6B7280",
                     fontWeight: active ? 700 : 500,
-                    background: active ? "rgba(241,187,26,0.10)" : "transparent",
+                    // Only set background inline for the active item; leaving it
+                    // unset lets the hover/focus Tailwind classes apply to the rest.
+                    ...(active ? { background: "rgba(241,187,26,0.10)" } : {}),
                   }}
                 >
                   {item.text}
