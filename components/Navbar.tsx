@@ -124,6 +124,9 @@ export default function Navbar() {
           backdropFilter: "saturate(140%) blur(8px)",
           WebkitBackdropFilter: "saturate(140%) blur(8px)",
           borderBottom: scrolled ? "1px solid rgba(107,28,111,0.10)" : "1px solid transparent",
+          // iOS notch awareness: pad the fixed header by the top safe-area inset
+          // so the ticker/header isn't clipped under the status bar / notch.
+          paddingTop: "env(safe-area-inset-top, 0px)",
         }}
       >
         <div
@@ -252,7 +255,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={handleDirections}
-                className="touch-target btn-shine hidden items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:scale-[1.04] hover:shadow-lg md:flex"
+                className="touch-target btn-shine hidden items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 active:scale-95 hover:scale-[1.04] hover:shadow-lg md:flex"
                 style={{
                   background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
                 }}
@@ -363,6 +366,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
+                aria-current={isActive ? "page" : undefined}
                 className="touch-target rounded-xl px-4 py-3.5 text-base font-medium transition-all active:scale-[0.99]"
                 style={{
                   color: isActive ? "#6B1C6F" : "#374151",
