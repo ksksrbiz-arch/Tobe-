@@ -2,7 +2,7 @@
 // hydration of its own — only its <Reveal> children are client islands.
 import React from "react";
 import Link from "next/link";
-import { Calendar, Users, Sparkles, Coffee, BookHeart, ArrowRight } from "lucide-react";
+import { Calendar, Sparkles, Coffee, BookHeart, ArrowRight } from "lucide-react";
 import Reveal from "./Reveal";
 
 const events = [
@@ -19,13 +19,6 @@ const events = [
     title: "Cozy Reading Hour",
     desc: "Bring your current read, grab a comfy spot, and join other readers for an hour of quiet companionship.",
     accent: "#F1BB1A",
-  },
-  {
-    icon: Users,
-    when: "Quarterly",
-    title: "Trade-In Day",
-    desc: "Special trade days where credit values get a friendly boost. Watch our socials for the next date.",
-    accent: "#8B2E90",
   },
   {
     icon: Sparkles,

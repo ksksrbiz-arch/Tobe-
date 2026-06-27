@@ -20,6 +20,7 @@ const routes: Array<{
   { path: "/reading-room", changeFrequency: "weekly", priority: 0.7 },
   { path: "/reading-room/collections", changeFrequency: "weekly", priority: 0.6 },
   { path: "/events", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/events/summer-reading", changeFrequency: "weekly", priority: 0.7 },
   { path: "/reviews", changeFrequency: "weekly", priority: 0.7 },
   { path: "/how-it-works", changeFrequency: "monthly", priority: 0.7 },
   { path: "/loop", changeFrequency: "monthly", priority: 0.5 },

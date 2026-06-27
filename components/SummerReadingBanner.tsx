@@ -12,35 +12,7 @@ import { BookOpen, Calendar, MapPin, Sparkles, Star, ArrowRight } from "lucide-r
 import Reveal from "./Reveal";
 import JsonLd from "./JsonLd";
 import AddToCalendarButton from "./AddToCalendarButton";
-import { getFeaturedProgram, type SpecialEvent } from "@/lib/events";
-import { SITE_URL } from "@/lib/seo";
-
-/** One schema.org Event for a seasonal program occurrence. */
-function specialEventJsonLd(ev: SpecialEvent): Record<string, unknown> {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Event",
-    name: ev.title,
-    description: ev.description,
-    startDate: ev.startDate,
-    endDate: ev.endDate,
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    eventStatus: "https://schema.org/EventScheduled",
-    isAccessibleForFree: true,
-    inLanguage: "en-US",
-    ...(ev.audience ? { audience: { "@type": "Audience", audienceType: ev.audience } } : {}),
-    location: { "@id": `${SITE_URL}/#bookstore` },
-    organizer: { "@id": `${SITE_URL}/#bookstore` },
-    image: `${SITE_URL}/opengraph-image`,
-    offers: {
-      "@type": "Offer",
-      price: 0,
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
-      url: `${SITE_URL}/events`,
-    },
-  };
-}
+import { getFeaturedProgram, specialEventJsonLd } from "@/lib/events";
 
 interface SummerReadingBannerProps {
   /** Emit Event structured data alongside the visual. Default true. Set false
@@ -193,7 +165,7 @@ export default function SummerReadingBanner({
         <Reveal delay={140}>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
-              href="/events#summer-reading"
+              href="/events/summer-reading"
               className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold shadow-md transition-all hover:scale-105 active:scale-[0.98] sm:w-auto"
               style={{ background: "#6B1C6F", color: "#FFFFFF" }}
             >

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Events & Happenings",
   description:
-    "Upcoming events at To Be Read in Milwaukie, OR — free Summer Reading Programs for youth (Reading Circle & Reading Challenge, July 1–August 21), Cozy Reading Hour every Saturday, Staff Picks Saturday, and monthly Trade-In Days.",
+    "Upcoming events at To Be Read in Milwaukie, OR — free Summer Reading Programs for youth (Reading Circle & Reading Challenge, July 1–August 21), Cozy Reading Hour every Saturday, and Staff Picks Saturday. Free and open to the community.",
   keywords: [
     "summer reading program Milwaukie",
     "summer reading challenge Portland",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Events & Happenings · To Be Read",
     description:
-      "Free Summer Reading Programs for youth, Cozy Reading Hour, Staff Picks Saturday, and monthly Trade-In Days at our used bookstore in Milwaukie, OR. Free and open to all.",
+      "Free Summer Reading Programs for youth, Cozy Reading Hour, and Staff Picks Saturday at our used bookstore in Milwaukie, OR. Free and open to all.",
     url: "/events",
     type: "website",
     images: ["/opengraph-image"],
