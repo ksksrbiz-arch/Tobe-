@@ -234,3 +234,99 @@ export function getUpcomingEvents(
   results.sort((a, b) => a.startDate.localeCompare(b.startDate));
   return results.slice(0, count);
 }
+
+/**
+ * A dated, one-off / seasonal happening (as opposed to the recurring rules
+ * above). These are hand-authored because they have a fixed calendar window —
+ * e.g. a summer program — and they automatically stop showing once they end,
+ * so the homepage banner and Event structured data clean themselves up without
+ * anyone deleting an entry.
+ */
+export interface SpecialEvent {
+  /** Stable slug — also the structured-data anchor and React key. */
+  slug: string;
+  /** The umbrella program this belongs to, if any (groups related cards). */
+  program?: string;
+  title: string;
+  /** Short marketing line shown under the title on a card. */
+  tagline: string;
+  description: string;
+  /** ISO-8601 start, with America/Los_Angeles offset. */
+  startDate: string;
+  /** ISO-8601 end, with America/Los_Angeles offset. */
+  endDate: string;
+  /** Human-readable date window, e.g. "July 1 – August 21, 2026". */
+  dateLabel: string;
+  /** Short cadence/season label, e.g. "Summer 2026". */
+  season: string;
+  /** Accent color for the card (brand-aligned). */
+  accent: string;
+  /** Who the program is for, e.g. "Kids & teens". */
+  audience?: string;
+}
+
+/**
+ * Featured seasonal programs. July & August in Oregon are always PDT (-07:00),
+ * so the summer window uses that offset directly.
+ */
+const SPECIAL_EVENTS: SpecialEvent[] = [
+  {
+    slug: "summer-reading-circle",
+    program: "Summer Reading Programs",
+    title: "Summer Reading Circle",
+    tagline: "A cozy, low-key reading group for younger readers",
+    description:
+      "Drop in to our Summer Reading Circle — a relaxed, welcoming reading group for youth. Kids gather at the shop to share what they're reading, discover new favorites with a bookseller's help, and keep the pages turning all summer long. Free and open to the community; no sign-up required.",
+    startDate: "2026-07-01T10:00:00-07:00",
+    endDate: "2026-08-21T17:00:00-07:00",
+    dateLabel: "July 1 – August 21, 2026",
+    season: "Summer 2026",
+    accent: "#1F7A7A",
+    audience: "Youth",
+  },
+  {
+    slug: "summer-reading-challenge",
+    program: "Summer Reading Programs",
+    title: "Summer Reading Challenge",
+    tagline: "Read more, earn rewards, beat the summer slump",
+    description:
+      "Take the Summer Reading Challenge! Youth readers set a goal, track the books they finish over the summer, and earn fun rewards along the way. It's a playful way to keep reading between school years — pick up a tracker at the shop and start your stack. Free to join.",
+    startDate: "2026-07-01T10:00:00-07:00",
+    endDate: "2026-08-21T17:00:00-07:00",
+    dateLabel: "July 1 – August 21, 2026",
+    season: "Summer 2026",
+    accent: "#C0492F",
+    audience: "Youth",
+  },
+];
+
+/**
+ * Special events that haven't finished yet, ordered by start date. An event is
+ * "active" through its end instant, so a program shows for its whole window and
+ * disappears the day after it wraps. Deterministic given `now`.
+ */
+export function getActiveSpecialEvents(now: Date = new Date()): SpecialEvent[] {
+  return SPECIAL_EVENTS.filter(
+    (ev) => new Date(ev.endDate).getTime() > now.getTime(),
+  ).sort((a, b) => a.startDate.localeCompare(b.startDate));
+}
+
+/**
+ * The active special events grouped under a single program name, if one program
+ * is currently running. Used by the homepage banner, which showcases one
+ * featured program (e.g. "Summer Reading Programs") at a time.
+ */
+export function getFeaturedProgram(
+  now: Date = new Date(),
+): { program: string; events: SpecialEvent[] } | null {
+  const active = getActiveSpecialEvents(now);
+  if (active.length === 0) return null;
+  const program = active[0].program;
+  if (!program) {
+    return { program: active[0].title, events: [active[0]] };
+  }
+  return {
+    program,
+    events: active.filter((ev) => ev.program === program),
+  };
+}
