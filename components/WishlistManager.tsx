@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { BookMarked, Plus, Trash2, RefreshCw, Search, LogIn, LogOut, Mail } from "lucide-react";
+import { BookMarked, Plus, Trash2, RefreshCw, Search, LogIn, LogOut, Mail, Send, X } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 interface WishlistItem {
@@ -50,7 +50,7 @@ function AuthPanel() {
           className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full"
           style={{ background: "rgba(241,187,26,0.15)" }}
         >
-          <Mail size={26} style={{ color: "#F1BB1A" }} />
+          <Mail size={26} style={{ color: "#F1BB1A" }} aria-hidden="true" />
         </div>
         <h3
           className="mb-2 text-xl font-bold"
@@ -72,7 +72,7 @@ function AuthPanel() {
         className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full"
         style={{ background: "rgba(107,28,111,0.10)" }}
       >
-        <LogIn size={26} style={{ color: "#6B1C6F" }} />
+        <LogIn size={26} style={{ color: "#6B1C6F" }} aria-hidden="true" />
       </div>
       <h3
         className="mb-1 text-xl font-bold"
@@ -120,10 +120,12 @@ function AuthPanel() {
         <button
           onClick={sendMagicLink}
           disabled={loading}
+          aria-busy={loading}
+          aria-label="Send a magic sign-in link to my email"
           className="flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-white transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
           style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
         >
-          {loading ? <RefreshCw size={14} className="animate-spin" /> : <Mail size={14} />}
+          {loading ? <RefreshCw size={14} className="animate-spin" aria-hidden="true" /> : <Mail size={14} aria-hidden="true" />}
           {loading ? "Sending…" : "Send magic link"}
         </button>
       </div>
@@ -237,11 +239,13 @@ function AddBookPanel({ onAdded }: { onAdded: () => void }) {
         <button
           onClick={handleLookup}
           disabled={lookingUp}
-          className="flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition-all hover:scale-[1.02] disabled:opacity-60"
+          aria-busy={lookingUp}
+          aria-label="Look up this ISBN"
+          className="flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
           style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
         >
-          {lookingUp ? <RefreshCw size={13} className="animate-spin" /> : <Search size={13} />}
-          Look up
+          {lookingUp ? <RefreshCw size={13} className="animate-spin" aria-hidden="true" /> : <Search size={13} aria-hidden="true" />}
+          {lookingUp ? "Looking up…" : "Look up"}
         </button>
       </div>
 
@@ -269,11 +273,13 @@ function AddBookPanel({ onAdded }: { onAdded: () => void }) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.04] disabled:opacity-60"
+            aria-busy={saving}
+            aria-label={preview.title ? `Add ${preview.title} to my hunting list` : "Add this book to my hunting list"}
+            className="flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.04] disabled:cursor-not-allowed disabled:opacity-60"
             style={{ background: "#F1BB1A", color: "#1a1a1a" }}
           >
-            {saving ? <RefreshCw size={11} className="animate-spin" /> : <Plus size={11} />}
-            Add
+            {saving ? <RefreshCw size={11} className="animate-spin" aria-hidden="true" /> : <Plus size={11} aria-hidden="true" />}
+            {saving ? "Adding…" : "Add"}
           </button>
         </div>
       )}
@@ -312,7 +318,7 @@ function WishlistRow({ item, onRemove }: { item: WishlistItem; onRemove: () => v
         />
       ) : (
         <div className="flex h-16 w-11 flex-shrink-0 items-center justify-center rounded" style={{ background: "rgba(107,28,111,0.08)" }}>
-          <BookMarked size={18} style={{ color: "rgba(107,28,111,0.40)" }} />
+          <BookMarked size={18} style={{ color: "rgba(107,28,111,0.40)" }} aria-hidden="true" />
         </div>
       )}
       <div className="min-w-0 flex-1">
@@ -331,11 +337,98 @@ function WishlistRow({ item, onRemove }: { item: WishlistItem; onRemove: () => v
       <button
         onClick={handleRemove}
         disabled={removing}
-        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full transition-all hover:scale-110 disabled:opacity-50"
+        aria-busy={removing}
+        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full transition-all hover:scale-110 disabled:cursor-not-allowed disabled:opacity-50"
         style={{ background: "rgba(239,68,68,0.08)", color: "#ef4444" }}
         aria-label={`Remove ${item.title} from wishlist`}
       >
-        {removing ? <RefreshCw size={13} className="animate-spin" /> : <Trash2 size={13} />}
+        {removing ? <RefreshCw size={13} className="animate-spin" aria-hidden="true" /> : <Trash2 size={13} aria-hidden="true" />}
+      </button>
+    </div>
+  );
+}
+
+function buildExportEmail(items: WishlistItem[]) {
+  const lines = items.map((item) => {
+    const author = item.author ? ` — ${item.author}` : "";
+    const isbn = item.isbn ? ` (ISBN ${item.isbn})` : "";
+    return `• ${item.title}${author}${isbn}`;
+  });
+  const subject = "My To Be Read hunting list";
+  const body =
+    `My hunting list (${items.length} ${items.length === 1 ? "title" : "titles"}):\n\n` +
+    lines.join("\n") +
+    "\n\n— Sent from To Be Read · tobereadshop.com";
+  return { subject, body };
+}
+
+/**
+ * Email-export action. Sending opens the visitor's own mail client with the
+ * list pre-filled, so it's a deliberate, reversible action — but we still gate
+ * it behind an inline confirmation so a stray tap can't fire off an email.
+ */
+function WishlistExport({ items, email }: { items: WishlistItem[]; email: string }) {
+  const [confirming, setConfirming] = useState(false);
+
+  // Without a recipient the mailto link is meaningless — hide the action.
+  if (!email) return null;
+
+  const handleSend = () => {
+    const { subject, body } = buildExportEmail(items);
+    // The recipient must keep its literal "@" — only the query params are encoded.
+    const href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    if (typeof window !== "undefined") {
+      window.location.href = href;
+    }
+    setConfirming(false);
+  };
+
+  if (confirming) {
+    return (
+      <div
+        className="mt-5 rounded-2xl border p-4"
+        role="group"
+        aria-label="Confirm emailing your hunting list"
+        style={{ background: "rgba(241,187,26,0.08)", borderColor: "rgba(241,187,26,0.40)" }}
+      >
+        <p className="mb-3 text-sm" style={{ color: "#1F1A2E" }}>
+          Email a copy of your {items.length}-title list to{" "}
+          <strong style={{ color: "#6B1C6F" }}>{email}</strong>? This opens your mail app with the list ready to send.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={handleSend}
+            className="flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-semibold text-white transition-all hover:scale-[1.02]"
+            style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+            aria-label={`Yes, email my hunting list to ${email}`}
+          >
+            <Send size={13} aria-hidden="true" />
+            Yes, email it to me
+          </button>
+          <button
+            onClick={() => setConfirming(false)}
+            className="flex items-center gap-1.5 rounded-xl border px-4 py-2 text-sm font-medium transition-all hover:scale-[1.02]"
+            style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
+            aria-label="Cancel emailing my hunting list"
+          >
+            <X size={13} aria-hidden="true" />
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-5 flex justify-center">
+      <button
+        onClick={() => setConfirming(true)}
+        className="flex items-center gap-1.5 rounded-xl border px-4 py-2 text-xs font-semibold transition-all hover:scale-[1.02]"
+        style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
+        aria-label="Email a copy of my hunting list to myself"
+      >
+        <Mail size={13} aria-hidden="true" />
+        Email me my list
       </button>
     </div>
   );
@@ -374,9 +467,10 @@ export default function WishlistManager() {
 
   if (status === "loading") {
     return (
-      <div className="space-y-3">
+      <div className="space-y-3" role="status" aria-live="polite">
+        <span className="sr-only">Loading your wishlist…</span>
         {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="h-20 animate-pulse rounded-2xl" style={{ background: "rgba(107,28,111,0.06)" }} />
+          <div key={i} className="h-20 animate-pulse rounded-2xl" style={{ background: "rgba(107,28,111,0.06)" }} aria-hidden="true" />
         ))}
       </div>
     );
@@ -411,7 +505,7 @@ export default function WishlistManager() {
             className="flex h-11 w-11 items-center justify-center rounded-xl"
             style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
           >
-            <BookMarked size={20} className="text-white" />
+            <BookMarked size={20} className="text-white" aria-hidden="true" />
           </div>
           <div>
             <h3
@@ -425,10 +519,11 @@ export default function WishlistManager() {
         </div>
         <button
           onClick={() => signOut()}
+          aria-label="Sign out of your wishlist"
           className="flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition-all hover:scale-[1.02]"
           style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
         >
-          <LogOut size={12} />
+          <LogOut size={12} aria-hidden="true" />
           Sign out
         </button>
       </div>
@@ -438,9 +533,10 @@ export default function WishlistManager() {
       </div>
 
       {loadingItems ? (
-        <div className="space-y-3">
+        <div className="space-y-3" role="status" aria-live="polite">
+          <span className="sr-only">Loading the books on your list…</span>
           {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="h-20 animate-pulse rounded-2xl" style={{ background: "rgba(107,28,111,0.06)" }} />
+            <div key={i} className="h-20 animate-pulse rounded-2xl" style={{ background: "rgba(107,28,111,0.06)" }} aria-hidden="true" />
           ))}
         </div>
       ) : items.length === 0 ? (
@@ -448,17 +544,23 @@ export default function WishlistManager() {
           className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed py-12 text-center"
           style={{ borderColor: "rgba(107,28,111,0.12)" }}
         >
-          <BookMarked size={32} style={{ color: "rgba(107,28,111,0.25)" }} />
-          <p className="mt-3 text-sm" style={{ color: "#6B7280" }}>
-            Your hunt list is empty. Add an ISBN above and we&apos;ll alert you when it arrives!
+          <BookMarked size={32} style={{ color: "rgba(107,28,111,0.25)" }} aria-hidden="true" />
+          <p className="mt-3 text-sm font-bold" style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}>
+            Your hunt list is empty
+          </p>
+          <p className="mt-1 max-w-xs text-sm leading-relaxed" style={{ color: "#6B7280" }}>
+            Add a title by ISBN above and we&apos;ll email you the moment it lands on our shelf — so you can grab it first.
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
-          {items.map((item) => (
-            <WishlistRow key={item.id} item={item} onRemove={fetchWishlist} />
-          ))}
-        </div>
+        <>
+          <div className="space-y-3">
+            {items.map((item) => (
+              <WishlistRow key={item.id} item={item} onRemove={fetchWishlist} />
+            ))}
+          </div>
+          <WishlistExport items={items} email={session.user.email ?? ""} />
+        </>
       )}
 
       <p className="mt-5 text-center text-[10px] leading-4" style={{ color: "#6B7280" }}>
