@@ -113,7 +113,8 @@ export default function ConnectSection() {
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border bg-white p-5 card-cozy"
+                aria-label={`Follow To Be Read on ${s.name} (${s.handle}) — opens in a new tab`}
+                className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border bg-white p-5 card-cozy transition-transform active:scale-[0.98]"
                 style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "var(--shadow-sm)" }}
               >
                 <div
@@ -137,6 +138,7 @@ export default function ConnectSection() {
                 </div>
                 <ExternalLink
                   size={15}
+                  aria-hidden="true"
                   className="relative z-10 ml-auto opacity-50 transition-all group-hover:translate-x-0.5 group-hover:opacity-100"
                   style={{ color: "#6B1C6F" }}
                 />
@@ -183,11 +185,12 @@ export default function ConnectSection() {
                 href="https://www.google.com/search?q=Clackamas+Book+Exchange+Milwaukie+OR&hl=en#lrd=write-review"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-shine inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold shadow-lg transition-all hover:scale-105"
+                aria-label="Leave a Google review for To Be Read (opens in a new tab)"
+                className="btn-shine inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold shadow-lg transition-all hover:scale-105 active:scale-[0.98]"
                 style={{ background: "#F1BB1A", color: "#1a1a1a" }}
               >
                 Leave a Google Review
-                <ExternalLink size={14} />
+                <ExternalLink size={14} aria-hidden="true" />
               </a>
             </div>
           </div>
