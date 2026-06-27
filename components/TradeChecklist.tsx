@@ -48,7 +48,11 @@ export default function TradeChecklist() {
         <p className="mb-5 text-sm" style={{ color: "#6B7280" }}>
           Tick what applies and we&apos;ll let you know if your stack is a good fit.
         </p>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div
+          role="group"
+          aria-label="Quick trade checklist"
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+        >
           {tradeChecklist.map((item, i) => {
             const isChecked = !!checked[i];
             const isRed = item.disqualifier && isChecked;
@@ -60,7 +64,7 @@ export default function TradeChecklist() {
                 role="checkbox"
                 aria-checked={isChecked}
                 onClick={() => toggle(i)}
-                className="group flex w-full cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all hover:bg-white/70"
+                className="group flex w-full cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all hover:bg-white/70 active:scale-[0.99]"
                 style={{
                   borderColor: isRed
                     ? "rgba(239,68,68,0.45)"
@@ -125,15 +129,17 @@ export default function TradeChecklist() {
         </div>
         {allChecked && (
           <div
+            role="status"
+            aria-live="polite"
             className="fade-in-up mt-5 flex items-center justify-center gap-2 rounded-xl p-4 text-center"
             style={{
               background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
               color: "#F1BB1A",
             }}
           >
-            <Sparkles size={18} />
+            <Sparkles size={18} aria-hidden="true" />
             <p className="font-semibold">Sounds great! Bring those books in — we&apos;d love to take a look (titles we&apos;re already stocked up on are the only maybe).</p>
-            <Sparkles size={18} />
+            <Sparkles size={18} aria-hidden="true" />
           </div>
         )}
       </div>

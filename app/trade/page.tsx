@@ -151,7 +151,7 @@ export default function TradePage() {
                     className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl"
                     style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
                   >
-                    <step.icon size={20} className="text-white" />
+                    <step.icon size={20} aria-hidden="true" className="text-white" />
                   </div>
                   <h3
                     className="mb-2 text-base font-bold"
@@ -251,7 +251,7 @@ export default function TradePage() {
                       background: "linear-gradient(135deg, rgba(107,28,111,0.10) 0%, rgba(241,187,26,0.18) 100%)",
                     }}
                   >
-                    <tip.icon size={26} style={{ color: "#6B1C6F" }} />
+                    <tip.icon size={26} aria-hidden="true" style={{ color: "#6B1C6F" }} />
                   </div>
                   <h3
                     className="mb-3 text-lg font-bold"

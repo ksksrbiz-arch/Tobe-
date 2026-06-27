@@ -82,7 +82,7 @@ export default function TradeSection() {
               borderColor: "#6B1C6F",
             }}
           >
-            <AlertTriangle size={26} style={{ color: "#F1BB1A", flexShrink: 0, marginTop: 2 }} />
+            <AlertTriangle size={26} aria-hidden="true" style={{ color: "#F1BB1A", flexShrink: 0, marginTop: 2 }} />
             <div>
               <p className="text-lg font-bold" style={{ color: "#6B1C6F" }}>
                 NO CASH GIVEN FOR BOOKS!
@@ -117,7 +117,7 @@ export default function TradeSection() {
                     background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
                   }}
                 >
-                  <Receipt size={20} className="text-white" />
+                  <Receipt size={20} aria-hidden="true" className="text-white" />
                 </div>
                 <h3
                   className="font-bold"
@@ -246,6 +246,7 @@ export default function TradeSection() {
                 style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
               >
                 <span
+                  aria-hidden="true"
                   className="flex h-8 w-8 items-center justify-center rounded-full"
                   style={{ background: "rgba(34,197,94,0.15)" }}
                 >
@@ -260,7 +261,7 @@ export default function TradeSection() {
                     className="flex items-center gap-2 text-sm"
                     style={{ color: "#374151" }}
                   >
-                    <Check size={14} className="flex-shrink-0 text-green-500" />
+                    <Check size={14} aria-hidden="true" className="flex-shrink-0 text-green-500" />
                     {item}
                   </li>
                 ))}
@@ -282,6 +283,7 @@ export default function TradeSection() {
                 style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
               >
                 <span
+                  aria-hidden="true"
                   className="flex h-8 w-8 items-center justify-center rounded-full"
                   style={{ background: "rgba(239,68,68,0.15)" }}
                 >
@@ -292,7 +294,7 @@ export default function TradeSection() {
               <ul className="space-y-2.5">
                 {notAcceptItems.map((item) => (
                   <li key={item} className="flex items-center gap-2 text-sm" style={{ color: "#374151" }}>
-                    <XIcon size={14} className="flex-shrink-0 text-red-400" />
+                    <XIcon size={14} aria-hidden="true" className="flex-shrink-0 text-red-400" />
                     {item}
                   </li>
                 ))}
@@ -310,7 +312,7 @@ export default function TradeSection() {
               borderColor: "rgba(107,28,111,0.12)",
             }}
           >
-            <Sparkles size={20} style={{ color: "#F1BB1A", flexShrink: 0, marginTop: 2 }} />
+            <Sparkles size={20} aria-hidden="true" style={{ color: "#F1BB1A", flexShrink: 0, marginTop: 2 }} />
             <p className="text-sm leading-relaxed" style={{ color: "#374151" }}>
               <strong style={{ color: "#6B1C6F" }}>A friendly heads-up:</strong> Even when your
               books meet all of our trade requirements, there&apos;s a small chance we already have
