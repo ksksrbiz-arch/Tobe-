@@ -250,8 +250,10 @@ export default function Home() {
       <Navbar />
       <HeroSection />
 
-      {/* Seasonal program spotlight — date-gated, renders only while active. */}
-      <SummerReadingBanner />
+      {/* Seasonal program spotlight — date-gated, renders only while active.
+          Calendar buttons are omitted here to keep above-the-fold JS minimal;
+          they live on the Events and dedicated Summer Reading pages. */}
+      <SummerReadingBanner showAddToCalendar={false} />
 
       {/* AI Matchmaker — promoted near the top so it's the first interactive
           feature visitors meet right after the hero. */}

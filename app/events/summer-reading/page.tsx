@@ -185,13 +185,18 @@ export default function SummerReadingPage() {
               return (
                 <Reveal key={ev.slug} delay={i * 90}>
                   <article
-                    className="flex h-full flex-col rounded-2xl p-6 text-white shadow-lg"
+                    className="cozy-lift relative flex h-full flex-col overflow-hidden rounded-2xl p-6 text-white"
                     style={{
-                      background: `linear-gradient(160deg, ${ev.accent} 0%, ${ev.accent}E0 100%)`,
+                      background: `linear-gradient(160deg, ${ev.accent} 0%, ${ev.accent}DD 100%)`,
                       boxShadow: "0 18px 40px rgba(90,40,10,0.18)",
                     }}
                   >
-                    <div className="mb-3 flex items-center gap-2">
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -left-10 -top-10 h-28 w-28 rounded-full"
+                      style={{ background: "rgba(255,255,255,0.16)" }}
+                    />
+                    <div className="relative mb-3 flex items-center gap-2">
                       <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20">
                         <Icon size={20} />
                       </span>
@@ -202,22 +207,22 @@ export default function SummerReadingPage() {
                       )}
                     </div>
                     <h2
-                      className="text-2xl font-bold leading-tight"
+                      className="relative text-2xl font-bold leading-tight"
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
                       {ev.title}
                     </h2>
-                    <p className="mt-1 text-sm font-semibold text-white/80">
+                    <p className="relative mt-1 text-sm font-semibold text-white/80">
                       {ev.tagline}
                     </p>
-                    <p className="mt-3 text-sm leading-relaxed text-white/90">
+                    <p className="relative mt-3 text-sm leading-relaxed text-white/90">
                       {ev.description}
                     </p>
-                    <div className="mt-4 flex items-center gap-2 text-xs font-bold text-white/85">
+                    <div className="relative mt-4 flex items-center gap-2 text-xs font-bold text-white/85">
                       <Calendar size={13} />
                       {ev.dateLabel}
                     </div>
-                    <div className="mt-5 [&_button]:!border-white/40 [&_button]:!bg-white/15 [&_button]:!text-white">
+                    <div className="relative mt-5 [&_button]:!border-white/40 [&_button]:!bg-white/15 [&_button]:!text-white">
                       <AddToCalendarButton
                         event={{
                           id: `${ev.slug}-2026`,
@@ -254,7 +259,7 @@ export default function SummerReadingPage() {
             {howToJoin.map((step, i) => (
               <Reveal key={step.title} delay={i * 80}>
                 <li
-                  className="flex h-full flex-col rounded-2xl border bg-white p-6"
+                  className="card-cozy flex h-full flex-col rounded-2xl border bg-white p-6"
                   style={{
                     borderColor: "rgba(107,28,111,0.10)",
                     boxShadow: "var(--shadow-sm)",
