@@ -59,8 +59,7 @@ export default function Error({
           <button
             type="button"
             onClick={reset}
-            className="touch-target btn-warm inline-flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-semibold text-white transition-transform hover:scale-105 active:scale-[0.98] sm:w-auto"
-            style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)", boxShadow: "var(--shadow-md)" }}
+            className="touch-target btn-primary w-full active:scale-[0.98] sm:w-auto"
           >
             <RefreshCw size={16} />
             Try again

@@ -311,8 +311,7 @@ export default function Home() {
           <div className="mt-8 text-center">
             <Link
               href="/loop"
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:scale-105 active:scale-[0.98]"
-              style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+              className="btn-primary active:scale-[0.98]"
             >
               Open full-screen loop
             </Link>

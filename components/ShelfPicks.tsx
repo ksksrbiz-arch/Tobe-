@@ -269,8 +269,7 @@ export default function ShelfPicks() {
                 <button
                   type="button"
                   onClick={scrollToMatchmaker}
-                  className="btn-warm group mt-6 inline-flex w-fit items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-white shadow-md transition-transform hover:scale-105 active:scale-95"
-                  style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                  className="btn-primary group mt-6 w-fit active:scale-95"
                 >
                   Get matched to a title
                   <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
