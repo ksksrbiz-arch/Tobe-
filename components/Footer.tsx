@@ -96,7 +96,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Visit us on ${s.name}`}
-                  className="footer-social flex h-9 w-9 items-center justify-center rounded-lg transition-all hover:scale-110"
+                  className="footer-social flex h-9 w-9 items-center justify-center rounded-lg transition-all hover:scale-110 active:scale-95"
                 >
                   <s.icon />
                 </a>
