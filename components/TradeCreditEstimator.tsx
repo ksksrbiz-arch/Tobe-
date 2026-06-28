@@ -1,8 +1,14 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
+import Image from "next/image";
 import { Printer, Search, RefreshCw, Receipt, AlertCircle } from "lucide-react";
 import { TRADE_POLICY_ALL_CREDIT_LIMITS } from "@/lib/tradePolicy";
+
+// Upper bound for a sensible book list price. Anything larger is almost
+// certainly a typo (an extra digit), so we nudge the user instead of computing
+// a nonsensical estimate.
+const MAX_LIST_PRICE = 1000;
 
 const SWAP_TIERS = [
   { max: 10, fee: 1, label: "$10 or under" },
@@ -83,8 +89,12 @@ export default function TradeCreditEstimator() {
 
   const handleManualPrice = useCallback(() => {
     const val = parseFloat(priceInput.replace(/[^0-9.]/g, ""));
-    if (isNaN(val) || val <= 0) {
-      setError("Please enter a valid dollar amount.");
+    if (!Number.isFinite(val) || val <= 0) {
+      setError("Please enter a list price greater than $0.");
+      return;
+    }
+    if (val > MAX_LIST_PRICE) {
+      setError(`That seems high — please enter a list price of ${fmt(MAX_LIST_PRICE)} or less.`);
       return;
     }
     setError("");
@@ -134,14 +144,18 @@ export default function TradeCreditEstimator() {
 
       {/* Mode toggle */}
       <div
+        role="group"
+        aria-label="Estimate by"
         className="mb-5 flex rounded-xl p-1"
         style={{ background: "rgba(107,28,111,0.07)" }}
       >
         {(["price", "isbn"] as const).map((m) => (
           <button
             key={m}
+            type="button"
+            aria-pressed={mode === m}
             onClick={() => { setMode(m); reset(); }}
-            className="flex-1 rounded-lg py-2 text-sm font-semibold transition-all"
+            className="flex-1 rounded-lg py-2 text-sm font-semibold transition-all active:scale-[0.98]"
             style={{
               background: mode === m ? "#6B1C6F" : "transparent",
               color: mode === m ? "white" : "#6B1C6F",
@@ -165,7 +179,9 @@ export default function TradeCreditEstimator() {
             <input
               type="number"
               aria-label="Book list price in dollars"
+              inputMode="decimal"
               min="0"
+              max={MAX_LIST_PRICE}
               step="0.01"
               placeholder="12.99"
               value={priceInput}
@@ -180,8 +196,9 @@ export default function TradeCreditEstimator() {
             />
           </div>
           <button
+            type="button"
             onClick={handleManualPrice}
-            className="flex items-center gap-1.5 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.03]"
+            className="flex items-center gap-1.5 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.03] active:scale-[0.98]"
             style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
           >
             <RefreshCw size={14} />
@@ -206,9 +223,10 @@ export default function TradeCreditEstimator() {
             }}
           />
           <button
+            type="button"
             onClick={() => lookupISBN(isbnInput)}
             disabled={loading}
-            className="flex items-center gap-1.5 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.03] disabled:opacity-60"
+            className="flex items-center gap-1.5 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.03] active:scale-[0.98] disabled:opacity-60"
             style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
           >
             {loading ? (
@@ -224,6 +242,8 @@ export default function TradeCreditEstimator() {
       {/* Error */}
       {error && (
         <div
+          role="alert"
+          aria-live="polite"
           className="mt-4 flex items-start gap-2 rounded-xl border p-3 text-sm"
           style={{ background: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.25)", color: "#B91C1C" }}
         >
@@ -256,12 +276,12 @@ export default function TradeCreditEstimator() {
           {/* Book info */}
           <div className="mb-4 flex items-start gap-3">
             {book.coverUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={book.coverUrl}
-                alt={book.title}
-                loading="lazy"
-                decoding="async"
+                alt={book.title ? `Cover of ${book.title}` : "Book cover"}
+                width={44}
+                height={64}
+                unoptimized
                 className="h-16 w-11 rounded object-cover flex-shrink-0"
                 style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
               />
