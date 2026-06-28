@@ -144,9 +144,11 @@ export default function VisitSection() {
             }}
           >
             <span
+              aria-hidden="true"
               className={`h-2 w-2 rounded-full ${status.open ? "animate-pulse-glow" : ""}`}
               style={{ background: status.open ? "#22c55e" : "#6B1C6F" }}
             />
+            <span className="sr-only">{status.open ? "Open: " : "Closed: "}</span>
             {status.label}
           </div>
         </Reveal>
@@ -222,7 +224,7 @@ export default function VisitSection() {
                 </div>
                 <button
                   onClick={handleCopyAddress}
-                  className="mt-3 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider transition-colors hover:underline"
+                  className="mt-3 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider transition-all hover:underline active:scale-95"
                   style={{ color: "#6B1C6F" }}
                 >
                   <Copy size={12} />
@@ -457,7 +459,8 @@ export default function VisitSection() {
                   href={GOOGLE_MAPS_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold shadow-lg transition-all hover:scale-105"
+                  aria-label="Open this location in Google Maps (opens in a new tab)"
+                  className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold shadow-lg transition-all hover:scale-105 active:scale-95"
                   style={{
                     background: "rgba(255,255,255,0.95)",
                     color: "#6B1C6F",

@@ -36,6 +36,7 @@ export default function MapEmbed({
       <iframe
         title={title}
         src={src}
+        loading="lazy"
         allowFullScreen
         referrerPolicy="no-referrer-when-downgrade"
         className={`${box} border-0`}
