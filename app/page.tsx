@@ -268,8 +268,11 @@ export default function Home() {
         }}
       >
         <DustMotes />
-        <div className="relative z-10 mx-auto max-w-5xl">
-          <Reveal className="mb-10 text-center">
+        {/* Near-fold intro: paint immediately via the CSS-only `.stagger`
+            utility (children fade in via CSS) instead of the JS-gated <Reveal>
+            island, so this content isn't held at opacity:0 until hydration. */}
+        <div className="stagger relative z-10 mx-auto max-w-5xl">
+          <div className="mb-10 text-center">
             <span
               className="inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
               style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
@@ -290,69 +293,67 @@ export default function Home() {
               Bring a book, earn credit, pick something new. That&apos;s the loop — and it never gets old.
             </p>
             <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
-          </Reveal>
+          </div>
 
-          <Reveal delay={100}>
-            {/* 1:1 aspect-ratio container for the animation */}
-            <div
-              className="relative mx-auto overflow-hidden rounded-[28px]"
-              style={{
-                maxWidth: 520,
-                aspectRatio: "1 / 1",
-                boxShadow: "0 36px 90px rgba(107,28,111,0.18), 0 8px 20px rgba(241,187,26,0.10)",
-                border: "1px solid rgba(107,28,111,0.10)",
-              }}
-            >
-              <TBRLoopEmbed />
-            </div>
-          </Reveal>
+          {/* 1:1 aspect-ratio container for the animation */}
+          <div
+            className="relative mx-auto overflow-hidden rounded-[28px]"
+            style={{
+              maxWidth: 520,
+              aspectRatio: "1 / 1",
+              boxShadow: "0 36px 90px rgba(107,28,111,0.18), 0 8px 20px rgba(241,187,26,0.10)",
+              border: "1px solid rgba(107,28,111,0.10)",
+            }}
+          >
+            <TBRLoopEmbed />
+          </div>
 
-          <Reveal delay={180} className="mt-8 text-center">
+          <div className="mt-8 text-center">
             <Link
               href="/loop"
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:scale-105 active:scale-[0.98]"
               style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
             >
               Open full-screen loop
             </Link>
-          </Reveal>
+          </div>
         </div>
       </section>
 
       {/* Stats strip */}
       <section className="relative z-10 -mt-16 px-4 pb-10 sm:px-6 lg:px-8">
+        {/* Near-fold: children fade in via the CSS-only `.stagger` utility so
+            the strip paints immediately rather than waiting on the <Reveal>
+            JS island (which holds content at opacity:0 until hydration). */}
         <div
-          className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-[1.4fr_repeat(4,minmax(0,1fr))]"
+          className="stagger mx-auto grid max-w-6xl gap-4 lg:grid-cols-[1.4fr_repeat(4,minmax(0,1fr))]"
         >
-          <Reveal>
-            <div
-              className="h-full rounded-[28px] border p-6"
-              style={{
-                background: "rgba(255,255,255,0.93)",
-                borderColor: "rgba(107,28,111,0.08)",
-                boxShadow: "0 24px 60px rgba(107,28,111,0.12)",
-              }}
+          <div
+            className="h-full rounded-[28px] border p-6"
+            style={{
+              background: "rgba(255,255,255,0.93)",
+              borderColor: "rgba(107,28,111,0.08)",
+              boxShadow: "0 24px 60px rgba(107,28,111,0.12)",
+            }}
+          >
+            <span
+              className="inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]"
+              style={{ background: "rgba(107,28,111,0.08)", color: "#6B1C6F" }}
             >
-              <span
-                className="inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]"
-                style={{ background: "rgba(107,28,111,0.08)", color: "#6B1C6F" }}
-              >
-                A warmer welcome
-              </span>
-              <h2
-                className="mt-4 text-2xl font-bold"
-                style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
-              >
-                More than a quick landing page.
-              </h2>
-              <p className="mt-3 text-sm leading-6" style={{ color: "#4B5563" }}>
-                Browse the story, plan your visit, check the trade policy, and catch the latest social moments — without hopping around.
-              </p>
-            </div>
-          </Reveal>
-          {stats.map((stat, i) => (
-            <Reveal key={stat.label} delay={80 + i * 60}>
-              <Tilt className="h-full rounded-[28px]" max={6} scale={1.02}>
+              A warmer welcome
+            </span>
+            <h2
+              className="mt-4 text-2xl font-bold"
+              style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+            >
+              More than a quick landing page.
+            </h2>
+            <p className="mt-3 text-sm leading-6" style={{ color: "#4B5563" }}>
+              Browse the story, plan your visit, check the trade policy, and catch the latest social moments — without hopping around.
+            </p>
+          </div>
+          {stats.map((stat) => (
+            <Tilt key={stat.label} className="h-full rounded-[28px]" max={6} scale={1.02}>
               <div
                 className="flex h-full flex-col justify-between rounded-[28px] border p-5 transition-shadow"
                 style={{
@@ -377,8 +378,7 @@ export default function Home() {
                   {stat.sub}
                 </div>
               </div>
-              </Tilt>
-            </Reveal>
+            </Tilt>
           ))}
         </div>
       </section>
@@ -426,7 +426,7 @@ export default function Home() {
                 <Tilt className="h-full rounded-[28px]" max={7} scale={1.02}>
                 <Link
                   href={card.href}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-7 text-left transition-shadow hover:shadow-2xl"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-7 text-left transition-all hover:shadow-2xl active:scale-[0.98]"
                   style={{
                     background:
                       "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(253,248,240,0.98) 100%)",
@@ -535,7 +535,7 @@ export default function Home() {
                 href="https://tiktok.com/@clackamas.book.ex"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-shine mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-105"
+                className="btn-shine mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-105 active:scale-[0.98]"
                 style={{ background: "#F1BB1A", color: "#1A1A1A" }}
               >
                 Follow @clackamas.book.ex
