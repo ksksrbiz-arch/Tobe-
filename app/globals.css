@@ -187,12 +187,40 @@ p {
 }
 
 /* Accessible focus ring — a purple outline with a soft gold halo so it reads
-   as part of the brand rather than a default browser ring. */
+   as part of the brand rather than a default browser ring. The outline itself
+   carries the AA keyboard cue; the gold halo is decorative reinforcement. A
+   stronger 3px outline plus a thin paper separator + denser halo keeps the ring
+   visible even over busy gradients and on inline-styled buttons/links. */
 :focus-visible {
-  outline: 2px solid var(--purple);
+  outline: 3px solid var(--purple);
   outline-offset: 3px;
   border-radius: 6px;
-  box-shadow: 0 0 0 5px rgba(241, 187, 26, 0.28);
+  box-shadow:
+    0 0 0 1px rgba(255, 253, 249, 0.9),
+    0 0 0 6px rgba(241, 187, 26, 0.45);
+}
+
+/* Belt-and-braces: some interactive elements ship with inline styles or reset
+   their outline. Guarantee every focusable control still surfaces a visible
+   keyboard ring. Scoped to :focus-visible so mouse clicks don't draw a ring. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 3px;
+}
+
+/* Form placeholder contrast — the default browser placeholder is too light to
+   meet WCAG AA against the cream paper background. --ink-muted (#5C5868) clears
+   the 4.5:1 AA threshold on the site's light surfaces. */
+::placeholder {
+  color: var(--ink-muted);
+  opacity: 1; /* Firefox dims placeholders by default; keep our chosen tone. */
 }
 
 /* Custom scrollbar */
@@ -965,6 +993,86 @@ p {
   animation: warmSweep 0.7s ease forwards;
 }
 
+/* ───── Reusable CTA buttons ─────
+   Additive, opt-in utilities that bottle the site's two canonical button looks
+   so future code can reuse them without re-deriving the gradient/shine each
+   time. Existing inline call sites are untouched. */
+
+/* Primary CTA: purple gradient with the warm sweep on hover. Composes the
+   .btn-warm sweep mechanism above (no need to also add .btn-warm). */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--dur-fast) var(--ease-spring),
+              box-shadow var(--dur-fast) var(--ease-out),
+              filter var(--dur-fast) ease;
+}
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+  transition: none;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  filter: saturate(1.05);
+}
+.btn-primary:hover::after {
+  animation: warmSweep 0.7s ease forwards;
+}
+
+/* Secondary CTA: gold-tinted pill with a hairline gold border. */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  border: 1px solid rgba(241, 187, 26, 0.55);
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--purple-dark);
+  cursor: pointer;
+  text-decoration: none;
+  background: rgba(241, 187, 26, 0.12);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-fast) var(--ease-spring),
+              box-shadow var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) ease,
+              border-color var(--dur-fast) ease;
+}
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  background: rgba(241, 187, 26, 0.22);
+  border-color: var(--gold);
+  box-shadow: var(--shadow-md);
+}
+
 /* ───── Vignette overlay helper ───── */
 .vignette {
   position: relative;
@@ -1388,6 +1496,30 @@ p {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Collapsing transition durations above only neutralizes the *motion* of a
+     hover, not its end state — a `:hover { transform: translateY(-5px) }` still
+     snaps to the lifted position. For reduced-motion visitors, also calm the
+     transform/opacity hover effects so nothing translates, scales, or sweeps.
+     Box-shadow / colour hover feedback is kept (it isn't motion). */
+  .card-cozy:hover,
+  .cozy-lift:hover,
+  .surface-card:hover,
+  .footer-social:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: none !important;
+  }
+
+  /* Neutralize the shine/sweep pseudo-element animations + reveal them never. */
+  .btn-shine:hover::before,
+  .btn-warm:hover::after,
+  .btn-primary:hover::after,
+  .eyebrow-glow::after {
+    animation: none !important;
+    transform: none !important;
+    opacity: 0 !important;
   }
 }
 /* ─── Legal documents (Privacy, Cookies, Terms) ──────────────────────────────
