@@ -241,6 +241,17 @@ export default function RootLayout({
             denied-by-default signals are set before GTM (and any tags it loads)
             execute. The <CookieConsent> banner issues the consent update. */}
         <ConsentInit />
+        {/* Resource hints: warm up DNS/TLS for the third-party origins we fetch
+            from below the fold (book-cover CDNs, social/map embeds) so the
+            connection isn't cold once those sections scroll into view. Kept as
+            dns-prefetch (not preconnect) because none load on first paint, so we
+            don't want to reserve sockets that sit idle. Self-hosted fonts and
+            first-party assets need no hint. */}
+        <link rel="dns-prefetch" href="https://covers.openlibrary.org" />
+        <link rel="dns-prefetch" href="https://books.google.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://www.tiktok.com" />
+        <link rel="dns-prefetch" href="https://www.google.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
