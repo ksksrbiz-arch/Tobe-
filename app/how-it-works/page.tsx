@@ -825,14 +825,14 @@ export default function HowItWorksPage() {
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <Link
                 href="/trade"
-                className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold uppercase tracking-[0.18em] transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold uppercase tracking-[0.18em] transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
                 style={{ background: "var(--grad-purple)", color: "#FFFDF9" }}
               >
                 Start a trade
               </Link>
               <Link
                 href="/visit"
-                className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold uppercase tracking-[0.18em]"
+                className="inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold uppercase tracking-[0.18em] transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
                 style={{
                   border: "1.5px solid var(--purple)",
                   color: "var(--purple)",

@@ -86,10 +86,11 @@ export default function ConnectPage() {
               href="https://www.tiktok.com/@clackamas.book.ex"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all hover:scale-105"
+              aria-label="See all To Be Read videos on TikTok (opens in a new tab)"
+              className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all hover:scale-105 active:scale-[0.98]"
               style={{ background: "#6B1C6F", color: "white", boxShadow: "0 12px 30px rgba(107,28,111,0.25)" }}
             >
-              <Music2 size={14} />
+              <Music2 size={14} aria-hidden="true" />
               See all videos on TikTok
             </a>
           </Reveal>

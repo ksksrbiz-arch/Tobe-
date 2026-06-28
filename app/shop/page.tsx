@@ -60,7 +60,7 @@ function FeaturedCard({ book }: { book: FeaturedBook }) {
   const [coverFailed, setCoverFailed] = useState(false);
   return (
     <article
-      className="card-cozy group flex h-full flex-col overflow-hidden rounded-2xl border bg-white"
+      className="card-cozy group flex h-full flex-col overflow-hidden rounded-2xl border bg-white transition-transform active:scale-[0.98]"
       style={{ borderColor: "rgba(107,28,111,0.08)", boxShadow: "var(--shadow-sm)" }}
     >
       <div className="relative aspect-[2/3] w-full overflow-hidden" style={{ background: "rgba(107,28,111,0.06)" }}>

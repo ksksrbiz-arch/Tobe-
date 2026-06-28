@@ -83,7 +83,8 @@ export default function ShopSection() {
                 href={card.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-shadow duration-300 hover:shadow-2xl"
+                aria-label={`${card.cta} — ${card.name} (opens in a new tab)`}
+                className="group relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-all duration-300 hover:shadow-2xl active:scale-[0.98]"
                 style={{
                   borderColor: "rgba(107,28,111,0.10)",
                   boxShadow: "0 12px 30px rgba(107,28,111,0.08)",
@@ -101,7 +102,7 @@ export default function ShopSection() {
                         background: `linear-gradient(135deg, ${card.color} 0%, ${card.accent} 100%)`,
                       }}
                     >
-                      <card.icon size={26} className="text-white" />
+                      <card.icon size={26} aria-hidden="true" className="text-white" />
                     </div>
                     <span
                       className="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest"
@@ -132,8 +133,8 @@ export default function ShopSection() {
                     style={{ color: card.color }}
                   >
                     {card.cta}
-                    <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-                    <ExternalLink size={13} className="opacity-60" />
+                    <ArrowRight size={15} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />
+                    <ExternalLink size={13} aria-hidden="true" className="opacity-60" />
                   </div>
                 </div>
 

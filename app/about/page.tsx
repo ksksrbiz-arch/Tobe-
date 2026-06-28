@@ -160,7 +160,7 @@ export default function AboutPage() {
             {values.map((v, i) => (
               <Reveal key={v.title} delay={i * 80}>
                 <article
-                  className="h-full rounded-2xl border bg-white p-6 card-cozy"
+                  className="h-full rounded-2xl border bg-white p-6 card-cozy transition-transform active:scale-[0.98]"
                   style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "var(--shadow-sm)" }}
                 >
                   <div
