@@ -25,8 +25,18 @@ export default function Reveal({
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-    if (typeof IntersectionObserver === "undefined") {
-      // No observer support — reveal immediately.
+    // Respect reduced-motion: reveal immediately and never run the observer, so
+    // content is never left hidden from anyone who has disabled motion. Reading
+    // the media query in the effect keeps SSR output (hidden) consistent with
+    // the first client render, avoiding a hydration mismatch.
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion || typeof IntersectionObserver === "undefined") {
+      // Reveal immediately: either motion is disabled (never hide content from
+      // anyone who opted out) or there's no observer support to drive the
+      // reveal. Defer via rAF so we don't setState synchronously in the effect.
       const id = requestAnimationFrame(() => setVisible(true));
       return () => cancelAnimationFrame(id);
     }
