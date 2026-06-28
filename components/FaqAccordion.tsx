@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Reveal from "./Reveal";
 import type { Faq } from "./FAQSection";
@@ -12,6 +12,7 @@ import type { Faq } from "./FAQSection";
  */
 export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
+  const baseId = useId();
 
   return (
     <Reveal>
@@ -21,6 +22,8 @@ export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
       >
         {faqs.map((faq, i) => {
           const open = openIdx === i;
+          const triggerId = `${baseId}-trigger-${i}`;
+          const panelId = `${baseId}-panel-${i}`;
           return (
             <div
               key={faq.q}
@@ -29,8 +32,10 @@ export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
             >
               <button
                 type="button"
+                id={triggerId}
                 onClick={() => setOpenIdx(open ? null : i)}
                 aria-expanded={open}
+                aria-controls={panelId}
                 className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-[#FDF8F0]"
               >
                 <span
@@ -40,6 +45,7 @@ export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
                   {faq.q}
                 </span>
                 <span
+                  aria-hidden="true"
                   className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full transition-all"
                   style={{
                     background: open ? "#6B1C6F" : "rgba(107,28,111,0.08)",
@@ -51,6 +57,9 @@ export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
                 </span>
               </button>
               <div
+                id={panelId}
+                role="region"
+                aria-labelledby={triggerId}
                 className="grid transition-all duration-300"
                 style={{
                   gridTemplateRows: open ? "1fr" : "0fr",
