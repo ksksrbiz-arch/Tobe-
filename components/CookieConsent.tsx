@@ -167,11 +167,7 @@ export default function CookieConsent() {
                 ref={acceptRef}
                 type="button"
                 onClick={() => decide("granted")}
-                className="btn-shine touch-target order-1 inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold text-white transition-all hover:scale-[1.02] sm:order-2"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
-                }}
+                className="btn-primary touch-target order-1 sm:order-2"
               >
                 Accept all
               </button>

@@ -213,8 +213,7 @@ export default function ReadingRoomExplorer({
           <button
             type="button"
             onClick={clearAll}
-            className="btn-warm mt-5 inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-transform hover:scale-105 active:scale-95"
-            style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+            className="btn-primary mt-5 active:scale-95"
           >
             Clear filters
           </button>

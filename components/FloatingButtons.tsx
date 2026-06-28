@@ -35,10 +35,7 @@ export default function FloatingButtons() {
       <button
         type="button"
         onClick={handleTrade}
-        className="touch-target btn-shine animate-pulse-glow group flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-white shadow-2xl transition-transform hover:scale-105 active:scale-95"
-        style={{
-          background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
-        }}
+        className="touch-target btn-primary animate-pulse-glow group shadow-2xl active:scale-95"
         aria-label="Trade books with us"
       >
         <BookOpen size={16} className="transition-transform group-hover:rotate-[-8deg]" />
