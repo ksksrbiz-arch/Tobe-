@@ -57,7 +57,17 @@ function genreLabel(category?: string) {
 const POLL_INTERVAL_MS = 15_000;
 const NEW_ITEM_HIGHLIGHT_DURATION_MS = 8_000;
 
-function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
+// Memoized: the feed re-renders on every 15s poll and whenever the "Just in"
+// highlight set changes, but a card only needs to re-render when its own `book`
+// or `isNew` flag changes. Wrapping in React.memo skips re-rendering (and
+// re-decoding cover images for) the many unchanged cards in the grid.
+const BookCard = React.memo(function BookCard({
+  book,
+  isNew,
+}: {
+  book: RecentArrival;
+  isNew: boolean;
+}) {
   const [coverFailed, setCoverFailed] = useState(false);
   const showCover = Boolean(book.cover_url) && !coverFailed;
   const genre = genreLabel(book.category);
@@ -160,7 +170,7 @@ function BookCard({ book, isNew }: { book: RecentArrival; isNew: boolean }) {
       </div>
     </article>
   );
-}
+});
 
 export default function JustShelvedFeed() {
   const [books, setBooks] = useState<RecentArrival[]>([]);

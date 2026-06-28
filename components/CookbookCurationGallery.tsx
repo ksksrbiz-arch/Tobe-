@@ -51,6 +51,7 @@ const photos: CookbookPhoto[] = [
 
 export function CookbookCurationGallery() {
   const [active, setActive] = useState<CookbookPhoto | null>(null);
+  const isEmpty = photos.length === 0;
 
   return (
     <section
@@ -87,6 +88,17 @@ export function CookbookCurationGallery() {
           <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
         </Reveal>
 
+        {isEmpty ? (
+          <div
+            className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed py-16 text-center"
+            style={{ borderColor: "rgba(107,28,111,0.15)" }}
+          >
+            <ChefHat size={36} style={{ color: "rgba(107,28,111,0.30)" }} />
+            <p className="mt-4 text-sm font-medium" style={{ color: "#6B7280" }}>
+              Photos of the cookbook nook are on their way — check back soon!
+            </p>
+          </div>
+        ) : (
         <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
           {photos.map((photo, i) => (
             <Reveal
@@ -137,6 +149,7 @@ export function CookbookCurationGallery() {
             </Reveal>
           ))}
         </div>
+        )}
       </div>
 
       {active && (
