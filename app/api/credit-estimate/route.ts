@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { checkRateLimit, fetchWithTimeout, getClientIp } from "@/lib/server/functionHardening";
+import type { GoogleBooksVolume } from "@/lib/api-types";
 
 export const runtime = "nodejs";
 
@@ -25,18 +26,6 @@ function normalizeIsbn(raw: string) {
 function isValidIsbn(isbn: string) {
   return /^\d{10}(\d{3})?$/.test(isbn);
 }
-
-type GoogleBooksVolume = {
-  volumeInfo?: {
-    title?: string;
-    authors?: string[];
-    imageLinks?: { thumbnail?: string; smallThumbnail?: string };
-  };
-  saleInfo?: {
-    listPrice?: { amount?: number };
-    retailPrice?: { amount?: number };
-  };
-};
 
 export async function GET(request: Request) {
   const ip = getClientIp(request);

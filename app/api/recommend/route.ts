@@ -4,6 +4,7 @@ import { seedArrivals } from "@/lib/seedArrivals";
 import { chatJSON, getGroqApiKey } from "@/lib/server/groq";
 import { searchInstantAnswer, ddgSearchUrl } from "@/lib/server/duckduckgo";
 import { checkRateLimit, getClientIp } from "@/lib/server/functionHardening";
+import type { Recommendation, InventoryBook } from "@/lib/api-types";
 
 export const runtime = "nodejs";
 const MIN_RECOMMENDATIONS = 3;
@@ -21,19 +22,6 @@ back to the reader's prompt, and keep "description" concise (1–2 sentences). \
 Respond with ONLY a JSON object of the form: \
 {"recommendations":[{"title":string,"author":string,"description":string,"reason":string}]}. \
 Match each title and author exactly to a LIVE_SHELF entry. Skip all preamble.`;
-
-interface Recommendation {
-  title: string;
-  author: string;
-  description: string;
-  reason: string;
-}
-
-interface InventoryBook {
-  title: string;
-  author: string;
-  cover_url: string;
-}
 
 function normalizeText(s: string) {
   return s

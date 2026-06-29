@@ -1,25 +1,8 @@
 import { NextResponse } from "next/server";
 import { checkRateLimit, getClientIp, fetchWithTimeout } from "@/lib/server/functionHardening";
+import type { GoogleVolume, ResolvedBook } from "@/lib/api-types";
 
 export const runtime = "nodejs";
-
-interface GoogleVolume {
-  volumeInfo?: {
-    title?: string;
-    authors?: string[];
-    industryIdentifiers?: Array<{ type?: string; identifier?: string }>;
-    imageLinks?: { thumbnail?: string; smallThumbnail?: string };
-  };
-  saleInfo?: { listPrice?: { amount?: number } };
-}
-
-interface ResolvedBook {
-  isbn: string;
-  title: string;
-  author: string;
-  cover_url: string;
-  list_price: number | null;
-}
 
 function pickIsbn(ids: Array<{ type?: string; identifier?: string }> | undefined): string | null {
   if (!ids) return null;
