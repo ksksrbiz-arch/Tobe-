@@ -7,7 +7,8 @@
  * stretch of the day — the label includes a live countdown.
  */
 
-const TIME_ZONE = "America/Los_Angeles";
+import { STORE_TIMEZONE } from "@/lib/store";
+
 const OPEN_MIN = 10 * 60; // 10:00
 const CLOSE_MIN = 17 * 60; // 17:00
 
@@ -25,7 +26,7 @@ function formatDuration(mins: number): string {
 
 export function getStoreStatus(now: Date = new Date()): StoreStatus {
   const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: TIME_ZONE,
+    timeZone: STORE_TIMEZONE,
     weekday: "short",
     hour: "2-digit",
     minute: "2-digit",
