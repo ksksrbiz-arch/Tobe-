@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import DustMotes from "@/components/DustMotes";
-import { useReadingList } from "@/lib/useReadingList";
+import { useReadingList } from "@/hooks/useReadingList";
 
 /**
  * Resolve a pick to an ISBN (via /api/book-search) and add it to the

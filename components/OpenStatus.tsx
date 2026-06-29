@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useStoreStatus } from "@/lib/useStoreStatus";
+import { useStoreStatus } from "@/hooks/useStoreStatus";
 
 /**
  * Live "Open now / Closed" badge with a countdown to the next open/close,
