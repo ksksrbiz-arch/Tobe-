@@ -1,5 +1,7 @@
 import { Resend } from "resend";
 import { sql } from "@/lib/db";
+import { SITE_URL } from "@/lib/seo";
+import { STORE_NAME, STORE_ADDRESS_TEXT, STORE_PHONE } from "@/lib/store";
 
 interface ArrivalForNotification {
   isbn: string;
@@ -7,9 +9,6 @@ interface ArrivalForNotification {
   author: string;
   cover_url: string;
 }
-
-const STORE_NAME = "To Be Read · Clackamas Book Exchange";
-const STORE_URL = "https://tobereadbooks.com";
 
 function renderEmail(arrival: ArrivalForNotification) {
   const cover = arrival.cover_url
@@ -25,9 +24,9 @@ function renderEmail(arrival: ArrivalForNotification) {
     ${cover}
     <p style="font-size:14px;line-height:1.6;color:#374151;">A copy of <strong>${arrival.title}</strong> by ${arrival.author} just landed on our shelves. We'll hold it until close of day so you can swing by — first come, first served on a single copy.</p>
     <p style="margin:24px 0;">
-      <a href="${STORE_URL}/visit" style="background:linear-gradient(135deg,#6B1C6F 0%,#8B2E90 100%);color:#fff;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">Plan a visit</a>
+      <a href="${SITE_URL}/visit" style="background:linear-gradient(135deg,#6B1C6F 0%,#8B2E90 100%);color:#fff;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">Plan a visit</a>
     </p>
-    <p style="font-size:12px;color:#9CA3AF;margin-top:32px;">${STORE_NAME} · 7931 SE King Rd, Unit 1, Portland, OR 97222 · (503) 659-2559</p>
+    <p style="font-size:12px;color:#9CA3AF;margin-top:32px;">${STORE_NAME} · ${STORE_ADDRESS_TEXT} · ${STORE_PHONE}</p>
   </div>
 </body></html>`.trim();
 }
@@ -60,6 +59,7 @@ export async function notifyWishlistMatches(arrival: ArrivalForNotification) {
   if (matches.length === 0) return { notified: 0 };
 
   const resend = new Resend(apiKey);
+  const html = renderEmail(arrival);
   let notified = 0;
 
   for (const match of matches) {
@@ -68,7 +68,7 @@ export async function notifyWishlistMatches(arrival: ArrivalForNotification) {
         from: fromEmail,
         to: match.email,
         subject: `A book from your hunt list just arrived: ${arrival.title}`,
-        html: renderEmail(arrival),
+        html,
       });
       await sql`UPDATE wishlists SET notified = TRUE WHERE id = ${match.id}`;
       notified += 1;
