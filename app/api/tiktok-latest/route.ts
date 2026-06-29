@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { checkRateLimit, fetchWithTimeout, getClientIp } from "@/lib/server/functionHardening";
+import type { TikTokVideo } from "@/lib/api-types";
 
 export const runtime = "nodejs";
 // Cache the parsed feed for 30 minutes so we don't refetch the RSS bridge on
@@ -20,8 +21,6 @@ export const revalidate = 1800;
  * { configured: false } and the UI falls back to its built-in featured videos,
  * so the site never shows a broken state.
  */
-
-type TikTokVideo = { videoId: string; username: string };
 
 // Matches https://www.tiktok.com/@<username>/video/<digits> anywhere in the feed.
 const VIDEO_URL_RE = /tiktok\.com\/@([A-Za-z0-9._]+)\/video\/(\d{6,25})/g;

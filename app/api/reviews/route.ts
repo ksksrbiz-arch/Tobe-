@@ -7,6 +7,7 @@ import {
   getApprovedReviews,
   hashIp,
 } from "@/lib/reviews";
+import type { ReviewPostRequest } from "@/lib/api-types";
 
 export const runtime = "nodejs";
 // Always read live so a freshly approved review shows up immediately for the
@@ -60,13 +61,7 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: {
-    author_name?: unknown;
-    rating?: unknown;
-    title?: unknown;
-    body?: unknown;
-    website?: unknown; // honeypot
-  };
+  let body: ReviewPostRequest;
   try {
     body = await request.json();
   } catch {
