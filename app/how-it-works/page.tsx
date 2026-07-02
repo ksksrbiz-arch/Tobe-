@@ -25,9 +25,8 @@ import {
   AtSign,
 } from "lucide-react";
 import {
-  TRADE_POLICY_CAP_AND_ROLLOVER,
+  TRADE_POLICY_PER_PERSON,
   TRADE_POLICY_ROLLOVER,
-  TRADE_POLICY_NOV1,
   TRADE_POLICY_WAIT,
 } from "@/lib/tradePolicy";
 
@@ -43,7 +42,7 @@ const chapters = [
     n: "02",
     eyebrow: "Chapter two",
     title: "Earn store credit",
-    body: `Earn 25% of each accepted book's original list price in store credit. ${TRADE_POLICY_CAP_AND_ROLLOVER}`,
+    body: `Earn 25% of each accepted book's original list price in store credit. ${TRADE_POLICY_ROLLOVER}`,
     icon: Coins,
   },
   {
@@ -74,7 +73,7 @@ const noList = [
 const fineprint = [
   {
     q: "Daily trade-in limit?",
-    a: `Bring in what we can review while you wait. ${TRADE_POLICY_WAIT} ${TRADE_POLICY_NOV1}`,
+    a: `Bring in what we can review while you wait. ${TRADE_POLICY_WAIT}`,
   },
   {
     q: "Can I share credit with a partner?",
@@ -445,7 +444,7 @@ export default function HowItWorksPage() {
               className="mt-4 max-w-2xl font-serif italic"
               style={{ color: "var(--ink-soft)", fontSize: "1.15rem" }}
             >
-              {`Credit stays on your account under your name and phone number. ${TRADE_POLICY_CAP_AND_ROLLOVER}`}
+              {`Credit stays on your account under your name and phone number. ${TRADE_POLICY_ROLLOVER}`}
             </p>
           </Reveal>
 
@@ -512,7 +511,7 @@ export default function HowItWorksPage() {
                 <SideNote
                   icon={Clock}
                   caps="Credit rolls over"
-                  body={`${TRADE_POLICY_ROLLOVER} ${TRADE_POLICY_NOV1}`}
+                  body={`${TRADE_POLICY_ROLLOVER} ${TRADE_POLICY_PER_PERSON}`}
                 />
                 <Hairline />
                 <SideNote

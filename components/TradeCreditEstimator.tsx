@@ -4,8 +4,8 @@ import React, { useState, useCallback } from "react";
 import Image from "next/image";
 import { Printer, Search, RefreshCw, Receipt, AlertCircle } from "lucide-react";
 import {
-  TRADE_POLICY_ALL_CREDIT_LIMITS,
   TRADE_POLICY_REDEMPTION,
+  TRADE_POLICY_ROLLOVER,
 } from "@/lib/tradePolicy";
 
 // Upper bound for a sensible book list price. Anything larger is almost
@@ -323,7 +323,7 @@ export default function TradeCreditEstimator() {
 
       {/* Disclaimer */}
       <p className="mt-4 text-center text-[10px] leading-4" style={{ color: "#6B7280" }}>
-        {`Credit is issued as store credit, not cash. ${TRADE_POLICY_ALL_CREDIT_LIMITS} Final amount may vary based on condition and staff review.`}
+        {`Credit is issued as store credit, not cash. ${TRADE_POLICY_ROLLOVER} Final amount may vary based on condition and staff review.`}
       </p>
     </div>
   );

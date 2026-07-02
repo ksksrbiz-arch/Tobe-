@@ -18,8 +18,6 @@ import {
   Smile,
 } from "lucide-react";
 import {
-  TRADE_POLICY_CAP,
-  TRADE_POLICY_NOV1,
   TRADE_POLICY_REDEMPTION,
   TRADE_POLICY_REDEMPTION_FULL,
   TRADE_POLICY_ROLLOVER,
@@ -37,7 +35,7 @@ const tradeTips = [
     icon: BookCopy,
     title: "Bring Multiples",
     description:
-      `Bring what you can comfortably review with us at the counter. ${TRADE_POLICY_CAP}`,
+      "Bring what you can comfortably review with us at the counter.",
   },
   {
     icon: Sunrise,
@@ -67,7 +65,7 @@ const tradeFaqs: Faq[] = [
   },
   {
     q: "Does my store credit expire?",
-    a: `No — ${TRADE_POLICY_ROLLOVER.charAt(0).toLowerCase()}${TRADE_POLICY_ROLLOVER.slice(1)} ${TRADE_POLICY_CAP}`,
+    a: `No — ${TRADE_POLICY_ROLLOVER.charAt(0).toLowerCase()}${TRADE_POLICY_ROLLOVER.slice(1)}`,
   },
 ];
 
@@ -85,7 +83,7 @@ const steps = [
   {
     icon: HandCoins,
     title: "Get store credit",
-    body: `Receive 25% of the original list price as credit on each accepted book. ${TRADE_POLICY_CAP} ${TRADE_POLICY_NOV1} ${TRADE_POLICY_ROLLOVER}`,
+    body: `Receive 25% of the original list price as credit on each accepted book. ${TRADE_POLICY_ROLLOVER}`,
   },
   {
     icon: Smile,
