@@ -62,8 +62,13 @@ export default function AdminReviewsPage() {
     }
     setAuthError("");
     try {
-      await signIn("resend", { email: trimmed, redirect: false });
-      setSigninSent(true);
+      // With redirect: false, failures come back as { error }, not a throw.
+      const res = await signIn("resend", { email: trimmed, redirect: false });
+      if (res?.error) {
+        setAuthError("Couldn't send the magic link. Try again.");
+      } else {
+        setSigninSent(true);
+      }
     } catch (err) {
       setAuthError(err instanceof Error ? err.message : "Sign-in failed.");
     }

@@ -5,6 +5,8 @@ import { MapPin, Phone, Mail, Clock, Copy, Navigation, ExternalLink } from "luci
 import { toast } from "sonner";
 import MapEmbed from "./MapEmbed";
 import Reveal from "./Reveal";
+import { useStoreStatus } from "@/hooks/useStoreStatus";
+import { STORE_TIMEZONE } from "@/lib/store";
 
 const STORE_ADDRESS = "7931 SE King Rd, Unit 1, Portland, OR 97222";
 const STORE_ADDRESS_QUERY = encodeURIComponent(STORE_ADDRESS);
@@ -21,28 +23,6 @@ const dayHours = [
   { day: "Sat", short: "S", hours: "10:00 – 5:00" },
   { day: "Sun", short: "S", hours: "Closed" },
 ];
-
-function isOpenNow(): { open: boolean; label: string } {
-  // Always evaluate in America/Los_Angeles so out-of-state visitors see correct status.
-  const ptParts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Los_Angeles",
-    weekday: "short",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: false,
-  }).formatToParts(new Date());
-
-  const get = (type: string) => ptParts.find((p) => p.type === type)?.value ?? "";
-  const weekday = get("weekday"); // "Sun" | "Mon" … "Sat"
-  const hour = parseInt(get("hour"), 10);
-  const minute = parseInt(get("minute"), 10);
-  const time = hour + minute / 60;
-
-  if (weekday === "Sun") return { open: false, label: "Closed today (Sun) · opens Mon 10am" };
-  if (time >= 10 && time < 17) return { open: true, label: "Open now until 5pm" };
-  if (time < 10) return { open: false, label: "Opening at 10am today" };
-  return { open: false, label: "Closed for the day · opens 10am" };
-}
 
 export default function VisitSection() {
 
@@ -71,14 +51,24 @@ export default function VisitSection() {
     handleCopyAddress();
   };
 
-  const status = isOpenNow();
-  const ptWeekday = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Los_Angeles",
-    weekday: "short",
-  }).format(new Date());
+  // This section is statically prerendered (homepage ISR), so anything derived
+  // from the clock must wait for mount: useStoreStatus renders a neutral hours
+  // label first, then swaps in the live status — no hydration mismatch, and it
+  // refreshes every minute while the page stays open.
+  const liveStatus = useStoreStatus();
+  const status = liveStatus ?? { open: false, label: "Mon–Sat · 10am–5pm" };
+  const [todayName, setTodayName] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    queueMicrotask(() =>
+      setTodayName(
+        new Intl.DateTimeFormat("en-US", { timeZone: STORE_TIMEZONE, weekday: "short" }).format(
+          new Date(),
+        ),
+      ),
+    );
+  }, []);
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const todayIdx = dayNames.indexOf(ptWeekday);
-  const todayName = ptWeekday;
+  const todayIdx = todayName ? dayNames.indexOf(todayName) : -1;
 
   return (
     <section
@@ -148,7 +138,7 @@ export default function VisitSection() {
               className={`h-2 w-2 rounded-full ${status.open ? "animate-pulse-glow" : ""}`}
               style={{ background: status.open ? "#22c55e" : "#6B1C6F" }}
             />
-            <span className="sr-only">{status.open ? "Open: " : "Closed: "}</span>
+            {liveStatus && <span className="sr-only">{liveStatus.open ? "Open: " : "Closed: "}</span>}
             {status.label}
           </div>
         </Reveal>
@@ -375,12 +365,14 @@ export default function VisitSection() {
                   );
                 })}
               </div>
-              <p
-                className="border-t px-4 pb-3 pt-2 text-center text-[11px] font-medium sm:hidden"
-                style={{ borderColor: "rgba(107,28,111,0.06)", color: "#6B7280" }}
-              >
-                Today is <strong style={{ color: "#6B1C6F" }}>{todayName}</strong>
-              </p>
+              {todayName && (
+                <p
+                  className="border-t px-4 pb-3 pt-2 text-center text-[11px] font-medium sm:hidden"
+                  style={{ borderColor: "rgba(107,28,111,0.06)", color: "#6B7280" }}
+                >
+                  Today is <strong style={{ color: "#6B1C6F" }}>{todayName}</strong>
+                </p>
+              )}
 
               {/* Desktop: full row list */}
               <div className="hidden divide-y sm:block" style={{ borderColor: "rgba(107,28,111,0.08)" }}>

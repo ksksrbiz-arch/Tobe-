@@ -2,8 +2,9 @@
 
 import React from "react";
 import { CalendarPlus } from "lucide-react";
+import { STORE_ADDRESS_TEXT } from "@/lib/store";
 
-const STORE_LOCATION = "To Be Read, 7931 SE King Rd, Ste 1, Milwaukie, OR 97222";
+const STORE_LOCATION = `To Be Read, ${STORE_ADDRESS_TEXT}`;
 
 export interface CalendarEvent {
   id: string;

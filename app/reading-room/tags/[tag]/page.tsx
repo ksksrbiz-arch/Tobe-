@@ -41,9 +41,11 @@ export async function generateMetadata({
       description: `Posts tagged "${tag}" from To Be Read.`,
       url,
       type: "website",
-      images: ["/opengraph-image"],
+      // No explicit images: the colocated opengraph-image.tsx / twitter-image
+      // file conventions supply per-tag cards; listing the generic card here
+      // made X/Twitter shares fall back to it.
     },
-    twitter: { card: "summary_large_image", images: ["/twitter-image"] },
+    twitter: { card: "summary_large_image" },
   };
 }
 

@@ -25,14 +25,25 @@ export interface ReviewAggregate {
   average: number | null;
 }
 
-/** Compute the aggregate rating from a set of (approved) reviews, in JS. */
-export function aggregate(reviews: Pick<Review, "rating">[]): ReviewAggregate {
-  if (reviews.length === 0) return { count: 0, average: null };
-  const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
-  return {
-    count: reviews.length,
-    average: Math.round((sum / reviews.length) * 10) / 10,
-  };
+/**
+ * Aggregate over ALL approved reviews, computed in SQL. The display list is
+ * capped (newest 60), so deriving the aggregate from it would silently cap
+ * reviewCount and skew the average once the shop passes 60 reviews — bad data
+ * to publish as schema.org aggregateRating. Never throws.
+ */
+export async function getApprovedReviewAggregate(): Promise<ReviewAggregate> {
+  try {
+    const rows = (await sql`
+      SELECT COUNT(*)::int AS count, ROUND(AVG(rating)::numeric, 1) AS average
+      FROM reviews
+      WHERE status = 'approved'
+    `) as Array<{ count: number; average: string | number | null }>;
+    const row = rows[0];
+    if (!row || row.count === 0) return { count: 0, average: null };
+    return { count: row.count, average: row.average == null ? null : Number(row.average) };
+  } catch {
+    return { count: 0, average: null };
+  }
 }
 
 /**

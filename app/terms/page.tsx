@@ -23,7 +23,8 @@ export const metadata: Metadata = {
 
 const policyJsonLd = {
   "@context": "https://schema.org",
-  "@type": "TermsOfService",
+  // "TermsOfService" is not a schema.org type (only a property) — use WebPage.
+  "@type": "WebPage",
   "@id": `${SITE_URL}/terms`,
   name: "Terms of Service",
   url: `${SITE_URL}/terms`,

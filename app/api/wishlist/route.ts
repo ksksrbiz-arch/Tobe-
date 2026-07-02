@@ -59,9 +59,11 @@ export async function POST(request: Request) {
   if (!isValidIsbn(isbn)) {
     return NextResponse.json({ error: "Invalid ISBN." }, { status: 400 });
   }
-  const title = typeof body.title === "string" ? body.title : "";
-  const author = typeof body.author === "string" ? body.author : "";
-  const cover_url = typeof body.cover_url === "string" ? body.cover_url : "";
+  const title = (typeof body.title === "string" ? body.title : "").slice(0, 500);
+  const author = (typeof body.author === "string" ? body.author : "").slice(0, 500);
+  const rawCover = typeof body.cover_url === "string" ? body.cover_url.slice(0, 2000) : "";
+  // Covers are later fed to next/image — only keep https URLs.
+  const cover_url = rawCover.startsWith("https://") ? rawCover : "";
   const list_price = typeof body.list_price === "number" ? body.list_price : null;
 
   if (!title) {
@@ -95,8 +97,10 @@ export async function DELETE(request: Request) {
   }
   const url = new URL(request.url);
   const id = url.searchParams.get("id");
-  if (!id) {
-    return NextResponse.json({ error: "Missing id." }, { status: 400 });
+  // The id column is a UUID; a malformed value would make Postgres throw and
+  // surface as a framework 500 instead of this route's JSON error contract.
+  if (!id || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
+    return NextResponse.json({ error: "Invalid id." }, { status: 400 });
   }
   await sql`DELETE FROM wishlists WHERE id = ${id} AND user_id = ${session.user.id}`;
   return NextResponse.json({ ok: true });

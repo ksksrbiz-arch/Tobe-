@@ -160,6 +160,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   // configuration"), which silently breaks sign-in and the whole wishlist.
   trustHost: true,
   session: { strategy: "database" },
+  callbacks: {
+    // Auth.js's default session callback strips the user down to
+    // { name, email, image }. The wishlist API authorizes rows by
+    // session.user.id, so without this callback every signed-in request
+    // 401s and the whole wishlist feature is dead.
+    session({ session, user }) {
+      session.user.id = user.id;
+      return session;
+    },
+  },
   providers: [
     Resend({
       from: process.env.RESEND_FROM_EMAIL,

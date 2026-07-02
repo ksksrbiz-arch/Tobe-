@@ -399,9 +399,12 @@ summary:focus-visible,
   }
 }
 
+/* Opacity/filter only: animating letter-spacing forced per-frame reflow on the
+   largest text on the page, and starting fully transparent pushed back the
+   headline's LCP paint. */
 @keyframes inkSettle {
-  0% { letter-spacing: 0.06em; opacity: 0; filter: blur(6px); }
-  100% { letter-spacing: 0; opacity: 1; filter: blur(0); }
+  0% { opacity: 0.3; filter: blur(5px); }
+  100% { opacity: 1; filter: blur(0); }
 }
 
 @keyframes bookmarkSlide {

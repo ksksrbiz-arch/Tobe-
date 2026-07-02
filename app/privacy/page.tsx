@@ -24,7 +24,8 @@ export const metadata: Metadata = {
 
 const policyJsonLd = {
   "@context": "https://schema.org",
-  "@type": "PrivacyPolicy",
+  // "PrivacyPolicy" is not a schema.org type — validators drop unknown types.
+  "@type": "WebPage",
   "@id": `${SITE_URL}/privacy`,
   name: "Privacy Policy",
   url: `${SITE_URL}/privacy`,

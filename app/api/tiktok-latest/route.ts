@@ -3,9 +3,15 @@ import { checkRateLimit, fetchWithTimeout, getClientIp } from "@/lib/server/func
 import type { TikTokVideo } from "@/lib/api-types";
 
 export const runtime = "nodejs";
-// Cache the parsed feed for 30 minutes so we don't refetch the RSS bridge on
-// every page load; new posts surface within that window.
-export const revalidate = 1800;
+// NOTE: no segment-level `revalidate` — reading request headers (getClientIp)
+// makes this handler dynamic, so that directive was inert. The RSS bridge is
+// protected by the fetch-level `next: { revalidate: 1800 }`, and the CDN
+// caches the public response via the Cache-Control header below.
+
+const CDN_CACHE_HEADERS = {
+  // Same public payload for every visitor; new posts surface within ~30 min.
+  "Cache-Control": "public, s-maxage=1800, stale-while-revalidate=86400",
+};
 
 /**
  * Latest TikTok videos for @clackamas.book.ex.
@@ -78,9 +84,10 @@ export async function GET(request: Request) {
     }
     const xml = await res.text();
     const videos = parseFeed(xml, 6);
-    return NextResponse.json({ configured: true, videos });
+    return NextResponse.json({ configured: true, videos }, { headers: CDN_CACHE_HEADERS });
   } catch {
     // Network/parse hiccup — degrade to the UI fallback rather than erroring.
+    // (Deliberately uncached so recovery is immediate.)
     return NextResponse.json({ configured: true, videos: [], error: "feed-error" });
   }
 }

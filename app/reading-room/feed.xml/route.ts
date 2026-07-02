@@ -17,8 +17,14 @@ function escapeXml(value: string): string {
 export function GET() {
   const posts = getAllPosts();
   const feedUrl = `${SITE_URL}/reading-room/feed.xml`;
-  const lastBuild = posts[0]
-    ? new Date(`${posts[0].updated ?? posts[0].date}T00:00:00Z`).toUTCString()
+  // Newest change across ALL posts — posts[0] is only newest by publish date,
+  // so an older post with a fresher `updated` wouldn't advance lastBuildDate.
+  const newestChange = posts
+    .map((p) => p.updated ?? p.date)
+    .sort()
+    .at(-1);
+  const lastBuild = newestChange
+    ? new Date(`${newestChange}T00:00:00Z`).toUTCString()
     : new Date().toUTCString();
 
   const items = posts

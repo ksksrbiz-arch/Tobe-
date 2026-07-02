@@ -65,7 +65,10 @@ const COLLECTIONS: Collection[] = [
     title: "Trade & Selling",
     description:
       "How to trade in and sell your used books at To Be Read — tips, what we take, and how to get the most.",
-    match: (post) => post.tags.includes("Trade"),
+    // The tag taxonomy split this topic across three tags; match them all so
+    // the trade-in cornerstone posts aren't excluded from their own collection.
+    match: (post) =>
+      post.tags.some((t) => t === "Trade" || t === "Trade-in" || t === "Store credit"),
   },
 ];
 

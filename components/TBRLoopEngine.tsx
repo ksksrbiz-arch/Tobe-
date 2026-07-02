@@ -196,29 +196,72 @@ export function Stage({
   persistKey = "animstage",
   children,
 }: StageProps) {
-  const [time, setTime] = React.useState(() => {
-    if (typeof window === "undefined") return 0;
-    try {
-      const v = parseFloat(localStorage.getItem(persistKey + ":t") || "0");
-      return isFinite(v) ? clamp(v, 0, duration) : 0;
-    } catch {
-      return 0;
-    }
-  });
+  // Always start at 0 so server and client render the same first frame; the
+  // persisted playhead (which the server can't know) is restored after mount.
+  const [time, setTime] = React.useState(0);
   const [playing, setPlaying] = React.useState(autoplay);
   const [hoverTime, setHoverTime] = React.useState<number | null>(null);
   const [scale, setScale] = React.useState(1);
+  const [inView, setInView] = React.useState(true);
 
   const stageRef = React.useRef<HTMLDivElement>(null);
   const rafRef = React.useRef<number | null>(null);
   const lastTsRef = React.useRef<number | null>(null);
-
-  // Persist playhead
+  const timeRef = React.useRef(0);
   React.useEffect(() => {
+    timeRef.current = time;
+  }, [time]);
+
+  const persistPlayhead = React.useCallback(() => {
     try {
-      localStorage.setItem(persistKey + ":t", String(time));
+      localStorage.setItem(persistKey + ":t", String(timeRef.current));
     } catch {}
-  }, [time, persistKey]);
+  }, [persistKey]);
+
+  // Restore the persisted playhead post-hydration, and don't autoplay for
+  // visitors who ask for reduced motion (they can still press play). Deferred
+  // out of the effect body via queueMicrotask per this repo's convention
+  // (see hooks/useStoreStatus) to satisfy react-hooks/set-state-in-effect.
+  React.useEffect(() => {
+    queueMicrotask(() => {
+      try {
+        const v = parseFloat(localStorage.getItem(persistKey + ":t") || "0");
+        if (isFinite(v) && v > 0) setTime(clamp(v, 0, duration));
+      } catch {}
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        setPlaying(false);
+      }
+    });
+    // Run once on mount only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Persist the playhead at natural stopping points (pause, tab hidden,
+  // navigation, unmount) rather than on every animation frame.
+  React.useEffect(() => {
+    if (!playing) persistPlayhead();
+  }, [playing, persistPlayhead]);
+  React.useEffect(() => {
+    document.addEventListener("visibilitychange", persistPlayhead);
+    window.addEventListener("pagehide", persistPlayhead);
+    return () => {
+      persistPlayhead();
+      document.removeEventListener("visibilitychange", persistPlayhead);
+      window.removeEventListener("pagehide", persistPlayhead);
+    };
+  }, [persistPlayhead]);
+
+  // Stop burning main thread once the stage is scrolled offscreen.
+  React.useEffect(() => {
+    const el = stageRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.05 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   // Auto-scale to fit container
   React.useEffect(() => {
@@ -239,15 +282,16 @@ export function Stage({
     };
   }, [width, height]);
 
-  // Animation loop
+  // Animation loop (only while playing AND onscreen)
   React.useEffect(() => {
-    if (!playing) {
+    if (!playing || !inView) {
       lastTsRef.current = null;
       return;
     }
     const step = (ts: number) => {
       if (lastTsRef.current == null) lastTsRef.current = ts;
-      const dt = (ts - lastTsRef.current) / 1000;
+      // Cap the delta so a background-tab gap doesn't teleport the playhead.
+      const dt = Math.min((ts - lastTsRef.current) / 1000, 0.1);
       lastTsRef.current = ts;
       setTime((t) => {
         let next = t + dt;
@@ -267,13 +311,23 @@ export function Stage({
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       lastTsRef.current = null;
     };
-  }, [playing, duration, loop]);
+  }, [playing, inView, duration, loop]);
 
   // Keyboard: space = play/pause, ← → = seek 1s, Shift+←/→ = seek 5s.
+  // Only while focus is inside the stage — a global listener would hijack
+  // spacebar scrolling and button activation for the whole page.
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      const el = stageRef.current;
+      if (!el || !el.contains(document.activeElement)) return;
       const target = e.target as HTMLElement;
-      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "BUTTON")
+      )
+        return;
       if (e.code === "Space") {
         e.preventDefault();
         setPlaying((p) => !p);
