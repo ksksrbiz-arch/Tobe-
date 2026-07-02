@@ -398,7 +398,7 @@ export default function VisitSection() {
                       <span style={{ color: isToday ? "#6B1C6F" : "#374151" }}>
                         {d.day}
                         {isToday && (
-                          <span className="ml-2 text-[10px] uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
+                          <span className="ml-2 text-[10px] uppercase tracking-wider" style={{ color: "var(--gold-ink)" }}>
                             • today
                           </span>
                         )}

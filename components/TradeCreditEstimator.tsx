@@ -295,7 +295,7 @@ export default function TradeCreditEstimator() {
             </div>
             <div className="flex justify-between">
               <span style={{ color: "#6B7280" }}>Swap fee</span>
-              <span className="font-bold" style={{ color: "#F1BB1A" }}>– {fmt(result.fee)}</span>
+              <span className="font-bold" style={{ color: "var(--gold-ink)" }}>– {fmt(result.fee)}</span>
             </div>
 
             <div

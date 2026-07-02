@@ -217,7 +217,7 @@ export default function TradeSection() {
                       <div
                         className="text-3xl font-bold"
                         style={{
-                          color: "#F1BB1A",
+                          color: "var(--gold-ink)",
                           fontFamily: "var(--font-serif)",
                         }}
                       >

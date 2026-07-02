@@ -102,7 +102,7 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider transition-all hover:gap-1.5"
-              style={{ color: "#F1BB1A" }}
+              style={{ color: "var(--gold-ink)" }}
             >
               Search PangoBooks <ArrowRight size={10} />
             </a>

@@ -36,6 +36,15 @@ const events = [
   },
 ];
 
+// The bright gold accents read fine as a bar/icon but fail WCAG contrast as
+// small text on the white cards, so map them to an accessible dark amber when
+// used for the label text. Purple/magenta accents already pass.
+const READABLE_ACCENT: Record<string, string> = {
+  "#F1BB1A": "#8A6D00",
+  "#F5CC45": "#7A5E00",
+};
+const readableAccent = (accent: string) => READABLE_ACCENT[accent] ?? accent;
+
 export default function EventsSection() {
   return (
     <section
@@ -94,7 +103,7 @@ export default function EventsSection() {
                 </div>
                 <p
                   className="mb-1 text-[10px] font-bold uppercase tracking-widest"
-                  style={{ color: ev.accent }}
+                  style={{ color: readableAccent(ev.accent) }}
                 >
                   {ev.when}
                 </p>
