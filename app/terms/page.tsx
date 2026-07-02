@@ -123,7 +123,7 @@ export default function TermsOfServicePage() {
         <h2>5. Trade-in &amp; store credit</h2>
         <p>
           The Site may show trade-in information and a trade-credit estimator. Any
-          credit value, swap fee, rate, or other figure shown online is an{" "}
+          credit value, rate, payment split, or other figure shown online is an{" "}
           <strong>
             illustrative estimate provided for convenience only — not an offer, a
             quote, a promise, or a guarantee

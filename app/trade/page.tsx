@@ -17,7 +17,14 @@ import {
   HandCoins,
   Smile,
 } from "lucide-react";
-import { TRADE_POLICY_CAP, TRADE_POLICY_ROLLOVER, TRADE_POLICY_NOV1, TRADE_POLICY_WAIT } from "@/lib/tradePolicy";
+import {
+  TRADE_POLICY_CAP,
+  TRADE_POLICY_NOV1,
+  TRADE_POLICY_REDEMPTION,
+  TRADE_POLICY_REDEMPTION_FULL,
+  TRADE_POLICY_ROLLOVER,
+  TRADE_POLICY_WAIT,
+} from "@/lib/tradePolicy";
 
 const tradeTips = [
   {
@@ -48,7 +55,7 @@ const tradeFaqs: Faq[] = [
   },
   {
     q: "How is my trade credit calculated?",
-    a: "You receive 25% of the book's original list price as store credit on books we accept. When you buy with credit, 50% of the list price comes off your credit plus a small swap fee ($1–$3).",
+    a: `You receive 25% of the book's original list price as store credit on books we accept. ${TRADE_POLICY_REDEMPTION_FULL}`,
   },
   {
     q: "What books do you accept?",
@@ -83,7 +90,7 @@ const steps = [
   {
     icon: Smile,
     title: "Pick new reads",
-    body: "Browse, ask for recommendations, and use your credit toward the next stack. Pay only the swap fee + 50% of list.",
+    body: `Browse, ask for recommendations, and use your credit toward the next stack. ${TRADE_POLICY_REDEMPTION}`,
   },
 ];
 
@@ -199,7 +206,7 @@ export default function TradePage() {
               How much credit will I <span className="underline-accent">earn?</span>
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-sm leading-6" style={{ color: "#6B7280" }}>
-              Enter a list price or scan an ISBN to instantly see your estimated store credit and swap fee — before you even walk in.
+              Enter a list price or scan an ISBN to instantly see your estimated store credit — before you even walk in.
             </p>
             <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
           </Reveal>

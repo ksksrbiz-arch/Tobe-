@@ -4,20 +4,7 @@ import type { GoogleBooksVolume } from "@/lib/api-types";
 
 export const runtime = "nodejs";
 
-const SWAP_TIERS: ReadonlyArray<{ max: number; fee: number; label: string }> = [
-  { max: 10, fee: 1, label: "$10 or under" },
-  { max: 19, fee: 2, label: "$11 – $19" },
-  { max: Number.POSITIVE_INFINITY, fee: 3, label: "$20 and up" },
-];
-
 const CREDIT_RATE = 0.25;
-
-function getSwapFee(listPrice: number) {
-  for (const tier of SWAP_TIERS) {
-    if (listPrice <= tier.max) return { fee: tier.fee, label: tier.label };
-  }
-  return SWAP_TIERS[SWAP_TIERS.length - 1];
-}
 
 function normalizeIsbn(raw: string) {
   return raw.replace(/[-\s]/g, "");
@@ -122,7 +109,6 @@ export async function GET(request: Request) {
   }
 
   const credit = Math.round(listPrice * CREDIT_RATE * 100) / 100;
-  const swap = getSwapFee(listPrice);
 
   return NextResponse.json({
     isbn,
@@ -132,8 +118,5 @@ export async function GET(request: Request) {
     listPrice,
     creditRate: CREDIT_RATE,
     credit,
-    swapFee: swap.fee,
-    swapTierLabel: swap.label,
-    netCredit: Math.max(0, Math.round((credit - swap.fee) * 100) / 100),
   });
 }
