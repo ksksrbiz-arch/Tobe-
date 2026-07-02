@@ -6,6 +6,7 @@ import Link from "next/link";
 import { MapPin, Phone, Mail, Clock, Send, ArrowUpRight } from "lucide-react";
 import BookLogo from "./BookLogo";
 import CookieSettingsButton from "./CookieSettingsButton";
+import { EMAIL_ENABLED } from "@/lib/flags";
 
 const InstagramIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -181,20 +182,36 @@ export default function Footer() {
               Stay updated
             </h3>
             <p className="mb-4 text-sm leading-relaxed opacity-75">
-              New arrivals, store events, and behind-the-scenes peeks at our 2026 rebrand — straight to your inbox.
+              {EMAIL_ENABLED
+                ? "New arrivals, store events, and behind-the-scenes peeks at our 2026 rebrand — straight to your inbox."
+                : "New arrivals, store events, and behind-the-scenes peeks at our 2026 rebrand — follow along on social."}
             </p>
-            {/* The full sign-up form lives in the NewsletterCTA section above;
-                linking there keeps the subscribe flow in one place and avoids
-                duplicate form state / duplicate API calls. */}
-            <a
-              href="#newsletter"
-              className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-[1.03]"
-              style={{ background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)", color: "#1a1a1a" }}
-            >
-              Subscribe above
-              <Send size={14} />
-            </a>
-            <p className="mt-3 text-[11px] opacity-55">No spam. Unsubscribe anytime.</p>
+            {/* When email is live the sign-up form lives in the NewsletterCTA
+                section above; while it's paused we point folks to social. */}
+            {EMAIL_ENABLED ? (
+              <a
+                href="#newsletter"
+                className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-[1.03]"
+                style={{ background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)", color: "#1a1a1a" }}
+              >
+                Subscribe above
+                <Send size={14} />
+              </a>
+            ) : (
+              <a
+                href="https://instagram.com/toberead_clackamas"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-[1.03]"
+                style={{ background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)", color: "#1a1a1a" }}
+              >
+                Follow us
+                <ArrowUpRight size={14} />
+              </a>
+            )}
+            {EMAIL_ENABLED && (
+              <p className="mt-3 text-[11px] opacity-55">No spam. Unsubscribe anytime.</p>
+            )}
           </div>
         </div>
 
