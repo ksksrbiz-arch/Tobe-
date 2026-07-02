@@ -999,7 +999,10 @@ summary:focus-visible,
    time. Existing inline call sites are untouched. */
 
 /* Primary CTA: purple gradient with the warm sweep on hover. Composes the
-   .btn-warm sweep mechanism above (no need to also add .btn-warm). */
+   .btn-warm sweep mechanism above (no need to also add .btn-warm). Declared in
+   @layer components so per-callsite Tailwind utilities (shadow-2xl, text-sm,
+   px-*) can override individual properties. */
+@layer components {
 .btn-primary {
   position: relative;
   overflow: hidden;
@@ -1041,6 +1044,7 @@ summary:focus-visible,
 }
 .btn-primary:hover::after {
   animation: warmSweep 0.7s ease forwards;
+}
 }
 
 /* Secondary CTA: gold-tinted pill with a hairline gold border. */
