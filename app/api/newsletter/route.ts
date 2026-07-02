@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { checkRateLimit, getClientIp } from "@/lib/server/functionHardening";
+import { EMAIL_ENABLED } from "@/lib/flags";
 
 export const runtime = "nodejs";
 
@@ -50,6 +51,16 @@ function subscriberConfirmationHtml(email: string) {
 }
 
 export async function POST(req: NextRequest) {
+  // Email delivery is paused while we move off Resend. Short-circuit so we never
+  // attempt a send; the UI no longer surfaces the signup form either. Flip
+  // EMAIL_ENABLED in lib/flags.ts to restore.
+  if (!EMAIL_ENABLED) {
+    return NextResponse.json(
+      { error: "Our newsletter is on a short break — follow us on social for now." },
+      { status: 503 },
+    );
+  }
+
   const ip = getClientIp(req);
   const rateLimit = checkRateLimit({
     key: `newsletter:${ip}`,

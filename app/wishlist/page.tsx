@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
@@ -8,6 +9,53 @@ import FloatingButtons from "@/components/FloatingButtons";
 import WishlistManager from "@/components/WishlistManager";
 import Reveal from "@/components/Reveal";
 import { Bell, BookMarked, Mail, Zap } from "lucide-react";
+import { EMAIL_ENABLED } from "@/lib/flags";
+
+// While email is paused (moving off Resend), the sign-in + hunt-list flow is
+// unavailable, so we show a friendly notice instead. Flip EMAIL_ENABLED in
+// lib/flags.ts to restore the live <WishlistManager />.
+function WishlistComingSoon() {
+  return (
+    <div
+      className="rounded-[28px] border-2 p-8 text-center shadow-xl"
+      style={{
+        background: "linear-gradient(180deg, rgba(253,248,240,0.98) 0%, rgba(255,255,255,0.98) 100%)",
+        borderColor: "rgba(107,28,111,0.14)",
+        boxShadow: "0 20px 60px rgba(107,28,111,0.10)",
+      }}
+    >
+      <div
+        className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl"
+        style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+      >
+        <BookMarked size={24} className="text-white" />
+      </div>
+      <h3
+        className="mb-2 text-2xl font-bold"
+        style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+      >
+        Hunting lists are coming soon
+      </h3>
+      <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed" style={{ color: "#4B5563" }}>
+        We&apos;re rebuilding our alerts so we can email you the moment a title on your list
+        lands on our shelves. It&apos;ll be back shortly — in the meantime, come browse in
+        person or online, and follow along on social for fresh arrivals.
+      </p>
+      <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <Link href="/#shop" className="btn-primary pressable">
+          Browse the shop
+        </Link>
+        <Link
+          href="/visit"
+          className="pressable inline-flex items-center justify-center rounded-2xl border-2 px-6 py-3 text-sm font-semibold"
+          style={{ borderColor: "rgba(107,28,111,0.20)", color: "#6B1C6F" }}
+        >
+          Plan a visit
+        </Link>
+      </div>
+    </div>
+  );
+}
 
 const features = [
   {
@@ -114,7 +162,7 @@ export default function WishlistPage() {
             </h2>
             <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
           </Reveal>
-          <WishlistManager />
+          {EMAIL_ENABLED ? <WishlistManager /> : <WishlistComingSoon />}
         </div>
       </section>
 
