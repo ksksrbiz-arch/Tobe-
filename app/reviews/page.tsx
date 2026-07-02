@@ -9,7 +9,7 @@ import Reveal from "@/components/Reveal";
 import JsonLd from "@/components/JsonLd";
 import ReviewForm from "@/components/ReviewForm";
 import { SITE_URL, breadcrumbList } from "@/lib/seo";
-import { getApprovedReviews, aggregate } from "@/lib/reviews";
+import { getApprovedReviews, getApprovedReviewAggregate } from "@/lib/reviews";
 import type { Review } from "@/lib/db";
 
 // Statically prerendered with ISR — newly approved reviews (and their Review /
@@ -92,7 +92,8 @@ function ReviewCard({ review }: { review: Review }) {
 
 export default async function ReviewsPage() {
   const reviews = await getApprovedReviews();
-  const { count, average } = aggregate(reviews);
+  // Aggregate over ALL approved reviews (SQL), not just the newest 60 shown.
+  const { count, average } = await getApprovedReviewAggregate();
 
   // Review + AggregateRating structured data, attached to the BookStore entity.
   // Only emitted once there's at least one approved first-party review, so the

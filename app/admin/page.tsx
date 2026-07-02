@@ -6,6 +6,7 @@ import { ScanLine, Plus, RefreshCw, Check, LogIn, LogOut } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 interface ScanEntry {
+  id: number;
   isbn: string;
   title: string;
   author: string;
@@ -14,6 +15,8 @@ interface ScanEntry {
   status: "pending" | "saved" | "error";
   errorMsg?: string;
 }
+
+let nextEntryId = 1;
 
 async function shelveISBN(isbn: string) {
   const res = await fetch("/api/admin/shelve", {
@@ -44,8 +47,13 @@ export default function AdminPage() {
     if (!trimmed.includes("@")) { setAuthError("Enter a valid email."); return; }
     setAuthError("");
     try {
-      await signIn("resend", { email: trimmed, redirect: false });
-      setSigninSent(true);
+      // With redirect: false, failures come back as { error }, not a throw.
+      const res = await signIn("resend", { email: trimmed, redirect: false });
+      if (res?.error) {
+        setAuthError("Couldn't send the magic link. Try again.");
+      } else {
+        setSigninSent(true);
+      }
     } catch (err) {
       setAuthError(err instanceof Error ? err.message : "Sign-in failed.");
     }
@@ -53,21 +61,32 @@ export default function AdminPage() {
 
   const processISBN = async (isbn: string) => {
     const clean = isbn.replace(/[-\s]/g, "");
-    if (!/^\d{10}(\d{3})?$/.test(clean)) return;
+    const id = nextEntryId++;
+    // A mis-scan must land in the log too — a silently emptied input leaves
+    // staff unsure whether the book was shelved.
+    if (!/^\d{10}(\d{3})?$/.test(clean)) {
+      setQueue((prev) => [
+        { id, isbn: clean, title: "", author: "", cover_url: "", list_price: 0, status: "error", errorMsg: "Not a valid ISBN — rescan or retype it." },
+        ...prev,
+      ]);
+      return;
+    }
 
     setProcessing(true);
-    const entry: ScanEntry = { isbn: clean, title: "", author: "", cover_url: "", list_price: 0, status: "pending" };
+    const entry: ScanEntry = { id, isbn: clean, title: "", author: "", cover_url: "", list_price: 0, status: "pending" };
     setQueue((prev) => [entry, ...prev]);
 
+    // Update by id, not index — a second scan can be prepended while this
+    // request is still in flight, shifting positions under us.
     try {
       const book = await shelveISBN(clean);
       setQueue((prev) =>
-        prev.map((e, i) => i === 0 ? { ...e, ...book, status: "saved" } : e),
+        prev.map((e) => (e.id === id ? { ...e, ...book, status: "saved" } : e)),
       );
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       setQueue((prev) =>
-        prev.map((e, i) => i === 0 ? { ...e, status: "error", errorMsg: msg } : e),
+        prev.map((e) => (e.id === id ? { ...e, status: "error", errorMsg: msg } : e)),
       );
     } finally {
       setProcessing(false);
@@ -222,9 +241,9 @@ export default function AdminPage() {
             <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#6B1C6F" }}>
               Session log
             </p>
-            {queue.map((entry, i) => (
+            {queue.map((entry) => (
               <div
-                key={i}
+                key={entry.id}
                 className="flex items-center gap-3 rounded-2xl border p-4"
                 style={{
                   background: entry.status === "saved" ? "rgba(34,197,94,0.05)" : entry.status === "error" ? "rgba(239,68,68,0.05)" : "white",

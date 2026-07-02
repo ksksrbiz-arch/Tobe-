@@ -198,7 +198,7 @@ export default function ReviewForm() {
       </div>
 
       {error && (
-        <p className="mb-3 text-sm" style={{ color: "#B91C1C" }}>
+        <p role="alert" className="mb-3 text-sm" style={{ color: "#B91C1C" }}>
           {error}
         </p>
       )}

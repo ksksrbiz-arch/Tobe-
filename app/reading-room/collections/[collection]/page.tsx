@@ -41,9 +41,11 @@ export async function generateMetadata({
       description: collection.description,
       url,
       type: "website",
-      images: ["/opengraph-image"],
+      // No explicit images: the colocated opengraph-image.tsx file convention
+      // supplies a per-collection card; listing the generic card here made
+      // X/Twitter shares fall back to it.
     },
-    twitter: { card: "summary_large_image", images: ["/twitter-image"] },
+    twitter: { card: "summary_large_image" },
   };
 }
 

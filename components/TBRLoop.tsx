@@ -1246,7 +1246,7 @@ function Scene5() {
       </div>
 
       <BottomPill x={540} y={1000} delay={1.6}>
-        tobereadbooks.com
+        tobereadshop.com
       </BottomPill>
 
       <Sparkle x={170} y={300} size={28} color={GOLD} delay={1.2} dur={3.0} />

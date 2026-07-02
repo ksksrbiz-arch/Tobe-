@@ -26,9 +26,14 @@ const tickerItems = Array.from({ length: 8 });
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [progress, setProgress] = useState(0);
   const rafRef = useRef<number | null>(null);
   const drawerTouchStartX = useRef<number | null>(null);
+  // The progress bar updates every scroll frame — write styles straight to the
+  // DOM (same pattern as CursorGlow/Tilt) instead of re-rendering the navbar.
+  const progressFillRef = useRef<HTMLDivElement>(null);
+  const progressDotRef = useRef<HTMLSpanElement>(null);
+  const drawerNavRef = useRef<HTMLElement>(null);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -36,7 +41,9 @@ export default function Navbar() {
       const y = window.scrollY;
       setScrolled(y > 20);
       const docH = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(docH > 0 ? Math.min(100, (y / docH) * 100) : 0);
+      const progress = docH > 0 ? Math.min(100, (y / docH) * 100) : 0;
+      if (progressFillRef.current) progressFillRef.current.style.width = `${progress}%`;
+      if (progressDotRef.current) progressDotRef.current.style.opacity = progress > 0.5 ? "1" : "0";
       rafRef.current = null;
     };
     const handleScroll = () => {
@@ -73,6 +80,18 @@ export default function Navbar() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isOpen]);
+
+  // Move focus into the drawer when it opens and back to the toggle when it
+  // closes, so keyboard/screen-reader users aren't left behind the overlay.
+  const wasOpenRef = useRef(false);
+  useEffect(() => {
+    if (isOpen) {
+      drawerNavRef.current?.querySelector<HTMLElement>("a, button")?.focus();
+    } else if (wasOpenRef.current) {
+      menuToggleRef.current?.focus();
+    }
+    wasOpenRef.current = isOpen;
   }, [isOpen]);
 
   // Close mobile menu when the route changes — uses the React-recommended
@@ -131,7 +150,6 @@ export default function Navbar() {
       >
         <div
           className="overflow-hidden border-b"
-          aria-label={tickerMessage}
           style={{
             background: "linear-gradient(90deg, #4A1350 0%, #6B1C6F 45%, #8B2E90 100%)",
             borderColor: "rgba(241,187,26,0.20)",
@@ -267,6 +285,7 @@ export default function Navbar() {
               {/* Mobile Menu Toggle */}
               <button
                 type="button"
+                ref={menuToggleRef}
                 className="touch-target rounded-lg p-2 transition-colors active:scale-95 md:hidden"
                 style={{ color: "#6B1C6F", background: isOpen ? "rgba(107,28,111,0.08)" : "transparent" }}
                 onClick={() => setIsOpen(!isOpen)}
@@ -283,20 +302,22 @@ export default function Navbar() {
         {/* Scroll Progress */}
         <div className="absolute bottom-0 left-0 right-0 h-[2px]" style={{ background: "rgba(107,28,111,0.06)" }}>
           <div
+            ref={progressFillRef}
             className="relative h-full transition-[width] duration-150 ease-out"
             style={{
-              width: `${progress}%`,
+              width: "0%",
               background: "linear-gradient(90deg, #6B1C6F 0%, #F1BB1A 100%)",
               boxShadow: "0 0 12px rgba(241,187,26,0.55)",
             }}
             aria-hidden="true"
           >
             <span
+              ref={progressDotRef}
               className="absolute right-0 top-1/2 h-2 w-2 -translate-y-1/2 translate-x-1/2 rounded-full"
               style={{
                 background: "#F1BB1A",
                 boxShadow: "0 0 10px rgba(241,187,26,0.85)",
-                opacity: progress > 0.5 ? 1 : 0,
+                opacity: 0,
                 transition: "opacity 200ms ease-out",
               }}
             />
@@ -304,9 +325,11 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu Drawer. `inert` when closed: opacity-0 alone leaves the
+          invisible links keyboard-focusable and exposed to screen readers. */}
       <div
         id="mobile-menu"
+        inert={!isOpen}
         className={`fixed inset-0 z-40 transition-opacity duration-300 md:hidden ${
           isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         }`}
@@ -317,6 +340,7 @@ export default function Navbar() {
           onClick={() => setIsOpen(false)}
         />
         <nav
+          ref={drawerNavRef}
           className={`absolute right-0 top-0 flex h-full w-[min(90vw,24rem)] touch-pan-y flex-col gap-1 overflow-y-auto overscroll-contain rounded-l-[32px] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] shadow-2xl transition-transform duration-300 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}

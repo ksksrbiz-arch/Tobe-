@@ -1,7 +1,4 @@
 import type { Metadata } from "next";
-import JsonLd from "@/components/JsonLd";
-import { breadcrumbList, SITE_URL } from "@/lib/seo";
-import { getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "The Reading Room",
@@ -25,33 +22,14 @@ export const metadata: Metadata = {
   },
 };
 
-const blogJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  "@id": `${SITE_URL}/reading-room#blog`,
-  name: "The Reading Room",
-  url: `${SITE_URL}/reading-room`,
-  publisher: { "@id": `${SITE_URL}/#bookstore` },
-  blogPost: getAllPosts().map((p) => ({
-    "@type": "BlogPosting",
-    headline: p.title,
-    description: p.description,
-    datePublished: p.date,
-    dateModified: p.updated ?? p.date,
-    url: `${SITE_URL}/reading-room/${p.slug}`,
-  })),
-};
-
+// The Blog JSON-LD (which enumerates every post — multi-KB) and the hub
+// breadcrumb live on the hub page.tsx, not here: a layout renders around every
+// post/tag/collection page too, which shipped each of them a duplicate,
+// conflicting BreadcrumbList plus an irrelevant 106-post Blog blob.
 export default function ReadingRoomLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      <JsonLd data={breadcrumbList([{ name: "The Reading Room", path: "/reading-room" }])} />
-      <JsonLd data={blogJsonLd} />
-      {children}
-    </>
-  );
+  return children;
 }

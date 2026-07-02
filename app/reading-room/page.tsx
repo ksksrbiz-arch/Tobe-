@@ -4,10 +4,32 @@ import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
+import JsonLd from "@/components/JsonLd";
 import ReadingRoomExplorer, { type ExplorerPost } from "@/components/ReadingRoomExplorer";
 import { getAllPosts, getAllTags, tagToSlug, formatPostDate } from "@/lib/blog";
+import { breadcrumbList, SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-static";
+
+// Hub-only structured data. Lives here rather than in layout.tsx so post/tag/
+// collection pages don't each ship a duplicate breadcrumb trail plus a
+// multi-KB Blog node enumerating all 100+ posts.
+const blogJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "@id": `${SITE_URL}/reading-room#blog`,
+  name: "The Reading Room",
+  url: `${SITE_URL}/reading-room`,
+  publisher: { "@id": `${SITE_URL}/#bookstore` },
+  blogPost: getAllPosts().map((p) => ({
+    "@type": "BlogPosting",
+    headline: p.title,
+    description: p.description,
+    datePublished: p.date,
+    dateModified: p.updated ?? p.date,
+    url: `${SITE_URL}/reading-room/${p.slug}`,
+  })),
+};
 
 export default function ReadingRoomPage() {
   const tags = getAllTags();
@@ -23,6 +45,8 @@ export default function ReadingRoomPage() {
 
   return (
     <main id="main">
+      <JsonLd data={breadcrumbList([{ name: "The Reading Room", path: "/reading-room" }])} />
+      <JsonLd data={blogJsonLd} />
       <Navbar />
 
       <PageHero

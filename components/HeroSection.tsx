@@ -247,7 +247,6 @@ export default function HeroSection() {
             fontSize: "clamp(3rem, 9vw, 6rem)",
             lineHeight: 1.02,
             letterSpacing: "-0.03em",
-            animationDelay: "180ms",
           }}
         >
           To Be{" "}

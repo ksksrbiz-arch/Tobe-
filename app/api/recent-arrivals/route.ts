@@ -4,9 +4,9 @@ import { seedArrivals } from "@/lib/seedArrivals";
 import { checkRateLimit, getClientIp } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
-// Revalidate the CDN/ISR cache every 60 s. Books arrive at most a few times
-// per day, so there's no value in re-querying Neon on every request.
-export const revalidate = 60;
+// NOTE: no segment-level `revalidate` — reading request headers (getClientIp)
+// makes this handler dynamic, so that directive was inert. The CDN caching
+// comes from the explicit s-maxage Cache-Control header on the response.
 
 export async function GET(request: NextRequest) {
   // Guard the DB against traffic spikes: 120 req / min per IP.

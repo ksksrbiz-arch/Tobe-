@@ -3,9 +3,17 @@ import { checkRateLimit, fetchWithTimeout, getClientIp } from "@/lib/server/func
 import { CURATED_GOOGLE_REVIEWS, GOOGLE_REVIEWS_URL } from "@/lib/external-reviews";
 
 export const runtime = "nodejs";
-// Cache the upstream Google Places response for 1 hour at the route level so we
-// don't burn API quota on every page load.
-export const revalidate = 3600;
+// NOTE: no segment-level `revalidate` — reading request headers (getClientIp)
+// makes this handler dynamic, so that directive was inert. Upstream quota is
+// protected by the fetch-level `next: { revalidate: 3600 }`, and the CDN
+// caches the public response via the Cache-Control header below.
+
+const CDN_CACHE_HEADERS = {
+  // Identical public payload for everyone: let the CDN serve it for an hour
+  // and revalidate in the background, instead of one function invocation per
+  // pageview.
+  "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+};
 
 type GoogleReview = {
   rating: number;
@@ -56,14 +64,17 @@ export async function GET(request: Request) {
   // (4.6 stars, 112 reviews as of 2026-04 — refresh periodically or replace
   // with live data once the env vars are set).
   if (!apiKey || !placeId) {
-    return NextResponse.json({
-      configured: false,
-      placeName: "Clackamas Book Exchange",
-      rating: 4.6,
-      userRatingCount: 112,
-      googleMapsUri: GOOGLE_REVIEWS_URL,
-      reviews: CURATED_GOOGLE_REVIEWS,
-    });
+    return NextResponse.json(
+      {
+        configured: false,
+        placeName: "Clackamas Book Exchange",
+        rating: 4.6,
+        userRatingCount: 112,
+        googleMapsUri: GOOGLE_REVIEWS_URL,
+        reviews: CURATED_GOOGLE_REVIEWS,
+      },
+      { headers: CDN_CACHE_HEADERS },
+    );
   }
 
   const url = `https://places.googleapis.com/v1/places/${encodeURIComponent(
@@ -107,14 +118,17 @@ export async function GET(request: Request) {
     source: "google" as const,
   }));
 
-  return NextResponse.json({
-    configured: true,
-    placeName: place.displayName?.text ?? "Clackamas Book Exchange",
-    rating: place.rating ?? null,
-    userRatingCount: place.userRatingCount ?? null,
-    googleMapsUri: place.googleMapsUri ?? GOOGLE_REVIEWS_URL,
-    // Fall back to the curated reviews if Google returns ratings but no review
-    // text (e.g. when the field mask or place has none surfaced).
-    reviews: reviews.length > 0 ? reviews : CURATED_GOOGLE_REVIEWS,
-  });
+  return NextResponse.json(
+    {
+      configured: true,
+      placeName: place.displayName?.text ?? "Clackamas Book Exchange",
+      rating: place.rating ?? null,
+      userRatingCount: place.userRatingCount ?? null,
+      googleMapsUri: place.googleMapsUri ?? GOOGLE_REVIEWS_URL,
+      // Fall back to the curated reviews if Google returns ratings but no review
+      // text (e.g. when the field mask or place has none surfaced).
+      reviews: reviews.length > 0 ? reviews : CURATED_GOOGLE_REVIEWS,
+    },
+    { headers: CDN_CACHE_HEADERS },
+  );
 }

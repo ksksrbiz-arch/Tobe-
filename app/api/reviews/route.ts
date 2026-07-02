@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { checkRateLimit, getClientIp } from "@/lib/server/functionHardening";
 import {
   REVIEW_LIMITS,
-  aggregate,
   createReview,
   getApprovedReviews,
+  getApprovedReviewAggregate,
   hashIp,
 } from "@/lib/reviews";
 import type { ReviewPostRequest } from "@/lib/api-types";
@@ -40,10 +40,13 @@ export async function GET(request: Request) {
     );
   }
 
-  const reviews = await getApprovedReviews();
+  const [reviews, agg] = await Promise.all([
+    getApprovedReviews(),
+    getApprovedReviewAggregate(),
+  ]);
   return NextResponse.json({
     reviews: reviews.map(publicReview),
-    aggregate: aggregate(reviews),
+    aggregate: agg,
   });
 }
 

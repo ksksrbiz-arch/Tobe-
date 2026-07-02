@@ -116,6 +116,8 @@ export default function Footer() {
                 { label: "Trade your books", href: "/trade" },
                 { label: "Shop online", href: "/shop" },
                 { label: "The Reading Room", href: "/reading-room" },
+                { label: "Events", href: "/events" },
+                { label: "Reader reviews", href: "/reviews" },
                 { label: "Connect with us", href: "/connect" },
               ].map((item) => (
                 <li key={item.label}>

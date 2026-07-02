@@ -1,7 +1,19 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
-import { getAllPosts, getAllTagSlugs } from "@/lib/blog";
-import { getCollectionSlugs } from "@/lib/collections";
+import { getAllPosts, getAllTagSlugs, getPostsByTag, getTagBySlug } from "@/lib/blog";
+import { getCollectionPosts, getCollectionSlugs } from "@/lib/collections";
+import type { BlogPost } from "@/lib/blog";
+
+// A hub page's real last-modified is its newest member post — stamping every
+// URL with the build time trains crawlers to distrust the field.
+function newestPostDate(posts: BlogPost[]): Date | undefined {
+  if (posts.length === 0) return undefined;
+  const newest = posts
+    .map((p) => p.updated ?? p.date)
+    .sort()
+    .at(-1)!;
+  return new Date(`${newest}T00:00:00`);
+}
 
 // Public, indexable routes. Admin and API routes are intentionally excluded
 // (see robots.ts), as are user-utility surfaces like /wishlist that hold no
@@ -31,12 +43,11 @@ const routes: Array<{
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-
+  // Static routes carry no lastModified: we don't track real edit dates for
+  // them, and a build-time stamp would claim ~20 URLs changed on every deploy.
   const staticEntries: MetadataRoute.Sitemap = routes.map(
     ({ path, changeFrequency, priority }) => ({
       url: `${SITE_URL}${path}`,
-      lastModified,
       changeFrequency,
       priority,
     }),
@@ -51,18 +62,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Reading Room topic hubs — indexable category pages that gather posts by tag.
-  const tagEntries: MetadataRoute.Sitemap = getAllTagSlugs().map((tag) => ({
-    url: `${SITE_URL}/reading-room/tags/${tag}`,
-    lastModified,
-    changeFrequency: "weekly",
-    priority: 0.5,
-  }));
+  const tagEntries: MetadataRoute.Sitemap = getAllTagSlugs().map((slug) => {
+    const tag = getTagBySlug(slug);
+    return {
+      url: `${SITE_URL}/reading-room/tags/${slug}`,
+      lastModified: tag ? newestPostDate(getPostsByTag(tag)) : undefined,
+      changeFrequency: "weekly",
+      priority: 0.5,
+    };
+  });
 
   // Reading Room collection hubs — curated topic clusters across posts.
   const collectionEntries: MetadataRoute.Sitemap = getCollectionSlugs().map(
     (slug) => ({
       url: `${SITE_URL}/reading-room/collections/${slug}`,
-      lastModified,
+      lastModified: newestPostDate(getCollectionPosts(slug)),
       changeFrequency: "weekly",
       priority: 0.55,
     }),

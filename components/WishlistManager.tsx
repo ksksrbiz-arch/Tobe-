@@ -34,8 +34,13 @@ function AuthPanel() {
     setLoading(true);
     setError("");
     try {
-      await signIn("resend", { email: trimmed, redirect: false });
-      setSent(true);
+      // With redirect: false, failures come back as { error }, not a throw.
+      const res = await signIn("resend", { email: trimmed, redirect: false });
+      if (res?.error) {
+        setError("We couldn't send the magic link. Please try again in a moment.");
+      } else {
+        setSent(true);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign-in failed.");
     } finally {
@@ -206,6 +211,8 @@ function AddBookPanel({ onAdded }: { onAdded: () => void }) {
         setPreview(null);
         onAdded();
       }
+    } catch {
+      setError("Couldn't add this book — please check your connection and try again.");
     } finally {
       setSaving(false);
     }
@@ -289,10 +296,21 @@ function AddBookPanel({ onAdded }: { onAdded: () => void }) {
 
 function WishlistRow({ item, onRemove }: { item: WishlistItem; onRemove: () => void }) {
   const [removing, setRemoving] = useState(false);
+  const [removeError, setRemoveError] = useState(false);
 
   const handleRemove = async () => {
     setRemoving(true);
-    await fetch(`/api/wishlist?id=${item.id}`, { method: "DELETE" });
+    setRemoveError(false);
+    try {
+      const res = await fetch(`/api/wishlist?id=${encodeURIComponent(item.id)}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) setRemoveError(true);
+    } catch {
+      setRemoveError(true);
+    } finally {
+      setRemoving(false);
+    }
     onRemove();
   };
 
@@ -332,6 +350,11 @@ function WishlistRow({ item, onRemove }: { item: WishlistItem; onRemove: () => v
           >
             ✦ It&apos;s here! Check the shelf.
           </span>
+        )}
+        {removeError && (
+          <p role="alert" className="mt-1 text-[10px] font-medium" style={{ color: "#B91C1C" }}>
+            Couldn&apos;t remove this book — please try again.
+          </p>
         )}
       </div>
       <button

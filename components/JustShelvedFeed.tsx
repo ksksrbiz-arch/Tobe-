@@ -179,6 +179,7 @@ export default function JustShelvedFeed() {
   const [loading, setLoading] = useState(true);
   const knownIdsRef = useRef<Set<string>>(new Set());
   const newIdsRef = useRef<Set<string>>(new Set());
+  const highlightTimeoutsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
 
   const fetchArrivals = useCallback(async (markNew: boolean) => {
     try {
@@ -196,10 +197,12 @@ export default function JustShelvedFeed() {
           if (!knownIdsRef.current.has(a.id)) {
             newIdsRef.current.add(a.id);
             const id = a.id;
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
+              highlightTimeoutsRef.current.delete(timeout);
               newIdsRef.current.delete(id);
               setNewIds(new Set(newIdsRef.current));
             }, NEW_ITEM_HIGHLIGHT_DURATION_MS);
+            highlightTimeoutsRef.current.add(timeout);
           }
         }
         setNewIds(new Set(newIdsRef.current));
@@ -217,12 +220,22 @@ export default function JustShelvedFeed() {
       await fetchArrivals(false);
       if (!cancelled) setLoading(false);
     })();
+    // Don't keep polling a hidden tab — resume (with one immediate refresh)
+    // when the visitor comes back.
     const interval = setInterval(() => {
-      if (!cancelled) void fetchArrivals(true);
+      if (!cancelled && !document.hidden) void fetchArrivals(true);
     }, POLL_INTERVAL_MS);
+    const onVisible = () => {
+      if (!cancelled && !document.hidden) void fetchArrivals(true);
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    const highlightTimeouts = highlightTimeoutsRef.current;
     return () => {
       cancelled = true;
       clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisible);
+      for (const t of highlightTimeouts) clearTimeout(t);
+      highlightTimeouts.clear();
     };
   }, [fetchArrivals]);
 

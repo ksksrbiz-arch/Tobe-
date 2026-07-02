@@ -195,13 +195,11 @@ const jsonLd = {
       closes: "17:00",
     },
   ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.6",
-    reviewCount: "112",
-    bestRating: "5",
-    worstRating: "1",
-  },
+  // No aggregateRating here: a hardcoded, Google-review-derived rating violates
+  // Google's review-snippet policy (self-serving LocalBusiness markup must come
+  // from reviews collected on the site itself), goes stale silently, and
+  // conflicted with the live first-party rating /reviews emits for this same
+  // @id. The /reviews page owns the rating markup.
   sameAs: [
     "https://maps.google.com/?cid=5188254409265281028",
     "https://instagram.com/toberead_clackamas",
@@ -270,6 +268,9 @@ export default function RootLayout({
             width="0"
             style={{ display: "none", visibility: "hidden" }}
           />
+          {/* .reveal sections are un-hidden by IntersectionObserver JS; without
+              JS they'd stay invisible forever. */}
+          <style>{`.reveal { opacity: 1 !important; transform: none !important; }`}</style>
         </noscript>
         <DeferredGTM gtmId="GTM-WC2RGMNS" />
         <a
