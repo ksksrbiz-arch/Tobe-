@@ -4,12 +4,19 @@ import React, { useState } from "react";
 import { Check, X as XIcon, Sparkles } from "lucide-react";
 import Reveal from "./Reveal";
 
+// Green items are good traits to confirm; red `disqualifier` items are the
+// "we can't take these" types. They're interleaved (not bunched at the end) and
+// styled red even before you tick them, so a quick glance tells you what's
+// welcome and what isn't.
 const tradeChecklist = [
-  { label: "It's a paperback or hardback with dust jacket" },
-  { label: "It's in good readable condition" },
-  { label: "It's NOT a magazine" },
-  { label: "It's NOT a Harlequin romance" },
-  { label: "Book has an odor or water damage or highlighting", disqualifier: true },
+  { label: "It's a paperback or hardback with a dust jacket" },
+  { label: "It's a magazine, comic, or Reader's Digest", disqualifier: true },
+  { label: "It's in good, readable condition" },
+  { label: "It's an encyclopedia or textbook", disqualifier: true },
+  { label: "It's a Harlequin romance", disqualifier: true },
+  { label: "It's a novel, non-fiction, or kids' book" },
+  { label: "It has an odor, water damage, or highlighting", disqualifier: true },
+  { label: "It's a title from the last few decades" },
 ];
 
 /**
@@ -46,7 +53,9 @@ export default function TradeChecklist() {
           Quick Trade Checklist
         </h3>
         <p className="mb-5 text-sm" style={{ color: "#6B7280" }}>
-          Tick what applies and we&apos;ll let you know if your stack is a good fit.
+          Tick anything that applies. <strong style={{ color: "#166534" }}>Green</strong> traits are
+          perfect for trade; the <strong style={{ color: "#B42318" }}>red</strong> ones are things we
+          can&apos;t take.
         </p>
         <div
           role="group"
@@ -55,8 +64,10 @@ export default function TradeChecklist() {
         >
           {tradeChecklist.map((item, i) => {
             const isChecked = !!checked[i];
-            const isRed = item.disqualifier && isChecked;
-            const isGreen = !item.disqualifier && isChecked;
+            const isDisq = !!item.disqualifier;
+            const greenOn = !isDisq && isChecked; // confirmed good trait
+            const redOn = isDisq && isChecked; // flagged: a "no" trait applies
+            const redRest = isDisq && !isChecked; // resting "we can't take" item
             return (
               <button
                 key={item.label}
@@ -64,47 +75,56 @@ export default function TradeChecklist() {
                 role="checkbox"
                 aria-checked={isChecked}
                 onClick={() => toggle(i)}
-                className="group flex w-full cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all hover:bg-white/70 active:scale-[0.99]"
+                className="group flex w-full cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all active:scale-[0.99]"
                 style={{
-                  borderColor: isRed
-                    ? "rgba(239,68,68,0.45)"
-                    : isGreen
-                      ? "rgba(34,197,94,0.45)"
-                      : "rgba(107,28,111,0.10)",
-                  background: isRed
-                    ? "rgba(239,68,68,0.08)"
-                    : isGreen
-                      ? "rgba(34,197,94,0.10)"
-                      : "white",
-                  boxShadow: isRed
-                    ? "0 10px 22px rgba(239,68,68,0.12)"
-                    : isGreen
+                  borderColor: redOn
+                    ? "rgba(239,68,68,0.55)"
+                    : redRest
+                      ? "rgba(239,68,68,0.32)"
+                      : greenOn
+                        ? "rgba(34,197,94,0.45)"
+                        : "rgba(107,28,111,0.10)",
+                  background: redOn
+                    ? "rgba(239,68,68,0.12)"
+                    : redRest
+                      ? "rgba(254,242,242,0.7)"
+                      : greenOn
+                        ? "rgba(34,197,94,0.10)"
+                        : "white",
+                  boxShadow: redOn
+                    ? "0 10px 22px rgba(239,68,68,0.16)"
+                    : greenOn
                       ? "0 10px 22px rgba(34,197,94,0.12)"
-                      : "none",
+                      : redRest
+                        ? "0 6px 16px rgba(239,68,68,0.06)"
+                        : "none",
                 }}
               >
                 <span
                   aria-hidden="true"
                   className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md border-2 transition-all"
                   style={{
-                    borderColor: isRed
+                    borderColor: isDisq
                       ? "#DC2626"
-                      : isGreen
+                      : greenOn
                         ? "#16A34A"
                         : "rgba(107,28,111,0.18)",
-                    background: isRed
+                    background: redOn
                       ? "#DC2626"
-                      : isGreen
+                      : greenOn
                         ? "#16A34A"
-                        : "rgba(255,255,255,0.92)",
+                        : redRest
+                          ? "rgba(255,241,242,0.9)"
+                          : "rgba(255,255,255,0.92)",
                   }}
                 >
-                  {item.disqualifier ? (
+                  {isDisq ? (
                     <XIcon
                       size={14}
                       strokeWidth={3}
                       className="transition-all"
-                      style={{ color: "white", opacity: isChecked ? 1 : 0 }}
+                      // Faint at rest so the item reads as a "no" category, solid once ticked.
+                      style={{ color: isChecked ? "white" : "#DC2626", opacity: isChecked ? 1 : 0.45 }}
                     />
                   ) : (
                     <Check
@@ -118,7 +138,7 @@ export default function TradeChecklist() {
                 <span
                   className="text-sm font-medium"
                   style={{
-                    color: isRed ? "#991B1B" : isGreen ? "#166534" : "#374151",
+                    color: redOn ? "#991B1B" : redRest ? "#B42318" : greenOn ? "#166534" : "#374151",
                   }}
                 >
                   {item.label}
