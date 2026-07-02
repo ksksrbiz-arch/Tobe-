@@ -295,7 +295,7 @@ export default function Home() {
           <Reveal delay={180} className="mt-8 text-center">
             <Link
               href="/loop"
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:scale-105"
+              className="pressable inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold text-white shadow-md"
               style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
             >
               Open full-screen loop
@@ -338,7 +338,7 @@ export default function Home() {
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={80 + i * 60}>
               <div
-                className="flex h-full flex-col justify-between rounded-[28px] border p-5 transition-all hover:-translate-y-1"
+                className="cozy-lift flex h-full flex-col justify-between rounded-[28px] border p-5"
                 style={{
                   background: "rgba(255,255,255,0.93)",
                   borderColor: "rgba(107,28,111,0.08)",
@@ -408,7 +408,7 @@ export default function Home() {
               <Reveal key={card.title} delay={i * 80}>
                 <Link
                   href={card.href}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-7 text-left transition-all hover:-translate-y-2 hover:shadow-2xl"
+                  className="group cozy-lift relative flex h-full flex-col overflow-hidden rounded-[28px] border p-7 text-left"
                   style={{
                     background:
                       "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(253,248,240,0.98) 100%)",
@@ -451,7 +451,7 @@ export default function Home() {
                     style={{ color: "#F1BB1A" }}
                   >
                     Jump in
-                    <ArrowRight size={13} />
+                    <ArrowRight size={13} className="icon-nudge" />
                   </span>
                 </Link>
               </Reveal>
@@ -516,7 +516,7 @@ export default function Home() {
                 href="https://tiktok.com/@clackamas.book.ex"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-shine mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-105"
+                className="btn-shine pressable mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold"
                 style={{ background: "#F1BB1A", color: "#1A1A1A" }}
               >
                 Follow @clackamas.book.ex
