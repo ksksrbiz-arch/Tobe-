@@ -6,7 +6,6 @@ import Reveal from "./Reveal";
 import FaqAccordion from "./FaqAccordion";
 import JsonLd from "./JsonLd";
 import {
-  TRADE_POLICY_CAP_AND_NOV1,
   TRADE_POLICY_REDEMPTION_FULL,
   TRADE_POLICY_ROLLOVER,
   TRADE_POLICY_WAIT,
@@ -21,7 +20,7 @@ const defaultFaqs: Faq[] = [
   },
   {
     q: "How is my trade credit calculated?",
-    a: `You receive 25% of the book's original list price as store credit on books we accept. ${TRADE_POLICY_REDEMPTION_FULL} ${TRADE_POLICY_CAP_AND_NOV1}`,
+    a: `You receive 25% of the book's original list price as store credit on books we accept. ${TRADE_POLICY_REDEMPTION_FULL}`,
   },
   {
     q: "What books do you accept?",

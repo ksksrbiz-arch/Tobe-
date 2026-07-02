@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbList, SITE_URL } from "@/lib/seo";
 import {
-  TRADE_POLICY_CAP_AND_ROLLOVER,
   TRADE_POLICY_REDEMPTION,
+  TRADE_POLICY_ROLLOVER,
   TRADE_POLICY_WAIT,
 } from "@/lib/tradePolicy";
 
@@ -29,7 +29,7 @@ const tradeHowToJsonLd = {
       "@type": "HowToStep",
       position: 2,
       name: "Earn store credit",
-      text: `Readable books earn store credit: 25% of each accepted book's original list price. ${TRADE_POLICY_CAP_AND_ROLLOVER}`,
+      text: `Readable books earn store credit: 25% of each accepted book's original list price. ${TRADE_POLICY_ROLLOVER}`,
       url: `${SITE_URL}/how-it-works`,
     },
     {

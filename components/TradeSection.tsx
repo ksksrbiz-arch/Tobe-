@@ -5,9 +5,8 @@ import { Check, X as XIcon, AlertTriangle, Receipt, Sparkles } from "lucide-reac
 import Reveal from "./Reveal";
 import TradeChecklist from "./TradeChecklist";
 import {
-  TRADE_POLICY_CAP,
   TRADE_POLICY_EFFECTIVE_DATE,
-  TRADE_POLICY_NOV1,
+  TRADE_POLICY_PER_PERSON,
   TRADE_POLICY_PRICING,
   TRADE_POLICY_WAIT_AND_ROLLOVER,
 } from "@/lib/tradePolicy";
@@ -225,12 +224,7 @@ export default function TradeSection() {
               >
                 <p>Store credit does not expire.</p>
                 <p className="mt-2">{TRADE_POLICY_PRICING}</p>
-                <p className="mt-2">
-                  {TRADE_POLICY_NOV1}
-                </p>
-                <p className="mt-2">
-                  {TRADE_POLICY_CAP}
-                </p>
+                <p className="mt-2">{TRADE_POLICY_PER_PERSON}</p>
               </div>
             </div>
           </div>

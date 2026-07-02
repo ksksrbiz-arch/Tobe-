@@ -2,8 +2,7 @@ import React from "react";
 import Link from "next/link";
 import QuickAnswer from "@/components/QuickAnswer";
 import {
-  TRADE_POLICY_CAP,
-  TRADE_POLICY_NOV1,
+  TRADE_POLICY_PER_PERSON,
   TRADE_POLICY_PRICING,
   TRADE_POLICY_REDEMPTION,
   TRADE_POLICY_REDEMPTION_EXAMPLE,
@@ -16,7 +15,7 @@ export const meta: BlogMeta = {
   slug: "how-book-trade-in-credit-works",
   title: "How book trade-in credit works at To Be Read",
   description:
-    "A plain-English guide to trading used books for store credit at To Be Read in Milwaukie, OR — what we take, how credit is earned, and the fine print on the $200 cap and how credit rolls over.",
+    "A plain-English guide to trading used books for store credit at To Be Read in Milwaukie, OR — what we take, how credit is earned, and how credit rolls over year to year.",
   excerpt:
     "Bring books, earn store credit, take home your next read the same afternoon. Here's exactly how our trade-in works — what we accept, how credit adds up, and the rules worth knowing first.",
   date: "2026-06-19",
@@ -65,8 +64,7 @@ export default function Body() {
       </p>
       <ul>
         <li>{TRADE_POLICY_ROLLOVER}</li>
-        <li>{TRADE_POLICY_CAP}</li>
-        <li>{TRADE_POLICY_NOV1}</li>
+        <li>{TRADE_POLICY_PER_PERSON}</li>
       </ul>
 
       <h2>What we can and can&rsquo;t take</h2>
