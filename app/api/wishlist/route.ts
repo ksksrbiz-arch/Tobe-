@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { sql } from "@/lib/db";
+import { checkRateLimit } from "@/lib/server/functionHardening";
 
 export const runtime = "nodejs";
 
@@ -30,6 +31,21 @@ export async function POST(request: Request) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Not signed in." }, { status: 401 });
+  }
+
+  const rateLimit = checkRateLimit({
+    key: `wishlist-write:${session.user.id}`,
+    maxRequests: 30,
+    windowMs: 60_000,
+  });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "Too many wishlist updates. Please try again shortly." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateLimit.retryAfterSeconds) },
+      },
+    );
   }
 
   let body: { isbn?: unknown; title?: unknown; author?: unknown; cover_url?: unknown; list_price?: unknown };
@@ -63,8 +79,10 @@ export async function POST(request: Request) {
     `) as Array<Record<string, unknown>>;
     return NextResponse.json({ item: inserted[0] });
   } catch (err) {
+    // Log the real error server-side; never echo driver/SQL details to clients.
+    console.error("wishlist POST failed:", err);
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to add." },
+      { error: "Failed to add to wishlist. Please try again." },
       { status: 500 },
     );
   }

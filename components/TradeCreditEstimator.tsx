@@ -257,6 +257,9 @@ export default function TradeCreditEstimator() {
 
           {/* Book info */}
           <div className="mb-4 flex items-start gap-3">
+            {/* Cover thumbnails load unoptimized straight from Google Books, so
+                warm that origin's DNS here (React hoists this into <head>). */}
+            <link rel="dns-prefetch" href="https://books.google.com" />
             {book.coverUrl && (
               <Image
                 src={book.coverUrl}

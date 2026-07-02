@@ -167,7 +167,7 @@ export default function CookieConsent() {
                 ref={acceptRef}
                 type="button"
                 onClick={() => decide("granted")}
-                className="btn-primary touch-target order-1 sm:order-2"
+                className="btn-primary touch-target order-1 px-5 py-2.5 text-sm sm:order-2"
               >
                 Accept all
               </button>
