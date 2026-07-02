@@ -311,7 +311,7 @@ export default function Home() {
           <div className="mt-8 text-center">
             <Link
               href="/loop"
-              className="btn-primary active:scale-[0.98]"
+              className="btn-primary pressable"
             >
               Open full-screen loop
             </Link>
@@ -468,7 +468,7 @@ export default function Home() {
                     style={{ color: "#F1BB1A" }}
                   >
                     Jump in
-                    <ArrowRight size={13} />
+                    <ArrowRight size={13} className="icon-nudge" />
                   </span>
                 </Link>
                 </Tilt>
@@ -534,7 +534,7 @@ export default function Home() {
                 href="https://tiktok.com/@clackamas.book.ex"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-shine mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-105 active:scale-[0.98]"
+                className="btn-shine pressable mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold"
                 style={{ background: "#F1BB1A", color: "#1A1A1A" }}
               >
                 Follow @clackamas.book.ex

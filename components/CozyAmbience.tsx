@@ -65,13 +65,11 @@ export default function CozyAmbience() {
         }}
       />
 
-      {/* Floating pages — 5 nodes, very low opacity */}
+      {/* Floating pages — trimmed to 3, slower and fainter (ambient dial-back) */}
       {([
-        { left: "8%",  top: "22%", size: 38, delay: "0s",   dur: "16s", rot: -8 },
-        { left: "18%", top: "78%", size: 28, delay: "3s",   dur: "20s", rot: 12 },
-        { left: "82%", top: "30%", size: 34, delay: "1.5s", dur: "18s", rot: -6 },
-        { left: "92%", top: "70%", size: 24, delay: "4.5s", dur: "22s", rot: 16 },
-        { left: "48%", top: "12%", size: 22, delay: "6s",   dur: "24s", rot:  4 },
+        { left: "8%",  top: "22%", size: 34, delay: "0s",   dur: "22s", rot: -8 },
+        { left: "84%", top: "34%", size: 30, delay: "2.5s", dur: "26s", rot: -6 },
+        { left: "90%", top: "72%", size: 22, delay: "5s",   dur: "30s", rot: 14 },
       ] as const).map((p, i) => (
         <svg
           key={i}
@@ -82,7 +80,7 @@ export default function CozyAmbience() {
           style={{
             left: p.left,
             top: p.top,
-            opacity: 0.18,
+            opacity: 0.11,
             animation: `pageDrift ${p.dur} ease-in-out ${p.delay} infinite`,
             transform: `rotate(${p.rot}deg)`,
           }}
@@ -100,17 +98,17 @@ export default function CozyAmbience() {
         </svg>
       ))}
 
-      {/* Fireflies — 6 on desktop, 3 on mobile via CSS */}
-      {Array.from({ length: 6 }, (_, i) => {
+      {/* Fireflies — 4 on desktop, 2 on mobile (ambient dial-back) */}
+      {Array.from({ length: 4 }, (_, i) => {
         const left = (i * 41 + 13) % 100;
         const top  = 60 + ((i * 17) % 35);
         const delay = (i * 1.7) % 8;
-        const dur  = 12 + (i % 6) * 2;
+        const dur  = 15 + (i % 4) * 3;
         const size = i % 3 === 0 ? 4 : 3;
         return (
           <span
             key={`ff-${i}`}
-            className={`cozy-firefly absolute rounded-full${i >= 3 ? " hidden sm:block" : ""}`}
+            className={`cozy-firefly absolute rounded-full${i >= 2 ? " hidden sm:block" : ""}`}
             style={{
               left: `${left}%`,
               top: `${top}%`,
@@ -124,17 +122,17 @@ export default function CozyAmbience() {
         );
       })}
 
-      {/* Twinkling stars — 10 (down from 14) */}
-      {Array.from({ length: 10 }, (_, i) => {
+      {/* Twinkling stars — 6 desktop, 4 mobile, slower (ambient dial-back) */}
+      {Array.from({ length: 6 }, (_, i) => {
         const left  = (i * 71 + 5) % 100;
         const top   = (i * 23 + 4) % 55;
         const delay = (i * 0.9) % 6;
-        const dur   = 3.5 + (i % 4);
+        const dur   = 5 + (i % 4);
         const size  = i % 4 === 0 ? 9 : i % 2 === 0 ? 7 : 5;
         return (
           <svg
             key={`star-${i}`}
-            className={`cozy-star absolute${i >= 7 ? " hidden sm:block" : ""}`}
+            className={`cozy-star absolute${i >= 4 ? " hidden sm:block" : ""}`}
             width={size}
             height={size}
             viewBox="0 0 10 10"

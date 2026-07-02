@@ -272,7 +272,7 @@ export default function HeroSection() {
         <button
           type="button"
           onClick={handleCelebrate}
-          className="touch-target fade-in-up btn-shine animate-pulse-glow mb-7 inline-flex cursor-pointer items-center gap-2 rounded-full border-2 px-5 py-2.5 text-sm font-semibold shadow-md transition-all hover:scale-[1.04] active:scale-[0.98]"
+          className="touch-target fade-in-up btn-shine pressable animate-pulse-glow mb-7 inline-flex cursor-pointer items-center gap-2 rounded-full border-2 px-5 py-2.5 text-sm font-semibold shadow-md"
           style={{
             background: "#6B1C6F",
             color: "#F1BB1A",
@@ -308,16 +308,16 @@ export default function HeroSection() {
           <button
             type="button"
             onClick={handleVisit}
-            className="touch-target btn-warm group flex w-full items-center justify-center gap-2 rounded-2xl px-8 py-4 text-base font-semibold text-white shadow-[0_18px_44px_rgba(107,28,111,0.30)] transition-transform hover:scale-105 active:scale-[0.98] sm:w-auto"
+            className="touch-target btn-warm pressable group flex w-full items-center justify-center gap-2 rounded-2xl px-8 py-4 text-base font-semibold text-white shadow-[0_18px_44px_rgba(107,28,111,0.30)] sm:w-auto"
             style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
           >
             Plan Your Visit
-            <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+            <ArrowRight size={18} className="icon-nudge" />
           </button>
           <button
             type="button"
             onClick={handleShop}
-            className="touch-target btn-shine flex w-full items-center justify-center gap-2 rounded-2xl border-2 px-8 py-4 text-base font-semibold shadow-md transition-transform hover:scale-105 active:scale-[0.98] sm:w-auto"
+            className="touch-target btn-shine pressable group flex w-full items-center justify-center gap-2 rounded-2xl border-2 px-8 py-4 text-base font-semibold shadow-md sm:w-auto"
             style={{
               backgroundColor: "#F1BB1A",
               color: "#1a1a1a",
@@ -325,7 +325,7 @@ export default function HeroSection() {
             }}
           >
             Browse Highlights
-            <ShoppingBag size={18} />
+            <ShoppingBag size={18} className="icon-bob" />
           </button>
         </div>
 

@@ -33,12 +33,16 @@
 
   /* Shared motion vocabulary so every hover, lift, and reveal settles with the
      same hand. `--ease-out` is the gentle decelerate used site-wide; `--ease-spring`
-     adds a hair of overshoot for tactile, living interactions. */
+     adds a hair of overshoot for tactile, living interactions; `--ease-pop` is a
+     livelier, springier overshoot reserved for playful hovers and reveals. */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.34, 1.32, 0.5, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
   --dur-fast: 0.22s;
   --dur-med: 0.42s;
   --dur-slow: 0.7s;
+  /* Quick, snappy window for the press/tap feedback so a click feels tactile. */
+  --dur-press: 0.11s;
 
   /* Layered, two-tone shadows: a soft cool purple cast for depth plus a faint
      warm gold undertone so cards feel candle-lit rather than flat grey. Each
@@ -754,12 +758,56 @@ summary:focus-visible,
 
 /* Cozy hover lift used on cards */
 .cozy-lift {
-  transition: transform var(--dur-med) var(--ease-spring),
+  transition: transform var(--dur-med) var(--ease-pop),
               box-shadow var(--dur-med) var(--ease-out);
 }
 .cozy-lift:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px) scale(1.012);
   box-shadow: var(--shadow-lg);
+}
+.cozy-lift:active {
+  transform: translateY(-2px) scale(0.996);
+  transition-duration: var(--dur-press);
+}
+
+/* ───── Tactile press + playful hover, opt-in on any button/CTA/link ─────
+   `.pressable` gives a springy hover lift and a satisfying tap-in on press;
+   `.hover-pop` is a lighter scale-only version for chips and icon buttons. */
+.pressable {
+  transition: transform var(--dur-fast) var(--ease-pop),
+              box-shadow var(--dur-med) var(--ease-out),
+              filter var(--dur-fast) ease;
+  will-change: transform;
+}
+.pressable:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+.pressable:active {
+  transform: translateY(0) scale(0.955);
+  transition-duration: var(--dur-press);
+}
+.hover-pop {
+  transition: transform var(--dur-fast) var(--ease-pop);
+}
+.hover-pop:hover {
+  transform: scale(1.08);
+}
+.hover-pop:active {
+  transform: scale(0.92);
+  transition-duration: var(--dur-press);
+}
+
+/* Icon micro-motions — pair on a parent with `.group`. `.icon-nudge` slides
+   the icon along; `.icon-bob` gives it a little lift-and-pop. */
+.icon-nudge,
+.icon-bob {
+  transition: transform var(--dur-fast) var(--ease-pop);
+}
+.group:hover .icon-nudge {
+  transform: translateX(3px);
+}
+.group:hover .icon-bob {
+  transform: translateY(-2px) scale(1.12);
 }
 
 /* Reading lamp glow used behind hero elements */
@@ -785,9 +833,11 @@ summary:focus-visible,
 /* Reveal-on-scroll helper (used with IntersectionObserver) */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(26px) scale(0.985);
+  /* Opacity eases out (no overshoot on fade), while the movement rides the
+     spring for a livelier settle with a hair of overshoot. */
+  transition: opacity 0.6s var(--ease-out),
+              transform 0.7s var(--ease-spring);
   /* Hint the compositor only before the element has revealed — once it's
      visible we remove the hint so we don't permanently promote every reveal
      wrapper to its own layer. */
@@ -795,7 +845,7 @@ summary:focus-visible,
 }
 .reveal.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
   will-change: auto;
 }
 
@@ -812,14 +862,12 @@ summary:focus-visible,
 .stagger > *:nth-child(5) { animation-delay: 0.45s; }
 .stagger > *:nth-child(6) { animation-delay: 0.55s; }
 
-/* Gradient text */
+/* Gradient text — static now (the always-on shimmer read as busy). */
 .text-gradient {
   background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 50%, var(--gold) 120%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  background-size: 200% auto;
-  animation: gradientShift 8s ease infinite;
 }
 
 /* Underline accent */
@@ -833,11 +881,9 @@ summary:focus-visible,
   left: 0; right: 0; bottom: -0.15em;
   height: 0.32em;
   background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
-  background-size: 200% auto;
   border-radius: 999px;
   z-index: -1;
   opacity: 0.6;
-  animation: gradientShift 6s ease infinite;
 }
 
 /* Eyebrow / section-label pill — a shared accent used above headings.
@@ -847,22 +893,23 @@ summary:focus-visible,
   overflow: hidden;
   isolation: isolate;
 }
+/* Sheen now sweeps only on hover of the labelled element, instead of forever. */
 .eyebrow-glow::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(120deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%);
   transform: translateX(-130%) skewX(-18deg);
-  animation: warmSweep 5.5s ease-in-out infinite;
   pointer-events: none;
+}
+.eyebrow-glow:hover::after {
+  animation: warmSweep 0.9s ease forwards;
 }
 
 /* Animated heading accent bar — the recurring `h-1 w-16` gold rule under
    section titles. Use `.accent-bar` to give it a living gradient shimmer. */
 .accent-bar {
   background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
-  background-size: 200% auto;
-  animation: gradientShift 6s ease infinite;
   box-shadow: 0 2px 12px rgba(241, 187, 26, 0.35);
 }
 
@@ -871,10 +918,16 @@ summary:focus-visible,
    route without inline width juggling. ───── */
 .nav-link {
   position: relative;
-  transition: color var(--dur-fast) ease, background-color var(--dur-fast) ease;
+  transition: color var(--dur-fast) ease, background-color var(--dur-fast) ease,
+              transform var(--dur-fast) var(--ease-pop);
 }
 .nav-link:hover {
   background-color: rgba(107, 28, 111, 0.06);
+  transform: translateY(-1px);
+}
+.nav-link:active {
+  transform: translateY(0);
+  transition-duration: var(--dur-press);
 }
 .nav-link .nav-underline {
   width: 0%;
@@ -940,13 +993,17 @@ summary:focus-visible,
 /* Apply .card-cozy to any card to get a subtle candle-light hover glow */
 .card-cozy {
   transition: box-shadow var(--dur-med) var(--ease-out),
-              transform var(--dur-med) var(--ease-spring);
+              transform var(--dur-med) var(--ease-pop);
 }
 .card-cozy:hover {
   box-shadow:
     0 30px 68px rgba(107,28,111,0.13),
     0 10px 22px rgba(241,187,26,0.12);
-  transform: translateY(-4px);
+  transform: translateY(-5px) scale(1.01);
+}
+.card-cozy:active {
+  transform: translateY(-1px) scale(0.997);
+  transition-duration: var(--dur-press);
 }
 
 /* ───── Unified premium surface ───── */
@@ -958,14 +1015,18 @@ summary:focus-visible,
   border: 1px solid var(--line);
   border-radius: 28px;
   box-shadow: var(--shadow-md);
-  transition: transform var(--dur-med) var(--ease-spring),
+  transition: transform var(--dur-med) var(--ease-pop),
               box-shadow var(--dur-med) var(--ease-out),
               border-color var(--dur-med) ease;
 }
 .surface-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px) scale(1.012);
   box-shadow: var(--shadow-lg);
   border-color: var(--line-strong);
+}
+.surface-card:active {
+  transform: translateY(-2px) scale(0.998);
+  transition-duration: var(--dur-press);
 }
 
 /* Soft depth for large display headings over warm/blurred backdrops. */
