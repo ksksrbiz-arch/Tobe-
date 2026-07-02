@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 
 // Kept deliberately low: each mote is an absolutely-positioned, infinitely
 // animated node, and DustMotes renders in several sections — so the count is a
-// direct, continuous compositor/paint cost. 10 reads as "atmosphere" without
-// the per-frame tax of 18+.
-const MOTE_COUNT = 10;
+// direct, continuous compositor/paint cost. Trimmed to 6 (from 10) as part of
+// the ambient dial-back so at-rest motion reads as a hint, not a swarm.
+const MOTE_COUNT = 6;
 
 const MOTES = Array.from({ length: MOTE_COUNT }, (_, i) => {
   const r1 = (i * 9301 + 49297) % 233280;
@@ -16,10 +16,11 @@ const MOTES = Array.from({ length: MOTE_COUNT }, (_, i) => {
     id: i,
     left: `${4 + (r1 / 233280) * 92}%`,
     top: `${4 + (r2 / 49297) * 92}%`,
-    size: 1.5 + (r3 / 9301) * 3.5,
-    duration: 9 + ((i * 7) % 14),
+    size: 1.5 + (r3 / 9301) * 3,
+    // Slower drift + lower opacity: calmer, more purposeful atmosphere.
+    duration: 13 + ((i * 7) % 14),
     delay: (i * 0.43) % 8,
-    opacity: 0.08 + ((i * 11) % 100) / 500,
+    opacity: 0.05 + ((i * 11) % 100) / 900,
     isGold: i % 3 !== 0,
   };
 });
