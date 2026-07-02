@@ -1,5 +1,9 @@
 import { getAllPosts } from "@/lib/blog";
 import { SITE_URL, SITE_NAME } from "@/lib/seo";
+import {
+  TRADE_POLICY_PRICING,
+  TRADE_POLICY_REDEMPTION_FULL,
+} from "@/lib/tradePolicy";
 
 // llms-full.txt — a fuller machine-readable index for AI / generative search
 // engines. Same canonical facts as llms.txt, but lists every Reading Room
@@ -48,7 +52,8 @@ export function GET() {
 - Phone: (503) 659-2559
 - Hours: Monday–Saturday, 10am–5pm; closed Sunday
 - Service area: Milwaukie, Clackamas, Oak Grove, Gladstone, Happy Valley, and Southeast Portland, Oregon
-- Trade-in: bring readable used books for store credit — one credit per paperback, two per hardcover. Store credit only (we do not buy for cash). Credit never expires and rolls over year to year, capped at $200.
+- Trade-in (Book Exchange Policy effective July 1, 2026): bring readable used books and receive 25% of each accepted book's original list price in store credit. Store credit only (we do not buy for cash). ${TRADE_POLICY_REDEMPTION_FULL} Credit never expires and rolls over year to year, capped at $200.
+- Pricing: ${TRADE_POLICY_PRICING}
 - Shop online: PangoBooks and Bookshop.org
 - Website: ${SITE_URL}
 
@@ -56,7 +61,8 @@ export function GET() {
 - What is To Be Read? An independent, locally owned used bookstore (formerly Clackamas Book Exchange) that has served the Milwaukie / Southeast Portland, Oregon community for over 45 years.
 - Where is it? 7931 SE King Rd, Unit 1, Portland, OR 97222 — with free on-site parking.
 - What are the hours? Monday through Saturday, 10am–5pm; closed Sunday.
-- How does trade-in credit work? Bring in readable used books and receive store credit (store credit only — not cash). Credit can be spent on anything in the shop; it never expires and rolls over year to year, capped at $200.
+- How does trade-in credit work? Bring in readable used books and receive 25% of each accepted book's original list price as store credit (store credit only — not cash). At checkout, store credit covers half of your total purchase price and the other half is paid with cash or card. Credit never expires and rolls over year to year, capped at $200.
+- How are books priced? Books are priced at 50% of the original list price unless otherwise marked with the store's sticker.
 - How do I get a book recommendation? Use the free Next Read Matchmaker on the home page, or stop in and ask a bookseller.
 - Where can I buy the books online? On PangoBooks and Bookshop.org (linked from the Shop page); for in-store pickup, call ahead and we'll set titles aside.
 - Are there events? Yes — free in-store events: weekly Cozy Reading Hour and Staff Picks Saturday. See ${SITE_URL}/events.

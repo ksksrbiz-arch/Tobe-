@@ -6,7 +6,9 @@ import Reveal from "./Reveal";
 import TradeChecklist from "./TradeChecklist";
 import {
   TRADE_POLICY_CAP,
+  TRADE_POLICY_EFFECTIVE_DATE,
   TRADE_POLICY_NOV1,
+  TRADE_POLICY_PRICING,
   TRADE_POLICY_WAIT_AND_ROLLOVER,
 } from "@/lib/tradePolicy";
 
@@ -32,10 +34,11 @@ const notAcceptItems = [
   "VHS tapes or outdated media",
 ];
 
-const swapTiers = [
-  { range: "$10 or under", fee: "$1" },
-  { range: "$11 – $19", fee: "$2" },
-  { range: "$20 and up", fee: "$3" },
+// Worked example from the posted policy: a $15.00 total splits half/half.
+const exampleSplit = [
+  { label: "Your total", amount: "$15.00" },
+  { label: "Store credit pays", amount: "$7.50" },
+  { label: "Cash or card pays", amount: "$7.50" },
 ];
 
 export default function TradeSection() {
@@ -119,17 +122,22 @@ export default function TradeSection() {
                 >
                   <Receipt size={20} aria-hidden="true" className="text-white" />
                 </div>
-                <h3
-                  className="font-bold"
-                  style={{
-                    fontFamily: "var(--font-serif)",
-                    color: "#6B1C6F",
-                    fontSize: "clamp(1.3rem, 3vw, 1.7rem)",
-                    letterSpacing: "0.01em",
-                  }}
-                >
-                  Book Exchange Policy
-                </h3>
+                <div>
+                  <h3
+                    className="font-bold"
+                    style={{
+                      fontFamily: "var(--font-serif)",
+                      color: "#6B1C6F",
+                      fontSize: "clamp(1.3rem, 3vw, 1.7rem)",
+                      letterSpacing: "0.01em",
+                    }}
+                  >
+                    Book Exchange Policy
+                  </h3>
+                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
+                    Effective {TRADE_POLICY_EFFECTIVE_DATE}
+                  </p>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
@@ -167,44 +175,44 @@ export default function TradeSection() {
                     50%
                   </div>
                   <p className="mt-1 text-sm font-semibold" style={{ color: "#1a1a1a" }}>
-                    Of the list price deducted
+                    Of your total purchase price
                   </p>
                   <p className="mt-1 text-sm" style={{ color: "#4B5563" }}>
-                    from your credit on any book you&apos;re purchasing.
+                    covered by store credit — the other half is paid with cash or card.
                   </p>
                 </div>
               </div>
 
               <div className="mt-6">
                 <p className="mb-3 text-sm font-medium" style={{ color: "#374151" }}>
-                  A <strong style={{ color: "#6B1C6F" }}>swap fee</strong> per book applies as follows, based on list price:
+                  <strong style={{ color: "#6B1C6F" }}>How it works at the register</strong> — for example:
                 </p>
                 <div
                   className="grid grid-cols-3 gap-3 rounded-2xl p-5"
                   style={{ background: "#FDF8F0" }}
                 >
-                  {swapTiers.map((tier, i) => (
+                  {exampleSplit.map((part, i) => (
                     <div
-                      key={tier.range}
+                      key={part.label}
                       className="text-center"
                       style={{
-                        borderRight: i < swapTiers.length - 1 ? "1px solid #E5E0D5" : "none",
+                        borderRight: i < exampleSplit.length - 1 ? "1px solid #E5E0D5" : "none",
                       }}
                     >
                       <div
                         className="mb-1.5 text-[10px] uppercase tracking-wider"
                         style={{ color: "#6B7280" }}
                       >
-                        {tier.range}
+                        {part.label}
                       </div>
                       <div
                         className="text-3xl font-bold"
                         style={{
-                          color: "#F1BB1A",
+                          color: i === 0 ? "#6B1C6F" : "#F1BB1A",
                           fontFamily: "var(--font-serif)",
                         }}
                       >
-                        {tier.fee}
+                        {part.amount}
                       </div>
                     </div>
                   ))}
@@ -215,10 +223,8 @@ export default function TradeSection() {
                 className="mt-6 border-t pt-4 text-center text-sm italic"
                 style={{ color: "#6B7280", borderColor: "rgba(107,28,111,0.10)" }}
               >
-                <p>
-                  Without credit, books are priced at 50% of the list price unless otherwise marked
-                  with our store sticker.
-                </p>
+                <p>Store credit does not expire.</p>
+                <p className="mt-2">{TRADE_POLICY_PRICING}</p>
                 <p className="mt-2">
                   {TRADE_POLICY_NOV1}
                 </p>

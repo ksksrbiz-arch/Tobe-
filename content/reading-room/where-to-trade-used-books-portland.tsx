@@ -32,8 +32,9 @@ export default function Body() {
       <h2>Trade them for store credit</h2>
       <p>
         This is the one we know best, because it&rsquo;s what we do. Bring
-        readable books to the counter, and paperbacks earn one credit each,
-        hardcovers two, toward anything in the shop. It keeps books circulating in
+        readable books to the counter and earn 25% of each accepted book&rsquo;s
+        original list price in store credit toward anything in the shop. It keeps
+        books circulating in
         the neighborhood and keeps your next read cheap. A couple of things worth
         knowing: {TRADE_POLICY_ROLLOVER} {TRADE_POLICY_CAP} Full details are on the{" "}
         <Link href="/how-it-works">how-it-works page</Link>, and a plain-English

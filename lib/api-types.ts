@@ -71,9 +71,6 @@ export interface CreditEstimateResponse {
   listPrice: number;
   creditRate: number;
   credit: number;
-  swapFee: number;
-  swapTierLabel: string;
-  netCredit: number;
 }
 
 // ── /api/reviews ─────────────────────────────────────────────────────────────

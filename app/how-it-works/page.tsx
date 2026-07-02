@@ -43,14 +43,14 @@ const chapters = [
     n: "02",
     eyebrow: "Chapter two",
     title: "Earn store credit",
-    body: `One credit per paperback, two per hardcover. ${TRADE_POLICY_CAP_AND_ROLLOVER}`,
+    body: `Earn 25% of each accepted book's original list price in store credit. ${TRADE_POLICY_CAP_AND_ROLLOVER}`,
     icon: Coins,
   },
   {
     n: "03",
     eyebrow: "Chapter three",
     title: "Take home the next",
-    body: "Spend credit on whatever speaks to you. Mix credit and cash. Walk out with a fresh stack the same afternoon.",
+    body: "Spend credit on whatever speaks to you — credit covers half your total, cash or card covers the rest. Walk out with a fresh stack the same afternoon.",
     icon: ShoppingBag,
   },
 ];
@@ -59,7 +59,7 @@ const yesList = [
   ["Fiction", "paperback or hardcover"],
   ["Most non-fiction", "in readable shape"],
   ["Kids' books & YA", "always welcome"],
-  ["Recent editions", "earn the best credit"],
+  ["Recent editions", "always in demand"],
   ["Cookbooks, poetry, graphic novels", ""],
 ];
 
@@ -471,16 +471,16 @@ export default function HowItWorksPage() {
                   </div>
                 </div>
                 <CreditRow
-                  label="Paperback"
-                  sub="Standard mass-market or trade"
-                  value="1"
-                  unit="credit"
+                  label="Any accepted book"
+                  sub="Paperback or hardcover, in readable shape"
+                  value="25%"
+                  unit="of list price"
                 />
                 <CreditRow
-                  label="Hardcover"
-                  sub="In good readable shape"
-                  value="2"
-                  unit="credits"
+                  label="At the register"
+                  sub="Credit pays half your total — cash or card pays the rest"
+                  value="½"
+                  unit="of purchase"
                 />
                 <div
                   className="flex items-center justify-between gap-4 px-8 py-7"
@@ -491,17 +491,17 @@ export default function HowItWorksPage() {
                       className="font-serif"
                       style={{ color: "var(--purple)", fontSize: "1.5rem", fontWeight: 600 }}
                     >
-                      High-demand titles
+                      Credit never expires
                     </div>
                     <div className="text-sm" style={{ color: "var(--ink-muted)" }}>
-                      Recent releases, hot authors, signed copies
+                      Spend it this afternoon or next year — it keeps
                     </div>
                   </div>
                   <div
                     className="font-serif italic font-bold"
                     style={{ color: "var(--gold)", fontSize: "1.75rem" }}
                   >
-                    + bonus
+                    ∞
                   </div>
                 </div>
               </div>
@@ -589,16 +589,17 @@ export default function HowItWorksPage() {
             </h2>
 
             <div className="mt-8 space-y-5">
-              <PriceRow numeral="1">
-                Most paperbacks cost <strong style={{ color: "var(--purple)" }}>one credit</strong>.
+              <PriceRow numeral="½">
+                Books are priced at <strong style={{ color: "var(--purple)" }}>50% of the list
+                price</strong> unless otherwise marked with our store&apos;s sticker.
               </PriceRow>
-              <PriceRow numeral="2">
-                Hardcovers cost <strong style={{ color: "var(--purple)" }}>two credits</strong>.
+              <PriceRow numeral="%">
+                Store credit covers <strong style={{ color: "var(--purple)" }}>half of your
+                total</strong> — you pay the other half with cash or card.
               </PriceRow>
               <PriceRow numeral="$">
-                Short on credit? Pay the difference in{" "}
-                <strong style={{ color: "var(--purple)" }}>cash or card</strong> — they work side by
-                side.
+                On a <strong style={{ color: "var(--purple)" }}>$15.00 total</strong>, that&apos;s
+                $7.50 in credit and $7.50 in cash or card.
               </PriceRow>
             </div>
 

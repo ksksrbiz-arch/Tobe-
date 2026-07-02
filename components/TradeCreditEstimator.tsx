@@ -3,25 +3,15 @@
 import React, { useState, useCallback } from "react";
 import Image from "next/image";
 import { Printer, Search, RefreshCw, Receipt, AlertCircle } from "lucide-react";
-import { TRADE_POLICY_ALL_CREDIT_LIMITS } from "@/lib/tradePolicy";
+import {
+  TRADE_POLICY_ALL_CREDIT_LIMITS,
+  TRADE_POLICY_REDEMPTION,
+} from "@/lib/tradePolicy";
 
 // Upper bound for a sensible book list price. Anything larger is almost
 // certainly a typo (an extra digit), so we nudge the user instead of computing
 // a nonsensical estimate.
 const MAX_LIST_PRICE = 1000;
-
-const SWAP_TIERS = [
-  { max: 10, fee: 1, label: "$10 or under" },
-  { max: 19, fee: 2, label: "$11 – $19" },
-  { max: Infinity, fee: 3, label: "$20 and up" },
-];
-
-function getSwapFee(listPrice: number): { fee: number; label: string } {
-  for (const tier of SWAP_TIERS) {
-    if (listPrice <= tier.max) return { fee: tier.fee, label: tier.label };
-  }
-  return { fee: 3, label: "$20 and up" };
-}
 
 function fmt(n: number) {
   return n.toLocaleString("en-US", { style: "currency", currency: "USD" });
@@ -33,11 +23,8 @@ interface BookInfo {
   listPrice: number;
   coverUrl?: string;
   source: "isbn" | "manual";
-  // Server-computed values; absent for manual entries (computed client-side from listPrice).
+  // Server-computed value; absent for manual entries (computed client-side from listPrice).
   credit?: number;
-  swapFee?: number;
-  swapTierLabel?: string;
-  netCredit?: number;
 }
 
 export default function TradeCreditEstimator() {
@@ -76,9 +63,6 @@ export default function TradeCreditEstimator() {
         coverUrl: data.coverUrl ?? undefined,
         source: "isbn",
         credit: data.credit,
-        swapFee: data.swapFee,
-        swapTierLabel: data.swapTierLabel,
-        netCredit: data.netCredit,
       });
     } catch {
       setError("Couldn't reach the estimator. Check your connection and try again.");
@@ -107,9 +91,7 @@ export default function TradeCreditEstimator() {
   }, [priceInput]);
 
   const result = book
-    ? book.credit != null && book.swapFee != null && book.swapTierLabel != null
-      ? { credit: book.credit, fee: book.swapFee, label: book.swapTierLabel }
-      : { credit: book.listPrice * 0.25, ...getSwapFee(book.listPrice) }
+    ? { credit: book.credit ?? book.listPrice * 0.25 }
     : null;
 
   return (
@@ -304,21 +286,6 @@ export default function TradeCreditEstimator() {
               <span style={{ color: "#6B7280" }}>List price</span>
               <span className="font-bold" style={{ color: "#1F1A2E" }}>{fmt(book.listPrice)}</span>
             </div>
-            <div className="flex justify-between">
-              <span style={{ color: "#6B7280" }}>Credit yield (25%)</span>
-              <span className="font-bold" style={{ color: "#22c55e" }}>+ {fmt(result.credit)}</span>
-            </div>
-            <div
-              className="flex justify-between border-t pt-2"
-              style={{ borderColor: "rgba(107,28,111,0.10)", borderStyle: "dashed" }}
-            >
-              <span style={{ color: "#6B7280" }}>Swap fee tier</span>
-              <span style={{ color: "#6B7280" }}>{result.label}</span>
-            </div>
-            <div className="flex justify-between">
-              <span style={{ color: "#6B7280" }}>Swap fee</span>
-              <span className="font-bold" style={{ color: "#F1BB1A" }}>– {fmt(result.fee)}</span>
-            </div>
 
             <div
               className="flex justify-between rounded-lg px-3 py-2.5 border-t mt-1 pt-3"
@@ -329,15 +296,19 @@ export default function TradeCreditEstimator() {
               }}
             >
               <span className="font-bold uppercase tracking-wider text-[11px]" style={{ color: "#6B1C6F" }}>
-                Net credit
+                Store credit (25%)
               </span>
               <span
                 className="font-bold text-sm"
                 style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
               >
-                {fmt(Math.max(0, result.credit - result.fee))}
+                {fmt(result.credit)}
               </span>
             </div>
+
+            <p className="pt-1 text-[10px] leading-4" style={{ color: "#6B7280" }}>
+              At the register: {TRADE_POLICY_REDEMPTION}
+            </p>
           </div>
 
           {/* Footer */}

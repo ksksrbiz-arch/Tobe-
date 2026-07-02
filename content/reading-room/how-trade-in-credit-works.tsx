@@ -2,10 +2,13 @@ import React from "react";
 import Link from "next/link";
 import QuickAnswer from "@/components/QuickAnswer";
 import {
-  TRADE_POLICY_WAIT,
-  TRADE_POLICY_ROLLOVER,
   TRADE_POLICY_CAP,
   TRADE_POLICY_NOV1,
+  TRADE_POLICY_PRICING,
+  TRADE_POLICY_REDEMPTION,
+  TRADE_POLICY_REDEMPTION_EXAMPLE,
+  TRADE_POLICY_ROLLOVER,
+  TRADE_POLICY_WAIT,
 } from "@/lib/tradePolicy";
 import type { BlogMeta } from "@/lib/blog";
 
@@ -17,6 +20,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Bring books, earn store credit, take home your next read the same afternoon. Here's exactly how our trade-in works — what we accept, how credit adds up, and the rules worth knowing first.",
   date: "2026-06-19",
+  updated: "2026-07-02",
   author: "To Be Read",
   tags: ["Trade-in", "Store credit", "How-to"],
   readingMinutes: 4,
@@ -40,8 +44,9 @@ export default function Body() {
       <p>
         Bring books in, we review them with you at the counter, and readable
         titles earn store credit you can spend the same day.{" "}
-        <strong>One credit per paperback, two per hardcover.</strong> Mix credit
-        and cash however you like.
+        <strong>You receive 25% of each accepted book&rsquo;s original list price
+        in store credit.</strong> At the register, credit covers half of your
+        total and cash or card covers the other half.
       </p>
       <blockquote>
         A quick heads-up before you load up the car: we trade for store credit —
@@ -54,7 +59,7 @@ export default function Body() {
 
       <h2>Step 2 — Earn store credit</h2>
       <p>
-        Credit is straightforward: one credit per paperback, two per hardcover,
+        Credit is straightforward: 25% of the book&rsquo;s original list price,
         for titles in readable, resale-ready shape. A few rules keep the system
         fair and the shelves healthy:
       </p>
@@ -68,17 +73,18 @@ export default function Body() {
       <p>
         We love fiction (paperback or hardcover), most non-fiction in good
         shape, kids&rsquo; books and YA, cookbooks, poetry, and graphic novels.
-        Recent editions earn the best credit. We can&rsquo;t take textbooks,
+        We can&rsquo;t take textbooks,
         encyclopedias, magazines, condensed editions, or anything water- or
         smoke-damaged, loose, unbound, or heavily marked.
       </p>
 
       <h2>Step 3 — Take home your next read</h2>
       <p>
-        Spend your credit on whatever speaks to you, top it up with cash if you
-        like, and walk out with a fresh stack the same afternoon. That&rsquo;s the
-        whole loop — and it&rsquo;s how a lot of our regulars keep their shelves
-        moving without their book budget ever leaving the neighborhood.
+        {TRADE_POLICY_PRICING} {TRADE_POLICY_REDEMPTION}{" "}
+        {TRADE_POLICY_REDEMPTION_EXAMPLE} Spend your credit on whatever speaks
+        to you and walk out with a fresh stack the same afternoon. That&rsquo;s
+        the whole loop — and it&rsquo;s how a lot of our regulars keep their
+        shelves moving without their book budget ever leaving the neighborhood.
       </p>
 
       <p>

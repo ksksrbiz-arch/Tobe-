@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbList, SITE_URL } from "@/lib/seo";
 import {
-  TRADE_POLICY_WAIT,
   TRADE_POLICY_CAP_AND_ROLLOVER,
+  TRADE_POLICY_REDEMPTION,
+  TRADE_POLICY_WAIT,
 } from "@/lib/tradePolicy";
 
 // HowTo structured data for the trade-in flow — eligible for how-to rich
@@ -28,14 +29,14 @@ const tradeHowToJsonLd = {
       "@type": "HowToStep",
       position: 2,
       name: "Earn store credit",
-      text: `Readable books earn store credit: one credit per paperback, two per hardcover. ${TRADE_POLICY_CAP_AND_ROLLOVER}`,
+      text: `Readable books earn store credit: 25% of each accepted book's original list price. ${TRADE_POLICY_CAP_AND_ROLLOVER}`,
       url: `${SITE_URL}/how-it-works`,
     },
     {
       "@type": "HowToStep",
       position: 3,
       name: "Take home your next read",
-      text: "Spend credit on whatever speaks to you, mix credit and cash, and walk out with a fresh stack the same afternoon.",
+      text: `Spend credit on whatever speaks to you and walk out with a fresh stack the same afternoon. ${TRADE_POLICY_REDEMPTION}`,
       url: `${SITE_URL}/how-it-works`,
     },
   ],
