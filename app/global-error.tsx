@@ -98,7 +98,7 @@ export default function GlobalError({
             </a>
           </div>
           {error?.digest && (
-            <p style={{ marginTop: "1.25rem", fontSize: "0.7rem", color: "#9CA3AF" }}>
+            <p style={{ marginTop: "1.25rem", fontSize: "0.7rem", color: "#6B7280" }}>
               Reference: {error.digest}
             </p>
           )}

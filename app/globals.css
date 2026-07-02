@@ -19,6 +19,10 @@
   --gold: #F1BB1A;
   --gold-light: #F5CC45;
   --gold-soft: #FCE8A6;
+  /* Accessible "gold" for TEXT on light backgrounds — the bright gold fails
+     WCAG contrast as text (~1.8:1), so use this dark amber (~4.9:1 on white)
+     for small gold labels/links. Keep --gold for icons, fills, and dark bgs. */
+  --gold-ink: #8A6D00;
 
   --paper: #FDF8F0;
   --paper-dark: #F5EFE0;

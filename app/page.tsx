@@ -448,7 +448,7 @@ export default function Home() {
                   </p>
                   <span
                     className="mt-auto inline-flex items-center gap-1.5 pt-6 text-xs font-bold uppercase tracking-wider transition-all group-hover:gap-2.5"
-                    style={{ color: "#F1BB1A" }}
+                    style={{ color: "var(--gold-ink)" }}
                   >
                     Jump in
                     <ArrowRight size={13} className="icon-nudge" />

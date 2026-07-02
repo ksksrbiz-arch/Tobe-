@@ -318,7 +318,7 @@ function WishlistRow({ item, onRemove }: { item: WishlistItem; onRemove: () => v
       <div className="min-w-0 flex-1">
         <p className="font-bold text-sm" style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}>{item.title}</p>
         <p className="text-xs" style={{ color: "#6B7280" }}>{item.author}</p>
-        {item.isbn && <p className="mt-0.5 text-[10px] font-mono" style={{ color: "#9CA3AF" }}>ISBN: {item.isbn}</p>}
+        {item.isbn && <p className="mt-0.5 text-[10px] font-mono" style={{ color: "#6B7280" }}>ISBN: {item.isbn}</p>}
         {item.notified && (
           <span
             className="mt-1 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
@@ -461,7 +461,7 @@ export default function WishlistManager() {
         </div>
       )}
 
-      <p className="mt-5 text-center text-[10px] leading-4" style={{ color: "#9CA3AF" }}>
+      <p className="mt-5 text-center text-[10px] leading-4" style={{ color: "#6B7280" }}>
         We&apos;ll email you at {session.user.email} when a book from your list is processed at the trade desk.
       </p>
     </div>

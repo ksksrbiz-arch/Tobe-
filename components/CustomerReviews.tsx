@@ -109,7 +109,7 @@ function ReviewCard({ review }: { review: ExternalReview }) {
           </p>
           <div className="flex items-center gap-1.5">
             {review.relativeTime && (
-              <span className="text-xs" style={{ color: "#9CA3AF" }}>
+              <span className="text-xs" style={{ color: "#6B7280" }}>
                 {review.relativeTime} ·
               </span>
             )}

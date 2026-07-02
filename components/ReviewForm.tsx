@@ -150,7 +150,7 @@ export default function ReviewForm() {
       {/* Title (optional) */}
       <label className="mb-4 block">
         <span className="mb-1 block text-sm font-semibold" style={{ color: "#374151" }}>
-          Headline <span style={{ color: "#9CA3AF" }}>(optional)</span>
+          Headline <span style={{ color: "#6B7280" }}>(optional)</span>
         </span>
         <input
           type="text"
@@ -179,7 +179,7 @@ export default function ReviewForm() {
           required
         />
       </label>
-      <p className="mb-4 text-right text-[11px]" style={{ color: "#9CA3AF" }}>
+      <p className="mb-4 text-right text-[11px]" style={{ color: "#6B7280" }}>
         {body.length}/{BODY_MAX}
       </p>
 
@@ -217,7 +217,7 @@ export default function ReviewForm() {
           "Submit review"
         )}
       </button>
-      <p className="mt-3 text-[11px]" style={{ color: "#9CA3AF" }}>
+      <p className="mt-3 text-[11px]" style={{ color: "#6B7280" }}>
         Reviews are read by our team before they&apos;re published. The name you
         enter is shown publicly with your review. See our{" "}
         <Link href="/privacy" className="underline hover:text-purple">

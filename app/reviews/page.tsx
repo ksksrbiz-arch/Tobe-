@@ -81,7 +81,7 @@ function ReviewCard({ review }: { review: Review }) {
           <p className="truncate text-sm font-semibold" style={{ color: "#6B1C6F" }}>
             {review.author_name}
           </p>
-          <p className="text-xs" style={{ color: "#9CA3AF" }}>
+          <p className="text-xs" style={{ color: "#6B7280" }}>
             {formatDate(review.created_at)}
           </p>
         </div>

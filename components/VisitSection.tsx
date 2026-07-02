@@ -365,7 +365,7 @@ export default function VisitSection() {
                       </span>
                       <span
                         className="mt-0.5 text-[9px] font-medium"
-                        style={{ color: isClosed ? "#9CA3AF" : isToday ? "#6B1C6F" : "#374151" }}
+                        style={{ color: isClosed ? "#6B7280" : isToday ? "#6B1C6F" : "#374151" }}
                       >
                         {isClosed ? "—" : "10–5"}
                       </span>
