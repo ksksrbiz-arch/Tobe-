@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -25,6 +26,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The closest read-alike to A Game of Thrones is The First Law by Joe Abercrombie, a grimdark trilogy that shares Martin&rsquo;s cynicism, gray morality, and characters who refuse to be heroes.
+      </QuickAnswer>
       <p>
         George R. R. Martin&rsquo;s <em>A Game of Thrones</em> raised the bar
         for epic fantasy: sprawling politics, morally gray characters, and a

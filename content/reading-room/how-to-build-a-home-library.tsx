@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "how-to-build-a-home-library",
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Build a home library gradually by starting with the books you already love and reread, buying mostly used copies to keep costs low, and turning books you&rsquo;ve outgrown into trade-in store credit that funds future finds. Browse used shelves often, since they turn over constantly and reward patience over a one-time buying spree.
+      </QuickAnswer>
       <p>
         A home library doesn&rsquo;t arrive in a single delivery — it accumulates,
         one good find at a time. The best ones feel personal: a shelf that tells

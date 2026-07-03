@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "how-to-read-more-books",
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The most effective way to read more books is to set a goal small enough to feel silly, such as ten pages a day, since a tiny daily habit survives busy weeks better than an ambitious one does. Reducing friction also helps: always carry a book, let audiobooks count, and give yourself permission to stop a book that isn&rsquo;t working.
+      </QuickAnswer>
       <p>
         Almost everyone who walks into the shop says some version of the same
         thing: &ldquo;I wish I read more.&rdquo; The good news is that reading

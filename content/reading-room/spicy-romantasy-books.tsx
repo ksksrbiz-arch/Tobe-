@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "spicy-romantasy-books",
@@ -28,6 +29,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The book that earned the genre its reputation is A Court of Mist and
+        Fury, a moderate three-pepper read with a swoony slow-burn payoff.
+        For more heat, A Touch of Darkness and Neon Gods run four peppers.
+      </QuickAnswer>
       <p>
         Some readers want fade-to-black; you want the opposite. These eight
         romantasy reads bring real heat alongside the world-building — with a

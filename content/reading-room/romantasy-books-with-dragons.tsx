@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -28,6 +29,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Start with <em>Fourth Wing</em> by Rebecca Yarros — the book that
+        started the current romantasy dragon-rider craze, set at a war college
+        with a deadly bond and dragons with opinions.
+      </QuickAnswer>
       <p>
         Fourth Wing put dragons back at the center of romantasy, but the
         dragon-rider fantasy is older and deeper than one series. If you want the

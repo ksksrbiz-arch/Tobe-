@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -28,6 +29,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best memoir to start with is Educated by Tara Westover, an
+        astonishing, almost universally beloved account of a woman raised
+        off-grid with no formal schooling who makes her way to Cambridge.
+      </QuickAnswer>
       <p>
         A great memoir does something fiction can&rsquo;t quite: it hands you a
         real life, fully felt. If you want to start — or just want a guaranteed

@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Match the book to the kid&rsquo;s reading stage, not just their age. If you&rsquo;re unsure where they are, store credit is the safest choice — it lets a parent or the kid pick exactly the right level.
+      </QuickAnswer>
       <p>
         A book is one of the most lasting gifts you can give a kid. The secret is
         matching the <em>stage</em>, not just the age — a reader who&rsquo;s flying

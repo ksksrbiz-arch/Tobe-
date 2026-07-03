@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The easiest reading challenge to start with is genre bingo: draw a
+        five-by-five grid of categories — a debut, a book in translation,
+        something over 500 pages — and cross one off each time you finish a
+        match.
+      </QuickAnswer>
       <p>
         A reading challenge isn&rsquo;t about hitting a number — it&rsquo;s a
         gentle nudge to wander outside your usual shelf. The best ones turn

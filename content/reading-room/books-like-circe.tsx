@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -25,6 +26,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The strongest next read for Circe fans is Madeline Miller&rsquo;s own
+        The Song of Achilles — the obvious next read, with the same
+        incandescent prose and gut-punch ending, telling the Trojan War
+        through Achilles and Patroclus.
+      </QuickAnswer>
       <p>
         Madeline Miller&rsquo;s <em>Circe</em> took a footnote of a witch and
         handed her a whole interior life &mdash; centuries of exile, defiance,

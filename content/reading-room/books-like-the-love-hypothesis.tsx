@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -25,6 +26,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The top pick here is The Spanish Love Deception by Elena Armas, a
+        fake-dating workplace romance with the same slow-burn,
+        grumpy-sunshine dynamic; for more of Ali Hazelwood herself, Love,
+        Theoretically offers the same brainy-heroine, rivals-to-lovers heat.
+      </QuickAnswer>
       <p>
         Ali Hazelwood&rsquo;s <em>The Love Hypothesis</em> bottled something
         irresistible: a sharp, science-minded heroine, a fake-dating setup that

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "best-book-series-to-binge",
@@ -26,6 +27,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        For an easy entry point, start with Harry Potter by J.K. Rowling — the
+        gateway binge for a first-time series reader. If you want a series
+        that hooks you instantly, start The Empyrean with Fourth Wing by
+        Rebecca Yarros, currently the reigning king of the binge.
+      </QuickAnswer>
       <p>
         There&rsquo;s a particular kind of joy in finishing a book and realizing
         you don&rsquo;t have to say goodbye yet — the story keeps going, the cast

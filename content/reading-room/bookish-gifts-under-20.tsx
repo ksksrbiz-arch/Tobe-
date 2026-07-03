@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The safest bookish gift under $20 is store credit to a used bookshop — it&rsquo;s the no-risk option for a picky reader or one who already owns half the shop.
+      </QuickAnswer>
       <p>
         A great book gift doesn&rsquo;t need a big budget — it needs the right
         book. At a used bookstore, $20 goes a surprisingly long way. Here&rsquo;s

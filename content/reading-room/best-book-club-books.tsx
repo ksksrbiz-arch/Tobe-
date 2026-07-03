@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "best-book-club-books",
@@ -30,6 +31,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best book club picks split the room rather than please everyone —
+        start with Lessons in Chemistry by Bonnie Garmus for a lively,
+        accessible discussion, or A Little Life by Hanya Yanagihara if your
+        club wants an intense, polarizing read people argue about for weeks.
+      </QuickAnswer>
       <p>
         The best book club pick isn&rsquo;t always the &ldquo;best&rdquo; book —
         it&rsquo;s the one that splits the room. You want moral gray areas,

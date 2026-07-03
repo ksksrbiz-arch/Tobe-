@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -25,6 +26,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        For fans of It Ends With Us, the closest read-alikes are two more
+        Colleen Hoover novels: Verity, a dark psychological thriller, and
+        Reminders of Him, a gentler story about a mother rebuilding her life —
+        both deliver the same gut-punch.
+      </QuickAnswer>
       <p>
         Colleen Hoover&rsquo;s <em>It Ends With Us</em> hooks readers because it
         refuses to make things easy: the romance is real, but so are the

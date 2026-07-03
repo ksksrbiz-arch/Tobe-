@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "underrated-classic-novels",
@@ -28,6 +29,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Stoner is the standout: a quiet novel about an ordinary
+        academic&rsquo;s life that&rsquo;s one of the most moving books
+        you&rsquo;ll read. The Death of Ivan Ilyich is another short,
+        piercing option if you want something even shorter.
+      </QuickAnswer>
       <p>
         Past the same dozen titles assigned in every classroom, the canon is full
         of overlooked gems. Here are eight underrated classics that deserve a

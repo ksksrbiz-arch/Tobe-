@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "standalone-romantasy-books",
@@ -28,6 +29,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        An Enchantment of Ravens is a solid starting pick: a portrait artist
+        and the autumn prince who can&rsquo;t feel, in a story that&rsquo;s
+        gorgeous, contained, and complete in one volume. Uprooted is another
+        strong standalone, pairing fairy-tale magic with a full arc.
+      </QuickAnswer>
       <p>
         Romantasy loves a sprawling series — but sometimes you want a complete
         story tonight, not a five-book commitment. These eight deliver a full

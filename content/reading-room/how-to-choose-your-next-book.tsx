@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "how-to-choose-your-next-book",
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        To choose your next book, start with your mood rather than the objectively &ldquo;best&rdquo; book, then narrow the field to three or four titles that match it and let the opening page decide between finalists. If you&rsquo;re still stuck, describe a book you loved to a recommendation source, such as a staff pick list or the Next Read Matchmaker.
+      </QuickAnswer>
       <p>
         There&rsquo;s a particular kind of stuck familiar to every reader: a full
         shelf, a free evening, and absolutely no idea what to pick. Choosing your

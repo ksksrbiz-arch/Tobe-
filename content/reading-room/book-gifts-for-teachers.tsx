@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        When in doubt, give a teacher store credit or a gift card to a used bookshop — it lets them choose books at the levels and topics their students actually need, so it never goes to waste.
+      </QuickAnswer>
       <p>
         Teachers spend their own money on their classrooms more often than most
         people realize. A well-chosen book — or the credit to pick one — is a

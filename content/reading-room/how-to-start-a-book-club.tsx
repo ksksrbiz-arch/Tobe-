@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Start small: gather four to eight willing readers, pick a first book
+        that&rsquo;s easy to discuss, and put a date on the calendar — that&rsquo;s
+        really all it takes to launch a book club.
+      </QuickAnswer>
       <p>
         A book club is one of the best reasons to read more — and to talk about
         what you read with people you like. The good news: you don&rsquo;t need a

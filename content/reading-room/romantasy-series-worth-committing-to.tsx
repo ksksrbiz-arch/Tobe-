@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "romantasy-series-worth-committing-to",
@@ -26,6 +27,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best series to start with is A Court of Thorns and Roses: five
+        books of fae courts and a romance that reorders your priorities, and
+        the genre&rsquo;s cornerstone. The Empyrean (Fourth Wing) is the other
+        obvious commitment, with dragon riders and cliffhangers.
+      </QuickAnswer>
       <p>
         The best part of romantasy is sinking into a series and not coming up for
         air. If you want a world to live in — and a ship to go down with — for

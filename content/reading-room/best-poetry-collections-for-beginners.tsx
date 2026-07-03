@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -25,6 +26,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best poetry collection for beginners is Milk and Honey by Rupi
+        Kaur &mdash; short, direct, and intensely felt poems that make an
+        easy, encouraging first step into the genre. For an even gentler
+        on-ramp, try Mary Oliver&rsquo;s Devotions.
+      </QuickAnswer>
       <p>
         If poetry feels like a locked room from a high-school English class, good
         news: plenty of it is warm, clear, and immediate. These five collections

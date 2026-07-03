@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "build-a-reading-habit-tbr-pile",
@@ -18,6 +19,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The most useful habit tip is to make reading stupidly easy to start:
+        keep a book where you already are, such as the nightstand or your
+        bag, since ten minutes before bed beats an ambitious hour you never
+        get to.
+      </QuickAnswer>
       <p>
         &ldquo;To be read&rdquo; — the TBR pile — is the most hopeful and most
         guilt-inducing object a reader owns. We named the shop after it, so we

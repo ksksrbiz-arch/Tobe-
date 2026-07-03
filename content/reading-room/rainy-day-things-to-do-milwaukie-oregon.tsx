@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best rainy-day plan in Milwaukie starts at To Be Read, 7931 SE
+        King Rd, Unit 1 — lose an hour browsing the stacks, then grab a hot
+        drink on Main Street before heading home to read.
+      </QuickAnswer>
       <p>
         Let&rsquo;s be honest: this is the Pacific Northwest, and a good rainy-day
         plan is a survival skill. The best ones are slow, warm, and indoors —

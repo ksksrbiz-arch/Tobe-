@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -28,6 +29,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        For Fourth Wing fans, the top pick is Sarah J. Maas&rsquo;s A Court of
+        Thorns and Roses — called the cornerstone of modern romantasy and the
+        natural next read if you haven&rsquo;t already started it.
+      </QuickAnswer>
       <p>
         Rebecca Yarros&rsquo;s <em>Fourth Wing</em> nailed a very specific high:
         deadly stakes, a sharp heroine, banter that crackles, and a slow-burn

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "gifts-for-classic-literature-lovers",
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The safest gift for a classics lover is store credit — it lets them hunt down the specific editions they&rsquo;re missing, which matters most if they already own a wall of Penguin Classics. If you know a favorite title of theirs, a handsome used or vintage edition of that book is the more personal choice.
+      </QuickAnswer>
       <p>
         The classics lover is a joy to shop for — these books never go out of
         print and a good used edition can be genuinely beautiful. The goal is to

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "american-classic-novels",
@@ -29,6 +30,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        If you&rsquo;re new to American classics, start with The Great Gatsby by
+        F. Scott Fitzgerald &mdash; short and dazzling &mdash; or To Kill a
+        Mockingbird by Harper Lee, then work up to heavier reads like Beloved
+        and Invisible Man.
+      </QuickAnswer>
       <p>
         American fiction has been chasing &ldquo;the Great American Novel&rdquo;
         for over a century, and the chase produced a whole shelf of them. Here

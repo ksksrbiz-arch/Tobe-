@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -28,6 +29,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        New to Victorian novels, start with Great Expectations by Charles Dickens or The Woman in White by Wilkie Collins for momentum, then build up to Middlemarch and Bleak House once you&rsquo;re hooked.
+      </QuickAnswer>
       <p>
         The Victorians wrote serialized, plot-rich novels designed to be
         devoured chapter by chapter — which is exactly why they still read so

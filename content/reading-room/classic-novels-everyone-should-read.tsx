@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "classic-novels-everyone-should-read",
@@ -29,6 +30,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best starting point is <em>Pride and Prejudice</em> by Jane
+        Austen &mdash; sharper and funnier than its reputation, with wit that
+        still holds up two centuries on.
+      </QuickAnswer>
       <p>
         &ldquo;Classic&rdquo; can sound like homework. But the books that last
         usually last for a reason — they&rsquo;re still funny, still moving, still

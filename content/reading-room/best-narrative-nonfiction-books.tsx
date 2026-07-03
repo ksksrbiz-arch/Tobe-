@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -26,6 +27,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best narrative nonfiction book to start with is Into Thin Air by
+        Jon Krakauer, a harrowing, ferociously paced firsthand account of the
+        1996 Everest disaster that reads like a thriller you can&rsquo;t
+        breathe through.
+      </QuickAnswer>
       <p>
         Narrative nonfiction is the genre for readers who say they &ldquo;only
         read fiction&rdquo; — until they meet a true story told with the craft,

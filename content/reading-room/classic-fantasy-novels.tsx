@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "classic-fantasy-novels-everyone-should-read",
@@ -28,6 +29,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best starting point is <em>The Hobbit</em> by J. R. R. Tolkien,
+        the cozy adventure that launched modern fantasy and remains the
+        genre&rsquo;s easiest on-ramp.
+      </QuickAnswer>
       <p>
         Today&rsquo;s romantasy and doorstopper epics stand on the shoulders of
         these. Two of our best-selling sections — classics and fantasy — meet

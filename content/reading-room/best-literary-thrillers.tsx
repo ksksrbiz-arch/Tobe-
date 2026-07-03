@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -25,6 +26,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best literary thriller to start with is The Secret History by
+        Donna Tartt, the genre&rsquo;s standard-bearer &mdash; it reveals who
+        dies on page one and still stays unbearably tense for another five
+        hundred pages of prose worth underlining.
+      </QuickAnswer>
       <p>
         Plenty of thrillers race you to the last page and leave nothing behind.
         Literary thrillers do something harder: they keep the tension cranked

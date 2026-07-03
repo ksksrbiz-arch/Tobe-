@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        When you&rsquo;re truly out of time, store credit is the safest
+        last-minute book gift — the recipient picks exactly what they want at a
+        used bookstore, and it never goes to waste.
+      </QuickAnswer>
       <p>
         Forgot a gift? A used bookstore is your secret weapon: no shipping
         windows, no markup, and a wall of options you can hold in your hands

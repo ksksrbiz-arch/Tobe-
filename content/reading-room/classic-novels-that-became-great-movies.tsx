@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "classic-novels-that-became-great-movies",
@@ -29,6 +30,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best place to start is To Kill a Mockingbird by Harper Lee — the
+        Gregory Peck film is a classic, but the novel is essential reading in
+        its own right.
+      </QuickAnswer>
       <p>
         The movie is often the gateway — and with these, the classic novel
         behind it is just as good or better. A perfect way in if the screen

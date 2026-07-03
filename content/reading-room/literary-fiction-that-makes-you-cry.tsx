@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -28,6 +29,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        If you only pick one, start with <em>A Little Life</em> by Hanya
+        Yanagihara — the heavyweight champion of devastating novels, beautiful
+        and harrowing.
+      </QuickAnswer>
       <p>
         There&rsquo;s a particular kind of reading mood — not sad, exactly, but
         ready to be moved. Books that go straight for the heart and leave you

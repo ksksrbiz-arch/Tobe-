@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "best-dark-academia-books",
@@ -25,6 +26,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Begin with The Secret History by Donna Tartt — it&rsquo;s the novel
+        that defined dark academia, and the template every other book on this
+        list is in conversation with.
+      </QuickAnswer>
       <p>
         Dark academia is the genre of candlelit libraries, untranslatable Greek,
         and friendships that curdle into something dangerous. It romances the

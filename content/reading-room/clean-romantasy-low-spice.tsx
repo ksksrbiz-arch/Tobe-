@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "clean-romantasy-low-spice",
@@ -27,6 +28,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        For readers who want the yearning and magic without the heat, Divine
+        Rivals by Rebecca Ross is the top pick — rival journalists, magic
+        typewriters, and an aching, fade-to-black romance.
+      </QuickAnswer>
       <p>
         Not every romantasy reader wants the spice — plenty just want the
         yearning, the banter, and the magic. &ldquo;What can I read that&rsquo;s

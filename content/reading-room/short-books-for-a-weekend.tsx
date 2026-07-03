@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "short-books-to-finish-in-a-weekend",
@@ -29,6 +30,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        For a single afternoon, start with Of Mice and Men: a perfect,
+        devastating little novel. The Old Man and the Sea is another spare,
+        elemental option if you want Hemingway at his most distilled.
+      </QuickAnswer>
       <p>
         Sometimes the best cure for a reading slump is the simple satisfaction of
         finishing something. These nine short books — most under 250 pages — pack

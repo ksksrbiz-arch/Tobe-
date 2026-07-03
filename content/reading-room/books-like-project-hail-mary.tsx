@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -27,6 +28,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The obvious next read for Project Hail Mary fans is Andy Weir&rsquo;s
+        own The Martian — a stranded botanist, a hostile planet, and the same
+        duct-tape ingenuity.
+      </QuickAnswer>
       <p>
         <em>Project Hail Mary</em> hits a sweet spot: a lone protagonist
         out-thinking impossible problems, real science worn lightly, and a

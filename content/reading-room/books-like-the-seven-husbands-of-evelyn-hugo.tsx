@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "books-like-the-seven-husbands-of-evelyn-hugo",
@@ -26,6 +27,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best next read is <em>Daisy Jones &amp; The Six</em> by Taylor
+        Jenkins Reid, an oral history of a 1970s rock band&rsquo;s rise and
+        combustion with the same hindsight ache and unforgettable central
+        woman as The Seven Husbands of Evelyn Hugo.
+      </QuickAnswer>
       <p>
         Taylor Jenkins Reid built <em>The Seven Husbands of Evelyn Hugo</em> on a
         reliable spell: a dazzling, complicated woman; a sweep of decades; a

@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -28,6 +29,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best short story collection to start with is Interpreter of Maladies by Jhumpa Lahiri, a Pulitzer-winning, quietly perfect debut that&rsquo;s a flawless entry point into the format.
+      </QuickAnswer>
       <p>
         Short stories are perfect for the way most of us actually read — a
         complete world before bed, a finished arc on a lunch break. A great

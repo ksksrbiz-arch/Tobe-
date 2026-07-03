@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "cozy-places-to-read-in-milwaukie-oregon",
@@ -18,6 +19,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best spot to read in Milwaukie is Milwaukie Bay Park — the
+        reworked riverfront park along the Willamette offers benches, lawn,
+        and a wide view, making it the best seat in town on a clear day.
+      </QuickAnswer>
       <p>
         Half the joy of a new book is finding the right place to read it.
         Milwaukie — right on the Willamette just south of Portland — has more

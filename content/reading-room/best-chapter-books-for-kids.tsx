@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "best-chapter-books-for-young-readers",
@@ -30,6 +31,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best all-around starting point is Charlotte&rsquo;s Web by E. B.
+        White — tender, funny, and the gold standard for young readers roughly
+        ages 7–11. For a reluctant reader, Dog Man by Dav Pilkey&rsquo;s
+        graphic-novel format hooks kids instantly.
+      </QuickAnswer>
       <p>
         Our kids&rsquo; section is one of the busiest corners of the shop, and
         the question we hear most is &ldquo;what&rsquo;s next for my reader?&rdquo;

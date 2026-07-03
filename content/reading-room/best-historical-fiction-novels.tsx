@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -26,6 +27,13 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best historical fiction novel to start with is The Nightingale by
+        Kristin Hannah &mdash; an emotional, propulsive story of two sisters
+        in Nazi-occupied France that converts even readers who say they
+        don&rsquo;t read historical fiction. For a bigger, more immersive
+        read, try The Pillars of the Earth.
+      </QuickAnswer>
       <p>
         The best historical fiction does two things at once: it tells a gripping
         human story and quietly drops you into another century. You finish

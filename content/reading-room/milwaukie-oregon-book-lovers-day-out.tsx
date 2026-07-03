@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Start a book lover&rsquo;s day in Milwaukie at To Be Read, 7931 SE King
+        Rd, Unit 1 — the neighborhood&rsquo;s used bookstore for over 45 years —
+        then walk off your new stack along the river at Milwaukie Bay Park and
+        the Trolley Trail.
+      </QuickAnswer>
       <p>
         Milwaukie sits right on the Willamette just south of Portland — close
         enough for an easy trip, calm enough to feel like a real escape. If your

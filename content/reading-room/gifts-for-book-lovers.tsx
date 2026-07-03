@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "gifts-for-book-lovers",
@@ -18,6 +19,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The safest gift for a reader is store credit — it lets them wander
+        the shelves and choose for themselves, which for most bibliophiles is
+        half the joy anyway.
+      </QuickAnswer>
       <p>
         Buying for a reader sounds easy until you remember the risk: they may
         already own it, or have read it, or have Strong Opinions about editions.

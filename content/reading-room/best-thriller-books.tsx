@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -28,6 +29,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best thriller to start with is Gone Girl by Gillian Flynn, the modern benchmark for the twisty marriage thriller and still one of the genre&rsquo;s most vicious, brilliant entries.
+      </QuickAnswer>
       <p>
         A great thriller is a controlled demolition of your sleep schedule —
         short chapters, sharp turns, and a hook you can&rsquo;t escape. Here are

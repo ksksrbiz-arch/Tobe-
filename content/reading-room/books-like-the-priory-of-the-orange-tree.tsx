@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "books-like-the-priory-of-the-orange-tree",
@@ -25,6 +26,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The closest read-alike is <em>The Fifth Season</em> by N. K. Jemisin, an
+        epic fantasy about persecuted women who can command the earth on a
+        planet wracked by apocalyptic upheaval &mdash; a similarly sprawling,
+        acclaimed epic with fierce, capable heroines at its center.
+      </QuickAnswer>
       <p>
         Samantha Shannon&rsquo;s <em>The Priory of the Orange Tree</em> is a rare
         beast: a doorstopper standalone with warring dragon mythologies, queer

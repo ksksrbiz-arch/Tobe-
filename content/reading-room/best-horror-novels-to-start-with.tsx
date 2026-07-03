@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -26,6 +27,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best horror novel to start with is The Shining by Stephen King
+        &mdash; the gateway horror novel, character-rich and slow-burning
+        rather than gory. If you want atmosphere over scares, start with The
+        Haunting of Hill House by Shirley Jackson instead.
+      </QuickAnswer>
       <p>
         People are often surprised by how much of horror is mood, not gore — the
         creak on the stair, the thing you almost saw, the dread that builds for

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "fantasy-books-for-beginners",
@@ -27,6 +28,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best entry point is The Hobbit by J. R. R. Tolkien — a cozy,
+        self-contained adventure that&rsquo;s lighter and shorter than{" "}
+        <em>The Lord of the Rings</em>, making it a perfect first step into
+        fantasy.
+      </QuickAnswer>
       <p>
         Fantasy has a reputation problem with newcomers: endless series, invented
         languages, appendices. But the genre is full of welcoming on-ramps. Here
