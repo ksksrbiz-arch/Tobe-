@@ -13,6 +13,14 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "In Cold Blood", author: "Truman Capote" },
+    { name: "The Immortal Life of Henrietta Lacks", author: "Rebecca Skloot" },
+    { name: "Into Thin Air", author: "Jon Krakauer" },
+    { name: "Bad Blood", author: "John Carreyrou" },
+    { name: "The Devil in the White City", author: "Erik Larson" },
+    { name: "Killers of the Flower Moon", author: "David Grann" },
+  ],
 };
 
 export default function Body() {

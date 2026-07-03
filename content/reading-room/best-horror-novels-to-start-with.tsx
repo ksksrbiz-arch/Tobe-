@@ -13,6 +13,14 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "The Shining", author: "Stephen King" },
+    { name: "Mexican Gothic", author: "Silvia Moreno-Garcia" },
+    { name: "Bird Box", author: "Josh Malerman" },
+    { name: "The Haunting of Hill House", author: "Shirley Jackson" },
+    { name: "Hell House", author: "Richard Matheson" },
+    { name: "Salem's Lot", author: "Stephen King" },
+  ],
 };
 
 export default function Body() {

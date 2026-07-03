@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics", "Science fiction"],
   readingMinutes: 4,
+  items: [
+    { name: "Dune", author: "Frank Herbert" },
+    { name: "The Left Hand of Darkness", author: "Ursula K. Le Guin" },
+    { name: "Foundation", author: "Isaac Asimov" },
+    { name: "Fahrenheit 451", author: "Ray Bradbury" },
+    { name: "Do Androids Dream of Electric Sheep?", author: "Philip K. Dick" },
+    { name: "Slaughterhouse-Five", author: "Kurt Vonnegut" },
+    { name: "The Martian Chronicles", author: "Ray Bradbury" },
+    { name: "Neuromancer", author: "William Gibson" },
+  ],
 };
 
 export default function Body() {

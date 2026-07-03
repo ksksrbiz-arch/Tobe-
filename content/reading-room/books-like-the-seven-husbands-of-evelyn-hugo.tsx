@@ -13,6 +13,14 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "Daisy Jones & The Six", author: "Taylor Jenkins Reid" },
+    { name: "Malibu Rising", author: "Taylor Jenkins Reid" },
+    { name: "The House of Eve", author: "Sadeqa Johnson" },
+    { name: "Lessons in Chemistry", author: "Bonnie Garmus" },
+    { name: "The Henna Artist", author: "Alka Joshi" },
+    { name: "The Final Revival of Opal & Nev", author: "Dawnie Walton" },
+  ],
 };
 
 export default function Body() {

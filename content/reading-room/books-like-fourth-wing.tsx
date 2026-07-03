@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "A Court of Thorns and Roses", author: "Sarah J. Maas" },
+    { name: "From Blood and Ash", author: "Jennifer L. Armentrout" },
+    { name: "Throne of Glass", author: "Sarah J. Maas" },
+    { name: "Zodiac Academy", author: "Caroline Peckham & Susanne Valenti" },
+    { name: "The Serpent and the Wings of Night", author: "Carissa Broadbent" },
+    { name: "A Deal with the Elf King", author: "Elise Kova" },
+    { name: "The Bridge Kingdom", author: "Danielle L. Jensen" },
+    { name: "Crescent City", author: "Sarah J. Maas" },
+  ],
 };
 
 export default function Body() {

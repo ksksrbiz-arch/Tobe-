@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Thriller"],
   readingMinutes: 4,
+  items: [
+    { name: "Gone Girl", author: "Gillian Flynn" },
+    { name: "The Silent Patient", author: "Alex Michaelides" },
+    { name: "The Girl with the Dragon Tattoo", author: "Stieg Larsson" },
+    { name: "I Am Pilgrim", author: "Terry Hayes" },
+    { name: "The Guest List", author: "Lucy Foley" },
+    { name: "Before I Go to Sleep", author: "S. J. Watson" },
+    { name: "Sharp Objects", author: "Gillian Flynn" },
+    { name: "The Thursday Murder Club", author: "Richard Osman" },
+  ],
 };
 
 export default function Body() {

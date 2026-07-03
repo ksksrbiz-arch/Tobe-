@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Science fiction"],
   readingMinutes: 4,
+  items: [
+    { name: "The Martian", author: "Andy Weir" },
+    { name: "Children of Time", author: "Adrian Tchaikovsky" },
+    { name: "The Long Way to a Small, Angry Planet", author: "Becky Chambers" },
+    { name: "Recursion", author: "Blake Crouch" },
+    { name: "Sea of Tranquility", author: "Emily St. John Mandel" },
+    { name: "The Mote in God's Eye", author: "Niven & Pournelle" },
+    { name: "Klara and the Sun", author: "Kazuo Ishiguro" },
+  ],
 };
 
 export default function Body() {

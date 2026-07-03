@@ -13,6 +13,14 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "The Ballad of Songbirds and Snakes", author: "Suzanne Collins" },
+    { name: "Divergent", author: "Veronica Roth" },
+    { name: "The Maze Runner", author: "James Dashner" },
+    { name: "Red Rising", author: "Pierce Brown" },
+    { name: "Scythe", author: "Neal Shusterman" },
+    { name: "An Ember in the Ashes", author: "Sabaa Tahir" },
+  ],
 };
 
 export default function Body() {

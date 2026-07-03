@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Memoir"],
   readingMinutes: 4,
+  items: [
+    { name: "Educated", author: "Tara Westover" },
+    { name: "The Glass Castle", author: "Jeannette Walls" },
+    { name: "Just Kids", author: "Patti Smith" },
+    { name: "Born a Crime", author: "Trevor Noah" },
+    { name: "When Breath Becomes Air", author: "Paul Kalanithi" },
+    { name: "Wild", author: "Cheryl Strayed" },
+    { name: "Crying in H Mart", author: "Michelle Zauner" },
+    { name: "I Know Why the Caged Bird Sings", author: "Maya Angelou" },
+  ],
 };
 
 export default function Body() {

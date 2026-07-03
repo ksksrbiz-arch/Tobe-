@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Dark academia"],
   readingMinutes: 5,
+  items: [
+    { name: "If We Were Villains", author: "M. L. Rio" },
+    { name: "Babel", author: "R. F. Kuang" },
+    { name: "Bunny", author: "Mona Awad" },
+    { name: "Ninth House", author: "Leigh Bardugo" },
+    { name: "The Maidens", author: "Alex Michaelides" },
+    { name: "Catherine House", author: "Elisabeth Thomas" },
+    { name: "A Lesson in Vengeance", author: "Victoria Lee" },
+    { name: "Black Chalk", author: "Christopher J. Yates" },
+  ],
 };
 
 export default function Body() {

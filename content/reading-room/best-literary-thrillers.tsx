@@ -13,6 +13,13 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "The Secret History", author: "Donna Tartt" },
+    { name: "In the Woods", author: "Tana French" },
+    { name: "The Likeness", author: "Tana French" },
+    { name: "We Need to Talk About Kevin", author: "Lionel Shriver" },
+    { name: "Sharp Objects", author: "Gillian Flynn" },
+  ],
 };
 
 export default function Body() {

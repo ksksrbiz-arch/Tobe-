@@ -13,6 +13,14 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "Gone Girl", author: "Gillian Flynn" },
+    { name: "The Wife Between Us", author: "Greer Hendricks & Sarah Pekkanen" },
+    { name: "Behind Closed Doors", author: "B. A. Paris" },
+    { name: "The Woman in the Window", author: "A. J. Finn" },
+    { name: "Verity", author: "Colleen Hoover" },
+    { name: "The Silent Wife", author: "A. S. A. Harrison" },
+  ],
 };
 
 export default function Body() {
