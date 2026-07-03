@@ -86,6 +86,26 @@ export default async function ReadingRoomPostPage({
     },
   };
 
+  // "Best of" / "books like X" posts list titles in `meta.items`, in the same
+  // order they appear in the article — mirror that as an ItemList of Books so
+  // answer engines can read the recommendations as structured data, not just
+  // prose.
+  const itemListJsonLd = post.items?.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        itemListElement: post.items.map((book, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "Book",
+            name: book.name,
+            ...(book.author ? { author: { "@type": "Person", name: book.author } } : {}),
+          },
+        })),
+      }
+    : null;
+
   return (
     <main id="main">
       <Navbar />
@@ -96,6 +116,7 @@ export default async function ReadingRoomPostPage({
         ])}
       />
       <JsonLd data={articleJsonLd} />
+      {itemListJsonLd && <JsonLd data={itemListJsonLd} />}
 
       <article className="px-4 pb-20 pt-28 sm:px-6 sm:pt-32" style={{ background: "var(--background)" }}>
         <div className="mx-auto max-w-2xl">

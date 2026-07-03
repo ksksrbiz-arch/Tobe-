@@ -32,6 +32,15 @@ export type BlogMeta = {
   tags: string[];
   /** Estimated read time in minutes, shown on the card. */
   readingMinutes: number;
+  /**
+   * Books named in a "best of" / "books like X" list post, in the order they
+   * appear. When present, the post page emits an ItemList/Book JSON-LD block
+   * alongside the BlogPosting schema, so AI answer engines and rich results
+   * can read the recommendations as structured items rather than plain prose.
+   * Titles/authors must match what's already written in the article body —
+   * this is a structured mirror of the visible content, not new copy.
+   */
+  items?: Array<{ name: string; author?: string }>;
 };
 
 export type BlogPost = BlogMeta & { Body: ComponentType };
