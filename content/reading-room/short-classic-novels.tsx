@@ -13,6 +13,17 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics", "Reading habits"],
   readingMinutes: 4,
+  items: [
+    { name: "The Great Gatsby", author: "F. Scott Fitzgerald" },
+    { name: "Of Mice and Men", author: "John Steinbeck" },
+    { name: "The Old Man and the Sea", author: "Ernest Hemingway" },
+    { name: "The Stranger", author: "Albert Camus" },
+    { name: "Animal Farm", author: "George Orwell" },
+    { name: "The Metamorphosis", author: "Franz Kafka" },
+    { name: "Ethan Frome", author: "Edith Wharton" },
+    { name: "The Awakening", author: "Kate Chopin" },
+    { name: "A Christmas Carol", author: "Charles Dickens" },
+  ],
 };
 
 export default function Body() {

@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics"],
   readingMinutes: 4,
+  items: [
+    { name: "Rebecca", author: "Daphne du Maurier" },
+    { name: "Jane Eyre", author: "Charlotte Brontë" },
+    { name: "Wuthering Heights", author: "Emily Brontë" },
+    { name: "Dracula", author: "Bram Stoker" },
+    { name: "Frankenstein", author: "Mary Shelley" },
+    { name: "The Picture of Dorian Gray", author: "Oscar Wilde" },
+    { name: "The Turn of the Screw", author: "Henry James" },
+    { name: "We Have Always Lived in the Castle", author: "Shirley Jackson" },
+  ],
 };
 
 export default function Body() {

@@ -13,6 +13,13 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 5,
+  items: [
+    { name: "The Fifth Season", author: "N. K. Jemisin" },
+    { name: "A Memory Called Empire", author: "Arkady Martine" },
+    { name: "The Jasmine Throne", author: "Tasha Suri" },
+    { name: "She Who Became the Sun", author: "Shelley Parker-Chan" },
+    { name: "Circe", author: "Madeline Miller" },
+  ],
 };
 
 export default function Body() {

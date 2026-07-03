@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics"],
   readingMinutes: 4,
+  items: [
+    { name: "Stoner", author: "John Williams" },
+    { name: "The Death of Ivan Ilyich", author: "Leo Tolstoy" },
+    { name: "Passing", author: "Nella Larsen" },
+    { name: "The Enchanted April", author: "Elizabeth von Arnim" },
+    { name: "So Long, See You Tomorrow", author: "William Maxwell" },
+    { name: "The Pursuit of Love", author: "Nancy Mitford" },
+    { name: "Giovanni's Room", author: "James Baldwin" },
+    { name: "Cold Comfort Farm", author: "Stella Gibbons" },
+  ],
 };
 
 export default function Body() {

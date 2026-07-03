@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "The Hobbit", author: "J. R. R. Tolkien" },
+    { name: "The Lord of the Rings", author: "J. R. R. Tolkien" },
+    { name: "A Wizard of Earthsea", author: "Ursula K. Le Guin" },
+    { name: "The Chronicles of Narnia", author: "C. S. Lewis" },
+    { name: "The Princess Bride", author: "William Goldman" },
+    { name: "The Once and Future King", author: "T. H. White" },
+    { name: "The Last Unicorn", author: "Peter S. Beagle" },
+    { name: "Dragonflight", author: "Anne McCaffrey" },
+  ],
 };
 
 export default function Body() {

@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "Divine Rivals", author: "Rebecca Ross" },
+    { name: "The Bridge Kingdom", author: "Danielle L. Jensen" },
+    { name: "A Deal with the Elf King", author: "Elise Kova" },
+    { name: "Sorcery of Thorns", author: "Margaret Rogerson" },
+    { name: "The Cruel Prince", author: "Holly Black" },
+    { name: "Uprooted", author: "Naomi Novik" },
+    { name: "The Star-Touched Queen", author: "Roshani Chokshi" },
+  ],
 };
 
 export default function Body() {

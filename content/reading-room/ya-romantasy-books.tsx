@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "Shadow and Bone", author: "Leigh Bardugo" },
+    { name: "The Cruel Prince", author: "Holly Black" },
+    { name: "An Ember in the Ashes", author: "Sabaa Tahir" },
+    { name: "Children of Blood and Bone", author: "Tomi Adeyemi" },
+    { name: "Caraval", author: "Stephanie Garber" },
+    { name: "Throne of Glass", author: "Sarah J. Maas" },
+    { name: "Serpent & Dove", author: "Shelby Mahurin" },
+  ],
 };
 
 export default function Body() {

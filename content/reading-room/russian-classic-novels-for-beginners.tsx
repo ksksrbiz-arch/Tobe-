@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics"],
   readingMinutes: 5,
+  items: [
+    { name: "The Death of Ivan Ilyich", author: "Leo Tolstoy" },
+    { name: "Notes from Underground", author: "Fyodor Dostoevsky" },
+    { name: "Crime and Punishment", author: "Fyodor Dostoevsky" },
+    { name: "A Hero of Our Time", author: "Mikhail Lermontov" },
+    { name: "Fathers and Sons", author: "Ivan Turgenev" },
+    { name: "The Master and Margarita", author: "Mikhail Bulgakov" },
+    { name: "Anna Karenina", author: "Leo Tolstoy" },
+  ],
 };
 
 export default function Body() {

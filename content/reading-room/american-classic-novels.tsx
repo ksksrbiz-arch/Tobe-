@@ -13,6 +13,17 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics"],
   readingMinutes: 5,
+  items: [
+    { name: "The Great Gatsby", author: "F. Scott Fitzgerald" },
+    { name: "To Kill a Mockingbird", author: "Harper Lee" },
+    { name: "Beloved", author: "Toni Morrison" },
+    { name: "The Grapes of Wrath", author: "John Steinbeck" },
+    { name: "The Sun Also Rises", author: "Ernest Hemingway" },
+    { name: "Invisible Man", author: "Ralph Ellison" },
+    { name: "East of Eden", author: "John Steinbeck" },
+    { name: "Their Eyes Were Watching God", author: "Zora Neale Hurston" },
+    { name: "The Catcher in the Rye", author: "J.D. Salinger" },
+  ],
 };
 
 export default function Body() {

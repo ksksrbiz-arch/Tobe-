@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romance"],
   readingMinutes: 4,
+  items: [
+    { name: "Beach Read", author: "Emily Henry" },
+    { name: "The Hating Game", author: "Sally Thorne" },
+    { name: "Red, White & Royal Blue", author: "Casey McQuiston" },
+    { name: "The Kiss Quotient", author: "Helen Hoang" },
+    { name: "Get a Life, Chloe Brown", author: "Talia Hibbert" },
+    { name: "The Flatshare", author: "Beth O'Leary" },
+    { name: "Pride and Prejudice", author: "Jane Austen" },
+  ],
 };
 
 export default function Body() {

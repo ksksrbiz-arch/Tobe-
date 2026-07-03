@@ -13,6 +13,13 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "Verity", author: "Colleen Hoover" },
+    { name: "Reminders of Him", author: "Colleen Hoover" },
+    { name: "The Love Hypothesis" },
+    { name: "People We Meet on Vacation" },
+    { name: "Every Summer After" },
+  ],
 };
 
 export default function Body() {

@@ -13,6 +13,17 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Reading habits"],
   readingMinutes: 4,
+  items: [
+    { name: "Of Mice and Men", author: "John Steinbeck" },
+    { name: "The Old Man and the Sea", author: "Ernest Hemingway" },
+    { name: "Convenience Store Woman", author: "Sayaka Murata" },
+    { name: "We Have Always Lived in the Castle", author: "Shirley Jackson" },
+    { name: "The Stranger", author: "Albert Camus" },
+    { name: "Animal Farm", author: "George Orwell" },
+    { name: "Train Dreams", author: "Denis Johnson" },
+    { name: "The Body", author: "Stephen King" },
+    { name: "So Long, See You Tomorrow", author: "William Maxwell" },
+  ],
 };
 
 export default function Body() {

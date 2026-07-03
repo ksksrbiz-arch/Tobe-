@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Romance"],
   readingMinutes: 4,
+  items: [
+    { name: "A Court of Mist and Fury", author: "Sarah J. Maas" },
+    { name: "From Blood and Ash", author: "Jennifer L. Armentrout" },
+    { name: "A Touch of Darkness", author: "Scarlett St. Clair" },
+    { name: "Haunting Adeline", author: "H. D. Carlton" },
+    { name: "Iron Flame", author: "Rebecca Yarros" },
+    { name: "Kingdom of the Wicked", author: "Kerri Maniscalco" },
+    { name: "Neon Gods", author: "Katee Robert" },
+    { name: "The Serpent and the Wings of Night", author: "Carissa Broadbent" },
+  ],
 };
 
 export default function Body() {

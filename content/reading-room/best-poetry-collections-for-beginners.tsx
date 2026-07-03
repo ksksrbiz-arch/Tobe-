@@ -13,6 +13,13 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "Milk and Honey", author: "Rupi Kaur" },
+    { name: "Devotions", author: "Mary Oliver" },
+    { name: "The Sun and Her Flowers", author: "Rupi Kaur" },
+    { name: "Citizen", author: "Claudia Rankine" },
+    { name: "Selected Poems", author: "Billy Collins" },
+  ],
 };
 
 export default function Body() {

@@ -13,6 +13,18 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Kids"],
   readingMinutes: 4,
+  items: [
+    { name: "Charlotte's Web", author: "E. B. White" },
+    { name: "The Tale of Despereaux", author: "Kate DiCamillo" },
+    { name: "The Wild Robot", author: "Peter Brown" },
+    { name: "Front Desk", author: "Kelly Yang" },
+    { name: "The One and Only Ivan", author: "Katherine Applegate" },
+    { name: "Dog Man", author: "Dav Pilkey" },
+    { name: "The Chronicles of Narnia", author: "C. S. Lewis" },
+    { name: "Because of Winn-Dixie", author: "Kate DiCamillo" },
+    { name: "The Wonderful Wizard of Oz", author: "L. Frank Baum" },
+    { name: "Harry Potter and the Sorcerer's Stone", author: "J. K. Rowling" },
+  ],
 };
 
 export default function Body() {

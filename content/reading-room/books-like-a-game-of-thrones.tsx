@@ -13,6 +13,13 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "The Name of the Wind" },
+    { name: "The Way of Kings" },
+    { name: "The First Law" },
+    { name: "The Poppy War" },
+    { name: "The Lies of Locke Lamora" },
+  ],
 };
 
 export default function Body() {

@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "Interpreter of Maladies", author: "Jhumpa Lahiri" },
+    { name: "Tenth of December", author: "George Saunders" },
+    { name: "Her Body and Other Parties", author: "Carmen Maria Machado" },
+    {
+      name: "What We Talk About When We Talk About Love",
+      author: "Raymond Carver",
+    },
+    { name: "Nine Stories", author: "J.D. Salinger" },
+  ],
 };
 
 export default function Body() {

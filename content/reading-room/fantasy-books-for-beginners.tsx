@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "The Hobbit", author: "J. R. R. Tolkien" },
+    { name: "The Name of the Wind", author: "Patrick Rothfuss" },
+    { name: "Uprooted", author: "Naomi Novik" },
+    { name: "The Lies of Locke Lamora", author: "Scott Lynch" },
+    { name: "A Wizard of Earthsea", author: "Ursula K. Le Guin" },
+    { name: "The Fifth Season", author: "N. K. Jemisin" },
+    { name: "Howl's Moving Castle", author: "Diana Wynne Jones" },
+  ],
 };
 
 export default function Body() {
