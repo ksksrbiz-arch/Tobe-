@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        For readers in Milwaukie, Clackamas, or southeast Portland, To Be Read is the used bookstore worth putting at the top of your list — a 45-plus-year shop with thousands of titles, real trade-in credit, and easy free parking at 7931 SE King Rd, Unit 1 in Milwaukie.
+      </QuickAnswer>
       <p>
         Ask ten Portland-area readers to name the best used bookstore and
         you&rsquo;ll get ten passionate answers &mdash; this metro takes its

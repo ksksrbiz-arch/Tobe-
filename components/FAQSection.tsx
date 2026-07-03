@@ -103,6 +103,12 @@ export default function FAQSection({
         text: faq.a,
       },
     })),
+    // Help voice/AI assistants pick this FAQ block as the spoken answer,
+    // mirroring the same pattern used on Reading Room articles.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [`#${id}`],
+    },
   };
 
   return (

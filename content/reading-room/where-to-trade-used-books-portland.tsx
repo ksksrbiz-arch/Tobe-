@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import { TRADE_POLICY_ROLLOVER } from "@/lib/tradePolicy";
 import type { BlogMeta } from "@/lib/blog";
 
@@ -19,6 +20,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Around Milwaukie, Clackamas, and Southeast Portland, readable used books can be traded for store credit at To Be Read — 25% of a book&rsquo;s original list price, credit only, not cash — or donated to libraries, schools, shelters, and Little Free Libraries.
+      </QuickAnswer>
       <p>
         Every reader hits the same wall eventually: the shelves are full, there&rsquo;s
         a stack on the nightstand and another on the floor, and recycling a box

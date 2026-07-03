@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The nearest deep used bookstore worth the trip from Tigard is To Be Read at 7931 SE King Rd, Unit 1 in Milwaukie — a short cross-town hop via Highway 217 and 99E, with thousands of used titles, trade-in credit, and free parking.
+      </QuickAnswer>
       <p>
         Tigard sits in a busy, well-served corner of the metro, but a genuinely
         deep used bookstore &mdash; rows of secondhand titles you can browse for

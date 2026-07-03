@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Yes — To Be Read is a used bookstore just minutes from Clackamas Town Center at 7931 SE King Rd, Unit 1 in neighboring Milwaukie, with thousands of used titles, trade-in credit, and free parking out front.
+      </QuickAnswer>
       <p>
         If you&rsquo;re out near <strong>Clackamas Town Center</strong> and want
         a real bookstore — the kind where you lose track of time in the stacks

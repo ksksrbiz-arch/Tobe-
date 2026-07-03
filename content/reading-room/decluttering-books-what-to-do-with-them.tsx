@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Sort your books into four piles — keep, trade or sell, donate, or recycle — then trade or sell good-condition copies for store credit, donate readable books a store can&rsquo;t use, and recycle only the ones that are moldy, water-damaged, or falling apart.
+      </QuickAnswer>
       <p>
         Overflowing shelves, stacks on the floor, boxes you never unpacked —
         every reader hits the point where the collection outgrows the space.

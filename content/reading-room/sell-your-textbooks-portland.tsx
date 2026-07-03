@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Current textbooks sell best through campus or online buyback programs, or by selling direct to another student, especially right after finals before new editions arrive. General used bookstores usually can&rsquo;t take current editions, but will often take general-interest titles like classic literature, art and photography books, and reference works.
+      </QuickAnswer>
       <p>
         Textbooks are heavy, expensive, and frustrating to get rid of. If
         you&rsquo;re in the Portland area staring at a stack from last term,

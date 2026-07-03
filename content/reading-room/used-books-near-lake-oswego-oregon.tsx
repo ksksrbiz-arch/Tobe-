@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The nearest used bookstore to Lake Oswego is To Be Read at 7931 SE King Rd, Unit 1 in Milwaukie — a quick hop across the Willamette, or a straight shot up the highway from West Linn, with thousands of used titles and trade-in credit.
+      </QuickAnswer>
       <p>
         Lake Oswego and West Linn have plenty of charm, but a deep, browseable
         used bookstore isn&rsquo;t always around the corner. Good news for readers
