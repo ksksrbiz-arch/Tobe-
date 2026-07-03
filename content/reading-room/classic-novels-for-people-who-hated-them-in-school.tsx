@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "If the classics were ruined for you by a pop quiz, give them a second chance. Seven that read like the page-turners they always were — no essay required.",
   date: "2026-06-21",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "The Count of Monte Cristo", author: "Alexandre Dumas" },

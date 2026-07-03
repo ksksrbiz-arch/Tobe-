@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Vast worlds, scheming houses, ecology and prophecy and power. If Arrakis left you hungry for more epic scope, here are seven places to go next.",
   date: "2026-06-06",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Science fiction", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Science fiction", "Fantasy", "Read-alikes"],
   readingMinutes: 4,
   items: [
     { name: "Hyperion", author: "Dan Simmons" },

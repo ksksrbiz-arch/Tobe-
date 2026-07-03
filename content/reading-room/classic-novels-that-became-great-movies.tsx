@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Loved the movie? The book is usually even better. Nine classic novels behind great films — a perfect on-ramp if the screen got you first.",
   date: "2026-05-24",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "To Kill a Mockingbird", author: "Harper Lee" },

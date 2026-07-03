@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Classics don't have to mean 800 pages. Nine short, powerful classic novels — most under 200 pages — perfect for dipping a toe into the canon.",
   date: "2026-05-28",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics", "Reading habits"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Reading habits", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "The Great Gatsby", author: "F. Scott Fitzgerald" },

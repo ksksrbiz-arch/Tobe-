@@ -7,7 +7,7 @@ export const meta: BlogMeta = {
   slug: "last-minute-book-gifts-for-readers",
   title: "Last-minute book gifts for readers (that don't feel last-minute)",
   description:
-    "Need a gift today? Last-minute book-gift ideas you can grab in person at a used bookstore — thoughtful picks by reader type, plus store credit when you're truly stuck.",
+    "Need a gift today? Last-minute book-gift ideas you can grab in person — thoughtful picks by reader type, plus store credit when you're stuck.",
   excerpt:
     "Out of time? A used bookstore is the last-minute gift hero. Here's how to walk in and walk out with something thoughtful — no shipping, no stress.",
   date: "2026-06-21",

@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Donna Tartt ruined you for normal campus novels. Here are eight dark-academia reads — secret societies, obsessive friendships, beautiful dread — to fill the hole she left.",
   date: "2026-06-19",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Dark academia"],
+  tags: ["Reading guides", "Recommendations", "Dark academia", "Read-alikes"],
   readingMinutes: 5,
   items: [
     { name: "If We Were Villains", author: "M. L. Rio" },

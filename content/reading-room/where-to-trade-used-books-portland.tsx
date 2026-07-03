@@ -8,7 +8,7 @@ export const meta: BlogMeta = {
   slug: "where-to-trade-used-books-portland",
   title: "What to do with used books in the Portland area (besides recycle them)",
   description:
-    "Cleaning out your shelves around Milwaukie, Clackamas, or SE Portland? Here are good options for used books — trade for store credit, donate, or rehome them — and how trade-in works.",
+    "Cleaning out your shelves around Milwaukie, Clackamas, or SE Portland? Here are good options for used books — trade for credit, donate, or rehome them.",
   excerpt:
     "Boxes of books you've finished and a shelf that's overflowing? Here's a practical rundown of what to do with used books in the Portland area — trade, donate, or rehome.",
   date: "2026-06-16",

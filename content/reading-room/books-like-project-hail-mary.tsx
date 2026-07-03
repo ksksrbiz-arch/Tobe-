@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Andy Weir's blend of nail-biting problem-solving, real science, and unexpected friendship is hard to match. Seven sci-fi novels to scratch the same itch.",
   date: "2026-06-10",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Science fiction"],
+  tags: ["Reading guides", "Recommendations", "Science fiction", "Read-alikes"],
   readingMinutes: 4,
   items: [
     { name: "The Martian", author: "Andy Weir" },

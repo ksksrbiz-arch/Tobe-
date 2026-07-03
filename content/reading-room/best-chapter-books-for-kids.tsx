@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "The right chapter book turns a reluctant reader into a flashlight-under-the-covers one. Ten beloved picks for kids roughly 7–11 to fall in love with reading.",
   date: "2026-06-03",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Kids"],
+  tags: ["Reading guides", "Recommendations", "Kids", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Charlotte's Web", author: "E. B. White" },

@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Dragons, deadly trials, and a slow-burn that wrecks you. If Fourth Wing left you feral for more, here are eight romantasy reads to fill the gap.",
   date: "2026-06-20",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Read-alikes"],
   readingMinutes: 4,
   items: [
     { name: "A Court of Thorns and Roses", author: "Sarah J. Maas" },

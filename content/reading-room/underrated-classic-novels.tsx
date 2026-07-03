@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Everyone's read Gatsby. These eight underrated classics deserve the same love — brilliant, moving, and somehow still flying under the radar.",
   date: "2026-05-23",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Stoner", author: "John Williams" },

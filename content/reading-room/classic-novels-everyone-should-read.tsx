@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Not the dusty, homework kind — the classics that still hit. Nine timeless novels that earn their reputation and are genuinely worth reading once.",
   date: "2026-06-04",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Genre guide"],
   readingMinutes: 5,
   items: [
     { name: "Pride and Prejudice", author: "Jane Austen" },

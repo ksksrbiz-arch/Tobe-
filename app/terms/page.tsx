@@ -9,7 +9,7 @@ const UPDATED = "2026-06-22";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "The terms that govern your use of the To Be Read (Clackamas Book Exchange) website, including disclaimers, limitation of liability, indemnification, and a binding arbitration and class-action waiver.",
+    "The terms that govern your use of the To Be Read (Clackamas Book Exchange) website, including disclaimers, liability limits, and a binding arbitration clause.",
   alternates: { canonical: "/terms" },
   openGraph: {
     title: "Terms of Service · To Be Read",

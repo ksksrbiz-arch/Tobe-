@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     template: "%s · To Be Read",
   },
   description:
-    "Your neighborhood used bookstore in Milwaukie, Oregon. Trade books, browse thousands of titles, shop online on PangoBooks and Bookshop.org. Under new ownership since 2024, rebranding to TBR in 2026!",
+    "Your neighborhood used bookstore in Milwaukie, Oregon. Trade books, browse thousands of titles, and shop online on PangoBooks and Bookshop.org.",
   applicationName: "To Be Read",
   category: "shopping",
   keywords: [

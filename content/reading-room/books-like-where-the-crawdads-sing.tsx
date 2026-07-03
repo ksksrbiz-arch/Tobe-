@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Atmospheric settings, a lonely heroine, a slow-burn mystery, and a landscape that's practically a character. Seven novels to read after Where the Crawdads Sing.",
   date: "2026-06-14",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Book club"],
+  tags: ["Reading guides", "Recommendations", "Book club", "Read-alikes"],
   readingMinutes: 4,
   items: [
     { name: "The Great Alone", author: "Kristin Hannah" },

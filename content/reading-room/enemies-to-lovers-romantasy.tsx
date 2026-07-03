@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Sworn enemies, simmering banter, and a slow burn that finally catches — these eight enemies-to-lovers romantasy reads live for the tension before the fall.",
   date: "2026-06-15",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Romance"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Romance", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "A Court of Thorns and Roses", author: "Sarah J. Maas" },

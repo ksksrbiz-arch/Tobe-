@@ -9,7 +9,7 @@ const UPDATED = "2026-06-22";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How To Be Read (Clackamas Book Exchange) collects, uses, and protects your personal information — and the privacy rights you have under Oregon, California, and EU/UK law.",
+    "How To Be Read (Clackamas Book Exchange) collects, uses, and protects your personal information, and the privacy rights you have under applicable law.",
   alternates: { canonical: "/privacy" },
   openGraph: {
     title: "Privacy Policy · To Be Read",

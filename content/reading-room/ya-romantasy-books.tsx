@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Fantasy worlds, first love, and lower heat — eight YA romantasy reads perfect for teen readers and grown-ups who want the swoon without the steam.",
   date: "2026-06-21",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Shadow and Bone", author: "Leigh Bardugo" },

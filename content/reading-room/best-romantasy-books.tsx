@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Romantasy — romance with dragons, fae courts, and high stakes — is one of the most-loved (and best-selling) genres on our shelves. Here's where to start.",
   date: "2026-06-20",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Romance"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Romance", "Genre guide"],
   readingMinutes: 5,
   items: [
     { name: "A Court of Thorns and Roses", author: "Sarah J. Maas" },

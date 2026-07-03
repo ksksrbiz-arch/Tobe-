@@ -7,12 +7,12 @@ export const meta: BlogMeta = {
   slug: "build-a-reading-habit-tbr-pile",
   title: "How to build a reading habit (and a TBR pile worth the name)",
   description:
-    "Want to read more? Here's a practical, guilt-free approach to building a reading habit and a to-be-read pile you'll actually get through — from a bookshop named for it.",
+    "Want to read more? A practical, guilt-free approach to building a reading habit and a to-be-read pile you'll actually get through.",
   excerpt:
     "We named the shop after the to-be-read pile, so we have opinions. Here's a practical, guilt-free way to read more and build a TBR you'll actually finish.",
   date: "2026-06-15",
   author: "To Be Read",
-  tags: ["Reading habits", "TBR"],
+  tags: ["Reading habits", "TBR", "Reading life"],
   readingMinutes: 5,
 };
 

@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "A great book club pick isn't just a good read — it's an argument waiting to happen. Ten novels that reliably get every chair in the circle talking.",
   date: "2026-06-21",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Book club"],
+  tags: ["Reading guides", "Recommendations", "Book club", "Genre guide"],
   readingMinutes: 5,
   items: [
     { name: "Lessons in Chemistry", author: "Bonnie Garmus" },

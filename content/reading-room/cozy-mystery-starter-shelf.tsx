@@ -7,12 +7,12 @@ export const meta: BlogMeta = {
   slug: "cozy-mystery-starter-shelf",
   title: "The cozy mystery starter shelf: 7 series to curl up with",
   description:
-    "New to cozy mysteries? Here are seven beginner-friendly series — amateur sleuths, small towns, low gore, high comfort — to start with, from Agatha Christie to Richard Osman.",
+    "New to cozy mysteries? Seven beginner-friendly series — amateur sleuths, small towns, low gore, high comfort — from Agatha Christie to Richard Osman.",
   excerpt:
     "Murder, but make it comforting. Seven beginner-friendly cozy-mystery series — amateur sleuths, small towns, tea and cake, no gore — to start your collection.",
   date: "2026-06-17",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Cozy mystery"],
+  tags: ["Reading guides", "Recommendations", "Cozy mystery", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "The Thursday Murder Club", author: "Richard Osman" },

@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Crumbling estates, buried secrets, and a dread that seeps in slowly — eight gothic classics that built the genre, perfect for a stormy night and a heavy blanket.",
   date: "2026-06-17",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Rebecca", author: "Daphne du Maurier" },

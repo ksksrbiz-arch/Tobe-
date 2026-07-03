@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Sometimes you want a book that earns its tears. Eight literary novels that wreck readers in the most cathartic, can't-stop-thinking-about-it way.",
   date: "2026-06-11",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Literary fiction"],
+  tags: ["Reading guides", "Recommendations", "Literary fiction", "Genre guide"],
   readingMinutes: 5,
   items: [
     { name: "A Little Life", author: "Hanya Yanagihara" },

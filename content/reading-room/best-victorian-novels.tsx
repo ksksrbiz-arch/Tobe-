@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Fog, factories, fortunes lost and found — the Victorians wrote big, plotty novels built to be devoured. Eight of the best, with a note on which to open first.",
   date: "2026-06-21",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Genre guide"],
   readingMinutes: 5,
   items: [
     { name: "Great Expectations", author: "Charles Dickens" },

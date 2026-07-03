@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Before BookTok, there was Austen. Nine classic romance novels — swoony, sharp, and timeless — that prove the genre's roots run deep.",
   date: "2026-06-02",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics", "Romance"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Romance", "Genre guide"],
   readingMinutes: 5,
   items: [
     { name: "Pride and Prejudice", author: "Jane Austen" },
