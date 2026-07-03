@@ -13,6 +13,14 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "Harry Potter", author: "J.K. Rowling" },
+    { name: "The Empyrean (Fourth Wing)", author: "Rebecca Yarros" },
+    { name: "A Court of Thorns and Roses", author: "Sarah J. Maas" },
+    { name: "The Expanse", author: "James S.A. Corey" },
+    { name: "Outlander", author: "Diana Gabaldon" },
+    { name: "His Dark Materials", author: "Philip Pullman" },
+  ],
 };
 
 export default function Body() {

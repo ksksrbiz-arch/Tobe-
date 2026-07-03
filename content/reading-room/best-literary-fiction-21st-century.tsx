@@ -13,6 +13,14 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "The Road", author: "Cormac McCarthy" },
+    { name: "Never Let Me Go", author: "Kazuo Ishiguro" },
+    { name: "A Little Life", author: "Hanya Yanagihara" },
+    { name: "Pachinko", author: "Min Jin Lee" },
+    { name: "Cloud Cuckoo Land", author: "Anthony Doerr" },
+    { name: "The Overstory", author: "Richard Powers" },
+  ],
 };
 
 export default function Body() {

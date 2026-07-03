@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "Fourth Wing", author: "Rebecca Yarros" },
+    { name: "Iron Flame", author: "Rebecca Yarros" },
+    { name: "His Majesty's Dragon", author: "Naomi Novik" },
+    { name: "Eragon", author: "Christopher Paolini" },
+    { name: "Joust", author: "Mercedes Lackey" },
+    { name: "A Promise of Fire", author: "Amanda Bouchet" },
+    { name: "The Priory of the Orange Tree", author: "Samantha Shannon" },
+    { name: "Talon", author: "Julie Kagawa" },
+  ],
 };
 
 export default function Body() {

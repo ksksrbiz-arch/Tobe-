@@ -13,6 +13,17 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics"],
   readingMinutes: 4,
+  items: [
+    { name: "To Kill a Mockingbird", author: "Harper Lee" },
+    { name: "The Godfather", author: "Mario Puzo" },
+    { name: "Jurassic Park", author: "Michael Crichton" },
+    { name: "The Shining", author: "Stephen King" },
+    { name: "Forrest Gump", author: "Winston Groom" },
+    { name: "The Princess Bride", author: "William Goldman" },
+    { name: "No Country for Old Men", author: "Cormac McCarthy" },
+    { name: "Gone with the Wind", author: "Margaret Mitchell" },
+    { name: "Sense and Sensibility", author: "Jane Austen" },
+  ],
 };
 
 export default function Body() {

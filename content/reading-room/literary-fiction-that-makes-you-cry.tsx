@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Literary fiction"],
   readingMinutes: 5,
+  items: [
+    { name: "A Little Life", author: "Hanya Yanagihara" },
+    { name: "A Man Called Ove", author: "Fredrik Backman" },
+    { name: "Never Let Me Go", author: "Kazuo Ishiguro" },
+    { name: "The Heart's Invisible Furies", author: "John Boyne" },
+    { name: "Tomorrow, and Tomorrow, and Tomorrow", author: "Gabrielle Zevin" },
+    { name: "Hamnet", author: "Maggie O'Farrell" },
+    { name: "The Book Thief", author: "Markus Zusak" },
+    { name: "Crying in H Mart", author: "Michelle Zauner" },
+  ],
 };
 
 export default function Body() {

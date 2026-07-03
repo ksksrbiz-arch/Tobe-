@@ -13,6 +13,17 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics", "Romance"],
   readingMinutes: 5,
+  items: [
+    { name: "Pride and Prejudice", author: "Jane Austen" },
+    { name: "Jane Eyre", author: "Charlotte Brontë" },
+    { name: "Persuasion", author: "Jane Austen" },
+    { name: "Rebecca", author: "Daphne du Maurier" },
+    { name: "Wuthering Heights", author: "Emily Brontë" },
+    { name: "Outlander", author: "Diana Gabaldon" },
+    { name: "The Age of Innocence", author: "Edith Wharton" },
+    { name: "North and South", author: "Elizabeth Gaskell" },
+    { name: "Gone with the Wind", author: "Margaret Mitchell" },
+  ],
 };
 
 export default function Body() {

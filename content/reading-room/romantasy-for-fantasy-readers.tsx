@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "Fourth Wing", author: "Rebecca Yarros" },
+    { name: "The Cruel Prince", author: "Holly Black" },
+    { name: "The Bridge Kingdom", author: "Danielle L. Jensen" },
+    { name: "An Ember in the Ashes", author: "Sabaa Tahir" },
+    { name: "The Will of the Many", author: "James Islington" },
+    { name: "Crescent City", author: "Sarah J. Maas" },
+    { name: "The Jasmine Throne", author: "Tasha Suri" },
+  ],
 };
 
 export default function Body() {

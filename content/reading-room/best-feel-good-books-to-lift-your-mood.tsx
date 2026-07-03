@@ -13,6 +13,13 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "A Man Called Ove", author: "Fredrik Backman" },
+    { name: "The Unlikely Pilgrimage of Harold Fry", author: "Rachel Joyce" },
+    { name: "Remarkably Bright Creatures", author: "Shelby Van Pelt" },
+    { name: "The Authenticity Project", author: "Clare Pooley" },
+    { name: "Mr Penumbra's 24-Hour Bookstore", author: "Robin Sloan" },
+  ],
 };
 
 export default function Body() {

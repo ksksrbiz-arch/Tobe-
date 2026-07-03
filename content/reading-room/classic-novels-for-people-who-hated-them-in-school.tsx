@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics"],
   readingMinutes: 4,
+  items: [
+    { name: "The Count of Monte Cristo", author: "Alexandre Dumas" },
+    { name: "Rebecca", author: "Daphne du Maurier" },
+    { name: "Pride and Prejudice", author: "Jane Austen" },
+    { name: "Of Mice and Men", author: "John Steinbeck" },
+    { name: "Dracula", author: "Bram Stoker" },
+    { name: "The Picture of Dorian Gray", author: "Oscar Wilde" },
+    { name: "Frankenstein", author: "Mary Shelley" },
+  ],
 };
 
 export default function Body() {

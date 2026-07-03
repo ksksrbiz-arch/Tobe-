@@ -13,6 +13,17 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "A Court of Thorns and Roses", author: "Sarah J. Maas" },
+    { name: "The Cruel Prince", author: "Holly Black" },
+    { name: "An Enchantment of Ravens", author: "Margaret Rogerson" },
+    { name: "A Promise of Fire", author: "Amanda Bouchet" },
+    { name: "Radiance", author: "Grace Draven" },
+    { name: "The Wicked King", author: "Holly Black" },
+    { name: "The Queen of Nothing", author: "Holly Black" },
+    { name: "A Deal with the Elf King", author: "Elise Kova" },
+    { name: "House of Earth and Blood (Crescent City)", author: "Sarah J. Maas" },
+  ],
 };
 
 export default function Body() {

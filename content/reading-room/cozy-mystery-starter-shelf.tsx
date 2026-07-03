@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Cozy mystery"],
   readingMinutes: 4,
+  items: [
+    { name: "The Thursday Murder Club", author: "Richard Osman" },
+    { name: "Miss Marple", author: "Agatha Christie" },
+    { name: "Chief Inspector Gamache", author: "Louise Penny" },
+    { name: "Flavia de Luce", author: "Alan Bradley" },
+    { name: "The No. 1 Ladies' Detective Agency", author: "Alexander McCall Smith" },
+    { name: "Vera Wong's Unsolicited Advice for Murder", author: "Jesse Q. Sutanto" },
+    { name: "Magpie Murders", author: "Anthony Horowitz" },
+  ],
 };
 
 export default function Body() {

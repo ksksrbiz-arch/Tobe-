@@ -13,6 +13,17 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics"],
   readingMinutes: 5,
+  items: [
+    { name: "Pride and Prejudice", author: "Jane Austen" },
+    { name: "To Kill a Mockingbird", author: "Harper Lee" },
+    { name: "The Great Gatsby", author: "F. Scott Fitzgerald" },
+    { name: "Jane Eyre", author: "Charlotte Brontë" },
+    { name: "Their Eyes Were Watching God", author: "Zora Neale Hurston" },
+    { name: "Frankenstein", author: "Mary Shelley" },
+    { name: "The Count of Monte Cristo", author: "Alexandre Dumas" },
+    { name: "Beloved", author: "Toni Morrison" },
+    { name: "1984", author: "George Orwell" },
+  ],
 };
 
 export default function Body() {

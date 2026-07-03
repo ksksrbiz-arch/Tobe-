@@ -13,6 +13,14 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "A Court of Thorns and Roses", author: "Sarah J. Maas" },
+    { name: "The Empyrean (Fourth Wing)", author: "Rebecca Yarros" },
+    { name: "Throne of Glass", author: "Sarah J. Maas" },
+    { name: "Crescent City", author: "Sarah J. Maas" },
+    { name: "From Blood and Ash", author: "Jennifer L. Armentrout" },
+    { name: "Zodiac Academy", author: "Caroline Peckham & Susanne Valenti" },
+  ],
 };
 
 export default function Body() {

@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "An Enchantment of Ravens", author: "Margaret Rogerson" },
+    { name: "Radiance", author: "Grace Draven" },
+    { name: "Uprooted", author: "Naomi Novik" },
+    { name: "Spinning Silver", author: "Naomi Novik" },
+    { name: "The Wolf and the Woodsman", author: "Ava Reid" },
+    { name: "A Deal with the Elf King", author: "Elise Kova" },
+    { name: "The Bear and the Nightingale", author: "Katherine Arden" },
+    { name: "Half a Soul", author: "Olivia Atwater" },
+  ],
 };
 
 export default function Body() {

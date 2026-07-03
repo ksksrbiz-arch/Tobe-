@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Classics"],
   readingMinutes: 5,
+  items: [
+    { name: "Great Expectations", author: "Charles Dickens" },
+    { name: "Jane Eyre", author: "Charlotte Brontë" },
+    { name: "Middlemarch", author: "George Eliot" },
+    { name: "Tess of the d'Urbervilles", author: "Thomas Hardy" },
+    { name: "Bleak House", author: "Charles Dickens" },
+    { name: "Wuthering Heights", author: "Emily Brontë" },
+    { name: "The Tenant of Wildfell Hall", author: "Anne Brontë" },
+    { name: "The Woman in White", author: "Wilkie Collins" },
+  ],
 };
 
 export default function Body() {
