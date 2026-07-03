@@ -7,7 +7,7 @@ export const meta: BlogMeta = {
   slug: "reading-challenge-ideas",
   title: "Fun reading challenge ideas to shake up your reading year",
   description:
-    "Looking for reading challenge ideas? Try genre bingo, read-the-alphabet, an around-the-world tour, a backlist challenge, or a seasonal TBR — playful ways to read wider.",
+    "Looking for reading challenge ideas? Try genre bingo, read-the-alphabet, an around-the-world tour, a backlist challenge, or a seasonal TBR.",
   excerpt:
     "A good reading challenge isn't a chore — it's a nudge toward books you'd never have picked. Here are a few of our favorites to try this year.",
   date: "2026-06-21",

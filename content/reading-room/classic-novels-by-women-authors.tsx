@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "From Austen's wit to Morrison's fire, women wrote some of the most enduring classics ever published. Nine essential reads, each with a note on why it still matters.",
   date: "2026-06-21",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Genre guide"],
   readingMinutes: 5,
   items: [
     { name: "Pride and Prejudice", author: "Jane Austen" },

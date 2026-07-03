@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Glittering courts, bargains with a catch, and fae princes you absolutely should not trust — eight romantasy reads that live in faerie, ranked for the obsessed.",
   date: "2026-06-19",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "A Court of Thorns and Roses", author: "Sarah J. Maas" },

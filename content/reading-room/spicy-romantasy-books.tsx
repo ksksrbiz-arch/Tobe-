@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Want the magic and the heat dialed all the way up? Eight high-spice romantasy reads with a rough heat note on each — so the only surprise is the plot.",
   date: "2026-06-20",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Romance"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Romance", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "A Court of Mist and Fury", author: "Sarah J. Maas" },

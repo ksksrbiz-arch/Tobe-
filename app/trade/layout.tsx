@@ -10,7 +10,7 @@ import {
 export const metadata: Metadata = {
   title: "Trade Your Books",
   description:
-    "Turn the books you've finished into store credit for what's next. Learn what we accept, how much credit you'll earn, and how to bring in a stack at To Be Read in Milwaukie, OR.",
+    "Turn the books you've finished into store credit for what's next. Learn what we accept, how much you'll earn, and how to bring in a stack.",
   alternates: { canonical: "/trade" },
   openGraph: {
     title: "Trade Your Books for Store Credit · To Be Read",

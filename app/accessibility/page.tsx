@@ -9,7 +9,7 @@ const UPDATED = "2026-06-22";
 export const metadata: Metadata = {
   title: "Accessibility Statement",
   description:
-    "To Be Read (Clackamas Book Exchange) is committed to making our website and store accessible to everyone, and to meeting WCAG 2.1 AA. How to reach us about an access barrier.",
+    "To Be Read (Clackamas Book Exchange) is committed to making our website and store accessible to everyone, meeting WCAG 2.1 AA, and hearing about barriers.",
   alternates: { canonical: "/accessibility" },
   openGraph: {
     title: "Accessibility Statement · To Be Read",

@@ -31,7 +31,7 @@ const PROGRAM = "Summer Reading Programs";
 export const metadata: Metadata = {
   title: "Summer Reading Programs for Kids & Teens — Milwaukie, OR",
   description:
-    "Free Summer Reading Programs for youth at To Be Read in Milwaukie, OR (Jul 1 – Aug 21, 2026): join the drop-in Summer Reading Circle or take the Summer Reading Challenge. No registration — all readers welcome.",
+    "Free Summer Reading Programs for youth at To Be Read in Milwaukie, OR (Jul 1 – Aug 21, 2026): join the Summer Reading Circle or Challenge. No registration.",
   keywords: [
     "summer reading program Milwaukie OR",
     "summer reading challenge Portland",
@@ -157,7 +157,7 @@ export default function SummerReadingPage() {
               <Sparkles size={12} />
               {isActive ? "On now" : "Coming soon"} · {dateLabel}
             </span>
-            <h1
+            <h2
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
@@ -167,7 +167,7 @@ export default function SummerReadingPage() {
             >
               Free summer reading for{" "}
               <span className="underline-accent">young readers</span>
-            </h1>
+            </h2>
             <p
               className="mx-auto max-w-2xl text-sm leading-relaxed sm:text-base"
               style={{ color: "#4B5563" }}

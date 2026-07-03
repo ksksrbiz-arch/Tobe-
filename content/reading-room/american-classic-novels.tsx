@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "The Great American Novel isn't one book — it's a shelf. Nine essential American classics, each with a note on what it's really about and why it still lands.",
   date: "2026-06-21",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Genre guide"],
   readingMinutes: 5,
   items: [
     { name: "The Great Gatsby", author: "F. Scott Fitzgerald" },

@@ -7,12 +7,12 @@ export const meta: BlogMeta = {
   slug: "fantasy-books-for-beginners",
   title: "Fantasy books for beginners: 7 great places to start",
   description:
-    "New to fantasy and not sure where to start? Here are seven beginner-friendly fantasy books — standalones and gentle series openers — that don't require a 14-book commitment.",
+    "New to fantasy and not sure where to start? Seven beginner-friendly fantasy books — standalones and gentle series openers — with no 14-book commitment.",
   excerpt:
     "Fantasy can feel like it demands a 14-book vow and a map of made-up rivers. It doesn't. Seven welcoming places to start — standalones and easy series openers.",
   date: "2026-06-13",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Fantasy", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "The Hobbit", author: "J. R. R. Tolkien" },

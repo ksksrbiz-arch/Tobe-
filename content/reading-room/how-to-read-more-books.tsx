@@ -7,7 +7,7 @@ export const meta: BlogMeta = {
   slug: "how-to-read-more-books",
   title: "How to read more books: simple habits that actually stick",
   description:
-    "Want to read more books this year? Here are practical, guilt-free habits — tiny daily goals, always carrying a book, audiobooks, and permission to quit — that really work.",
+    "Want to read more books this year? Practical, guilt-free habits — tiny daily goals, always carrying a book, audiobooks, and permission to quit — that work.",
   excerpt:
     "Reading more isn't about willpower — it's about friction. Here are the small, practical habits we've watched turn lapsed readers back into regulars.",
   date: "2026-06-21",

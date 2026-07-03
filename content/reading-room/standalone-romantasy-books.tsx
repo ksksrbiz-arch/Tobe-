@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Not ready to start another five-book saga? Eight standalone romantasy reads that begin and end in one volume — full romance, full arc, no cliffhanger.",
   date: "2026-06-21",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "An Enchantment of Ravens", author: "Margaret Rogerson" },

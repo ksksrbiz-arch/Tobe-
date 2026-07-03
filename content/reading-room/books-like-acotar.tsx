@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Fae courts, a slow-burn that levels you, and a heroine who grows into her power. If ACOTAR left a hole in your chest, here are eight books to fill it.",
   date: "2026-05-29",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Read-alikes"],
   readingMinutes: 4,
   items: [
     { name: "Fourth Wing", author: "Rebecca Yarros" },

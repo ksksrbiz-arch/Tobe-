@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Bonded riders, snarky sentient dragons, and battles fought from the saddle — eight romantasy books that scratch the dragon-rider itch long after Fourth Wing.",
   date: "2026-06-16",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Fourth Wing", author: "Rebecca Yarros" },

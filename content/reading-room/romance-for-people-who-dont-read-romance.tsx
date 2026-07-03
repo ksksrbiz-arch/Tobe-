@@ -7,12 +7,12 @@ export const meta: BlogMeta = {
   slug: "romance-novels-for-skeptics",
   title: "Romance novels for people who don't read romance",
   description:
-    "Think romance isn't for you? These seven smart, funny, beautifully written novels are the perfect gateway — great stories that happen to have a love story at the center.",
+    "Think romance isn't for you? Seven smart, funny, beautifully written novels are the perfect gateway — great stories with a love story at the center.",
   excerpt:
     "\"I don't really read romance.\" Famous last words. Seven smart, funny, genuinely great novels that make perfect gateway reads for the romance-skeptical.",
   date: "2026-06-09",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romance"],
+  tags: ["Reading guides", "Recommendations", "Romance", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Beach Read", author: "Emily Henry" },

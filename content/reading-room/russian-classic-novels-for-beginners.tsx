@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "You don't have to open with 1,200 pages and forty characters. Seven beginner-friendly Russian classics — shorter, gripping, and worth pushing through the patronymics.",
   date: "2026-06-18",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Genre guide"],
   readingMinutes: 5,
   items: [
     { name: "The Death of Ivan Ilyich", author: "Leo Tolstoy" },

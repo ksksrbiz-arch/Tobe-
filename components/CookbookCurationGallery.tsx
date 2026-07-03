@@ -119,7 +119,7 @@ export function CookbookCurationGallery() {
                     srcset based on the grid's responsive `sizes`. */}
                 <Image
                   src={photo.src}
-                  alt={photo.caption}
+                  alt={`${photo.caption} — ${photo.blurb}`}
                   fill
                   loading="lazy"
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
@@ -177,7 +177,7 @@ export function CookbookCurationGallery() {
                 so eager loading + high fetch priority is fine here. */}
             <Image
               src={active.src}
-              alt={active.caption}
+              alt={`${active.caption} — ${active.blurb}`}
               width={1130}
               height={636}
               sizes="(min-width: 768px) 768px, 100vw"

@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Love epic fantasy but side-eye the romance shelf? These seven romantasy reads bring real world-building and plot — the romance is a bonus, not the whole point.",
   date: "2026-05-25",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Fourth Wing", author: "Rebecca Yarros" },

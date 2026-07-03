@@ -15,7 +15,7 @@ export const meta: BlogMeta = {
   slug: "how-book-trade-in-credit-works",
   title: "How book trade-in credit works at To Be Read",
   description:
-    "A plain-English guide to trading used books for store credit at To Be Read in Milwaukie, OR — what we take, how credit is earned, and how credit rolls over year to year.",
+    "A plain-English guide to trading used books for store credit at To Be Read in Milwaukie, OR — what we take, how credit is earned, and how it rolls over.",
   excerpt:
     "Bring books, earn store credit, take home your next read the same afternoon. Here's exactly how our trade-in works — what we accept, how credit adds up, and the rules worth knowing first.",
   date: "2026-06-19",

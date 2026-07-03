@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "You know the kind: \"just one more chapter\" at 1 a.m. Eight twisty, propulsive thrillers guaranteed to wreck your sleep schedule in the best way.",
   date: "2026-06-05",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Thriller"],
+  tags: ["Reading guides", "Recommendations", "Thriller", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Gone Girl", author: "Gillian Flynn" },

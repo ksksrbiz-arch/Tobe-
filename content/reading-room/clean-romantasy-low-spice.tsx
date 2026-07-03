@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Love the magic and the yearning but want to skip the steam? Seven low-spice romantasy reads that deliver all the swoon with a gentler heat level.",
   date: "2026-05-28",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Divine Rivals", author: "Rebecca Ross" },

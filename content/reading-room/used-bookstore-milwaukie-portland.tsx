@@ -7,7 +7,7 @@ export const meta: BlogMeta = {
   slug: "used-bookstore-milwaukie-southeast-portland",
   title: "Finding a used bookstore near Milwaukie & Southeast Portland",
   description:
-    "Looking for a used bookstore near Milwaukie or SE Portland, OR? Here's what to expect at To Be Read — hours, location, trade-in credit, and how to make the most of a first visit.",
+    "Looking for a used bookstore near Milwaukie or SE Portland, OR? Here's what to expect at To Be Read — hours, location, trade-in credit, and first-visit tips.",
   excerpt:
     "New to the east side of the Portland metro and hunting for a neighborhood used bookstore? Here's how to find us in Milwaukie, what makes the shop tick, and how to plan a first visit.",
   date: "2026-06-18",

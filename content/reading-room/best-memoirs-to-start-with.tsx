@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "The best memoirs read like the best novels — only they're true. Eight unforgettable life stories to start with, from laugh-out-loud to quietly shattering.",
   date: "2026-06-08",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Memoir"],
+  tags: ["Reading guides", "Recommendations", "Memoir", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Educated", author: "Tara Westover" },

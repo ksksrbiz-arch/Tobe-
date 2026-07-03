@@ -7,7 +7,7 @@ export const meta: BlogMeta = {
   slug: "how-to-organize-your-bookshelf",
   title: "How to organize your bookshelf: methods, pros, and cons",
   description:
-    "How to organize your bookshelf — by genre, author, color, or read vs TBR — with the pros and cons of each method and tips for keeping your to-be-read pile manageable.",
+    "How to organize your bookshelf — by genre, author, color, or read vs TBR — with the pros and cons of each method and tips for staying tidy.",
   excerpt:
     "By genre, by color, by author, or TBR vs read? Here's how the main bookshelf-organizing methods stack up — and how to keep your TBR from taking over.",
   date: "2026-06-21",

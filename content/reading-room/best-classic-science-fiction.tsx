@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "The novels that built modern sci-fi — and still feel sharp decades later. Eight classic science fiction reads every fan should know.",
   date: "2026-05-27",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics", "Science fiction"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Science fiction", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Dune", author: "Frank Herbert" },

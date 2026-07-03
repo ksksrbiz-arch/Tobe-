@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Romantasy and modern epics owe everything to these. Eight foundational classic fantasy novels every fan should read at least once.",
   date: "2026-06-01",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Classics", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Classics", "Fantasy", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "The Hobbit", author: "J. R. R. Tolkien" },

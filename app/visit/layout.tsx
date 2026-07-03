@@ -5,7 +5,7 @@ import { breadcrumbList, SITE_URL } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Plan Your Visit",
   description:
-    "Visit Clackamas Book Exchange / To Be Read at 7931 SE King Rd, Unit 1, Portland, OR 97222. Open Mon–Sat 10am–5pm. Directions, parking, and what to expect on your first visit.",
+    "Visit Clackamas Book Exchange / To Be Read at 7931 SE King Rd, Unit 1, Portland, OR 97222. Open Mon–Sat 10am–5pm. Directions, parking, first-visit tips.",
   alternates: { canonical: "/visit" },
   openGraph: {
     title: "Plan Your Visit · To Be Read",

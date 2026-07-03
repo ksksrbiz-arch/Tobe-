@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Nothing breaks a reading slump like actually finishing something. Nine short, powerful books — most under 250 pages — you can polish off in a weekend.",
   date: "2026-06-07",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Reading habits"],
+  tags: ["Reading guides", "Recommendations", "Reading habits", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "Of Mice and Men", author: "John Steinbeck" },

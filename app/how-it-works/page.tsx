@@ -167,7 +167,7 @@ export default function HowItWorksPage() {
             >
               <Image
                 src="/images/shelves/store-kids-adventure-shelves.jpg"
-                alt="Storefront on SE King Road — warm window light, hand-painted sign."
+                alt="Packed shelves of children's adventure and fantasy books including popular series"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
@@ -546,7 +546,7 @@ export default function HowItWorksPage() {
             >
               <Image
                 src="/images/shelves/store-kids-doorway-seuss.jpg"
-                alt="The shelves — fiction wall, reading chair, candle-tone afternoon light."
+                alt="A doorway display rack packed with Dr. Seuss titles and early reader books"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"

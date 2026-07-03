@@ -12,7 +12,7 @@ export const meta: BlogMeta = {
     "Sometimes you don't want one book — you want a world to live in for weeks. Six romantasy series worth clearing your calendar for.",
   date: "2026-05-26",
   author: "To Be Read",
-  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
+  tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Genre guide"],
   readingMinutes: 4,
   items: [
     { name: "A Court of Thorns and Roses", author: "Sarah J. Maas" },
