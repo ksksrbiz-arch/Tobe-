@@ -13,6 +13,14 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "Remarkably Bright Creatures", author: "Shelby Van Pelt" },
+    { name: "The Invisible Life of Addie LaRue", author: "V. E. Schwab" },
+    { name: "A Man Called Ove", author: "Fredrik Backman" },
+    { name: "Before the Coffee Gets Cold", author: "Toshikazu Kawaguchi" },
+    { name: "Life After Life", author: "Kate Atkinson" },
+    { name: "The House in the Cerulean Sea", author: "TJ Klune" },
+  ],
 };
 
 export default function Body() {

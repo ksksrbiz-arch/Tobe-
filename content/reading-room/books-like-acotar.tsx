@@ -13,6 +13,16 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "Fourth Wing", author: "Rebecca Yarros" },
+    { name: "From Blood and Ash", author: "Jennifer L. Armentrout" },
+    { name: "Throne of Glass", author: "Sarah J. Maas" },
+    { name: "The Cruel Prince", author: "Holly Black" },
+    { name: "A Deal with the Elf King", author: "Elise Kova" },
+    { name: "Serpent & Dove", author: "Shelby Mahurin" },
+    { name: "The Serpent and the Wings of Night", author: "Carissa Broadbent" },
+    { name: "Crescent City", author: "Sarah J. Maas" },
+  ],
 };
 
 export default function Body() {

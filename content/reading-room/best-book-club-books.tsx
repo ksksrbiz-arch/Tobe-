@@ -13,6 +13,18 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Book club"],
   readingMinutes: 5,
+  items: [
+    { name: "Lessons in Chemistry", author: "Bonnie Garmus" },
+    { name: "Tomorrow, and Tomorrow, and Tomorrow", author: "Gabrielle Zevin" },
+    { name: "Demon Copperhead", author: "Barbara Kingsolver" },
+    { name: "The Vanishing Half", author: "Brit Bennett" },
+    { name: "Remarkably Bright Creatures", author: "Shelby Van Pelt" },
+    { name: "The Midnight Library", author: "Matt Haig" },
+    { name: "Hello Beautiful", author: "Ann Napolitano" },
+    { name: "American Dirt", author: "Jeanine Cummins" },
+    { name: "The Nightingale", author: "Kristin Hannah" },
+    { name: "A Little Life", author: "Hanya Yanagihara" },
+  ],
 };
 
 export default function Body() {

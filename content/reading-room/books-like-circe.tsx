@@ -13,6 +13,13 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "The Song of Achilles", author: "Madeline Miller" },
+    { name: "Ariadne", author: "Jennifer Saint" },
+    { name: "The Silence of the Girls", author: "Pat Barker" },
+    { name: "A Thousand Ships", author: "Natalie Haynes" },
+    { name: "Stone Blind", author: "Natalie Haynes" },
+  ],
 };
 
 export default function Body() {

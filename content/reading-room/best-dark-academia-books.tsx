@@ -13,6 +13,13 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "The Secret History", author: "Donna Tartt" },
+    { name: "If We Were Villains", author: "M.L. Rio" },
+    { name: "Babel", author: "R.F. Kuang" },
+    { name: "Ninth House", author: "Leigh Bardugo" },
+    { name: "A Lesson in Vengeance", author: "Victoria Lee" },
+  ],
 };
 
 export default function Body() {

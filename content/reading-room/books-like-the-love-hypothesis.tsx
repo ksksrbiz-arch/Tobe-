@@ -13,6 +13,13 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "The Spanish Love Deception", author: "Elena Armas" },
+    { name: "Love, Theoretically", author: "Ali Hazelwood" },
+    { name: "The Hating Game", author: "Sally Thorne" },
+    { name: "Beach Read", author: "Emily Henry" },
+    { name: "The Unhoneymooners", author: "Christina Lauren" },
+  ],
 };
 
 export default function Body() {

@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Romance"],
   readingMinutes: 5,
+  items: [
+    { name: "A Court of Thorns and Roses", author: "Sarah J. Maas" },
+    { name: "Fourth Wing", author: "Rebecca Yarros" },
+    { name: "From Blood and Ash", author: "Jennifer L. Armentrout" },
+    { name: "The Cruel Prince", author: "Holly Black" },
+    { name: "Crescent City: House of Earth and Blood", author: "Sarah J. Maas" },
+    { name: "Divine Rivals", author: "Rebecca Ross" },
+    { name: "The Bridge Kingdom", author: "Danielle L. Jensen" },
+  ],
 };
 
 export default function Body() {

@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Science fiction", "Fantasy"],
   readingMinutes: 4,
+  items: [
+    { name: "Hyperion", author: "Dan Simmons" },
+    { name: "The Fifth Season", author: "N. K. Jemisin" },
+    { name: "Foundation", author: "Isaac Asimov" },
+    { name: "A Memory Called Empire", author: "Arkady Martine" },
+    { name: "The Left Hand of Darkness", author: "Ursula K. Le Guin" },
+    { name: "Red Rising", author: "Pierce Brown" },
+    { name: "The Name of the Wind", author: "Patrick Rothfuss" },
+  ],
 };
 
 export default function Body() {

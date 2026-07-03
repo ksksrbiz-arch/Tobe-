@@ -13,6 +13,13 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "Piranesi", author: "Susanna Clarke" },
+    { name: "The Night Circus", author: "Erin Morgenstern" },
+    { name: "Uprooted", author: "Naomi Novik" },
+    { name: "The Goblin Emperor", author: "Katherine Addison" },
+    { name: "Stardust", author: "Neil Gaiman" },
+  ],
 };
 
 export default function Body() {

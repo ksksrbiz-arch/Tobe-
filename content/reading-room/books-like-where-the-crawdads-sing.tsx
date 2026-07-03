@@ -13,6 +13,15 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Book club"],
   readingMinutes: 4,
+  items: [
+    { name: "The Great Alone", author: "Kristin Hannah" },
+    { name: "The Signature of All Things", author: "Elizabeth Gilbert" },
+    { name: "The Death of Bees", author: "Lisa O'Donnell" },
+    { name: "The Snow Child", author: "Eowyn Ivey" },
+    { name: "The Light Between Oceans", author: "M. L. Stedman" },
+    { name: "Educated", author: "Tara Westover" },
+    { name: "The Marsh King's Daughter", author: "Karen Dionne" },
+  ],
 };
 
 export default function Body() {

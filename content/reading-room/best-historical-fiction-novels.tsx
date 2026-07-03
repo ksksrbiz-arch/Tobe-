@@ -13,6 +13,14 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "The Nightingale", author: "Kristin Hannah" },
+    { name: "All the Light We Cannot See", author: "Anthony Doerr" },
+    { name: "The Pillars of the Earth", author: "Ken Follett" },
+    { name: "Wolf Hall", author: "Hilary Mantel" },
+    { name: "The Book Thief", author: "Markus Zusak" },
+    { name: "Homegoing", author: "Yaa Gyasi" },
+  ],
 };
 
 export default function Body() {

@@ -13,6 +13,13 @@ export const meta: BlogMeta = {
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
+  items: [
+    { name: "Legends & Lattes", author: "Travis Baldree" },
+    { name: "Bookshops & Bonedust", author: "Travis Baldree" },
+    { name: "The House in the Cerulean Sea", author: "TJ Klune" },
+    { name: "A Psalm for the Wild-Built", author: "Becky Chambers" },
+    { name: "Emily Wilde's Encyclopaedia of Faeries", author: "Heather Fawcett" },
+  ],
 };
 
 export default function Body() {
