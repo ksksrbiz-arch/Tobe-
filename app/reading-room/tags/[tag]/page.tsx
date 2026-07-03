@@ -14,7 +14,7 @@ import {
   getPostsByTag,
   formatPostDate,
 } from "@/lib/blog";
-import { breadcrumbList } from "@/lib/seo";
+import { breadcrumbList, SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
@@ -59,6 +59,27 @@ export default async function TagPage({
   if (!tag) notFound();
 
   const posts = getPostsByTag(tag);
+  const url = `/reading-room/tags/${tagSlug}`;
+
+  // Mirrors the CollectionPage/ItemList pattern on /reading-room/collections/[collection]
+  // so tag hubs are just as legible to AI answer engines as curated collections.
+  const tagJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${tag} — The Reading Room`,
+    description: `Reading guides and notes tagged "${tag}" from To Be Read, an independent used bookstore in Milwaukie, OR.`,
+    url: `${SITE_URL}${url}`,
+    isPartOf: { "@id": `${SITE_URL}/reading-room#blog` },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: posts.map((post, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `${SITE_URL}/reading-room/${post.slug}`,
+        name: post.title,
+      })),
+    },
+  };
 
   return (
     <main id="main">
@@ -66,9 +87,10 @@ export default async function TagPage({
       <JsonLd
         data={breadcrumbList([
           { name: "The Reading Room", path: "/reading-room" },
-          { name: tag, path: `/reading-room/tags/${tagSlug}` },
+          { name: tag, path: url },
         ])}
       />
+      <JsonLd data={tagJsonLd} />
 
       <PageHero
         badge="The Reading Room"
