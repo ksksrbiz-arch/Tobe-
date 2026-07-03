@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "books-like-the-silent-patient",
@@ -26,6 +27,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best next read is <em>Gone Girl</em> by Gillian Flynn, the modern
+        gold standard for an unreliable narrator and a midpoint twist that
+        rewrites everything, as a marriage curdles into something far worse.
+      </QuickAnswer>
       <p>
         Alex Michaelides built <em>The Silent Patient</em> around a single
         electrifying trick: a narrator you trust, a silence you can&rsquo;t crack,

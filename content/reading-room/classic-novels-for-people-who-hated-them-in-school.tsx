@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "classic-novels-for-people-who-hated-them-in-school",
@@ -27,6 +28,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        If you want the single best re-entry point, start with The Count of
+        Monte Cristo by Alexandre Dumas — a story of betrayal, prison escape,
+        and a decades-long revenge plot that reads as pure, propulsive
+        entertainment, not homework.
+      </QuickAnswer>
       <p>
         Plenty of people decided they hate &ldquo;the classics&rdquo; because of
         a forced march through one in tenth grade. But read on your own terms —

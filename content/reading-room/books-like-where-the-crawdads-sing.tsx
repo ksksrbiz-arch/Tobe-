@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "books-like-where-the-crawdads-sing",
@@ -27,6 +28,13 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The closest read-alike is <em>The Great Alone</em> by Kristin Hannah,
+        about a family homesteading in 1970s Alaska where the landscape is as
+        dangerous as the people &mdash; the same survival and coming-of-age
+        heart as Where the Crawdads Sing, in a setting that overwhelms just as
+        much.
+      </QuickAnswer>
       <p>
         Delia Owens&rsquo;s novel hit a particular sweet spot: a vivid natural
         setting, a heroine shaped by isolation, a courtroom thread, and prose that

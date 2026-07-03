@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -26,6 +27,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The closest cousin to The Midnight Library here is Kate Atkinson&rsquo;s
+        Life After Life, called the literary heavyweight of this list and the
+        nearest match to Haig&rsquo;s &ldquo;roads not taken&rdquo; premise.
+      </QuickAnswer>
       <p>
         Matt Haig&rsquo;s <em>The Midnight Library</em> asks a question that
         won&rsquo;t leave you alone: what if you could try the lives you didn&rsquo;t

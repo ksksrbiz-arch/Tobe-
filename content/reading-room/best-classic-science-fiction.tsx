@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "best-classic-science-fiction-novels",
@@ -28,6 +29,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Start with Dune by Frank Herbert — the towering desert epic often
+        called the genre&rsquo;s <em>Lord of the Rings</em>, and the
+        foundational classic the rest of this list builds on.
+      </QuickAnswer>
       <p>
         Classics and sci-fi are both staples of our shelves, and the genre&rsquo;s
         foundations are some of the most rewarding reading there is. Here are

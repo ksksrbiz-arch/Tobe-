@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -26,6 +27,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best 21st-century literary novel to start with is The Road by
+        Cormac McCarthy, a spare, devastating Pulitzer winner, or Never Let Me
+        Go by Kazuo Ishiguro if you want something equally slim but quietly
+        heartbreaking.
+      </QuickAnswer>
       <p>
         Ask us which modern novels people will still be reading in fifty years and
         these six come up again and again. They&rsquo;re the books that win the

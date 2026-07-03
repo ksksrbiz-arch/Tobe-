@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -25,6 +26,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best feel-good book to start with is A Man Called Ove by Fredrik
+        Backman &mdash; funny, tearful, and deeply kind without ever feeling
+        soft. For something gentler and more reflective, try The Unlikely
+        Pilgrimage of Harold Fry.
+      </QuickAnswer>
       <p>
         Sometimes you don&rsquo;t want a twist or a body count &mdash; you want a
         book that ends with your shoulders a little lower and your faith in people

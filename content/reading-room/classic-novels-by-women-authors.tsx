@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "classic-novels-by-women-authors",
@@ -29,6 +30,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best starting point is <em>Pride and Prejudice</em> by Jane
+        Austen, the sharpest comedy of manners ever written and the most
+        readable entry on this list of classics by women.
+      </QuickAnswer>
       <p>
         Women wrote some of the most enduring fiction in the language — often
         while the literary world tried not to notice. Here are nine classics by

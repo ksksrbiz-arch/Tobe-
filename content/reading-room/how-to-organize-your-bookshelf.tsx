@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "how-to-organize-your-bookshelf",
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        There&rsquo;s no single right way to organize a bookshelf — the best system is whichever one you&rsquo;ll actually maintain — but organizing by genre is the most intuitive starting point for most readers, since it matches how people shop their own shelves. Keep the to-be-read section capped at one shelf so it doesn&rsquo;t sprawl past what you&rsquo;ll actually read.
+      </QuickAnswer>
       <p>
         There&rsquo;s no single right way to organize a bookshelf — only the way
         that helps <em>you</em> find what you want and enjoy looking at it. The

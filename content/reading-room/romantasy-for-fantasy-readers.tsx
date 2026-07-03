@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "romantasy-for-fantasy-readers",
@@ -27,6 +28,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        If you want one place to start, Fourth Wing is the pick: a brutal
+        dragon-rider war college with real stakes and a propulsive plot,
+        where the romance is a bonus rather than the point. The Cruel Prince
+        is a strong second, trading dragons for cutthroat fae politics.
+      </QuickAnswer>
       <p>
         If you came up on Tolkien and Sanderson, &ldquo;romantasy&rdquo; might
         sound like all kissing and no plot. Not these. Here are seven with the

@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -25,6 +26,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        For a first standalone fantasy novel, start with Stardust by Neil Gaiman — a brisk, wry fairy-tale adventure that never overstays its welcome, making it a lovely first taste of the genre.
+      </QuickAnswer>
       <p>
         Fantasy has a reputation for sprawl — trilogies that become quintets,
         sagas that outlive their authors. But some of the genre&rsquo;s finest

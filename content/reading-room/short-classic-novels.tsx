@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "short-classic-novels-under-200-pages",
@@ -29,6 +30,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Start with The Great Gatsby: shimmering, sad, barely 180 pages, and
+        the Great American Novel distilled. Of Mice and Men is another good
+        pick at just as short a length.
+      </QuickAnswer>
       <p>
         &ldquo;I want to read more classics&rdquo; usually stalls at the sight of
         a 900-page Russian novel. Good news: some of the greatest classics are

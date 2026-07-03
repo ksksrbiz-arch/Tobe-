@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -26,6 +27,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The closest next read is Suzanne Collins&rsquo;s own prequel, The
+        Ballad of Songbirds and Snakes, which follows a young Coriolanus Snow
+        and reframes the Capitol you thought you knew.
+      </QuickAnswer>
       <p>
         Suzanne Collins built something special with <em>The Hunger Games</em>:
         a brutal arena, a reluctant hero, and a crumbling society you can&rsquo;t

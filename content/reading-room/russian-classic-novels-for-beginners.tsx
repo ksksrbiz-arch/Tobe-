@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "russian-classic-novels-for-beginners",
@@ -27,6 +28,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Start with The Death of Ivan Ilyich: under 100 pages and devastating,
+        it is the best possible first taste of Tolstoy. Notes from
+        Underground is a good second stop for meeting Dostoevsky before
+        tackling Crime and Punishment.
+      </QuickAnswer>
       <p>
         The Russian classics have a reputation: enormous, bleak, and packed with
         characters who each go by three different names. Some of that is fair.

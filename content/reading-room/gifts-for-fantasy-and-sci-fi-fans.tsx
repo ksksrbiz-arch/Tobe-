@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "gifts-for-fantasy-and-sci-fi-fans",
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The safest gift for a fantasy or sci-fi fan is store credit, since SFF readers tend to already own a lot of books and it lets them choose their own next read. If you know their taste, matching the specific flavor they love — epic fantasy, hard sci-fi, or a romantasy crossover — makes for a more personal pick.
+      </QuickAnswer>
       <p>
         Fantasy and sci-fi fans are passionate, opinionated, and a delight to
         shop for — as long as you match the right <em>flavor</em> of

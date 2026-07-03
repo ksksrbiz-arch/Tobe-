@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "fae-romantasy-books",
@@ -29,6 +30,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The genre-defining fae romantasy is A Court of Thorns and Roses by
+        Sarah J. Maas — the book that launched a thousand others, built
+        around scheming courts, masks, and a slow-burn romance.
+      </QuickAnswer>
       <p>
         Faerie is romantasy&rsquo;s natural habitat: a place of beautiful,
         ruthless courts where every favor is a bargain and every prince is a

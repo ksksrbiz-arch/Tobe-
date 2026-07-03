@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "ya-romantasy-books",
@@ -27,6 +28,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Shadow and Bone is the natural starting point: the Grishaverse opener
+        about a soldier with a hidden power, and a modern YA staple. The
+        Cruel Prince is a sharper, more addictive second pick.
+      </QuickAnswer>
       <p>
         Young-adult romantasy is where a lot of readers fall in love with the
         genre: big feelings, vivid worlds, and romance that keeps the heat lower.

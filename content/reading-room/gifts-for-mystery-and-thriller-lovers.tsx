@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "gifts-for-mystery-and-thriller-lovers",
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The safest gift for a mystery or thriller lover is store credit, since fast readers are hard to keep up with and it lets them hunt their own next case. If you know their taste, matching the kind of suspense they love — cozy, up-all-night thriller, or literary crossover — makes for a more personal pick.
+      </QuickAnswer>
       <p>
         Mystery and thriller readers are wonderful to shop for — they go through
         books fast and always want the next twist. The trick is matching the

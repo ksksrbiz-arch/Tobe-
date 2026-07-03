@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -27,6 +28,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        If you&rsquo;re skeptical of romance, start with <em>Beach Read</em> by
+        Emily Henry — it&rsquo;s the genre&rsquo;s modern on-ramp, witty, warm,
+        and a little wise.
+      </QuickAnswer>
       <p>
         Romance is the best-selling fiction genre in the world, and yet so many
         readers say &ldquo;it&rsquo;s not for me&rdquo; before they&rsquo;ve

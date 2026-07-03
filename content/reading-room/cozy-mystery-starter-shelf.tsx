@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "cozy-mystery-starter-shelf",
@@ -27,6 +28,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The easiest series to start with is The Thursday Murder Club by
+        Richard Osman — four retirees in an English village solve cold cases
+        for fun, then stumble into a real one, and it&rsquo;s witty, warm, and
+        the simplest possible on-ramp to cozy mysteries.
+      </QuickAnswer>
       <p>
         The cozy mystery is a perfect contradiction: a murder you can read in the
         bath. Low on gore, high on charm — think amateur sleuths, nosy

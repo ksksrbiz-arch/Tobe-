@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "gifts-for-romantasy-fans",
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        For a romantasy fan new to the genre, start with a modern cornerstone like Fourth Wing or A Court of Thorns and Roses. If they&rsquo;re already deep into the genre, store credit is the safer bet, since it&rsquo;s hard to know what they&rsquo;ve already read and it lets them hunt their own shelves.
+      </QuickAnswer>
       <p>
         Romantasy fans are some of the easiest readers to shop for — they devour
         books and always want the next one. The trick is knowing what they&rsquo;ve

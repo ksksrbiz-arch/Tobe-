@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "best-beach-reads-summer",
@@ -18,6 +19,13 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        For a classic summer beach read, start with Beach Read by Emily Henry
+        &mdash; a breezy novel about two rival writers spending one summer
+        together, and the genre&rsquo;s reigning queen. If you want thrills
+        instead, The Housemaid by Freida McFadden is twisty and impossible to
+        stop.
+      </QuickAnswer>
       <p>
         A beach read has one job: pull you in and not let go. Low homework, high
         momentum, easy to pick back up after a swim. Here are ten — across

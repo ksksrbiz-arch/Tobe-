@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Match the gift to the reader&rsquo;s shelf, not a guessed title. When in doubt — especially for a reader who already has everything — a gift of store credit is the safest bet, since it lets them hunt their own shelves.
+      </QuickAnswer>
       <p>
         The secret to gifting books is matching the <em>reader</em>, not guessing
         a title. Figure out which shelf they live on and the pick gets easy.

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "gothic-classic-novels",
@@ -28,6 +29,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best starting pick for gothic classics is Rebecca by Daphne du Maurier — a new bride, a grand estate, and the dead first wife who still rules it, described here as the gold standard of the genre.
+      </QuickAnswer>
       <p>
         Gothic fiction trades in atmosphere: the old house with one locked room,
         the secret that won&rsquo;t stay buried, the sense that something is

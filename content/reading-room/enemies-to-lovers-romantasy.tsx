@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "enemies-to-lovers-romantasy",
@@ -28,6 +29,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The genre-defining pick is A Court of Thorns and Roses by Sarah J.
+        Maas — the blueprint for a generation of enemies-to-lovers romantasy,
+        built on a captor-captive dynamic that thaws slowly across a fae
+        court.
+      </QuickAnswer>
       <p>
         Enemies-to-lovers is the trope that built romantasy. When two people who
         should be killing each other keep, well, <em>not</em> doing that, every

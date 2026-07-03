@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "books-like-the-secret-history",
@@ -28,6 +29,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The closest read-alike is <em>If We Were Villains</em> by M. L. Rio,
+        which follows seven Shakespeare students at an elite conservatory
+        after one of them dies &mdash; the novel most readers reach for first
+        because it matches The Secret History&rsquo;s mood so closely.
+      </QuickAnswer>
       <p>
         There&rsquo;s a very specific ache that sets in after the last page of{" "}
         <em>The Secret History</em>: you want more cloistered classrooms, more

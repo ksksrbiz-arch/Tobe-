@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -27,6 +28,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The best romantasy book to start with is A Court of Thorns and Roses
+        by Sarah J. Maas &mdash; the gateway book for a whole generation of
+        romantasy readers, pairing a mortal huntress and a fae lord in a
+        slow-burn romance that explodes.
+      </QuickAnswer>
       <p>
         Romantasy — romance braided through epic fantasy — is having a moment,
         and it&rsquo;s one of the genres that moves fastest off our shelves. Fae

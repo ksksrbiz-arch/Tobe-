@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "best-cozy-fantasy-books",
@@ -25,6 +26,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        If you&rsquo;re new to cozy fantasy, start with Legends &amp; Lattes by
+        Travis Baldree — an orc barbarian who trades her sword for a coffee
+        shop — or The House in the Cerulean Sea by TJ Klune, both short,
+        warm, and low-stakes.
+      </QuickAnswer>
       <p>
         Not every fantasy needs a dark lord and a doomed quest. Cozy fantasy is
         the genre that swaps world-ending stakes for warm mugs, found family, and

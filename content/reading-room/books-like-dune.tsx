@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -27,6 +28,11 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The closest read-alike to Dune here is Hyperion by Dan Simmons — a
+        far-future pilgrimage epic the article calls the closest thing to
+        Herbert&rsquo;s scope.
+      </QuickAnswer>
       <p>
         <em>Dune</em> spoils you for scope: whole worlds with their own ecology,
         religion, and politics, and a story that plays out like myth. Here are

@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -28,6 +29,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        For ACOTAR fans, the closest read-alikes are Fourth Wing by Rebecca
+        Yarros — dragons, deadly trials, and the other titan of the romantasy
+        genre — and From Blood and Ash by Jennifer L. Armentrout, a forbidden
+        romance tailor-made for ACOTAR readers.
+      </QuickAnswer>
       <p>
         Sarah J. Maas&rsquo;s <em>A Court of Thorns and Roses</em> set the
         template for modern romantasy: fae courts, a mortal heroine coming into

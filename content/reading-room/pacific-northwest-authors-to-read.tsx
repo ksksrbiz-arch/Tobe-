@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Start with Ursula K. Le Guin, Portland&rsquo;s own — try <em>A Wizard of
+        Earthsea</em> for fantasy with real moral weight, or <em>The
+        Dispossessed</em>, the book readers most often press into friends&rsquo;
+        hands.
+      </QuickAnswer>
       <p>
         There&rsquo;s a particular pleasure in reading a book set down the road
         from where you live. Here in Milwaukie, just south of Portland, we

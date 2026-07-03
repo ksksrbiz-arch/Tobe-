@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { BlogMeta } from "@/lib/blog";
+import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "best-classic-romance-novels",
@@ -29,6 +30,12 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Start with Pride and Prejudice by Jane Austen — it&rsquo;s the
+        blueprint for the genre, with the original enemies-to-lovers slow burn
+        of wit, pride, and misunderstanding that later classics like Jane Eyre
+        and Persuasion build on.
+      </QuickAnswer>
       <p>
         Classics and romance are two of our best-selling sections — and they
         overlap more than people expect. Long before modern romance topped the
