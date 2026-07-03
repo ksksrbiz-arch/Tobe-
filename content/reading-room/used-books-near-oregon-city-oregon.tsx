@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The nearest used bookstore to Oregon City is To Be Read at 7931 SE King Rd, Unit 1 in Milwaukie — about a 15-minute drive up OR-99E through Gladstone and Oak Grove, with thousands of used titles, trade-in credit, and free parking.
+      </QuickAnswer>
       <p>
         Oregon City has deep roots and plenty of readers, but it&rsquo;s short on
         a proper used bookstore &mdash; the kind where you can lose an afternoon

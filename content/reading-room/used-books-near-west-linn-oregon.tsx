@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The nearest used bookstore to West Linn is To Be Read at 7931 SE King Rd, Unit 1 in Milwaukie — about a 15–20 minute drive across the river, with thousands of used titles, trade-in credit, and free parking.
+      </QuickAnswer>
       <p>
         West Linn sits pretty along the Willamette, but a browse-for-an-afternoon
         used bookstore isn&rsquo;t one of the things it has of its own. For West

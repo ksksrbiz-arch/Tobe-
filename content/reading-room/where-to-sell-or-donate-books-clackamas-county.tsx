@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        In Clackamas County, the best options are trading good-condition books for store credit at To Be Read in Milwaukie, selling them outright through online marketplaces or buyback sites for cash, or donating the rest to local libraries, thrift stores, or Little Free Libraries.
+      </QuickAnswer>
       <p>
         A move, a downsize, or just an overflowing shelf — eventually every
         reader in Clackamas County faces a stack of books that needs a new home.

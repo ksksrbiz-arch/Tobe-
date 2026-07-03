@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        To Be Read is a used bookstore at 7931 SE King Rd, Unit 1, Milwaukie, OR 97222, open Monday through Saturday, 10am&ndash;5pm, with thousands of secondhand titles and trade-in credit toward your next stack (credit only, not cash).
+      </QuickAnswer>
       <p>
         If you&rsquo;re searching for a used bookstore near Milwaukie or
         Southeast Portland, here&rsquo;s the short answer: you&rsquo;ll find us at{" "}

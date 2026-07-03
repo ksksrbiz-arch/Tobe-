@@ -106,6 +106,11 @@ const faqJsonLd = {
     name: row.q,
     acceptedAnswer: { "@type": "Answer", text: row.a },
   })),
+  // Help voice/AI assistants pick this FAQ block as the spoken answer.
+  speakable: {
+    "@type": "SpeakableSpecification",
+    cssSelector: ["#fine-print-faq"],
+  },
 };
 
 export default function HowItWorksPage() {
@@ -623,6 +628,7 @@ export default function HowItWorksPage() {
 
       {/* ─── Fine print ─── */}
       <section
+        id="fine-print-faq"
         className="px-4 py-12 sm:py-20 sm:px-6 md:py-28"
         style={{
           background:

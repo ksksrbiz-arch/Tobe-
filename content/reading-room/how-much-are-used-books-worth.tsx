@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        Most used books are worth a fraction of their cover price — condition, demand, and edition set the value — but store credit stretches further than cash, so a well-kept box of the right titles can add up to a real shelf refresh.
+      </QuickAnswer>
       <p>
         It&rsquo;s the first question almost everyone asks: &ldquo;What are my
         used books worth?&rdquo; The honest answer is that most used books are

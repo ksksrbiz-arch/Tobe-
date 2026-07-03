@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The nearest used bookstore to Oak Grove, Gladstone, and Jennings Lodge is To Be Read at 7931 SE King Rd, Unit 1 in Milwaukie — a quick trip up McLoughlin or River Road, or a short hop across the river from Gladstone, with thousands of used titles and trade-in credit.
+      </QuickAnswer>
       <p>
         The communities along the Willamette just south of Milwaukie — Oak Grove,
         Gladstone, Jennings Lodge — don&rsquo;t all have a bookstore of their own.

@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The most reliable way to sell used books is trading them for store credit at a used bookstore: sort out damaged copies, box the rest flat, and bring in clean, in-demand titles. Most stores pay more in credit than cash, though cash may be worth asking about if you won&rsquo;t be back.
+      </QuickAnswer>
       <p>
         If you&rsquo;ve got boxes of books you&rsquo;re ready to part with, you
         have more options than the recycling bin. Here&rsquo;s how selling and

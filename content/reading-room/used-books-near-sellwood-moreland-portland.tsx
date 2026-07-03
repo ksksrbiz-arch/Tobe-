@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The nearest full-size used bookstore to Sellwood-Moreland is To Be Read at 7931 SE King Rd, Unit 1 in Milwaukie — about a 10-minute drive south on McLoughlin Blvd or River Road, with thousands of used titles, trade-in credit, and free parking.
+      </QuickAnswer>
       <p>
         Sellwood-Moreland is one of Portland&rsquo;s most bookish
         neighborhoods &mdash; antique row, the bluff, the bridge. When you want a

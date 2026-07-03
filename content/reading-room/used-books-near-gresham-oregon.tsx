@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The nearest used bookstore to Gresham is To Be Read at 7931 SE King Rd, Unit 1 in Milwaukie — west on Highway 26 then south on I-205 (or Foster Road), with thousands of used titles, trade-in credit, and free parking.
+      </QuickAnswer>
       <p>
         Gresham has a lot going for it, but a deep, browseable used bookstore
         &mdash; the kind where you lose an hour to the shelves and walk out with a

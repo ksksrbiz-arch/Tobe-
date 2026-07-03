@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The nearest used bookstore to Happy Valley and Damascus is To Be Read at 7931 SE King Rd, Unit 1 in Milwaukie — a quick trip down toward the river past the Clackamas Town Center area, with thousands of used titles and trade-in credit.
+      </QuickAnswer>
       <p>
         Happy Valley has grown fast, but a proper used bookstore — the kind you
         can get lost in for an hour — isn&rsquo;t on every corner. For readers out

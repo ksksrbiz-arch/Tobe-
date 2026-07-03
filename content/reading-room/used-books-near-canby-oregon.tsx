@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import QuickAnswer from "@/components/QuickAnswer";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -18,6 +19,9 @@ export const meta: BlogMeta = {
 export default function Body() {
   return (
     <>
+      <QuickAnswer>
+        The nearest used bookstore to Canby is To Be Read at 7931 SE King Rd, Unit 1 in Milwaukie — a straight run north on 99E through Oregon City and Gladstone, with thousands of used titles and trade-in credit.
+      </QuickAnswer>
       <p>
         Canby keeps a small-town pace that readers love, but a deep, browseable
         used bookstore &mdash; shelves of secondhand titles to lose yourself in
