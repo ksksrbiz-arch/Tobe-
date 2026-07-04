@@ -48,14 +48,14 @@ const COLORS = {
 };
 
 const WORLDS = [
-  { key: "dragon", caption: "Dragon's Peak" },
-  { key: "rocket", caption: "To the Stars" },
-  { key: "pirate", caption: "Pirate Cove" },
-  { key: "jungle", caption: "Hidden Temple" },
-  { key: "balloon", caption: "Up & Away" },
-  { key: "reef", caption: "The Coral Deep" },
-  { key: "aurora", caption: "Aurora Camp" },
-  { key: "desert", caption: "Desert Caravan" },
+  { key: "dragon", caption: "Dragon's Peak", accent: 0xffc46a },
+  { key: "rocket", caption: "To the Stars", accent: 0xa885ff },
+  { key: "pirate", caption: "Pirate Cove", accent: 0x7fd8e8 },
+  { key: "jungle", caption: "Hidden Temple", accent: 0x9fe07a },
+  { key: "balloon", caption: "Up & Away", accent: 0x8fd0ff },
+  { key: "reef", caption: "The Coral Deep", accent: 0x5fd0c8 },
+  { key: "aurora", caption: "Aurora Camp", accent: 0x86e8ff },
+  { key: "desert", caption: "Desert Caravan", accent: 0xffa25e },
 ] as const;
 
 type WorldKey = (typeof WORLDS)[number]["key"];
@@ -67,6 +67,15 @@ export default function MagicBook3D({ width = 330, height = 260, className = "",
   useEffect(() => {
     const host = hostRef.current;
     if (!host || typeof window === "undefined") return;
+    // Constrained devices keep the lightweight BookLogo instead of paying for
+    // the three.js parse + WebGL boot: very low memory/core counts, or an
+    // explicit Save-Data preference.
+    const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
+    const weakDevice =
+      (nav.deviceMemory !== undefined && nav.deviceMemory <= 2) ||
+      (navigator.hardwareConcurrency ?? 8) <= 3 ||
+      nav.connection?.saveData === true;
+    if (weakDevice) return;
     let disposed = false;
     let cleanup: (() => void) | null = null;
     (async () => {
@@ -117,6 +126,12 @@ function buildScene(
   }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setSize(width, height);
+  renderer.toneMapping = T.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.06;
+  // Soft shadow maps sell the depth; skip them on very small CPUs.
+  const fancyShadows = (navigator.hardwareConcurrency ?? 8) >= 6;
+  renderer.shadowMap.enabled = fancyShadows;
+  renderer.shadowMap.type = T.PCFSoftShadowMap;
   renderer.domElement.style.position = "absolute";
   renderer.domElement.style.inset = "0";
   renderer.domElement.setAttribute("aria-hidden", "true");
@@ -219,6 +234,33 @@ function buildScene(
     ctx.strokeStyle = "rgba(241,187,26,0.5)";
     ctx.lineWidth = 1.5;
     ctx.strokeRect(w * 0.09, h * 0.068, w * 0.82, h * 0.865);
+    ctx.strokeStyle = "rgba(107,28,111,0.4)";
+    ctx.lineWidth = 2;
+    const flourish = (cx: number, cy: number, sx: number, sy: number) => {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.scale(sx, sy);
+      ctx.beginPath();
+      ctx.moveTo(0, 18);
+      ctx.quadraticCurveTo(0, 0, 18, 0);
+      ctx.moveTo(4, 14);
+      ctx.quadraticCurveTo(4, 4, 14, 4);
+      ctx.stroke();
+      ctx.fillStyle = "rgba(241,187,26,0.8)";
+      ctx.beginPath();
+      ctx.arc(7.5, 7.5, 1.6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    };
+    flourish(w * 0.09, h * 0.068, 1, 1);
+    flourish(w * 0.91, h * 0.068, -1, 1);
+    flourish(w * 0.09, h * 0.933, 1, -1);
+    flourish(w * 0.91, h * 0.933, -1, -1);
+    const v = ctx.createRadialGradient(w / 2, h / 2, w * 0.25, w / 2, h / 2, w * 0.78);
+    v.addColorStop(0, "rgba(0,0,0,0)");
+    v.addColorStop(1, "rgba(107,28,111,0.07)");
+    ctx.fillStyle = v;
+    ctx.fillRect(0, 0, w, h);
   };
 
   const paperTex = makeTex(256, 340, paperPaint);
@@ -360,37 +402,69 @@ function buildScene(
   capTex.colorSpace = T.SRGBColorSpace;
   const drawCaption = (text: string) => {
     capCtx.clearRect(0, 0, 512, 112);
-    capCtx.font = "italic 600 52px Georgia, serif";
+    capCtx.font = "italic 600 46px Georgia, serif";
     capCtx.textAlign = "center";
     capCtx.textBaseline = "middle";
-    capCtx.lineWidth = 8;
-    capCtx.strokeStyle = "rgba(255,253,249,0.9)";
+    capCtx.lineWidth = 7;
+    capCtx.strokeStyle = "rgba(255,251,240,0.92)";
     capCtx.strokeText(text, 256, 54);
     capCtx.fillStyle = "#6B1C6F";
     capCtx.fillText(text, 256, 54);
+    const half = capCtx.measureText(text).width / 2;
+    capCtx.strokeStyle = "rgba(241,187,26,0.9)";
+    capCtx.lineWidth = 3;
+    for (const dir of [1, -1]) {
+      const x0 = 256 + dir * (half + 18);
+      capCtx.beginPath();
+      capCtx.moveTo(x0, 54);
+      capCtx.quadraticCurveTo(x0 + dir * 26, 46, x0 + dir * 44, 54);
+      capCtx.quadraticCurveTo(x0 + dir * 26, 62, x0 + dir * 14, 56);
+      capCtx.stroke();
+      capCtx.fillStyle = "#F1BB1A";
+      capCtx.beginPath();
+      capCtx.arc(x0 + dir * 50, 54, 3, 0, Math.PI * 2);
+      capCtx.fill();
+    }
     capTex.needsUpdate = true;
   };
 
   /* ---------- scene, camera, lights ---------- */
 
   const scene = new T.Scene();
-  const camera = new T.PerspectiveCamera(34, width / height, 0.1, 30);
-  camera.position.set(0, 1.5, 3.45);
+  const camera = new T.PerspectiveCamera(32, width / height, 0.1, 30);
+  camera.position.set(0, 1.44, 3.4);
   camera.lookAt(0, 0.52, 0);
 
   const root = new T.Group(); // pointer-parallax pivot
   scene.add(root);
 
-  root.add(new T.AmbientLight(0xfff1dc, 0.8));
-  const key = new T.DirectionalLight(0xfff6e6, 1.15);
-  key.position.set(2, 3, 2.2);
+  root.add(new T.AmbientLight(0xfff1dc, 0.35));
+  root.add(new T.HemisphereLight(0xfff6e6, 0x8a5a9e, 0.75));
+  const key = new T.DirectionalLight(0xfff6e6, 1.7);
+  key.position.set(2, 3.2, 2.2);
+  if (fancyShadows) {
+    key.castShadow = true;
+    key.shadow.mapSize.set(1024, 1024);
+    const sc = key.shadow.camera;
+    sc.left = -1.9;
+    sc.right = 1.9;
+    sc.top = 2.4;
+    sc.bottom = -0.9;
+    sc.near = 0.5;
+    sc.far = 9;
+    key.shadow.bias = -0.0004;
+  }
   root.add(key);
-  const rim = new T.PointLight(0xb46bd9, 6, 8);
+  const rim = new T.PointLight(0xb46bd9, 7, 8);
   rim.position.set(-2.2, 1.6, -1.4);
   root.add(rim);
   const gutterLight = new T.PointLight(0xffd76a, 2.4, 4);
   gutterLight.position.set(0, 1.1, 0.2);
   root.add(gutterLight);
+  // Each world tints the candlelight, halo and god-ray toward its own hue.
+  const WHITE = new T.Color(0xffffff);
+  const accent = new T.Color(WORLDS[0].accent);
+  const accentTarget = new T.Color(WORLDS[0].accent);
 
   /* ---------- materials & mesh helpers ---------- */
 
@@ -428,9 +502,17 @@ function buildScene(
   book.position.y = -0.12;
   root.add(book);
 
+  const giltTex = makeTex(64, 64, (ctx, w, h) => {
+    ctx.fillStyle = "#E2AF25";
+    ctx.fillRect(0, 0, w, h);
+    for (let y = 0; y < h; y += 2) {
+      ctx.fillStyle = y % 6 === 0 ? "rgba(120,82,8,0.35)" : "rgba(255,236,170,0.35)";
+      ctx.fillRect(0, y, w, 1);
+    }
+  });
   const coverMat = lam(COLORS.purpleDeep);
   const coverEdgeMat = lam(COLORS.gold);
-  const pageSideMat = lam(COLORS.gold);
+  const pageSideMat = track(new T.MeshLambertMaterial({ map: giltTex, color: 0xffd75e }));
   const pageTopMat = track(new T.MeshLambertMaterial({ map: paperTex }));
   const creamMat = lam(COLORS.cream);
 
@@ -463,10 +545,36 @@ function buildScene(
     }
     const sheet = new T.Mesh(sheetGeo, pageTopMat);
     sheet.position.set(side * 0.54, 0.168, 0);
+    for (const m of [cover, trim, stack, sheet]) m.receiveShadow = true;
     half.add(cover, trim, stack, sheet);
     half.rotation.z = -side * 0.07; // gentle open-book V
     book.add(half);
   }
+
+  // Spine ridge nestling into the gutter between the halves.
+  const spineRidge = mesh(g(new T.CylinderGeometry(0.09, 0.09, 1.58, 12)), coverMat, 0, -0.02, 0);
+  spineRidge.rotation.x = Math.PI / 2;
+  book.add(spineRidge);
+
+  // A silk bookmark draped across the right page and over the fore-edge.
+  const ribbonGeo = g(new T.PlaneGeometry(0.07, 0.95, 1, 14));
+  ribbonGeo.rotateX(-Math.PI / 2);
+  {
+    const pos = ribbonGeo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      const z = pos.getZ(i) + 0.35;
+      pos.setZ(i, z);
+      const over = z - 0.72;
+      if (over > 0) pos.setY(i, -over * 2.0);
+      else pos.setY(i, 0.012 * Math.sin(((z + 0.125) / 0.85) * Math.PI));
+    }
+    ribbonGeo.computeVertexNormals();
+  }
+  const ribbon = new T.Mesh(ribbonGeo, track(new T.MeshLambertMaterial({ color: 0xa93226, side: T.DoubleSide })));
+  ribbon.position.set(0.72, 0.18, 0);
+  ribbon.rotation.y = -0.08;
+  ribbon.castShadow = fancyShadows;
+  book.add(ribbon);
 
   /* ---------- the turning page ---------- */
 
@@ -477,6 +585,8 @@ function buildScene(
   const pageBase = Float32Array.from(pageGeo.attributes.position.array);
   const pageMat = track(new T.MeshLambertMaterial({ map: arts[0], side: T.DoubleSide }));
   const page = new T.Mesh(pageGeo, pageMat);
+  page.castShadow = fancyShadows;
+  page.receiveShadow = true;
   const pagePivot = new T.Group();
   pagePivot.position.set(0, 0.2, 0);
   pagePivot.add(page);
@@ -582,13 +692,22 @@ function buildScene(
 
   type World = { group: THREE.Group; tick: (t: number) => void };
 
-  const islandBase = (topColor: number) => {
+  const islandBase = (topColor: number, anims: ((t: number) => void)[]) => {
     const grp = new T.Group();
-    const rock = mesh(g(new T.CylinderGeometry(0.33, 0.05, 0.22, 7)), lam(0x6b4a75), 0, -0.125, 0);
-    const top = mesh(g(new T.CylinderGeometry(0.34, 0.33, 0.05, 7)), lam(topColor), 0, 0.008, 0);
-    const crumbA = mesh(g(new T.TetrahedronGeometry(0.045)), lam(0x5a3b63), 0.22, -0.34, 0.1);
-    const crumbB = mesh(g(new T.TetrahedronGeometry(0.03)), lam(0x6b4a75), -0.16, -0.42, -0.08);
-    grp.add(rock, top, crumbA, crumbB);
+    const rock = mesh(g(new T.CylinderGeometry(0.3, 0.05, 0.22, 7)), lam(0x6b4a75), 0, -0.125, 0);
+    // Overhanging grassy lip reads far more "floating island" than a flush disc.
+    const top = mesh(g(new T.CylinderGeometry(0.35, 0.315, 0.055, 7)), lam(topColor), 0, 0.008, 0);
+    grp.add(rock, top);
+    for (const [x, z, l] of [[-0.12, 0.06, 0.1], [0.08, -0.09, 0.14], [0.03, 0.11, 0.08]] as const)
+      grp.add(mesh(g(new T.ConeGeometry(0.013, l, 4)), lam(0x5a3b63), x, -0.14 - l / 2, z));
+    ([[0.3, -0.3, 0.12, 0.035], [-0.24, -0.42, -0.06, 0.024], [0.06, -0.54, 0.02, 0.018]] as const).forEach(([x, y, z, r], i) => {
+      const shard = mesh(g(new T.TetrahedronGeometry(r)), lam(0x6b4a75), x, y, z);
+      grp.add(shard);
+      anims.push((t) => {
+        shard.position.y = y + Math.sin(t * 1.1 + i * 2.1) * 0.035;
+        shard.rotation.y = t * 0.4 + i;
+      });
+    });
     return grp;
   };
 
@@ -600,7 +719,7 @@ function buildScene(
 
     switch (key) {
       case "dragon": {
-        group.add(islandBase(0x2c7a7b));
+        group.add(islandBase(0x2c7a7b, anims));
         group.add(mesh(g(new T.ConeGeometry(0.16, 0.42, 6)), lam(0x173b4a), -0.12, 0.24, 0.02));
         group.add(mesh(g(new T.ConeGeometry(0.12, 0.3, 6)), lam(0x2c7a7b), 0.14, 0.18, -0.08));
         group.add(mesh(g(new T.ConeGeometry(0.09, 0.22, 6)), lam(0x3a8f8f), 0.05, 0.14, 0.16));
@@ -618,7 +737,7 @@ function buildScene(
         break;
       }
       case "rocket": {
-        group.add(islandBase(0x241a38));
+        group.add(islandBase(0x241a38, anims));
         const planet = mesh(g(new T.SphereGeometry(0.15, 10, 8)), lam(0xf2a65a), 0, 0.22, 0);
         const ring = mesh(g(new T.TorusGeometry(0.24, 0.02, 8, 28)), lam(0xffd18a), 0, 0.22, 0);
         ring.rotation.x = Math.PI / 2.4;
@@ -644,7 +763,7 @@ function buildScene(
         break;
       }
       case "pirate": {
-        group.add(islandBase(0x1fb6c9));
+        group.add(islandBase(0x1fb6c9, anims));
         const sea = mesh(g(new T.CylinderGeometry(0.35, 0.35, 0.02, 24)), lam(0x0e7c9e), 0, 0.035, 0);
         group.add(sea);
         const ship = new T.Group();
@@ -669,7 +788,7 @@ function buildScene(
         break;
       }
       case "jungle": {
-        group.add(islandBase(0x3fa34d));
+        group.add(islandBase(0x3fa34d, anims));
         for (const [w, h, y] of [[0.3, 0.09, 0.075], [0.22, 0.08, 0.155], [0.14, 0.08, 0.235]])
           group.add(mesh(g(new T.BoxGeometry(w, h, w)), lam(0xb79b6e), 0, y, 0));
         group.add(mesh(g(new T.BoxGeometry(0.05, 0.07, 0.02)), lam(0x5a4632), 0, 0.065, 0.15));
@@ -690,7 +809,7 @@ function buildScene(
         break;
       }
       case "balloon": {
-        group.add(islandBase(0x6fbf4a));
+        group.add(islandBase(0x6fbf4a, anims));
         group.add(mesh(g(new T.SphereGeometry(0.1, 8, 6)), lam(0x4e9e33), -0.15, 0.05, 0.1));
         group.add(mesh(g(new T.SphereGeometry(0.08, 8, 6)), lam(0x6fbf4a), 0.18, 0.04, -0.1));
         const bal = new T.Group();
@@ -710,7 +829,7 @@ function buildScene(
         break;
       }
       case "reef": {
-        group.add(islandBase(0xead9a0));
+        group.add(islandBase(0xead9a0, anims));
         const water = new T.Mesh(
           g(new T.CylinderGeometry(0.35, 0.35, 0.02, 24)),
           track(new T.MeshLambertMaterial({ color: 0x1fb6c9, transparent: true, opacity: 0.65 })),
@@ -735,7 +854,7 @@ function buildScene(
         break;
       }
       case "aurora": {
-        group.add(islandBase(0xe8f1fa));
+        group.add(islandBase(0xe8f1fa, anims));
         group.add(mesh(g(new T.ConeGeometry(0.14, 0.3, 6)), lam(0xc7d7e8), -0.14, 0.17, -0.04));
         group.add(mesh(g(new T.ConeGeometry(0.1, 0.2, 6)), lam(0x9fb3cc), 0.05, 0.12, -0.14));
         group.add(mesh(g(new T.ConeGeometry(0.07, 0.11, 5)), lam(0xe8472b), 0.16, 0.07, 0.12));
@@ -775,7 +894,7 @@ function buildScene(
         break;
       }
       case "desert": {
-        group.add(islandBase(0xe0a94e));
+        group.add(islandBase(0xe0a94e, anims));
         const duneA = mesh(g(new T.SphereGeometry(0.16, 8, 6)), lam(0xf2c46b), -0.15, 0.0, 0.08);
         duneA.scale.set(1.4, 0.45, 1);
         const duneB = mesh(g(new T.SphereGeometry(0.12, 8, 6)), lam(0xc99a5b), 0.16, 0.0, -0.06);
@@ -875,6 +994,31 @@ function buildScene(
   dragon.visible = false;
   dragon.scale.setScalar(1.15);
   root.add(dragon);
+  if (fancyShadows) {
+    for (const w of worlds) w.group.traverse((o) => ((o as THREE.Mesh).isMesh ? ((o as THREE.Mesh).castShadow = true) : null));
+    dragon.traverse((o) => ((o as THREE.Mesh).isMesh ? ((o as THREE.Mesh).castShadow = true) : null));
+  }
+
+  const TRAIL = 16;
+  const trailGeo = g(new T.BufferGeometry());
+  const trailPos = new Float32Array(TRAIL * 3);
+  for (let i = 0; i < TRAIL; i++) trailPos[i * 3 + 1] = -5;
+  trailGeo.setAttribute("position", new T.BufferAttribute(trailPos, 3));
+  const trailMat = track(
+    new T.PointsMaterial({
+      map: starTex,
+      color: 0xffe08a,
+      size: 0.055,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      blending: T.AdditiveBlending,
+    }),
+  );
+  const trail = new T.Points(trailGeo, trailMat);
+  root.add(trail);
+  let trailHead = 0;
+  let trailLast = 0;
 
   const flightCurve = new T.CatmullRomCurve3(
     [
@@ -954,14 +1098,24 @@ function buildScene(
     // …and raise the next out of the light.
     tw(1.0, 0.01, easeInOut, () => {}, () => {
       worldIdx = incomingIdx;
+      accentTarget.setHex(WORLDS[incomingIdx].accent);
       const inc = worlds[incomingIdx].group;
       inc.scale.setScalar(0.001);
       inc.position.y = -0.5;
       worldHolder.add(inc);
-      tw(0, 0.95, backOut, (k) => {
-        inc.scale.setScalar(Math.max(k, 0.001));
-        inc.position.y = -0.5 * (1 - k);
-      });
+      tw(
+        0,
+        0.95,
+        backOut,
+        (k) => {
+          inc.scale.setScalar(Math.max(k, 0.001));
+          inc.position.y = -0.5 * (1 - k);
+          inc.rotation.y = (1 - k) * -1.6;
+        },
+        () => {
+          inc.rotation.y = 0;
+        },
+      );
     });
     // Caption crossfade.
     const capMat = caption.material as THREE.SpriteMaterial;
@@ -1006,12 +1160,22 @@ function buildScene(
       if (k >= 1) {
         dragonMode = "none";
         dragon.visible = false;
+        trailMat.opacity = 0;
         nextDragonAt = elapsed + 11 + Math.random() * 10;
         return;
       }
       const u = easeInOut(k);
       const p = flightCurve.getPointAt(u);
       dragon.position.copy(p);
+      if (elapsed - trailLast > 0.06) {
+        trailLast = elapsed;
+        trailPos[trailHead * 3] = p.x;
+        trailPos[trailHead * 3 + 1] = p.y;
+        trailPos[trailHead * 3 + 2] = p.z;
+        trailHead = (trailHead + 1) % TRAIL;
+        (trailGeo.attributes.position as THREE.BufferAttribute).needsUpdate = true;
+      }
+      trailMat.opacity = Math.min(k * 6, 1, (1 - k) * 6) * 0.7;
       const ahead = flightCurve.getPointAt(Math.min(u + 0.012, 1));
       dragon.lookAt(ahead);
       const s = Math.min(t / 0.5, 1, (DUR - t) / 0.5);
@@ -1087,6 +1251,10 @@ function buildScene(
     worlds[worldIdx].tick(t);
 
     // Ambience.
+    accent.lerp(accentTarget, 0.02);
+    gutterLight.color.copy(accent);
+    (halo.material as THREE.SpriteMaterial).color.copy(accent).lerp(WHITE, 0.35);
+    (ray.material as THREE.MeshBasicMaterial).color.copy(accent).lerp(WHITE, 0.5);
     ray.rotation.y = t * 0.4;
     (ray.material as THREE.MeshBasicMaterial).opacity = 0.06 + Math.sin(t * 1.7) * 0.02;
     gutterLight.intensity = 2.2 + Math.sin(t * 2.1) * 0.5;
