@@ -11,6 +11,7 @@ import DustMotes from "@/components/DustMotes";
 import SectionDivider from "@/components/SectionDivider";
 import ReadingRoomTeaser from "@/components/ReadingRoomTeaser";
 import SummerReadingBanner from "@/components/SummerReadingBanner";
+import ClosureBanner from "@/components/ClosureBanner";
 import {
   Award,
   BookMarked,
@@ -233,8 +234,9 @@ const stats = [
   { icon: Clock, label: "Mon–Sat", sub: "10am – 5pm" },
 ];
 
-// Statically prerendered, but revalidated daily so the date-gated seasonal
-// banner (e.g. Summer Reading Programs) appears and retires on schedule.
+// Statically prerendered, but revalidated daily so date-gated banners (the
+// closure notice, seasonal programs like Summer Reading) appear and retire
+// on schedule.
 export const revalidate = 86400;
 
 export default function Home() {
@@ -249,6 +251,11 @@ export default function Home() {
     >
       <Navbar />
       <HeroSection />
+
+      {/* One-off shop closure notice — date-gated, renders only through the
+          closure date and retires itself the next morning. See
+          lib/storeHours.ts (CLOSURES). */}
+      <ClosureBanner />
 
       {/* Seasonal program spotlight — date-gated, renders only while active.
           Calendar buttons are omitted here to keep above-the-fold JS minimal;
