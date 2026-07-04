@@ -8,12 +8,13 @@ import DustMotes from "./DustMotes";
 import OpenStatus from "./OpenStatus";
 import { getMotionSafeScrollBehavior } from "@/lib/motion";
 
-// The animated tome is ~300 SVG nodes and purely decorative. Load it
-// client-only (no SSR) so it stays out of the initial HTML, the document DOM
-// stays smaller, and the hero headline (LCP) isn't competing with it during
-// parse + hydration. A lightweight <BookLogo /> holds the exact same slot
-// until it mounts, so there is no layout shift.
-const FlippingBook = dynamic(() => import("./FlippingBook"), { ssr: false });
+// The enchanted tome is a WebGL scene (three.js) and purely decorative. Load
+// it client-only (no SSR) so the three.js chunk stays out of the initial
+// HTML and the hero headline (LCP) isn't competing with it during parse +
+// hydration. A lightweight <BookLogo /> holds the exact same slot until it
+// mounts (and remains as the permanent fallback when WebGL is unavailable),
+// so there is no layout shift.
+const MagicBook3D = dynamic(() => import("./MagicBook3D"), { ssr: false });
 
 export default function HeroSection() {
   // Defer mounting of decorative, animation-heavy layers until after the
@@ -218,9 +219,9 @@ export default function HeroSection() {
             ))}
             {/* Fixed-size slot keeps the placeholder and the book the same
                 footprint, so swapping them in causes no layout shift. */}
-            <div className="relative flex items-center justify-center" style={{ width: 220, height: 180 }}>
+            <div className="relative flex items-center justify-center" style={{ width: 330, height: 260 }}>
               {bookLive ? (
-                <FlippingBook size={210} live className="fade-in" />
+                <MagicBook3D width={330} height={260} live className="fade-in" />
               ) : (
                 <BookLogo
                   size={150}
