@@ -17,11 +17,45 @@ export interface StoreStatus {
   label: string;
 }
 
+export interface StoreClosure {
+  /** Local calendar date the shop is closed, YYYY-MM-DD (America/Los_Angeles). */
+  date: string;
+}
+
+/**
+ * One-off dates the shop is closed outside its regular Mon–Sat hours (e.g. a
+ * holiday or private event). Add an entry here and both the live Open/Closed
+ * badges (OpenStatus, OpenStatusBadge) and the homepage <ClosureBanner> pick
+ * it up automatically — each entry expires itself the day after, so there's
+ * nothing to remove later.
+ */
+const CLOSURES: StoreClosure[] = [{ date: "2026-07-08" }];
+
 function formatDuration(mins: number): string {
   if (mins < 60) return `${mins}m`;
   const h = Math.floor(mins / 60);
   const m = mins % 60;
   return m === 0 ? `${h}h` : `${h}h ${m}m`;
+}
+
+/** Local calendar date (YYYY-MM-DD) for a UTC instant, in the store's timezone. */
+function localDateString(now: Date): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: STORE_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(now);
+}
+
+/**
+ * The upcoming/current one-off closure whose banner window hasn't passed —
+ * visible any time through the closure date itself, gone the next calendar
+ * day (i.e. by the following morning). Deterministic given `now`.
+ */
+export function getActiveClosure(now: Date = new Date()): StoreClosure | null {
+  const today = localDateString(now);
+  return CLOSURES.find((c) => today <= c.date) ?? null;
 }
 
 export function getStoreStatus(now: Date = new Date()): StoreStatus {
@@ -38,6 +72,14 @@ export function getStoreStatus(now: Date = new Date()): StoreStatus {
   const minute = Number(parts.find((p) => p.type === "minute")?.value ?? "0");
   const minutes = (hour % 24) * 60 + minute;
   const isSunday = weekday === "Sun";
+
+  // A one-off closure overrides the regular hours for the whole day, however
+  // it lands on the calendar — reuses the same Sat/Sun → Mon rollover as the
+  // regular-hours path below so reopening always lands on a real open day.
+  if (CLOSURES.some((c) => c.date === localDateString(now))) {
+    const opensNextDay = weekday === "Sat" ? "Mon" : "tomorrow";
+    return { open: false, label: `Closed today · opens ${opensNextDay} 10 AM` };
+  }
 
   if (!isSunday && minutes >= OPEN_MIN && minutes < CLOSE_MIN) {
     return { open: true, label: `Open now · closes in ${formatDuration(CLOSE_MIN - minutes)}` };
