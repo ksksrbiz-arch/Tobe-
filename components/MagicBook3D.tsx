@@ -724,11 +724,125 @@ function buildScene(
 
   type World = { group: THREE.Group; tick: (t: number) => void };
 
-  const islandBase = (topColor: number, anims: ((t: number) => void)[]) => {
+  // Lighten/darken a hex color by `dl` in HSL space — used to derive believable
+  // ground-texture shading (blade highlights, sand grain, rock speckle) from
+  // each world's single accent color instead of hand-picking extra palettes.
+  const shadeHex = (hex: number, dl: number) => {
+    const c = new T.Color(hex);
+    const hsl = { h: 0, s: 0, l: 0 };
+    c.getHSL(hsl);
+    c.setHSL(hsl.h, hsl.s, Math.min(1, Math.max(0, hsl.l + dl)));
+    return `#${c.getHexString()}`;
+  };
+
+  type Biome = "grass" | "sand" | "snow" | "rock" | "water";
+
+  // Painted ground detail for the island's top cap, in place of a flat color —
+  // this is the single change that reads as "toy diorama" rather than "solid
+  // disc" across every world. CylinderGeometry's cap UV inscribes the circular
+  // (well, heptagonal) face in the unit square, so detail is scattered inside a
+  // radius-0.5 circle centered at (0.5, 0.5).
+  const groundTex = (biome: Biome, base: number) =>
+    makeTex(
+      96,
+      96,
+      (ctx, w, h) => {
+        const cx = w / 2,
+          cy = h / 2,
+          R = w / 2;
+        ctx.fillStyle = shadeHex(base, 0);
+        ctx.fillRect(0, 0, w, h);
+        const within = (r: number) => Math.random() * r;
+        const scatter = (n: number, draw: (x: number, y: number) => void) => {
+          for (let i = 0; i < n; i++) {
+            const a = Math.random() * Math.PI * 2;
+            const r = within(R * 0.92);
+            draw(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+          }
+        };
+        switch (biome) {
+          case "grass":
+            scatter(80, (x, y) => {
+              ctx.strokeStyle = Math.random() < 0.5 ? shadeHex(base, -0.13) : shadeHex(base, 0.15);
+              ctx.lineWidth = 1.3;
+              ctx.beginPath();
+              ctx.moveTo(x, y);
+              ctx.quadraticCurveTo(x + 1.5, y - 4, x + (Math.random() - 0.5) * 3, y - 8);
+              ctx.stroke();
+            });
+            break;
+          case "sand":
+            ctx.globalAlpha = 0.5;
+            for (let i = 0; i < 9; i++) {
+              const yy = cy - R * 0.75 + i * ((R * 1.5) / 9);
+              ctx.strokeStyle = shadeHex(base, -0.1);
+              ctx.lineWidth = 1.4;
+              ctx.beginPath();
+              ctx.moveTo(cx - R * 0.85, yy);
+              ctx.quadraticCurveTo(cx, yy + 6, cx + R * 0.85, yy);
+              ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+            scatter(45, (x, y) => {
+              ctx.fillStyle = Math.random() < 0.5 ? shadeHex(base, -0.18) : shadeHex(base, 0.2);
+              ctx.beginPath();
+              ctx.arc(x, y, 0.8, 0, Math.PI * 2);
+              ctx.fill();
+            });
+            break;
+          case "snow":
+            scatter(34, (x, y) => {
+              ctx.fillStyle = "rgba(255,255,255,0.85)";
+              ctx.beginPath();
+              ctx.arc(x, y, 0.9, 0, Math.PI * 2);
+              ctx.fill();
+            });
+            for (let i = 0; i < 5; i++) {
+              const a = Math.random() * Math.PI * 2;
+              const r = R * (0.35 + Math.random() * 0.3);
+              ctx.strokeStyle = shadeHex(base, -0.1);
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(cx, cy);
+              ctx.quadraticCurveTo(cx + Math.cos(a) * r * 0.6, cy + Math.sin(a) * r * 0.6, cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+              ctx.stroke();
+            }
+            break;
+          case "rock":
+            scatter(30, (x, y) => {
+              ctx.fillStyle = Math.random() < 0.5 ? shadeHex(base, -0.2) : shadeHex(base, 0.12);
+              ctx.beginPath();
+              ctx.arc(x, y, 1.1 + Math.random() * 1.7, 0, Math.PI * 2);
+              ctx.fill();
+            });
+            break;
+          case "water":
+            for (let i = 0; i < 8; i++) {
+              const yy = cy - R * 0.7 + i * ((R * 1.4) / 8);
+              ctx.strokeStyle = "rgba(255,255,255,0.4)";
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(cx - R * 0.8, yy);
+              ctx.quadraticCurveTo(cx, yy - 5, cx + R * 0.8, yy);
+              ctx.stroke();
+            }
+            break;
+        }
+        const v = ctx.createRadialGradient(cx, cy, R * 0.4, cx, cy, R);
+        v.addColorStop(0, "rgba(0,0,0,0)");
+        v.addColorStop(1, "rgba(0,0,0,0.18)");
+        ctx.fillStyle = v;
+        ctx.fillRect(0, 0, w, h);
+      },
+      2,
+    );
+
+  const islandBase = (topColor: number, biome: Biome, anims: ((t: number) => void)[]) => {
     const grp = new T.Group();
     const rock = mesh(g(new T.CylinderGeometry(0.3, 0.05, 0.22, 7)), lam(0x6b4a75), 0, -0.125, 0);
     // Overhanging grassy lip reads far more "floating island" than a flush disc.
-    const top = mesh(g(new T.CylinderGeometry(0.35, 0.315, 0.055, 7)), lam(topColor), 0, 0.008, 0);
+    const topMat = track(new T.MeshLambertMaterial({ map: groundTex(biome, topColor) }));
+    const top = mesh(g(new T.CylinderGeometry(0.35, 0.315, 0.055, 7)), topMat, 0, 0.008, 0);
     grp.add(rock, top);
     for (const [x, z, l] of [[-0.12, 0.06, 0.1], [0.08, -0.09, 0.14], [0.03, 0.11, 0.08]] as const)
       grp.add(mesh(g(new T.ConeGeometry(0.013, l, 4)), lam(0x5a3b63), x, -0.14 - l / 2, z));
@@ -751,7 +865,7 @@ function buildScene(
 
     switch (key) {
       case "dragon": {
-        group.add(islandBase(0x2c7a7b, anims));
+        group.add(islandBase(0x2c7a7b, "grass", anims));
         group.add(mesh(g(new T.ConeGeometry(0.16, 0.42, 6)), lam(0x173b4a), -0.12, 0.24, 0.02));
         group.add(mesh(g(new T.ConeGeometry(0.12, 0.3, 6)), lam(0x2c7a7b), 0.14, 0.18, -0.08));
         group.add(mesh(g(new T.ConeGeometry(0.09, 0.22, 6)), lam(0x3a8f8f), 0.05, 0.14, 0.16));
@@ -769,7 +883,7 @@ function buildScene(
         break;
       }
       case "rocket": {
-        group.add(islandBase(0x241a38, anims));
+        group.add(islandBase(0x241a38, "rock", anims));
         const planet = mesh(g(new T.SphereGeometry(0.15, 28, 20)), lam(0xf2a65a), 0, 0.22, 0);
         const ring = mesh(g(new T.TorusGeometry(0.24, 0.02, 16, 56)), lam(0xffd18a), 0, 0.22, 0);
         ring.rotation.x = Math.PI / 2.4;
@@ -795,18 +909,66 @@ function buildScene(
         break;
       }
       case "pirate": {
-        group.add(islandBase(0x1fb6c9, anims));
+        group.add(islandBase(0x1fb6c9, "water", anims));
         const sea = mesh(g(new T.CylinderGeometry(0.35, 0.35, 0.02, 24)), lam(0x0e7c9e), 0, 0.035, 0);
         group.add(sea);
         const ship = new T.Group();
-        const hull = mesh(g(new T.BoxGeometry(0.2, 0.06, 0.09)), lam(0x7a4a2b));
-        hull.scale.set(1, 1, 1);
+        // Hull as an extruded profile — pointed bow, flat transom — instead of
+        // a plain box, which read as a floating brick rather than a boat.
+        const hullShape = new T.Shape();
+        hullShape.moveTo(-0.1, -0.025);
+        hullShape.lineTo(0.06, -0.025);
+        hullShape.quadraticCurveTo(0.11, -0.02, 0.1, 0.02);
+        hullShape.lineTo(-0.09, 0.02);
+        hullShape.quadraticCurveTo(-0.12, 0.005, -0.1, -0.025);
+        const hullGeo = g(new T.ExtrudeGeometry(hullShape, { depth: 0.085, bevelEnabled: false, curveSegments: 6 }));
+        hullGeo.translate(0, 0, -0.085 / 2);
+        const hull = new T.Mesh(hullGeo, lam(0x7a4a2b));
         const mast = mesh(g(new T.CylinderGeometry(0.008, 0.008, 0.18, 6)), lam(0x5a3620), 0, 0.11, 0);
-        const sailGeo = g(new T.PlaneGeometry(0.12, 0.12));
-        const sail = new T.Mesh(sailGeo, track(new T.MeshLambertMaterial({ color: 0xe84b3a, side: T.DoubleSide })));
+        // A gently bellied sail (as if filled with wind) with painted cloth
+        // seams, in place of a flat rigid plate.
+        const sailTex = makeTex(64, 64, (ctx, w, h) => {
+          ctx.fillStyle = "#E14B3A";
+          ctx.fillRect(0, 0, w, h);
+          ctx.strokeStyle = "rgba(0,0,0,0.15)";
+          ctx.lineWidth = 1;
+          for (let i = 1; i < 4; i++) {
+            ctx.beginPath();
+            ctx.moveTo((i * w) / 4, 0);
+            ctx.lineTo((i * w) / 4, h);
+            ctx.stroke();
+          }
+          const grad = ctx.createLinearGradient(0, 0, 0, h);
+          grad.addColorStop(0, "rgba(255,255,255,0.2)");
+          grad.addColorStop(1, "rgba(0,0,0,0.12)");
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, w, h);
+        });
+        const sailGeo = g(new T.PlaneGeometry(0.12, 0.12, 8, 1));
+        {
+          const pos = sailGeo.attributes.position;
+          for (let i = 0; i < pos.count; i++) {
+            const x = pos.getX(i);
+            pos.setZ(i, Math.cos((x / 0.06) * (Math.PI / 2)) * 0.03);
+          }
+          sailGeo.computeVertexNormals();
+        }
+        const sail = new T.Mesh(sailGeo, track(new T.MeshLambertMaterial({ map: sailTex, side: T.DoubleSide })));
         sail.position.set(0.02, 0.12, 0);
         sail.rotation.y = Math.PI / 2;
-        ship.add(hull, mast, sail);
+        // Tiny pennant flag at the masthead.
+        const flagShape = new T.Shape();
+        flagShape.moveTo(0, 0);
+        flagShape.lineTo(0.035, 0.012);
+        flagShape.lineTo(0, 0.024);
+        flagShape.closePath();
+        const flag = new T.Mesh(
+          g(new T.ShapeGeometry(flagShape)),
+          track(new T.MeshLambertMaterial({ color: COLORS.gold, side: T.DoubleSide })),
+        );
+        flag.position.set(0, 0.19, 0);
+        flag.rotation.y = Math.PI / 2;
+        ship.add(hull, mast, sail, flag);
         ship.position.set(-0.05, 0.08, 0.05);
         group.add(ship);
         anims.push((t) => {
@@ -820,7 +982,7 @@ function buildScene(
         break;
       }
       case "jungle": {
-        group.add(islandBase(0x3fa34d, anims));
+        group.add(islandBase(0x3fa34d, "grass", anims));
         for (const [w, h, y] of [[0.3, 0.09, 0.075], [0.22, 0.08, 0.155], [0.14, 0.08, 0.235]])
           group.add(mesh(g(new T.BoxGeometry(w, h, w)), lam(0xb79b6e), 0, y, 0));
         group.add(mesh(g(new T.BoxGeometry(0.05, 0.07, 0.02)), lam(0x5a4632), 0, 0.065, 0.15));
@@ -841,7 +1003,7 @@ function buildScene(
         break;
       }
       case "balloon": {
-        group.add(islandBase(0x6fbf4a, anims));
+        group.add(islandBase(0x6fbf4a, "grass", anims));
         group.add(mesh(g(new T.SphereGeometry(0.1, 8, 6)), lam(0x4e9e33), -0.15, 0.05, 0.1));
         group.add(mesh(g(new T.SphereGeometry(0.08, 8, 6)), lam(0x6fbf4a), 0.18, 0.04, -0.1));
         const bal = new T.Group();
@@ -861,7 +1023,7 @@ function buildScene(
         break;
       }
       case "reef": {
-        group.add(islandBase(0xead9a0, anims));
+        group.add(islandBase(0xead9a0, "sand", anims));
         const water = new T.Mesh(
           g(new T.CylinderGeometry(0.35, 0.35, 0.02, 24)),
           track(new T.MeshLambertMaterial({ color: 0x1fb6c9, transparent: true, opacity: 0.65 })),
@@ -886,7 +1048,7 @@ function buildScene(
         break;
       }
       case "aurora": {
-        group.add(islandBase(0xe8f1fa, anims));
+        group.add(islandBase(0xe8f1fa, "snow", anims));
         group.add(mesh(g(new T.ConeGeometry(0.14, 0.3, 6)), lam(0xc7d7e8), -0.14, 0.17, -0.04));
         group.add(mesh(g(new T.ConeGeometry(0.1, 0.2, 6)), lam(0x9fb3cc), 0.05, 0.12, -0.14));
         group.add(mesh(g(new T.ConeGeometry(0.07, 0.11, 5)), lam(0xe8472b), 0.16, 0.07, 0.12));
@@ -926,22 +1088,39 @@ function buildScene(
         break;
       }
       case "desert": {
-        group.add(islandBase(0xe0a94e, anims));
+        group.add(islandBase(0xe0a94e, "sand", anims));
         const duneA = mesh(g(new T.SphereGeometry(0.16, 8, 6)), lam(0xf2c46b), -0.15, 0.0, 0.08);
         duneA.scale.set(1.4, 0.45, 1);
         const duneB = mesh(g(new T.SphereGeometry(0.12, 8, 6)), lam(0xc99a5b), 0.16, 0.0, -0.06);
         duneB.scale.set(1.3, 0.4, 1);
         group.add(duneA, duneB);
         group.add(mesh(g(new T.ConeGeometry(0.13, 0.22, 4)), lam(0xb0793f), 0.12, 0.13, -0.12));
+        // Rebuilt with an actual neck, a visible hump, ears and a tail, and
+        // four legs instead of two — the old version was a body box with a
+        // head box glued on, no neck between them, and read as a crude toy.
         const camel = new T.Group();
-        camel.add(
-          mesh(g(new T.BoxGeometry(0.09, 0.05, 0.04)), lam(0x6b3f2a), 0, 0.06, 0),
-          mesh(g(new T.SphereGeometry(0.02, 6, 5)), lam(0x6b3f2a), 0.0, 0.095, 0),
-          mesh(g(new T.BoxGeometry(0.018, 0.028, 0.018)), lam(0x6b3f2a), 0.05, 0.1, 0),
-          mesh(g(new T.SphereGeometry(0.014, 6, 5)), lam(0x5a3620), 0.055, 0.125, 0),
-          mesh(g(new T.BoxGeometry(0.012, 0.05, 0.012)), lam(0x6b3f2a), -0.03, 0.02, 0.012),
-          mesh(g(new T.BoxGeometry(0.012, 0.05, 0.012)), lam(0x6b3f2a), 0.03, 0.02, -0.012),
-        );
+        const camelColor = 0xc98f52;
+        const camelDark = 0x8a5a34;
+        const camelBody = mesh(g(new T.SphereGeometry(0.05, 12, 8)), lam(camelColor), 0, 0.07, 0);
+        camelBody.scale.set(1.55, 0.85, 0.85);
+        const hump = mesh(g(new T.SphereGeometry(0.028, 10, 8)), lam(camelColor), -0.01, 0.108, 0);
+        hump.scale.set(1, 1.15, 0.9);
+        const neck = mesh(g(new T.CylinderGeometry(0.014, 0.02, 0.09, 8)), lam(camelColor), 0.075, 0.11, 0);
+        neck.rotation.z = -0.95;
+        const head = mesh(g(new T.BoxGeometry(0.045, 0.024, 0.024)), lam(camelColor), 0.115, 0.155, 0);
+        const snout = mesh(g(new T.BoxGeometry(0.022, 0.016, 0.018)), lam(camelDark), 0.135, 0.148, 0);
+        const earL = mesh(g(new T.ConeGeometry(0.008, 0.016, 5)), lam(camelDark), 0.115, 0.172, 0.012);
+        const earR = mesh(g(new T.ConeGeometry(0.008, 0.016, 5)), lam(camelDark), 0.115, 0.172, -0.012);
+        const camelTail = mesh(g(new T.ConeGeometry(0.008, 0.04, 5)), lam(camelDark), -0.085, 0.06, 0);
+        camelTail.rotation.x = Math.PI / 2 + 0.3;
+        const legGeo = g(new T.CylinderGeometry(0.007, 0.009, 0.075, 6));
+        const legs = [
+          mesh(legGeo, lam(camelDark), 0.05, 0.02, 0.02),
+          mesh(legGeo, lam(camelDark), 0.05, 0.02, -0.02),
+          mesh(legGeo, lam(camelDark), -0.05, 0.02, 0.02),
+          mesh(legGeo, lam(camelDark), -0.05, 0.02, -0.02),
+        ];
+        camel.add(camelBody, hump, neck, head, snout, earL, earR, camelTail, ...legs);
         camel.position.set(-0.14, 0.02, 0.14);
         camel.rotation.y = 0.7;
         group.add(camel);
@@ -967,19 +1146,25 @@ function buildScene(
   const dragon = new T.Group();
   const dTail: THREE.Object3D[] = [];
   {
-    const body = mesh(g(new T.SphereGeometry(0.075, 20, 16)), lam(0x7b2480));
-    body.scale.set(1, 0.95, 1.65);
-    const belly = mesh(g(new T.SphereGeometry(0.06, 20, 16)), lam(0xf5cc45), 0, -0.028, 0.02);
-    belly.scale.set(0.85, 0.7, 1.3);
-    const neckA = mesh(g(new T.SphereGeometry(0.045, 16, 12)), lam(0x7b2480), 0, 0.055, 0.1);
-    const neckB = mesh(g(new T.SphereGeometry(0.038, 16, 12)), lam(0x7b2480), 0, 0.1, 0.15);
-    const head = mesh(g(new T.SphereGeometry(0.048, 18, 14)), lam(0x8b2e90), 0, 0.13, 0.19);
-    const snout = mesh(g(new T.BoxGeometry(0.045, 0.03, 0.055)), lam(0x8b2e90), 0, 0.115, 0.235);
+    // Slimmer, longer body than before — a fat short ellipsoid reads as a
+    // caterpillar; stretching it and tapering the neck down before the head
+    // flares back out is what actually sells "dragon" in silhouette.
+    const body = mesh(g(new T.SphereGeometry(0.07, 20, 16)), lam(0x7b2480));
+    body.scale.set(0.86, 0.8, 1.95);
+    const belly = mesh(g(new T.SphereGeometry(0.054, 20, 16)), lam(0xf5cc45), 0, -0.026, 0.03);
+    belly.scale.set(0.82, 0.6, 1.5);
+    // Three tapering neck segments (was two) so the neck actually curves up
+    // and out from the shoulders instead of jumping straight to the head.
+    const neckA = mesh(g(new T.SphereGeometry(0.042, 16, 12)), lam(0x7b2480), 0, 0.07, 0.13);
+    const neckB = mesh(g(new T.SphereGeometry(0.036, 16, 12)), lam(0x7b2480), 0, 0.108, 0.185);
+    const neckC = mesh(g(new T.SphereGeometry(0.03, 16, 12)), lam(0x7b2480), 0, 0.148, 0.228);
+    const head = mesh(g(new T.SphereGeometry(0.05, 18, 14)), lam(0x8b2e90), 0, 0.175, 0.27);
+    const snout = mesh(g(new T.BoxGeometry(0.05, 0.03, 0.06)), lam(0x8b2e90), 0, 0.158, 0.32);
     for (const s of [-1, 1]) {
-      const horn = mesh(g(new T.ConeGeometry(0.011, 0.05, 5)), lam(0xf5cc45), s * 0.022, 0.17, 0.165);
+      const horn = mesh(g(new T.ConeGeometry(0.011, 0.05, 5)), lam(0xf5cc45), s * 0.022, 0.215, 0.245);
       horn.rotation.x = -0.9;
-      const sclera = mesh(g(new T.SphereGeometry(0.014, 8, 7)), lam(0xffffff), s * 0.031, 0.142, 0.212);
-      const pupil = mesh(g(new T.SphereGeometry(0.008, 6, 6)), lam(0x1a1a1a), s * 0.034, 0.142, 0.222);
+      const sclera = mesh(g(new T.SphereGeometry(0.014, 8, 7)), lam(0xffffff), s * 0.031, 0.187, 0.292);
+      const pupil = mesh(g(new T.SphereGeometry(0.008, 6, 6)), lam(0x1a1a1a), s * 0.034, 0.187, 0.302);
       dragon.add(horn, sclera, pupil);
       const wing = new T.Group();
       const shape = new T.Shape();
@@ -999,23 +1184,36 @@ function buildScene(
       wmesh.scale.x = s;
       wmesh.rotation.y = (Math.PI / 2) * s * 0.15;
       wing.add(wmesh);
+      // Bat-wing "finger" creases radiating from the wing root to each fold
+      // point — a flat gold silhouette alone reads as a paper fan, not a
+      // membrane. THREE.Line stays crisp at any scale, unlike a thin mesh.
+      const creaseMat = track(new T.LineBasicMaterial({ color: 0xc98f14, transparent: true, opacity: 0.55 }));
+      const wingRoot = new T.Vector3(0.01, -0.01, 0.001);
+      for (const [fx, fy] of [[0.19, 0.1], [0.2, 0.045], [0.19, -0.03]] as const) {
+        const lineGeo = g(new T.BufferGeometry().setFromPoints([wingRoot, new T.Vector3(fx, fy, 0.001)]));
+        const crease = new T.Line(lineGeo, creaseMat);
+        crease.scale.x = s;
+        wing.add(crease);
+      }
       wing.scale.setScalar(1.25);
-      wing.position.set(s * 0.05, 0.05, 0.02);
+      wing.position.set(s * 0.05, 0.06, 0.05);
       wing.userData.side = s;
       dragon.add(wing);
         (dragon.userData.wings ??= []).push(wing);
     }
-    dragon.add(body, belly, neckA, neckB, head, snout);
-    let pz = -0.11;
-    for (let i = 0; i < 4; i++) {
-      const r = 0.032 - i * 0.007;
-      const seg = mesh(g(new T.SphereGeometry(Math.max(r, 0.01), 7, 6)), lam(0x7b2480), 0, -0.005 - i * 0.008, pz);
-      pz -= 0.055;
+    dragon.add(body, belly, neckA, neckB, neckC, head, snout);
+    // Six tapering segments (was four) plus the fin: a longer, more serpentine
+    // tail balances the elongated neck instead of stopping short and stubby.
+    let pz = -0.13;
+    for (let i = 0; i < 6; i++) {
+      const r = Math.max(0.03 - i * 0.0045, 0.008);
+      const seg = mesh(g(new T.SphereGeometry(r, 7, 6)), lam(0x7b2480), 0, -0.006 - i * 0.006, pz);
+      pz -= 0.05;
       dragon.add(seg);
       dTail.push(seg);
     }
     const fin = new T.Mesh(
-      g(new T.ConeGeometry(0.03, 0.06, 4)),
+      g(new T.ConeGeometry(0.026, 0.055, 4)),
       track(new T.MeshLambertMaterial({ color: COLORS.gold, side: T.DoubleSide })),
     );
     fin.position.set(0, -0.03, pz + 0.02);
