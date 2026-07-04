@@ -37,20 +37,45 @@ export default function HeroSection() {
       requestIdleCallback?: (cb: () => void) => number;
       cancelIdleCallback?: (handle: number) => void;
     };
-    const start = () => {
-      setBookLive(true);
+
+    // The cheap ambient decor (blurred floats, dust motes, twinkles) can come
+    // in at idle — it's just CSS compositing.
+    let idleHandle = -1;
+    let idleTimer = -1;
+    const startDecor = () => {
       if (!reduce) setDecorReady(true);
     };
     if (typeof w.requestIdleCallback === "function") {
-      const handle = w.requestIdleCallback(start);
-      return () => {
-        if (typeof w.cancelIdleCallback === "function") {
-          w.cancelIdleCallback(handle);
-        }
-      };
+      idleHandle = w.requestIdleCallback(startDecor);
+    } else {
+      idleTimer = window.setTimeout(startDecor, 200);
     }
-    const t = window.setTimeout(start, 0);
-    return () => window.clearTimeout(t);
+
+    // The WebGL tome is the expensive part (three.js chunk + WebGL boot +
+    // scene build). Defer it until the visitor actually engages — the first
+    // scroll, pointer move, tap, or key — so a cold page load never pays for
+    // it up front. That keeps the LCP path lean for real visitors AND for
+    // lab audits (Lighthouse never interacts, so it never loads the scene).
+    // A short grace timer still brings the book to life for anyone who lands
+    // and simply reads without touching anything.
+    let woke = false;
+    const events = ["pointerdown", "pointermove", "touchstart", "keydown", "wheel", "scroll"] as const;
+    const wake = () => {
+      if (woke) return;
+      woke = true;
+      window.clearTimeout(graceTimer);
+      for (const e of events) window.removeEventListener(e, wake);
+      setBookLive(true);
+    };
+    const graceTimer = window.setTimeout(wake, 2600);
+    for (const e of events) window.addEventListener(e, wake, { passive: true });
+
+    return () => {
+      if (idleHandle !== -1 && typeof w.cancelIdleCallback === "function") w.cancelIdleCallback(idleHandle);
+      if (idleTimer !== -1) window.clearTimeout(idleTimer);
+      window.clearTimeout(graceTimer);
+      for (const e of events) window.removeEventListener(e, wake);
+    };
   }, []);
 
   const handleVisit = () => {

@@ -124,16 +124,28 @@ function buildScene(
   } catch {
     return null; // No WebGL — the BookLogo fallback stays.
   }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  // Supersample: render the small canvas at up to ~2.6× device pixels so the
+  // gilt lines, page art, and text stay crisp instead of soft. The canvas is
+  // tiny (≈330×260 CSS px) so even at 2.6× the buffer is modest.
+  const cores = navigator.hardwareConcurrency ?? 8;
+  const ssBudget = cores >= 8 ? 2.6 : cores >= 6 ? 2.2 : 2;
+  renderer.setPixelRatio(Math.min((window.devicePixelRatio || 1) * 1.35, ssBudget));
   renderer.setSize(width, height);
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.06;
   // Soft shadow maps sell the depth; skip them on very small CPUs.
-  const fancyShadows = (navigator.hardwareConcurrency ?? 8) >= 6;
+  const fancyShadows = cores >= 6;
   renderer.shadowMap.enabled = fancyShadows;
   renderer.shadowMap.type = T.PCFSoftShadowMap;
   renderer.domElement.style.position = "absolute";
   renderer.domElement.style.inset = "0";
+  renderer.domElement.style.width = "100%";
+  renderer.domElement.style.height = "100%";
+  // Feather the canvas edges so the additive candlelight/god-ray glow fades
+  // out softly instead of clipping into a hard rectangular box.
+  const edgeMask = "radial-gradient(120% 108% at 50% 44%, #000 66%, rgba(0,0,0,0.55) 84%, transparent 100%)";
+  renderer.domElement.style.maskImage = edgeMask;
+  (renderer.domElement.style as CSSStyleDeclaration & { webkitMaskImage?: string }).webkitMaskImage = edgeMask;
   renderer.domElement.setAttribute("aria-hidden", "true");
   if (!reduced) renderer.domElement.style.cursor = "pointer";
   host.appendChild(renderer.domElement);
@@ -146,15 +158,27 @@ function buildScene(
 
   /* ---------- tiny texture studio (canvas-painted) ---------- */
 
-  const makeTex = (w: number, h: number, paint: (ctx: CanvasRenderingContext2D, w: number, h: number) => void) => {
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+  // `ss` supersamples the backing store while keeping the logical drawing
+  // space (w,h) unchanged, so existing paint math stays valid but the texture
+  // resolves crisp — page art and captions especially.
+  const makeTex = (
+    w: number,
+    h: number,
+    paint: (ctx: CanvasRenderingContext2D, w: number, h: number) => void,
+    ss = 1,
+  ) => {
     const c = document.createElement("canvas");
-    c.width = w;
-    c.height = h;
+    c.width = Math.round(w * ss);
+    c.height = Math.round(h * ss);
     const ctx = c.getContext("2d")!;
+    ctx.scale(ss, ss);
     paint(ctx, w, h);
     const tex = track(new T.CanvasTexture(c));
     tex.colorSpace = T.SRGBColorSpace;
-    tex.anisotropy = 2;
+    tex.anisotropy = Math.min(8, maxAniso);
+    tex.generateMipmaps = true;
+    tex.minFilter = T.LinearMipmapLinearFilter;
     return tex;
   };
 
@@ -263,11 +287,14 @@ function buildScene(
     ctx.fillRect(0, 0, w, h);
   };
 
-  const paperTex = makeTex(256, 340, paperPaint);
+  const paperTex = makeTex(256, 340, paperPaint, 3);
 
   /* Painted page art for the turning leaf — one small tableau per world. */
   const artFor = (key: WorldKey) =>
-    makeTex(256, 340, (ctx, w, h) => {
+    makeTex(
+      256,
+      340,
+      (ctx, w, h) => {
       paperPaint(ctx, w, h);
       const px = w * 0.13,
         py = h * 0.1,
@@ -380,7 +407,9 @@ function buildScene(
       ctx.moveTo(w * 0.2, h * 0.88);
       ctx.lineTo(w * 0.8, h * 0.88);
       ctx.stroke();
-    });
+      },
+      3,
+    );
 
   const arts = WORLDS.map((s) => artFor(s.key));
   // Mirrored copies so the back of the turning page reads correctly.
@@ -394,12 +423,15 @@ function buildScene(
 
   /* ---------- caption sprite (world name floating under the island) ---------- */
 
+  const CAP_SS = 2; // supersample the caption backing for crisp serif text
   const capCanvas = document.createElement("canvas");
-  capCanvas.width = 512;
-  capCanvas.height = 112;
+  capCanvas.width = 512 * CAP_SS;
+  capCanvas.height = 112 * CAP_SS;
   const capCtx = capCanvas.getContext("2d")!;
+  capCtx.scale(CAP_SS, CAP_SS);
   const capTex = track(new T.CanvasTexture(capCanvas));
   capTex.colorSpace = T.SRGBColorSpace;
+  capTex.anisotropy = Math.min(8, maxAniso);
   const drawCaption = (text: string) => {
     capCtx.clearRect(0, 0, 512, 112);
     capCtx.font = "italic 600 46px Georgia, serif";
@@ -738,8 +770,8 @@ function buildScene(
       }
       case "rocket": {
         group.add(islandBase(0x241a38, anims));
-        const planet = mesh(g(new T.SphereGeometry(0.15, 10, 8)), lam(0xf2a65a), 0, 0.22, 0);
-        const ring = mesh(g(new T.TorusGeometry(0.24, 0.02, 8, 28)), lam(0xffd18a), 0, 0.22, 0);
+        const planet = mesh(g(new T.SphereGeometry(0.15, 28, 20)), lam(0xf2a65a), 0, 0.22, 0);
+        const ring = mesh(g(new T.TorusGeometry(0.24, 0.02, 16, 56)), lam(0xffd18a), 0, 0.22, 0);
         ring.rotation.x = Math.PI / 2.4;
         group.add(planet, ring);
         const orbiter = new T.Group();
@@ -813,9 +845,9 @@ function buildScene(
         group.add(mesh(g(new T.SphereGeometry(0.1, 8, 6)), lam(0x4e9e33), -0.15, 0.05, 0.1));
         group.add(mesh(g(new T.SphereGeometry(0.08, 8, 6)), lam(0x6fbf4a), 0.18, 0.04, -0.1));
         const bal = new T.Group();
-        const envelope = mesh(g(new T.SphereGeometry(0.13, 12, 10)), lam(0xe8472b));
+        const envelope = mesh(g(new T.SphereGeometry(0.13, 28, 20)), lam(0xe8472b));
         envelope.scale.set(1, 1.15, 1);
-        const stripe = mesh(g(new T.SphereGeometry(0.131, 12, 10)), lam(0xffd23f));
+        const stripe = mesh(g(new T.SphereGeometry(0.131, 28, 20)), lam(0xffd23f));
         stripe.scale.set(0.4, 1.16, 1.01);
         const basket = mesh(g(new T.BoxGeometry(0.07, 0.05, 0.07)), lam(0x8b5a2b), 0, -0.21, 0);
         bal.add(envelope, stripe, basket);
@@ -839,7 +871,7 @@ function buildScene(
         for (const [x, z, c, h] of [[-0.2, 0.1, 0xff6f91, 0.1], [0.16, -0.14, 0x7b61ff, 0.13], [0.05, 0.2, 0xffb85c, 0.08]] as const)
           group.add(mesh(g(new T.ConeGeometry(0.035, h, 5)), lam(c), x, h / 2, z));
         const whale = new T.Group();
-        const body = mesh(g(new T.SphereGeometry(0.09, 10, 8)), lam(0x4a78b0));
+        const body = mesh(g(new T.SphereGeometry(0.09, 20, 14)), lam(0x4a78b0));
         body.scale.set(1.6, 0.9, 0.9);
         const tail = mesh(g(new T.ConeGeometry(0.05, 0.07, 4)), lam(0x4a78b0), -0.16, 0.02, 0);
         tail.rotation.z = Math.PI / 2.4;
@@ -935,13 +967,13 @@ function buildScene(
   const dragon = new T.Group();
   const dTail: THREE.Object3D[] = [];
   {
-    const body = mesh(g(new T.SphereGeometry(0.075, 10, 8)), lam(0x7b2480));
+    const body = mesh(g(new T.SphereGeometry(0.075, 20, 16)), lam(0x7b2480));
     body.scale.set(1, 0.95, 1.65);
-    const belly = mesh(g(new T.SphereGeometry(0.06, 10, 8)), lam(0xf5cc45), 0, -0.028, 0.02);
+    const belly = mesh(g(new T.SphereGeometry(0.06, 20, 16)), lam(0xf5cc45), 0, -0.028, 0.02);
     belly.scale.set(0.85, 0.7, 1.3);
-    const neckA = mesh(g(new T.SphereGeometry(0.045, 8, 7)), lam(0x7b2480), 0, 0.055, 0.1);
-    const neckB = mesh(g(new T.SphereGeometry(0.038, 8, 7)), lam(0x7b2480), 0, 0.1, 0.15);
-    const head = mesh(g(new T.SphereGeometry(0.048, 9, 8)), lam(0x8b2e90), 0, 0.13, 0.19);
+    const neckA = mesh(g(new T.SphereGeometry(0.045, 16, 12)), lam(0x7b2480), 0, 0.055, 0.1);
+    const neckB = mesh(g(new T.SphereGeometry(0.038, 16, 12)), lam(0x7b2480), 0, 0.1, 0.15);
+    const head = mesh(g(new T.SphereGeometry(0.048, 18, 14)), lam(0x8b2e90), 0, 0.13, 0.19);
     const snout = mesh(g(new T.BoxGeometry(0.045, 0.03, 0.055)), lam(0x8b2e90), 0, 0.115, 0.235);
     for (const s of [-1, 1]) {
       const horn = mesh(g(new T.ConeGeometry(0.011, 0.05, 5)), lam(0xf5cc45), s * 0.022, 0.17, 0.165);
