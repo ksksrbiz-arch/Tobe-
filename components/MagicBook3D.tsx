@@ -67,6 +67,15 @@ export default function MagicBook3D({ width = 330, height = 260, className = "",
   useEffect(() => {
     const host = hostRef.current;
     if (!host || typeof window === "undefined") return;
+    // Constrained devices keep the lightweight BookLogo instead of paying for
+    // the three.js parse + WebGL boot: very low memory/core counts, or an
+    // explicit Save-Data preference.
+    const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
+    const weakDevice =
+      (nav.deviceMemory !== undefined && nav.deviceMemory <= 2) ||
+      (navigator.hardwareConcurrency ?? 8) <= 3 ||
+      nav.connection?.saveData === true;
+    if (weakDevice) return;
     let disposed = false;
     let cleanup: (() => void) | null = null;
     (async () => {
