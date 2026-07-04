@@ -447,19 +447,57 @@ summary:focus-visible,
 }
 
 /* ───────── Flipping adventure book (hero) ─────────
-   A magical leather-bound tome: gilded pages riffle past the spine, each leaf
-   flashing a tiny adventure, while gold embers drift up from the open spread.
+   A magical leather-bound tome where every page is a true 3D world. The
+   resting spread is a pair of shadow boxes: recessed depth planes (sky, far,
+   mid) sit behind a window cut in the paper, and the subject pops out toward
+   the reader. Turning leaves carry their own elevated planes so each world
+   parallaxes as the page lifts, and the whole tome leans toward the cursor.
    Every animation is transform/opacity only (GPU-composited) and gated behind
    `.flip-book--live`, which the hero only adds after first paint — so the LCP
    headline is never blocked by the book coming alive. */
 
+/* Leaves ride at +12px so all their planes clear the resting pages' pop-outs
+   (+8px) — the two scenes' depth stacks never interleave mid-turn.
+   IMPORTANT: the leaf itself must never carry opacity (or will-change:
+   opacity) — any grouping property flattens its preserve-3d subtree in
+   Chromium and the diorama planes vanish. The fade lives on the flat child
+   planes instead (leafFade below). */
 @keyframes leafTurn {
-  0%   { transform: translateZ(3px) rotateY(0deg); opacity: 0; }
+  0%   { transform: translateZ(12px) rotateY(0deg); }
+  8%   { transform: translateZ(12px) rotateY(-14deg); }
+  46%  { transform: translateZ(12px) rotateY(-180deg); }
+  100% { transform: translateZ(12px) rotateY(-180deg); }
+}
+
+/* Fade for every flat plane of a turning leaf, in sync with leafTurn. */
+@keyframes leafFade {
+  0%   { opacity: 0; }
   4%   { opacity: 1; }
-  8%   { transform: translateZ(3px) rotateY(-14deg); }
-  46%  { transform: translateZ(3px) rotateY(-180deg); opacity: 1; }
-  53%  { transform: translateZ(3px) rotateY(-180deg); opacity: 0; }
-  100% { transform: translateZ(3px) rotateY(-180deg); opacity: 0; }
+  46%  { opacity: 1; }
+  53%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Pop-up subjects on the resting spread bob gently above their windows. */
+@keyframes popFloat {
+  0%, 100% { transform: translateZ(var(--pz, 9px)) translateY(0); }
+  50%      { transform: translateZ(var(--pz, 9px)) translateY(-2.5px); }
+}
+
+/* Face swapping. `backface-visibility` is unreliable here: each face is a
+   preserve-3d stack of planes, and Chromium doesn't accumulate the leaf's
+   animated rotation into the grandchild backface test (the front face's
+   mirrored page kept painting at -180°). Instead the two faces swap via
+   discrete visibility keyframes synced to leafTurn: its rotation crosses
+   -90° (edge-on, page a sliver) at ~26% of the cycle, so the handoff is
+   invisible. */
+@keyframes leafFaceFront {
+  0%, 26%     { visibility: visible; }
+  26.05%, 100% { visibility: hidden; }
+}
+@keyframes leafFaceBack {
+  0%, 26%     { visibility: hidden; }
+  26.05%, 100% { visibility: visible; }
 }
 
 /* A specular highlight that sweeps across a leaf as it lifts toward you. */
@@ -507,6 +545,12 @@ summary:focus-visible,
   animation: candleGlow 4.8s ease-in-out infinite;
 }
 
+/* Pointer-tilt wrapper: JS writes a small rotateX/rotateY here (rAF-lerped)
+   so the tome leans toward the cursor and the diorama planes parallax. */
+.flip-book-tilt {
+  transform-style: preserve-3d;
+}
+
 .flip-book {
   position: relative;
   transform-style: preserve-3d;
@@ -520,7 +564,7 @@ summary:focus-visible,
   position: absolute;
   left: 50%;
   bottom: -9%;
-  transform: translateX(-50%) translateZ(-14px);
+  transform: translateX(-50%) translateZ(-24px);
   border-radius: 50%;
   /* Soft falloff baked into the gradient instead of a `filter: blur()` pass. */
   background: radial-gradient(ellipse at center, rgba(46, 12, 51, 0.4) 0%, rgba(46, 12, 51, 0.18) 45%, transparent 70%);
@@ -531,7 +575,9 @@ summary:focus-visible,
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) translateZ(-12px);
+  /* Sits below the deepest diorama plane (-12px) so the recessed skies never
+     z-fight with the leather. */
+  transform: translate(-50%, -50%) translateZ(-18px);
   border-radius: 16px;
   background: linear-gradient(135deg, #3a0f40 0%, #6b1c6f 48%, #3a0f40 100%);
   box-shadow:
@@ -614,7 +660,7 @@ summary:focus-visible,
 .flip-book__accent {
   position: absolute;
   pointer-events: none;
-  transform: translateZ(4px);
+  transform: translateZ(10px);
   color: #F1BB1A;
 }
 .flip-book--live .flip-book__accent {
@@ -624,12 +670,25 @@ summary:focus-visible,
 .flip-book__leaf {
   transform-style: preserve-3d;
   transform-origin: left center;
-  transform: translateZ(3px) rotateY(0deg);
-  opacity: 0;
+  transform: translateZ(12px) rotateY(0deg);
 }
 .flip-book--live .flip-book__leaf {
-  will-change: transform, opacity;
-  animation: leafTurn var(--dur, 6s) cubic-bezier(0.62, 0.04, 0.34, 1) infinite;
+  will-change: transform;
+  animation: leafTurn var(--dur, 7s) cubic-bezier(0.62, 0.04, 0.34, 1) infinite;
+  animation-delay: var(--delay, 0s);
+}
+/* The leaf's flat planes are invisible until the book is live; leafFade then
+   ramps them in/out around each turn. Scoped to leaves only — base-page
+   planes (same classes) stay always-on. */
+.flip-book__leaf .flip-book__bg,
+.flip-book__leaf .fb-plane,
+.flip-book__leaf .flip-book__pop {
+  opacity: 0;
+}
+.flip-book--live .flip-book__leaf .flip-book__bg,
+.flip-book--live .flip-book__leaf .fb-plane,
+.flip-book--live .flip-book__leaf .flip-book__pop {
+  animation: leafFade var(--dur, 7s) linear infinite;
   animation-delay: var(--delay, 0s);
 }
 
@@ -642,27 +701,50 @@ summary:focus-visible,
   transform-style: preserve-3d;
 }
 .flip-book__face--back { transform: rotateY(180deg); }
+.flip-book--live .flip-book__face--front {
+  animation: leafFaceFront var(--dur, 7s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+.flip-book--live .flip-book__face--back {
+  animation: leafFaceBack var(--dur, 7s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
 
 /* The clipped page surface that carries the backdrop art. */
 .flip-book__bg {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
   border-radius: 2px 9px 9px 2px;
   box-shadow: 0 14px 30px rgba(46, 12, 51, 0.24);
 }
 
-/* The foreground subject, standing off the page like a pop-up book. */
+/* The foreground subject, standing off the page like a pop-up book.
+   `--pz` is set per diorama (resting pages +8px, turning leaves +11px). */
 .flip-book__pop {
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: visible;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform: translateZ(9px);
+  transform: translateZ(var(--pz, 9px));
+}
+.flip-book--live .flip-book__base .flip-book__pop {
+  animation: popFloat 5.5s ease-in-out infinite;
+}
+.flip-book--live .flip-book__base--right .flip-book__pop {
+  animation-delay: -2.7s;
+}
+
+/* A single depth plane of a diorama (recessed sky/far/mid behind the paper
+   window, or a leaf's floating mid layer). Positioned + Z-translated inline. */
+.fb-plane {
+  position: absolute;
+  pointer-events: none;
+}
+.fb-plane svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 /* Soft curl shadow along the hinged (spine) edge of each leaf. */
@@ -707,7 +789,7 @@ summary:focus-visible,
   top: 0;
   left: 0;
   pointer-events: none;
-  transform: translateZ(6px);
+  transform: translateZ(10px);
   border-radius: 10px;
   /* Toned-down opacities so a plain overlay reads like the old soft-light
      blend without the isolated-layer compositing cost. */
@@ -752,9 +834,27 @@ summary:focus-visible,
     animation: none;
     opacity: 0;
   }
+  .flip-book--live .flip-book__base .flip-book__pop {
+    animation: none;
+  }
   /* A single calm, slow turn cadence. */
   .flip-book--live .flip-book__leaf {
     animation: leafTurn 13s cubic-bezier(0.5, 0.12, 0.4, 1) infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  /* Keep the face swap and plane fades in lockstep with the slow cadence. */
+  .flip-book--live .flip-book__face--front {
+    animation: leafFaceFront 13s linear infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .flip-book--live .flip-book__face--back {
+    animation: leafFaceBack 13s linear infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .flip-book--live .flip-book__leaf .flip-book__bg,
+  .flip-book--live .flip-book__leaf .fb-plane,
+  .flip-book--live .flip-book__leaf .flip-book__pop {
+    animation: leafFade 13s linear infinite;
     animation-delay: var(--delay, 0s);
   }
 }

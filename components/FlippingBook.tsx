@@ -1,25 +1,31 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 /**
- * <FlippingBook /> — a magical leather-bound tome for the hero. Gilded pages
- * riffle past the spine in 3D, and every page is a vivid pop-up diorama: a
- * full-colour adventure backdrop with a foreground subject that stands off the
- * page (translated forward in Z) so it parallaxes as the leaf turns. Gold
- * embers drift up from the open spread. Pure CSS — no dependencies.
+ * <FlippingBook /> — a magical leather-bound tome for the hero, where every
+ * page is a true 3D world. The resting spread is a pair of shadow-box
+ * dioramas: through a window cut in the paper you look into a recessed scene
+ * built from real depth planes (sky, far ground, near ground, each at its own
+ * translateZ), while the subject leaps out of the window toward you. Turning
+ * leaves carry their own elevated parallax layers, so each world visibly
+ * separates in depth as the page lifts and settles. The whole tome gently
+ * tilts to follow the reader's cursor, which makes the planes parallax like a
+ * real pop-up theatre. Gold embers drift up from the open spread. Pure CSS 3D
+ * — no WebGL, no dependencies.
  *
  * Performance: all animation is transform/opacity only, gated behind the
  * `--live` class. The hero mounts the book static and flips `live` on only
  * after first paint (never under reduced motion), so the LCP headline is never
- * blocked and steady-state work stays on the GPU.
+ * blocked and steady-state work stays on the GPU. The pointer tilt runs a
+ * self-stopping rAF lerp that writes one transform — no per-frame layout.
  */
 
 interface FlippingBookProps {
   /** Width of the open spread, in px. */
   size?: number;
   className?: string;
-  /** When true the book comes alive (riffle, embers, sheen, breathing). */
+  /** When true the book comes alive (riffle, embers, sheen, tilt, breathing). */
   live?: boolean;
 }
 
@@ -51,60 +57,353 @@ const SCENES: { name: SceneName; caption: string }[] = [
 // Allow CSS custom properties in inline styles without fighting the types.
 type CSSVars = React.CSSProperties & Record<`--${string}`, string | number>;
 
-/** The page surface: paper + clipped backdrop art + frame + caption. */
-function SceneBg({ name, caption, uid }: { name: SceneName; caption: string; uid: string }) {
-  const clip = `clip-${uid}`;
-  return (
-    <svg
-      viewBox="0 0 100 136"
-      width="100%"
-      height="100%"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="xMidYMid slice"
-      aria-hidden="true"
-    >
-      <defs>
-        <clipPath id={clip}>
-          <rect x="8" y="10" width="84" height="84" rx="7" />
-        </clipPath>
-        <linearGradient id={`paper-${uid}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#FFFFFF" stopOpacity="0" />
-          <stop offset="1" stopColor="#F2E4CB" stopOpacity="0.85" />
-        </linearGradient>
-      </defs>
+/* ───────── Diorama geometry ─────────
+   Page art lives in a 100×136 viewBox; the diorama window is the rounded
+   panel at x:8 y:10, 84×84. Depth planes are absolutely positioned against
+   that same rect (converted to px) and pushed along Z. */
+const PAGE_VB = { w: 100, h: 136 };
+const PANEL = { x: 8, y: 10, w: 84, h: 84 };
 
-      {/* Paper */}
-      <rect x="0" y="0" width="100" height="136" fill={CREAM} />
-      <rect x="0" y="0" width="100" height="136" fill={`url(#paper-${uid})`} />
+/* The shadow-box depth stack, in px. Negative = recessed behind the paper
+   window, positive = popped out toward the reader. Turning leaves ride at
+   +12px (see the leafTurn keyframes), so every leaf plane stays above the
+   base pages' pop-outs and the two scenes never interleave. */
+const DEPTH = {
+  sky: -12,
+  far: -8,
+  mid: -4,
+  basePop: 8,
+  leafMid: 5,
+  leafPop: 11,
+};
 
-      {/* Backdrop art, clipped to the panel */}
-      <g clipPath={`url(#${clip})`}>{renderBg(name, uid)}</g>
+/* Recessed planes are oversized so their edges stay hidden behind the window
+   frame at the steepest tilt the book reaches (~22° of rotateX + pointer). */
+const OVERSIZE = { sky: 0.08, far: 0.05, mid: 0.025 };
 
-      {/* Gold-cornered frame */}
-      <rect x="8" y="10" width="84" height="84" rx="7" fill="none" stroke={PURPLE} strokeOpacity="0.4" strokeWidth="1.6" />
-      <rect x="8" y="10" width="84" height="84" rx="7" fill="none" stroke={GOLD} strokeOpacity="0.55" strokeWidth="0.8" />
-
-      {/* Caption + ruled lines */}
-      <text
-        x="50"
-        y="109"
-        textAnchor="middle"
-        fontFamily="Playfair Display, Georgia, serif"
-        fontStyle="italic"
-        fontWeight="600"
-        fontSize="9"
-        fill={PURPLE}
-      >
-        {caption}
-      </text>
-      <line x1="22" y1="118" x2="78" y2="118" stroke={PURPLE} strokeWidth="1" strokeOpacity="0.18" />
-      <line x1="26" y1="126" x2="74" y2="126" stroke={PURPLE} strokeWidth="1" strokeOpacity="0.18" />
-    </svg>
-  );
+function panelRect(pageW: number, pageH: number, over = 0) {
+  const sx = pageW / PAGE_VB.w;
+  const sy = pageH / PAGE_VB.h;
+  const ox = PANEL.w * sx * over;
+  const oy = PANEL.h * sy * over;
+  return {
+    left: PANEL.x * sx - ox,
+    top: PANEL.y * sy - oy,
+    width: PANEL.w * sx + ox * 2,
+    height: PANEL.h * sy + oy * 2,
+  };
 }
 
-/** The pop-up subject — transparent, may rise above the page edge. */
+/* ───────── Scene art layers ─────────
+   Each world is drawn as three stacked planes in 84×84 panel space —
+   sky (deepest), far, mid — plus a pop-up subject in 100×136 page space. */
+
+function renderSky(name: SceneName, uid: string) {
+  switch (name) {
+    case "dragon":
+      return (
+        <>
+          <defs>
+            <linearGradient id={`g-${uid}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#2A1B5E" />
+              <stop offset="0.5" stopColor="#C84C8C" />
+              <stop offset="1" stopColor="#FBB36A" />
+            </linearGradient>
+          </defs>
+          <rect width="84" height="84" fill={`url(#g-${uid})`} />
+          <circle cx="44" cy="20" r="9" fill="#FFE6A8" />
+          <circle cx="44" cy="20" r="14" fill="#FFE6A8" opacity="0.25" />
+          {[[12, 12], [26, 8], [68, 10], [74, 22]].map(([x, y], i) => (
+            <circle key={i} cx={x} cy={y} r={0.9} fill="#FFF4D0" />
+          ))}
+        </>
+      );
+    case "rocket":
+      return (
+        <>
+          <defs>
+            <linearGradient id={`g-${uid}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#0D0630" />
+              <stop offset="1" stopColor="#2A1458" />
+            </linearGradient>
+          </defs>
+          <rect width="84" height="84" fill={`url(#g-${uid})`} />
+          <ellipse cx="22" cy="30" rx="20" ry="12" fill="#7A3FA0" opacity="0.4" />
+          <ellipse cx="60" cy="56" rx="18" ry="10" fill="#C04BA0" opacity="0.35" />
+          {[[10, 12, 1.1], [32, 8, 0.8], [70, 14, 1], [22, 60, 0.9], [76, 62, 1.1], [46, 30, 0.7], [58, 44, 0.8]].map(
+            ([x, y, r], i) => <circle key={i} cx={x} cy={y} r={r} fill="#FFF4D0" />,
+          )}
+        </>
+      );
+    case "pirate":
+      return (
+        <>
+          <defs>
+            <linearGradient id={`g-${uid}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#8FE0FB" />
+              <stop offset="1" stopColor="#D6F4FF" />
+            </linearGradient>
+          </defs>
+          <rect width="84" height="84" fill={`url(#g-${uid})`} />
+          <circle cx="16" cy="14" r="7" fill="#FFE082" />
+          <ellipse cx="38" cy="16" rx="12" ry="5" fill="#FFFFFF" opacity="0.85" />
+          <ellipse cx="66" cy="24" rx="10" ry="4" fill="#FFFFFF" opacity="0.8" />
+        </>
+      );
+    case "jungle":
+      return (
+        <>
+          <defs>
+            <linearGradient id={`g-${uid}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#CFF3C0" />
+              <stop offset="1" stopColor="#8FD66B" />
+            </linearGradient>
+          </defs>
+          <rect width="84" height="84" fill={`url(#g-${uid})`} />
+          <circle cx="58" cy="12" r="6" fill="#FFE9A8" />
+          <path d="M20 0 L34 0 L14 84 L4 84 Z" fill="#FFFFFF" opacity="0.1" />
+          <path d="M48 0 L58 0 L44 84 L34 84 Z" fill="#FFFFFF" opacity="0.08" />
+        </>
+      );
+    case "balloon":
+      return (
+        <>
+          <defs>
+            <linearGradient id={`g-${uid}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#5AC8FA" />
+              <stop offset="1" stopColor="#BFEBFF" />
+            </linearGradient>
+          </defs>
+          <rect width="84" height="84" fill={`url(#g-${uid})`} />
+          <ellipse cx="20" cy="20" rx="13" ry="5" fill="#FFFFFF" opacity="0.9" />
+          <ellipse cx="62" cy="32" rx="11" ry="4.5" fill="#FFFFFF" opacity="0.85" />
+        </>
+      );
+    case "reef":
+      return (
+        <>
+          <defs>
+            <linearGradient id={`g-${uid}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#1FB6C9" />
+              <stop offset="0.6" stopColor="#0E7C9E" />
+              <stop offset="1" stopColor="#0A5E7C" />
+            </linearGradient>
+          </defs>
+          <rect width="84" height="84" fill={`url(#g-${uid})`} />
+          <path d="M20 0 L26 0 L14 44 Z" fill="#9FE8F0" opacity="0.14" />
+          <path d="M44 0 L49 0 L42 38 Z" fill="#9FE8F0" opacity="0.12" />
+          <path d="M66 0 L72 0 L74 46 Z" fill="#9FE8F0" opacity="0.12" />
+        </>
+      );
+    case "aurora":
+      return (
+        <>
+          <defs>
+            <linearGradient id={`g-${uid}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#0B1E3B" />
+              <stop offset="1" stopColor="#13315C" />
+            </linearGradient>
+          </defs>
+          <rect width="84" height="84" fill={`url(#g-${uid})`} />
+          {[[14, 16, 1], [38, 12, 0.8], [70, 18, 1], [54, 8, 0.8], [26, 26, 0.7]].map(([x, y, r], i) => (
+            <circle key={i} cx={x} cy={y} r={r} fill="#FFF4D0" />
+          ))}
+        </>
+      );
+    case "desert":
+      return (
+        <>
+          <defs>
+            <linearGradient id={`g-${uid}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#FFC36B" />
+              <stop offset="1" stopColor="#FF7E5F" />
+            </linearGradient>
+          </defs>
+          <rect width="84" height="84" fill={`url(#g-${uid})`} />
+          <circle cx="42" cy="24" r="11" fill="#FFE08A" />
+          <circle cx="42" cy="24" r="16" fill="#FFE08A" opacity="0.3" />
+        </>
+      );
+  }
+}
+
+// (No gradients here, so no uid needed — extra render args are simply unused.)
+function renderFar(name: SceneName) {
+  switch (name) {
+    case "dragon":
+      return (
+        <>
+          <path d="M0 62 L12 42 L26 56 L42 38 L58 58 L72 44 L84 54 L84 84 L0 84 Z" fill="#2C7A7B" />
+          <path
+            d="M0 62 L12 42 L26 56 L42 38 L58 58 L72 44 L84 54"
+            stroke="#7FE3D6"
+            strokeWidth="1"
+            fill="none"
+            opacity="0.35"
+          />
+        </>
+      );
+    case "rocket":
+      return (
+        <>
+          <circle cx="58" cy="26" r="11" fill="#F2A65A" />
+          <ellipse
+            cx="58"
+            cy="26"
+            rx="19"
+            ry="5"
+            fill="none"
+            stroke="#FFD18A"
+            strokeWidth="1.8"
+            transform="rotate(-14 58 26)"
+          />
+          <circle cx="14" cy="54" r="4.5" fill="#C7D7E8" />
+          <circle cx="12.5" cy="52.5" r="1" fill="#9FB3CC" />
+          <circle cx="16" cy="55.5" r="0.8" fill="#9FB3CC" />
+        </>
+      );
+    case "pirate":
+      return (
+        <>
+          <ellipse cx="37" cy="50" rx="14" ry="2.4" fill="#EAD9A0" />
+          <path d="M26 50 Q36 40 48 50 Z" fill="#3FA34D" />
+          <path d="M40 44 q2 -6 5 -8" stroke="#8B5A2B" strokeWidth="1.4" fill="none" />
+          <path d="M45 36 q-6 -3 -11 -1 q7 -4 11 1 Z" fill="#2E7D32" />
+          <path d="M45 36 q5 -3 10 -1 q-7 -4 -10 1 Z" fill="#2E7D32" />
+          <path d="M62 44 L66 38 L66 44 Z" fill="#FFFFFF" opacity="0.9" />
+        </>
+      );
+    case "jungle":
+      return (
+        <>
+          <rect x="18" y="64" width="48" height="20" fill="#B79B6E" />
+          <rect x="26" y="52" width="32" height="12" fill="#C4A87E" />
+          <path d="M28 52 L42 38 L56 52 Z" fill="#9E8B6B" />
+          <rect x="38" y="66" width="8" height="18" fill="#5A4632" />
+          <path d="M22 70 h12 M50 70 h12 M22 76 h12 M50 76 h12" stroke="#7A6B50" strokeWidth="1.2" />
+        </>
+      );
+    case "balloon":
+      return (
+        <>
+          <ellipse cx="30" cy="52" rx="16" ry="4" fill="#FFFFFF" opacity="0.7" />
+          <ellipse cx="66" cy="48" rx="12" ry="3.5" fill="#FFFFFF" opacity="0.6" />
+          <path d="M16 34 q3 -3 6 0 M24 30 q3 -3 6 0" stroke="#4E7A9E" strokeWidth="1.2" fill="none" />
+        </>
+      );
+    case "reef":
+      return (
+        <>
+          {[[18, 28], [26, 32], [34, 27], [44, 33], [54, 28]].map(([x, y], i) => (
+            <path key={i} d={`M${x} ${y} q3 -2 6 0 q-3 2 -6 0 Z`} fill="#9FE8F0" opacity="0.7" />
+          ))}
+          <path d="M10 84 q-2 -14 2 -22 M74 84 q3 -16 -1 -24" stroke="#155E52" strokeWidth="2.4" fill="none" opacity="0.35" />
+        </>
+      );
+    case "aurora":
+      return (
+        <>
+          <path d="M2 30 Q26 8 42 28 T82 24" stroke="#3DF5C0" strokeWidth="5" fill="none" opacity="0.45" />
+          <path d="M4 40 Q28 20 46 38 T84 34" stroke="#7AE0FF" strokeWidth="4" fill="none" opacity="0.4" />
+          <path d="M6 50 Q32 32 50 48 T82 46" stroke="#A06BFF" strokeWidth="3.5" fill="none" opacity="0.35" />
+        </>
+      );
+    case "desert":
+      return (
+        <>
+          <path d="M44 58 L62 32 L80 58 Z" fill="#B0793F" />
+          <path d="M62 32 L80 58 L62 58 Z" fill="#96602F" />
+          <path d="M0 62 Q40 52 84 60 L84 84 L0 84 Z" fill="#C99A5B" />
+        </>
+      );
+  }
+}
+
+function renderMid(name: SceneName, uid: string) {
+  switch (name) {
+    case "dragon":
+      return (
+        <>
+          <path d="M0 84 L0 62 L20 48 L38 66 L60 50 L84 68 L84 84 Z" fill="#173B4A" />
+          <rect x="57" y="36" width="6" height="16" fill="#241A38" />
+          <path d="M55 36 L60 28 L65 36 Z" fill="#2E2447" />
+          <circle cx="60" cy="42" r="2.4" fill="#FFC83D" opacity="0.35" />
+          <circle cx="60" cy="42" r="1.1" fill="#FFC83D" />
+        </>
+      );
+    case "rocket":
+      return (
+        <>
+          <path d="M8 14 L26 22" stroke="#BFEFFF" strokeWidth="1.4" opacity="0.8" />
+          <circle cx="26" cy="22" r="1.8" fill="#FFFFFF" />
+          <circle cx="70" cy="66" r="2" fill="#6B5B8E" />
+          <path d="M32 70 l3 -2 l3 2 l-1 3 l-4 0 Z" fill="#6B5B8E" />
+          <circle cx="50" cy="76" r="1.3" fill="#6B5B8E" />
+        </>
+      );
+    case "pirate":
+      return (
+        <>
+          <defs>
+            <linearGradient id={`sea-${uid}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#1FB6C9" />
+              <stop offset="1" stopColor="#0E7C9E" />
+            </linearGradient>
+          </defs>
+          <rect x="0" y="50" width="84" height="34" fill={`url(#sea-${uid})`} />
+          <path d="M0 56 Q18 51 36 56 T72 56 T88 56" stroke="#7FE3D6" strokeWidth="1.4" fill="none" opacity="0.7" />
+          <path d="M0 66 Q18 61 36 66 T72 66 T88 66" stroke="#7FE3D6" strokeWidth="1.4" fill="none" opacity="0.5" />
+          <path d="M0 76 Q22 72 44 76 T84 76" stroke="#7FE3D6" strokeWidth="1.2" fill="none" opacity="0.35" />
+        </>
+      );
+    case "jungle":
+      return (
+        <>
+          <path d="M0 84 Q10 58 0 40 Q18 60 14 84 Z" fill="#2E7D32" />
+          <path d="M84 84 Q70 60 84 44 Q64 64 70 84 Z" fill="#2E7D32" />
+          <path d="M0 84 Q14 70 28 84 Z" fill="#3FA34D" />
+          <path d="M56 84 Q70 68 84 84 Z" fill="#3FA34D" />
+          <path d="M60 0 q-4 12 2 22" stroke="#2E7D32" strokeWidth="1.4" fill="none" />
+          <circle cx="61" cy="12" r="1.6" fill="#3FA34D" />
+          <circle cx="62.5" cy="20" r="1.6" fill="#3FA34D" />
+        </>
+      );
+    case "balloon":
+      return (
+        <>
+          <path d="M0 84 L0 70 Q22 62 44 70 T84 66 L84 84 Z" fill="#6FBF4A" />
+          <path d="M0 84 L0 78 Q30 72 56 78 T84 78 L84 84 Z" fill="#4E9E33" />
+          <path d="M22 74 l8 0 M44 76 l10 0 M62 74 l8 0" stroke="#E8C84A" strokeWidth="1.2" opacity="0.7" />
+        </>
+      );
+    case "reef":
+      return (
+        <>
+          <path d="M0 84 Q42 74 84 84 Z" fill="#EAD9A0" />
+          <path d="M8 84 q2 -12 5 -12 q3 0 5 12 Z" fill="#FF6F91" />
+          <path d="M62 84 q0 -10 -3 -14 M62 84 q1 -12 5 -15" stroke="#7B61FF" strokeWidth="2.5" fill="none" />
+          <path d="M32 84 q2 -9 5 -9 q3 0 5 9 Z" fill="#FFB85C" />
+          <path d="M22 84 q-1 -8 2 -14 M48 84 q1 -8 -2 -13" stroke="#2E9E86" strokeWidth="1.6" fill="none" />
+        </>
+      );
+    case "aurora":
+      return (
+        <>
+          <path d="M0 84 L0 68 L22 56 L44 70 L66 56 L84 70 L84 84 Z" fill="#C7D7E8" />
+          <path d="M0 84 L0 76 L26 64 L52 78 L84 68 L84 84 Z" fill="#9FB3CC" />
+        </>
+      );
+    case "desert":
+      return (
+        <>
+          <path d="M0 84 L0 78 Q34 64 84 80 L84 84 Z" fill="#E0A94E" />
+          <path d="M0 84 L0 82 Q44 72 84 82 L84 84 Z" fill="#F2C46B" />
+        </>
+      );
+  }
+}
+
+/** The pop-up subject — transparent, may rise above the window edge. */
 function ScenePop({ name }: { name: SceneName }) {
   return (
     <svg
@@ -127,171 +426,7 @@ function popShadow(cx: number, cy: number, rx: number) {
   return <ellipse cx={cx} cy={cy} rx={rx} ry={rx * 0.26} fill="rgba(20,10,30,0.22)" />;
 }
 
-/** Backdrops — drawn inside the 8,10 → 92,94 panel, clipped. */
-function renderBg(name: SceneName, uid: string) {
-  switch (name) {
-    case "dragon":
-      return (
-        <>
-          <defs>
-            <linearGradient id={`dsky-${uid}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#3A2A6B" />
-              <stop offset="0.55" stopColor="#C84C8C" />
-              <stop offset="1" stopColor="#FBB36A" />
-            </linearGradient>
-          </defs>
-          <rect x="8" y="10" width="84" height="84" fill={`url(#dsky-${uid})`} />
-          <circle cx="68" cy="30" r="11" fill="#FFE6A8" />
-          <circle cx="68" cy="30" r="15" fill="#FFE6A8" opacity="0.25" />
-          {[[20, 24], [34, 20], [80, 26], [26, 40]].map(([x, y], i) => (
-            <circle key={i} cx={x} cy={y} r={0.9} fill="#FFF4D0" />
-          ))}
-          <path d="M8 78 L24 54 L40 70 L56 52 L72 72 L92 56 L92 94 L8 94 Z" fill="#2C7A7B" />
-          <path d="M8 94 L8 74 L28 60 L48 78 L70 62 L92 80 L92 94 Z" fill="#173B4A" />
-        </>
-      );
-    case "rocket":
-      return (
-        <>
-          <defs>
-            <linearGradient id={`rsky-${uid}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#140A38" />
-              <stop offset="1" stopColor="#3C1E73" />
-            </linearGradient>
-          </defs>
-          <rect x="8" y="10" width="84" height="84" fill={`url(#rsky-${uid})`} />
-          <ellipse cx="30" cy="40" rx="22" ry="14" fill="#7A3FA0" opacity="0.45" />
-          <ellipse cx="66" cy="64" rx="20" ry="12" fill="#C04BA0" opacity="0.4" />
-          {[[18, 22, 1.1], [40, 18, 0.8], [78, 24, 1], [30, 70, 0.9], [84, 70, 1.1], [54, 40, 0.7]].map(
-            ([x, y, r], i) => <circle key={i} cx={x} cy={y} r={r} fill="#FFF4D0" />,
-          )}
-          <circle cx="76" cy="34" r="9" fill="#F2A65A" />
-          <ellipse cx="76" cy="34" rx="16" ry="4.5" fill="none" stroke="#FFD18A" strokeWidth="1.6" />
-        </>
-      );
-    case "pirate":
-      return (
-        <>
-          <defs>
-            <linearGradient id={`psky-${uid}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#8FE0FB" />
-              <stop offset="1" stopColor="#D6F4FF" />
-            </linearGradient>
-            <linearGradient id={`psea-${uid}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#1FB6C9" />
-              <stop offset="1" stopColor="#0E7C9E" />
-            </linearGradient>
-          </defs>
-          <rect x="8" y="10" width="84" height="84" fill={`url(#psky-${uid})`} />
-          <circle cx="26" cy="28" r="8" fill="#FFE082" />
-          <ellipse cx="46" cy="26" rx="12" ry="5" fill="#FFFFFF" opacity="0.85" />
-          <ellipse cx="74" cy="34" rx="10" ry="4" fill="#FFFFFF" opacity="0.8" />
-          <rect x="8" y="60" width="84" height="34" fill={`url(#psea-${uid})`} />
-          <path d="M8 62 Q26 57 44 62 T80 62 T96 62" stroke="#7FE3D6" strokeWidth="1.4" fill="none" opacity="0.7" />
-          <path d="M8 72 Q26 67 44 72 T80 72 T96 72" stroke="#7FE3D6" strokeWidth="1.4" fill="none" opacity="0.5" />
-          <path d="M76 60 Q82 54 88 60 L88 64 Q82 62 76 64 Z" fill="#3FA34D" />
-          <rect x="81" y="56" width="2" height="6" fill="#8B5A2B" />
-        </>
-      );
-    case "jungle":
-      return (
-        <>
-          <defs>
-            <linearGradient id={`jsky-${uid}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#CFF3C0" />
-              <stop offset="1" stopColor="#8FD66B" />
-            </linearGradient>
-          </defs>
-          <rect x="8" y="10" width="84" height="84" fill={`url(#jsky-${uid})`} />
-          <circle cx="72" cy="28" r="7" fill="#FFE9A8" />
-          <path d="M40 94 L40 56 L60 56 L60 94 Z" fill="#B79B6E" />
-          <path d="M38 56 L50 44 L62 56 Z" fill="#9E8B6B" />
-          <path d="M42 64 h16 M42 72 h16 M42 80 h16" stroke="#7A6B50" strokeWidth="1.2" />
-          <path d="M8 94 Q22 66 36 94 Z" fill="#2E7D32" />
-          <path d="M64 94 Q80 64 94 94 Z" fill="#2E7D32" />
-          <path d="M8 94 Q18 76 30 94 Z" fill="#3FA34D" />
-          <path d="M70 94 Q82 74 94 94 Z" fill="#3FA34D" />
-        </>
-      );
-    case "balloon":
-      return (
-        <>
-          <defs>
-            <linearGradient id={`bsky-${uid}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#5AC8FA" />
-              <stop offset="1" stopColor="#BFEBFF" />
-            </linearGradient>
-          </defs>
-          <rect x="8" y="10" width="84" height="84" fill={`url(#bsky-${uid})`} />
-          <ellipse cx="28" cy="30" rx="13" ry="5" fill="#FFFFFF" opacity="0.9" />
-          <ellipse cx="74" cy="44" rx="11" ry="4.5" fill="#FFFFFF" opacity="0.85" />
-          <path d="M8 94 L8 82 Q30 76 52 82 T92 80 L92 94 Z" fill="#6FBF4A" />
-          <path d="M8 94 L8 88 Q34 84 60 88 T92 88 L92 94 Z" fill="#4E9E33" />
-          <path d="M30 84 l8 0 M52 86 l10 0 M70 84 l8 0" stroke="#E8C84A" strokeWidth="1.2" opacity="0.7" />
-        </>
-      );
-    case "reef":
-      return (
-        <>
-          <defs>
-            <linearGradient id={`fsea-${uid}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#1FB6C9" />
-              <stop offset="0.6" stopColor="#0E7C9E" />
-              <stop offset="1" stopColor="#0A5E7C" />
-            </linearGradient>
-          </defs>
-          <rect x="8" y="10" width="84" height="84" fill={`url(#fsea-${uid})`} />
-          <path d="M30 10 L24 50 M52 10 L50 44 M74 10 L80 52" stroke="#9FE8F0" strokeWidth="3" opacity="0.18" />
-          <path d="M8 94 Q50 82 92 94 Z" fill="#EAD9A0" />
-          <path d="M16 94 q2 -14 6 -14 q4 0 6 14 Z" fill="#FF6F91" />
-          <path d="M70 94 q3 -16 7 -16 q4 0 7 16 Z" fill="#7B61FF" />
-          <path d="M40 94 q2 -10 5 -10 q3 0 5 10 Z" fill="#FFB85C" />
-          {[[30, 40], [60, 30], [50, 60]].map(([x, y], i) => (
-            <circle key={i} cx={x} cy={y} r={1.4} fill="#CFFFF6" opacity="0.7" />
-          ))}
-        </>
-      );
-    case "aurora":
-      return (
-        <>
-          <defs>
-            <linearGradient id={`asky-${uid}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#0B1E3B" />
-              <stop offset="1" stopColor="#13315C" />
-            </linearGradient>
-          </defs>
-          <rect x="8" y="10" width="84" height="84" fill={`url(#asky-${uid})`} />
-          <path d="M10 40 Q34 18 50 38 T90 34" stroke="#3DF5C0" strokeWidth="5" fill="none" opacity="0.45" />
-          <path d="M12 50 Q36 30 54 48 T92 44" stroke="#7AE0FF" strokeWidth="4" fill="none" opacity="0.4" />
-          <path d="M14 60 Q40 42 58 58 T90 56" stroke="#A06BFF" strokeWidth="3.5" fill="none" opacity="0.35" />
-          {[[22, 26, 1], [46, 22, 0.8], [78, 28, 1], [62, 18, 0.8]].map(([x, y, r], i) => (
-            <circle key={i} cx={x} cy={y} r={r} fill="#FFF4D0" />
-          ))}
-          <path d="M8 94 L8 78 L30 66 L52 80 L74 66 L92 80 L92 94 Z" fill="#C7D7E8" />
-          <path d="M8 94 L8 86 L34 74 L60 88 L92 78 L92 94 Z" fill="#9FB3CC" />
-        </>
-      );
-    case "desert":
-      return (
-        <>
-          <defs>
-            <linearGradient id={`xsky-${uid}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#FFC36B" />
-              <stop offset="1" stopColor="#FF7E5F" />
-            </linearGradient>
-          </defs>
-          <rect x="8" y="10" width="84" height="84" fill={`url(#xsky-${uid})`} />
-          <circle cx="50" cy="36" r="13" fill="#FFE08A" />
-          <circle cx="50" cy="36" r="18" fill="#FFE08A" opacity="0.3" />
-          <path d="M58 94 L74 60 L92 94 Z" fill="#C99A5B" />
-          <path d="M8 94 Q40 76 92 94 Z" fill="#E0A94E" />
-          <path d="M8 94 Q44 84 92 94 Z" fill="#F2C46B" />
-        </>
-      );
-  }
-}
-
-/** Pop-up subjects — drawn in the same 100×136 space, may exceed the panel. */
+/** Pop-up subjects — drawn in 100×136 page space, may exceed the window. */
 function renderPop(name: SceneName) {
   switch (name) {
     case "dragon":
@@ -411,16 +546,179 @@ function renderPop(name: SceneName) {
   }
 }
 
-/** Renders the clipped page + the pop-up subject for one page. */
-function PageContent({
+/* ───────── Page plates ───────── */
+
+const CAPTION_PROPS = {
+  textAnchor: "middle",
+  fontFamily: "Playfair Display, Georgia, serif",
+  fontStyle: "italic",
+  fontWeight: 600,
+  fontSize: 9,
+  fill: PURPLE,
+} as const;
+
+function CaptionBlock({ caption }: { caption: string }) {
+  return (
+    <>
+      <text x="50" y="109" {...CAPTION_PROPS}>
+        {caption}
+      </text>
+      <line x1="22" y1="118" x2="78" y2="118" stroke={PURPLE} strokeWidth="1" strokeOpacity="0.18" />
+      <line x1="26" y1="126" x2="74" y2="126" stroke={PURPLE} strokeWidth="1" strokeOpacity="0.18" />
+    </>
+  );
+}
+
+function FrameRects() {
+  return (
+    <>
+      <rect x="8" y="10" width="84" height="84" rx="7" fill="none" stroke="rgba(46,12,51,0.3)" strokeWidth="2.4" />
+      <rect x="8" y="10" width="84" height="84" rx="7" fill="none" stroke={PURPLE} strokeOpacity="0.4" strokeWidth="1.6" />
+      <rect x="8" y="10" width="84" height="84" rx="7" fill="none" stroke={GOLD} strokeOpacity="0.55" strokeWidth="0.8" />
+    </>
+  );
+}
+
+/** Paper plate with the diorama window CUT OUT — you see the recessed planes
+    through the hole, like a shadow box. */
+function WindowPlate({ caption, uid }: { caption: string; uid: string }) {
+  // Outer page rect + inner rounded window, filled even-odd so the window is
+  // a real hole in the paper.
+  const holed = "M0 0 h100 v136 h-100 Z M15 10 h70 a7 7 0 0 1 7 7 v70 a7 7 0 0 1 -7 7 h-70 a7 7 0 0 1 -7 -7 v-70 a7 7 0 0 1 7 -7 Z";
+  return (
+    <svg
+      viewBox="0 0 100 136"
+      width="100%"
+      height="100%"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id={`paper-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#FFFFFF" stopOpacity="0" />
+          <stop offset="1" stopColor="#F2E4CB" stopOpacity="0.85" />
+        </linearGradient>
+      </defs>
+      <path d={holed} fill={CREAM} fillRule="evenodd" />
+      <path d={holed} fill={`url(#paper-${uid})`} fillRule="evenodd" />
+      <FrameRects />
+      <CaptionBlock caption={caption} />
+    </svg>
+  );
+}
+
+/** Paper plate for a turning leaf: sky + far layers flattened onto the page
+    (the leaf's depth comes from its separate mid and pop planes). */
+function LeafPlate({ scene, uid }: { scene: { name: SceneName; caption: string }; uid: string }) {
+  const clip = `clip-${uid}`;
+  return (
+    <svg
+      viewBox="0 0 100 136"
+      width="100%"
+      height="100%"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="xMidYMid slice"
+      aria-hidden="true"
+    >
+      <defs>
+        <clipPath id={clip}>
+          <rect x="8" y="10" width="84" height="84" rx="7" />
+        </clipPath>
+        <linearGradient id={`paper-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#FFFFFF" stopOpacity="0" />
+          <stop offset="1" stopColor="#F2E4CB" stopOpacity="0.85" />
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="100" height="136" fill={CREAM} />
+      <rect x="0" y="0" width="100" height="136" fill={`url(#paper-${uid})`} />
+      <g clipPath={`url(#${clip})`}>
+        <g transform="translate(8 10)">
+          {renderSky(scene.name, `${uid}-s`)}
+          {renderFar(scene.name)}
+        </g>
+      </g>
+      <FrameRects />
+      <CaptionBlock caption={scene.caption} />
+    </svg>
+  );
+}
+
+/* ───────── Diorama assemblies ───────── */
+
+/** One standalone depth plane, positioned over the window rect. */
+function DepthPlane({
+  render,
+  name,
+  uid,
+  z,
+  over,
+  pageW,
+  pageH,
+}: {
+  render: (n: SceneName, u: string) => React.ReactNode;
+  name: SceneName;
+  uid: string;
+  z: number;
+  over: number;
+  pageW: number;
+  pageH: number;
+}) {
+  const r = panelRect(pageW, pageH, over);
+  return (
+    <div className="fb-plane" style={{ ...r, transform: `translateZ(${z}px)` }}>
+      <svg viewBox="0 0 84 84" width="100%" height="100%" fill="none" preserveAspectRatio="none" aria-hidden="true">
+        {render(name, uid)}
+      </svg>
+    </div>
+  );
+}
+
+/** A resting-page shadow box: recessed sky/far/mid planes behind a windowed
+    paper plate, subject popping out toward the reader. */
+function WindowScene({
   scene,
   uid,
+  pageW,
+  pageH,
+}: {
+  scene: { name: SceneName; caption: string };
+  uid: string;
+  pageW: number;
+  pageH: number;
+}) {
+  return (
+    <>
+      <DepthPlane render={renderSky} name={scene.name} uid={`${uid}-sky`} z={DEPTH.sky} over={OVERSIZE.sky} pageW={pageW} pageH={pageH} />
+      <DepthPlane render={renderFar} name={scene.name} uid={`${uid}-far`} z={DEPTH.far} over={OVERSIZE.far} pageW={pageW} pageH={pageH} />
+      <DepthPlane render={renderMid} name={scene.name} uid={`${uid}-mid`} z={DEPTH.mid} over={OVERSIZE.mid} pageW={pageW} pageH={pageH} />
+      <div className="flip-book__bg">
+        <WindowPlate caption={scene.caption} uid={uid} />
+      </div>
+      <div className="flip-book__pop" style={{ "--pz": `${DEPTH.basePop}px` } as CSSVars}>
+        <ScenePop name={scene.name} />
+      </div>
+    </>
+  );
+}
+
+/** A turning-leaf diorama: flattened backdrop on the paper, with mid and pop
+    planes floating above so the world parallaxes as the leaf turns. */
+function LeafScene({
+  scene,
+  uid,
+  pageW,
+  pageH,
   sheen,
   dur,
   delay,
 }: {
   scene: { name: SceneName; caption: string };
   uid: string;
+  pageW: number;
+  pageH: number;
   sheen?: boolean;
   dur?: number;
   delay?: number;
@@ -428,7 +726,7 @@ function PageContent({
   return (
     <>
       <div className="flip-book__bg">
-        <SceneBg name={scene.name} caption={scene.caption} uid={uid} />
+        <LeafPlate scene={scene} uid={uid} />
         <span className="flip-book__curl" />
         {sheen && (
           <span
@@ -437,7 +735,8 @@ function PageContent({
           />
         )}
       </div>
-      <div className="flip-book__pop">
+      <DepthPlane render={renderMid} name={scene.name} uid={`${uid}-mid`} z={DEPTH.leafMid} over={0} pageW={pageW} pageH={pageH} />
+      <div className="flip-book__pop" style={{ "--pz": `${DEPTH.leafPop}px` } as CSSVars}>
         <ScenePop name={scene.name} />
       </div>
     </>
@@ -467,6 +766,64 @@ function Flourish({ corner }: { corner: "tl" | "tr" | "bl" | "br" }) {
   );
 }
 
+/** The tome leans toward the reader's cursor so the diorama planes parallax.
+    Skipped for coarse/no-hover pointers and under reduced motion. The rAF
+    loop only runs while the tilt is still converging, then stops. */
+function usePointerTilt(ref: React.RefObject<HTMLDivElement | null>, enabled: boolean) {
+  useEffect(() => {
+    if (!enabled || typeof window === "undefined") return;
+    const el = ref.current;
+    if (!el) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const MAX_X = 9; // deg of rotateY toward the cursor
+    const MAX_Y = 6; // deg of rotateX
+    let targetX = 0;
+    let targetY = 0;
+    let curX = 0;
+    let curY = 0;
+    let raf = 0;
+    let running = false;
+
+    const clamp = (v: number) => Math.max(-1, Math.min(1, v));
+    const step = () => {
+      curX += (targetX - curX) * 0.08;
+      curY += (targetY - curY) * 0.08;
+      el.style.transform = `rotateX(${curY.toFixed(3)}deg) rotateY(${curX.toFixed(3)}deg)`;
+      if (Math.abs(targetX - curX) + Math.abs(targetY - curY) > 0.02) {
+        raf = requestAnimationFrame(step);
+      } else {
+        running = false;
+      }
+    };
+    const kick = () => {
+      if (!running) {
+        running = true;
+        raf = requestAnimationFrame(step);
+      }
+    };
+    const onMove = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      targetX = clamp((e.clientX - (r.left + r.width / 2)) / (r.width * 2.2)) * MAX_X;
+      targetY = clamp((e.clientY - (r.top + r.height / 2)) / (r.height * 2.2)) * -MAX_Y;
+      kick();
+    };
+    const onLeave = () => {
+      targetX = 0;
+      targetY = 0;
+      kick();
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+      cancelAnimationFrame(raf);
+    };
+  }, [ref, enabled]);
+}
+
 export default function FlippingBook({ size = 210, className = "", live = true }: FlippingBookProps) {
   const pageW = Math.round(size * 0.46);
   const pageH = Math.round(pageW * 1.36);
@@ -476,10 +833,13 @@ export default function FlippingBook({ size = 210, className = "", live = true }
   const stageW = spread + coverPad * 2 + edgeW * 2;
   const stageH = pageH + coverPad * 2 + Math.round(size * 0.16);
 
-  const leaves = 4;
-  const duration = 6; // seconds per leaf cycle
+  const tiltRef = useRef<HTMLDivElement>(null);
+  usePointerTilt(tiltRef, live);
 
-  // Each leaf shows one adventure lifting (front) and another settling (back).
+  // 3 leaves × 2 faces + the 2 resting pages = all 8 worlds, no repeats.
+  const leaves = 3;
+  const duration = 7; // seconds per leaf cycle
+
   const leafData = Array.from({ length: leaves }, (_, i) => ({
     front: SCENES[(i * 2 + 2) % SCENES.length],
     back: SCENES[(i * 2 + 3) % SCENES.length],
@@ -505,7 +865,7 @@ export default function FlippingBook({ size = 210, className = "", live = true }
       className={`flip-book-stage ${className}`}
       style={{ width: stageW, height: stageH }}
       role="img"
-      aria-label="An open book of adventures with its pages turning"
+      aria-label="An open pop-up book, each turning page opening onto a tiny three-dimensional world"
     >
       <span
         className="flip-book__halo"
@@ -515,86 +875,88 @@ export default function FlippingBook({ size = 210, className = "", live = true }
         }}
       />
 
-      <div className={`flip-book${live ? " flip-book--live" : ""}`} style={{ width: spread, height: pageH }}>
-        <span className="flip-book__shadow" style={{ width: spread * 0.92, height: pageH * 0.18 }} />
+      <div className="flip-book-tilt" ref={tiltRef}>
+        <div className={`flip-book${live ? " flip-book--live" : ""}`} style={{ width: spread, height: pageH }}>
+          <span className="flip-book__shadow" style={{ width: spread * 0.92, height: pageH * 0.18 }} />
 
-        <span
-          className="flip-book__cover"
-          style={{ width: spread + coverPad * 2, height: pageH + coverPad * 2 }}
-        >
-          <Flourish corner="tl" />
-          <Flourish corner="tr" />
-          <Flourish corner="bl" />
-          <Flourish corner="br" />
-        </span>
-
-        <span className="flip-book__edge" style={{ left: -edgeW, width: edgeW, height: Math.round(pageH * 0.96) }} />
-        <span className="flip-book__edge" style={{ left: spread, width: edgeW, height: Math.round(pageH * 0.96) }} />
-
-        {/* Resting spread */}
-        <BasePage side="left" width={pageW} height={pageH} />
-        <BasePage side="right" width={pageW} height={pageH} left={pageW} />
-
-        <span className="flip-book__spine" style={{ left: pageW - 2, width: 4, height: pageH }} />
-
-        {accents.map((a, i) => (
-          <svg
-            key={i}
-            className="flip-book__accent"
-            width={a.s}
-            height={a.s}
-            viewBox="0 0 10 10"
-            style={{ left: spread * a.x, top: pageH * a.y, animationDelay: `${a.delay}s` } as CSSVars}
-            aria-hidden="true"
+          <span
+            className="flip-book__cover"
+            style={{ width: spread + coverPad * 2, height: pageH + coverPad * 2 }}
           >
-            <path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill="currentColor" />
-          </svg>
-        ))}
+            <Flourish corner="tl" />
+            <Flourish corner="tr" />
+            <Flourish corner="bl" />
+            <Flourish corner="br" />
+          </span>
 
-        {/* Riffling leaves */}
-        {leafData.map((leaf, i) => (
-          <div
-            key={i}
-            className="flip-book__leaf"
-            style={
-              { left: pageW, width: pageW, height: pageH, "--dur": `${duration}s`, "--delay": `${leaf.delay}s` } as CSSVars
-            }
-          >
-            <div className="flip-book__face flip-book__face--front">
-              <PageContent scene={leaf.front} uid={`f${i}`} sheen dur={duration} delay={leaf.delay} />
-            </div>
-            <div className="flip-book__face flip-book__face--back">
-              <PageContent scene={leaf.back} uid={`b${i}`} />
-            </div>
-          </div>
-        ))}
+          <span className="flip-book__edge" style={{ left: -edgeW, width: edgeW, height: Math.round(pageH * 0.96) }} />
+          <span className="flip-book__edge" style={{ left: spread, width: edgeW, height: Math.round(pageH * 0.96) }} />
 
-        <span className="flip-book__light" style={{ width: spread, height: pageH }} />
+          {/* Resting spread — two shadow-box worlds */}
+          <BasePage side="left" width={pageW} height={pageH} />
+          <BasePage side="right" width={pageW} height={pageH} left={pageW} />
 
-        <div className="flip-book__embers" style={{ width: spread, height: Math.round(pageH * 0.7) }}>
-          {embers.map((e, i) => (
-            <span
+          <span className="flip-book__spine" style={{ left: pageW - 2, width: 4, height: pageH }} />
+
+          {accents.map((a, i) => (
+            <svg
               key={i}
-              className="flip-book__ember"
-              style={
-                {
-                  left: `${e.left}%`,
-                  width: e.size,
-                  height: e.size,
-                  "--drift": `${e.drift}px`,
-                  "--dur": `${e.dur}s`,
-                  "--delay": `${e.delay}s`,
-                } as CSSVars
-              }
-            />
+              className="flip-book__accent"
+              width={a.s}
+              height={a.s}
+              viewBox="0 0 10 10"
+              style={{ left: spread * a.x, top: pageH * a.y, animationDelay: `${a.delay}s` } as CSSVars}
+              aria-hidden="true"
+            >
+              <path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill="currentColor" />
+            </svg>
           ))}
+
+          {/* Riffling leaves, each face its own layered world */}
+          {leafData.map((leaf, i) => (
+            <div
+              key={i}
+              className="flip-book__leaf"
+              style={
+                { left: pageW, width: pageW, height: pageH, "--dur": `${duration}s`, "--delay": `${leaf.delay}s` } as CSSVars
+              }
+            >
+              <div className="flip-book__face flip-book__face--front">
+                <LeafScene scene={leaf.front} uid={`f${i}`} pageW={pageW} pageH={pageH} sheen dur={duration} delay={leaf.delay} />
+              </div>
+              <div className="flip-book__face flip-book__face--back">
+                <LeafScene scene={leaf.back} uid={`b${i}`} pageW={pageW} pageH={pageH} />
+              </div>
+            </div>
+          ))}
+
+          <span className="flip-book__light" style={{ width: spread, height: pageH }} />
+
+          <div className="flip-book__embers" style={{ width: spread, height: Math.round(pageH * 0.7) }}>
+            {embers.map((e, i) => (
+              <span
+                key={i}
+                className="flip-book__ember"
+                style={
+                  {
+                    left: `${e.left}%`,
+                    width: e.size,
+                    height: e.size,
+                    "--drift": `${e.drift}px`,
+                    "--dur": `${e.dur}s`,
+                    "--delay": `${e.delay}s`,
+                  } as CSSVars
+                }
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-/** A resting page of the open book — a pop-up diorama. */
+/** A resting page of the open book — a shadow-box diorama. */
 function BasePage({
   side,
   width,
@@ -606,11 +968,12 @@ function BasePage({
   height: number;
   left?: number;
 }) {
-  // Left rests on a dusk peak; the more-visible right page is the starry sky.
+  // Left rests on Dragon's Peak at dusk; the more-visible right page opens
+  // onto the starfield.
   const scene = side === "left" ? SCENES[0] : SCENES[1];
   return (
     <div className={`flip-book__base flip-book__base--${side}`} style={{ left, width, height }}>
-      <PageContent scene={scene} uid={`base-${side}`} />
+      <WindowScene scene={scene} uid={`base-${side}`} pageW={width} pageH={height} />
     </div>
   );
 }
