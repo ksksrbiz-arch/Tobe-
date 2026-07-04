@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 /**
  * <FlippingBook /> — a magical leather-bound tome for the hero, where every
@@ -8,17 +8,22 @@ import React, { useEffect, useRef } from "react";
  * dioramas: through a window cut in the paper you look into a recessed scene
  * built from real depth planes (sky, far ground, near ground, each at its own
  * translateZ), while the subject leaps out of the window toward you. Turning
- * leaves carry their own elevated parallax layers, so each world visibly
- * separates in depth as the page lifts and settles. The whole tome gently
- * tilts to follow the reader's cursor, which makes the planes parallax like a
- * real pop-up theatre. Gold embers drift up from the open spread. Pure CSS 3D
- * — no WebGL, no dependencies.
+ * leaves carry their own elevated parallax layers with genuine pop-up-book
+ * physics — paper constructs collapse flat as a page lifts and spring erect
+ * as it lays down — and the resting worlds spring up once when the book
+ * wakes. A shaft of golden light rises from the gutter, the whole tome leans
+ * toward the reader's cursor, gold embers drift up from the open spread, and
+ * every so often a small dragon pops out of the gutter to look around or take
+ * a sparkle-trailed flight over the pages. Pure CSS 3D — no WebGL, no
+ * dependencies.
  *
  * Performance: all animation is transform/opacity only, gated behind the
  * `--live` class. The hero mounts the book static and flips `live` on only
  * after first paint (never under reduced motion), so the LCP headline is never
  * blocked and steady-state work stays on the GPU. The pointer tilt runs a
- * self-stopping rAF lerp that writes one transform — no per-frame layout.
+ * self-stopping rAF lerp that writes one transform — no per-frame layout. The
+ * dragon mounts only for the few seconds of each antic and never appears
+ * under reduced motion.
  */
 
 interface FlippingBookProps {
@@ -735,7 +740,16 @@ function LeafScene({
           />
         )}
       </div>
-      <DepthPlane render={renderMid} name={scene.name} uid={`${uid}-mid`} z={DEPTH.leafMid} over={0} pageW={pageW} pageH={pageH} />
+      {/* --mz drives the transform so the fold keyframes (midCollapse /
+          midErect) can rotate this plane while keeping its depth. */}
+      <div
+        className="fb-plane fb-plane--leafmid"
+        style={{ ...panelRect(pageW, pageH, 0), "--mz": `${DEPTH.leafMid}px`, transform: "translateZ(var(--mz))" } as CSSVars}
+      >
+        <svg viewBox="0 0 84 84" width="100%" height="100%" fill="none" preserveAspectRatio="none" aria-hidden="true">
+          {renderMid(scene.name, `${uid}-mid`)}
+        </svg>
+      </div>
       <div className="flip-book__pop" style={{ "--pz": `${DEPTH.leafPop}px` } as CSSVars}>
         <ScenePop name={scene.name} />
       </div>
@@ -764,6 +778,87 @@ function Flourish({ corner }: { corner: "tl" | "tr" | "bl" | "br" }) {
       <circle cx="5" cy="5" r="1.4" fill="currentColor" />
     </svg>
   );
+}
+
+/** The book's resident baby dragon — brand purple with gilded wings. Wings
+    flap, eyes blink, paws grip the gutter; the antic choreography lives on
+    the surrounding .fb-sprite element. */
+function DragonSprite() {
+  return (
+    <svg
+      className="fb-sprite__body"
+      viewBox="0 0 64 64"
+      width="100%"
+      height="100%"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <ellipse cx="32" cy="34" rx="26" ry="24" fill="#F1BB1A" opacity="0.2" />
+      <g className="fb-sprite__wing fb-sprite__wing--l">
+        <path d="M20 34 Q4 24 2 12 Q14 16 20 24 Q16 14 20 8 Q26 18 26 30 Z" fill="#F1BB1A" />
+        <path d="M20 34 Q10 24 6 14 M20 34 Q15 20 20 10" stroke="#B7860B" strokeWidth="1.2" fill="none" opacity="0.6" />
+      </g>
+      <g className="fb-sprite__wing fb-sprite__wing--r">
+        <g transform="translate(64 0) scale(-1 1)">
+          <path d="M20 34 Q4 24 2 12 Q14 16 20 24 Q16 14 20 8 Q26 18 26 30 Z" fill="#F1BB1A" />
+          <path d="M20 34 Q10 24 6 14 M20 34 Q15 20 20 10" stroke="#B7860B" strokeWidth="1.2" fill="none" opacity="0.6" />
+        </g>
+      </g>
+      <path d="M22 16 L19 7 L27 12 Z" fill="#F5CC45" />
+      <path d="M42 16 L45 7 L37 12 Z" fill="#F5CC45" />
+      <ellipse cx="32" cy="34" rx="16" ry="15" fill="#8B2E90" />
+      <ellipse cx="32" cy="40" rx="9.5" ry="7.5" fill="#F5CC45" />
+      <circle cx="20.5" cy="36" r="2.6" fill="#C04BA0" opacity="0.8" />
+      <circle cx="43.5" cy="36" r="2.6" fill="#C04BA0" opacity="0.8" />
+      <circle cx="25.5" cy="29" r="4" fill="#FFFFFF" />
+      <circle cx="38.5" cy="29" r="4" fill="#FFFFFF" />
+      <circle cx="26.3" cy="29.6" r="2" fill="#1A1A1A" />
+      <circle cx="39.3" cy="29.6" r="2" fill="#1A1A1A" />
+      <circle cx="27" cy="28.8" r="0.7" fill="#FFFFFF" />
+      <circle cx="40" cy="28.8" r="0.7" fill="#FFFFFF" />
+      <rect className="fb-sprite__lid" x="21.5" y="25" width="8" height="8" rx="4" fill="#8B2E90" />
+      <rect className="fb-sprite__lid" x="34.5" y="25" width="8" height="8" rx="4" fill="#8B2E90" />
+      <path d="M28 35.5 Q32 39.5 36 35.5" stroke="#5A1560" strokeWidth="1.6" strokeLinecap="round" fill="none" />
+      <circle cx="30" cy="33.5" r="0.8" fill="#5A1560" />
+      <circle cx="34" cy="33.5" r="0.8" fill="#5A1560" />
+      <ellipse cx="23" cy="49" rx="4.4" ry="3.2" fill="#6B1C6F" />
+      <ellipse cx="41" cy="49" rx="4.4" ry="3.2" fill="#6B1C6F" />
+      <path d="M20.5 48 v2 M23 48.6 v2 M25.5 48 v2 M38.5 48 v2 M41 48.6 v2 M43.5 48 v2" stroke="#F5CC45" strokeWidth="0.9" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+const SPRITE_SPARKS = [
+  { left: "-26%", top: "18%", d: 0.35, s: 9 },
+  { left: "108%", top: "8%", d: 0.85, s: 7 },
+  { left: "-14%", top: "-16%", d: 1.4, s: 8 },
+  { left: "104%", top: "42%", d: 2.0, s: 7 },
+];
+
+type Antic = { kind: "peek" | "flight"; side: "left" | "right" };
+
+/** Randomly summons the dragon: a first hello a few seconds after the book
+    wakes, then every 9–20s while the tab is visible. Skipped entirely under
+    reduced motion. Re-arms itself when an antic finishes (antic → null). */
+function useDragonAntics(live: boolean, antic: Antic | null, setAntic: (a: Antic) => void, seen: React.MutableRefObject<boolean>) {
+  useEffect(() => {
+    if (!live || antic || typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let t = 0;
+    const arm = (ms: number) => {
+      t = window.setTimeout(() => {
+        if (document.hidden) {
+          arm(12000);
+          return;
+        }
+        seen.current = true;
+        setAntic({ kind: Math.random() < 0.4 ? "flight" : "peek", side: Math.random() < 0.5 ? "left" : "right" });
+      }, ms);
+    };
+    arm(seen.current ? 9000 + Math.random() * 11000 : 4200 + Math.random() * 2600);
+    return () => window.clearTimeout(t);
+  }, [live, antic, setAntic, seen]);
 }
 
 /** The tome leans toward the reader's cursor so the diorama planes parallax.
@@ -836,6 +931,10 @@ export default function FlippingBook({ size = 210, className = "", live = true }
   const tiltRef = useRef<HTMLDivElement>(null);
   usePointerTilt(tiltRef, live);
 
+  const [antic, setAnticState] = useState<Antic | null>(null);
+  const anticSeen = useRef(false);
+  useDragonAntics(live, antic, setAnticState, anticSeen);
+
   // 3 leaves × 2 faces + the 2 resting pages = all 8 worlds, no repeats.
   const leaves = 3;
   const duration = 7; // seconds per leaf cycle
@@ -865,7 +964,7 @@ export default function FlippingBook({ size = 210, className = "", live = true }
       className={`flip-book-stage ${className}`}
       style={{ width: stageW, height: stageH }}
       role="img"
-      aria-label="An open pop-up book, each turning page opening onto a tiny three-dimensional world"
+      aria-label="An open pop-up book — turning pages open onto tiny three-dimensional worlds, and a small dragon peeks out now and then"
     >
       <span
         className="flip-book__halo"
@@ -931,6 +1030,37 @@ export default function FlippingBook({ size = 210, className = "", live = true }
           ))}
 
           <span className="flip-book__light" style={{ width: spread, height: pageH }} />
+
+          {/* Golden light rising out of the gutter */}
+          <span className="flip-book__shaft" />
+
+          {antic && (
+            <div className={`fb-sprite-port fb-sprite-port--${antic.kind} fb-sprite-port--${antic.side}`}>
+              <div
+                className={`fb-sprite fb-sprite--${antic.kind}`}
+                onAnimationEnd={(e) => {
+                  // Only the antic choreography on this element ends the
+                  // visit — ignore bubbled wing-flap/blink/spark events.
+                  if (e.target === e.currentTarget) setAnticState(null);
+                }}
+              >
+                <DragonSprite />
+                {SPRITE_SPARKS.map((sp, i) => (
+                  <svg
+                    key={i}
+                    className="fb-sprite__spark"
+                    width={sp.s}
+                    height={sp.s}
+                    viewBox="0 0 10 10"
+                    style={{ left: sp.left, top: sp.top, animationDelay: `${sp.d}s` }}
+                    aria-hidden="true"
+                  >
+                    <path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill="#F1BB1A" />
+                  </svg>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="flip-book__embers" style={{ width: spread, height: Math.round(pageH * 0.7) }}>
             {embers.map((e, i) => (
