@@ -15,13 +15,21 @@ import type { NextConfig } from "next";
 // required because the app emits inline JSON-LD, the Consent Mode bootstrap, and
 // the Plausible/GTM init snippets, none of which can carry a nonce under static
 // prerendering.
+//
+// `blob:` is allowed on connect-src (alongside the img-src/media-src/default-src
+// entries that already permit it) because the homepage hero's three.js
+// GLTFLoader reads textures embedded inside a .glb by minting a same-origin
+// blob: URL and fetching it — without this, those fetches are refused and the
+// models load untextured. blob: URLs can only reference data the page's own
+// scripts created, so this is a same-origin-only widening, far narrower than the
+// `https:` already present here.
 const CSP = [
   "default-src 'self' https: data: blob:",
   "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:",
   "style-src 'self' 'unsafe-inline' https:",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data: https:",
-  "connect-src 'self' https:",
+  "connect-src 'self' https: blob:",
   "frame-src 'self' https:",
   "media-src 'self' https: data: blob:",
   "object-src 'none'",
