@@ -8,5 +8,9 @@ Kenney's own request.
 - `ship-pirate-small.glb`, `palm-bend.glb` — Pirate Kit
 - `tree-detailed.glb`, `rock-tall-a.glb`, `rock-tall-b.glb`, `rock-tall-c.glb`,
   `rock-tall-d.glb` — Nature Kit
+- `craft-racer.glb`, `astronaut.glb`, `satellite-dish.glb` — Space Kit
+- `castle/tower-base.glb`, `castle/tower-mid.glb`, `castle/tower-roof.glb`
+  — Castle Kit (kept in their own folder with their own `Textures/colormap.png`,
+  since the Castle Kit's colormap differs from the Pirate Kit's)
 
 Used in `components/MagicBook3D.tsx` (the homepage hero animation).

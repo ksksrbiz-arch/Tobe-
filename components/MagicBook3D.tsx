@@ -15,9 +15,15 @@ import BookLogo from "./BookLogo";
  * Coral Deep, Aurora Camp, Desert Caravan. Clicking the book turns the page
  * immediately. The camera drifts and leans toward the pointer.
  *
+ * The whole scene sits in an atmospheric pink/lavender cloudscape with fog for
+ * depth, PBR image-based lighting, and a bloom post-process pass so candlelight,
+ * god-rays and glowing crystals bloom. Dragon's Peak is the fully-dressed
+ * showcase: a Kenney stone keep, waterfalls spilling off the island rim, and
+ * emissive glowing crystals.
+ *
  * Performance & resilience:
- * - three.js loads inside this already-lazy client-only chunk, so nothing
- *   here ever competes with the LCP headline.
+ * - three.js + postprocessing load inside this already-lazy client-only chunk,
+ *   so nothing here ever competes with the LCP headline.
  * - The render loop pauses whenever the tab is hidden or the book scrolls
  *   out of view (IntersectionObserver), and the pixel ratio is capped at 2.
  * - Under prefers-reduced-motion the scene renders a single static frame —
@@ -35,6 +41,13 @@ interface MagicBook3DProps {
 
 type ThreeNS = typeof import("three");
 type GLTFLoaderCtor = typeof import("three/examples/jsm/loaders/GLTFLoader.js").GLTFLoader;
+type PostFX = {
+  EffectComposer: typeof import("three/examples/jsm/postprocessing/EffectComposer.js").EffectComposer;
+  RenderPass: typeof import("three/examples/jsm/postprocessing/RenderPass.js").RenderPass;
+  UnrealBloomPass: typeof import("three/examples/jsm/postprocessing/UnrealBloomPass.js").UnrealBloomPass;
+  OutputPass: typeof import("three/examples/jsm/postprocessing/OutputPass.js").OutputPass;
+  RoomEnvironment: typeof import("three/examples/jsm/environments/RoomEnvironment.js").RoomEnvironment;
+};
 
 const COLORS = {
   purple: 0x6b1c6f,
@@ -78,12 +91,24 @@ export default function MagicBook3D({ width = 330, height = 260, className = "",
     let disposed = false;
     let cleanup: (() => void) | null = null;
     (async () => {
-      const [T, { GLTFLoader }] = await Promise.all([
+      const [T, { GLTFLoader }, composer, renderPass, bloom, output, roomEnv] = await Promise.all([
         import("three"),
         import("three/examples/jsm/loaders/GLTFLoader.js"),
+        import("three/examples/jsm/postprocessing/EffectComposer.js"),
+        import("three/examples/jsm/postprocessing/RenderPass.js"),
+        import("three/examples/jsm/postprocessing/UnrealBloomPass.js"),
+        import("three/examples/jsm/postprocessing/OutputPass.js"),
+        import("three/examples/jsm/environments/RoomEnvironment.js"),
       ]);
       if (disposed) return;
-      const c = await buildScene(T, GLTFLoader, host, width, height, live, () => setReady(true));
+      const fx: PostFX = {
+        EffectComposer: composer.EffectComposer,
+        RenderPass: renderPass.RenderPass,
+        UnrealBloomPass: bloom.UnrealBloomPass,
+        OutputPass: output.OutputPass,
+        RoomEnvironment: roomEnv.RoomEnvironment,
+      };
+      const c = await buildScene(T, GLTFLoader, fx, host, width, height, live, () => setReady(true));
       // buildScene awaits model fetches internally, so disposal can land while
       // it's still in flight — if so, clean up immediately since nothing else
       // will ever call the cleanup this returned.
@@ -118,6 +143,7 @@ export default function MagicBook3D({ width = 330, height = 260, className = "",
 async function buildScene(
   T: ThreeNS,
   GLTFLoaderCtor: GLTFLoaderCtor,
+  fx: PostFX,
   host: HTMLDivElement,
   width: number,
   height: number,
@@ -128,7 +154,9 @@ async function buildScene(
 
   let renderer: THREE.WebGLRenderer;
   try {
-    renderer = new T.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "low-power" });
+    // Opaque canvas now (the atmospheric sky fills it), so alpha isn't needed —
+    // and bloom composites cleanly over a solid background.
+    renderer = new T.WebGLRenderer({ antialias: true, powerPreference: "low-power" });
   } catch {
     return null; // No WebGL — the BookLogo fallback stays.
   }
@@ -140,7 +168,7 @@ async function buildScene(
   renderer.setPixelRatio(Math.min((window.devicePixelRatio || 1) * 1.35, ssBudget));
   renderer.setSize(width, height);
   renderer.toneMapping = T.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.06;
+  renderer.toneMappingExposure = 0.82;
   // Soft shadow maps sell the depth; skip them on very small CPUs.
   const fancyShadows = cores >= 6;
   renderer.shadowMap.enabled = fancyShadows;
@@ -179,8 +207,18 @@ async function buildScene(
     rockB: "/models/rock-tall-b.glb",
     rockC: "/models/rock-tall-c.glb",
     rockD: "/models/rock-tall-d.glb",
+    craft: "/models/craft-racer.glb",
+    astronaut: "/models/astronaut.glb",
+    satellite: "/models/satellite-dish.glb",
+    towerBase: "/models/castle/tower-base.glb",
+    towerMid: "/models/castle/tower-mid.glb",
+    towerRoof: "/models/castle/tower-roof.glb",
   } as const;
   type ModelKey = keyof typeof MODEL_URLS;
+  // Space Kit models are laid out on an offset grid in the source, so their
+  // local origin sits far from the geometry. Recenter these on their bounding
+  // box so placeModel()/orbits pivot around the model itself.
+  const RECENTER: ReadonlySet<ModelKey> = new Set(["craft", "astronaut", "satellite"]);
   const gltfLoader = new GLTFLoaderCtor();
   const loadedModels: Partial<Record<ModelKey, THREE.Object3D>> = {};
   const loadedGeometries: THREE.BufferGeometry[] = [];
@@ -208,7 +246,20 @@ async function buildScene(
             loadedMaterials.push(...mats);
           }
         });
-        loadedModels[key] = gltf.scene;
+        if (RECENTER.has(key)) {
+          // Offset the loaded scene inside a wrapper so the wrapper's origin
+          // sits at the model's center. (Offsetting the scene's own position
+          // wouldn't survive placeModel(), which overwrites position on clone.)
+          const box = new T.Box3().setFromObject(gltf.scene);
+          const c = new T.Vector3();
+          box.getCenter(c);
+          gltf.scene.position.sub(c);
+          const wrapper = new T.Group();
+          wrapper.add(gltf.scene);
+          loadedModels[key] = wrapper;
+        } else {
+          loadedModels[key] = gltf.scene;
+        }
       } catch {
         // Same-origin static asset — a failure here (e.g. offline dev server)
         // just means placeModel() returns null and that prop is skipped.
@@ -544,12 +595,40 @@ async function buildScene(
   camera.position.set(0, 1.44, 3.4);
   camera.lookAt(0, 0.52, 0);
 
+  // Atmospheric fantasy-cloudscape sky (matches the reference's pink/lavender
+  // mood) painted as a vertical gradient and set as the scene background.
+  const skyTex = makeTex(64, 256, (ctx, w, h) => {
+    const g = ctx.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, "#8FB6E8"); // periwinkle up top
+    g.addColorStop(0.42, "#C9B6E4"); // lavender
+    g.addColorStop(0.72, "#EEC4DE"); // rose
+    g.addColorStop(1, "#F6D9C8"); // warm haze at the horizon
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+  });
+  skyTex.colorSpace = T.SRGBColorSpace;
+  scene.background = skyTex;
+  // Fog blends the deeper geometry into the rosy haze for depth. Pushed out so
+  // the book stays crisp and only the far background hazes.
+  scene.fog = new T.Fog(0xd8c1d4, 4.8, 9.5);
+
+  // PBR image-based lighting from a procedural room environment (no asset
+  // download) so MeshStandardMaterial surfaces get real reflections/roughness.
+  const pmrem = new T.PMREMGenerator(renderer);
+  pmrem.compileEquirectangularShader();
+  const envTex = pmrem.fromScene(new fx.RoomEnvironment(), 0.04).texture;
+  scene.environment = envTex;
+  // RoomEnvironment is a bright studio light; at full strength it floods every
+  // material with white ambient. Keep it very low so it only adds subtle
+  // reflection to the PBR hero elements without washing out the scene.
+  scene.environmentIntensity = 0.22;
+
   const root = new T.Group(); // pointer-parallax pivot
   scene.add(root);
 
-  root.add(new T.AmbientLight(0xfff1dc, 0.35));
-  root.add(new T.HemisphereLight(0xfff6e6, 0x8a5a9e, 0.75));
-  const key = new T.DirectionalLight(0xfff6e6, 1.7);
+  root.add(new T.AmbientLight(0xfff1dc, 0.22));
+  root.add(new T.HemisphereLight(0xdce8ff, 0x9a6ab0, 0.5));
+  const key = new T.DirectionalLight(0xfff2e0, 1.5);
   key.position.set(2, 3.2, 2.2);
   if (fancyShadows) {
     key.castShadow = true;
@@ -574,6 +653,19 @@ async function buildScene(
   const WHITE = new T.Color(0xffffff);
   const accent = new T.Color(WORLDS[0].accent);
   const accentTarget = new T.Color(WORLDS[0].accent);
+
+  /* ---------- post-processing: bloom for the magical glow ---------- */
+
+  const composer = new fx.EffectComposer(renderer);
+  composer.setPixelRatio(renderer.getPixelRatio());
+  composer.setSize(width, height);
+  composer.addPass(new fx.RenderPass(scene, camera));
+  // Only genuinely bright / emissive pixels glow (high threshold) so the sky
+  // and paper don't wash out — candlelit windows, god-rays, embers, crystals.
+  const bloomPass = new fx.UnrealBloomPass(new T.Vector2(width, height), 0.36, 0.3, 0.92);
+  composer.addPass(bloomPass);
+  composer.addPass(new fx.OutputPass());
+  const renderFrame = () => composer.render();
 
   /* ---------- materials & mesh helpers ---------- */
 
@@ -994,6 +1086,93 @@ async function buildScene(
     return grp;
   };
 
+  // Repeating vertical water-streak texture for waterfalls (scrolled per-fall).
+  const waterfallTex = makeTex(32, 64, (ctx, w, h) => {
+    ctx.clearRect(0, 0, w, h);
+    const grad = ctx.createLinearGradient(0, 0, w, 0);
+    grad.addColorStop(0, "rgba(150,210,255,0)");
+    grad.addColorStop(0.5, "rgba(200,235,255,0.55)");
+    grad.addColorStop(1, "rgba(150,210,255,0)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+    for (let i = 0; i < 16; i++) {
+      const x = Math.random() * w;
+      ctx.strokeStyle = `rgba(255,255,255,${0.2 + Math.random() * 0.5})`;
+      ctx.lineWidth = 0.5 + Math.random() * 1.3;
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x + (Math.random() - 0.5) * 2, h);
+      ctx.stroke();
+    }
+  });
+
+  // A waterfall cascading off the island rim — a tapered translucent sheet with
+  // a scrolling streak texture and a soft mist glow at top and bottom. Each
+  // fall scrolls its own cloned texture so they don't march in lockstep.
+  const addWaterfall = (grp: THREE.Group, anims: ((t: number) => void)[], angle: number, len = 0.5, rimR = 0.31) => {
+    const tex = track(waterfallTex.clone());
+    tex.wrapT = T.RepeatWrapping;
+    tex.wrapS = T.ClampToEdgeWrapping;
+    tex.needsUpdate = true;
+    const geo = g(new T.PlaneGeometry(0.14, len, 1, 8));
+    const pos = geo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      const tt = (len / 2 - pos.getY(i)) / len; // 0 top → 1 bottom
+      pos.setX(i, pos.getX(i) * (1 - tt * 0.4)); // taper narrower at the base
+      pos.setZ(i, Math.sin(tt * Math.PI) * 0.025); // gentle belly outward
+    }
+    geo.computeVertexNormals();
+    const mat = track(
+      new T.MeshBasicMaterial({
+        map: tex,
+        transparent: true,
+        opacity: 0.75,
+        side: T.DoubleSide,
+        depthWrite: false,
+        blending: T.AdditiveBlending,
+        color: 0xbfe8ff,
+        fog: false,
+      }),
+    );
+    const wf = new T.Group();
+    const sheet = new T.Mesh(geo, mat);
+    sheet.position.y = -len / 2 + 0.02;
+    wf.add(sheet);
+    const topMist = spriteOf(softDot, 0.11, 0.5, true);
+    (topMist.material as THREE.SpriteMaterial).color.setHex(0xdff2ff);
+    topMist.position.y = 0.03;
+    const botMist = spriteOf(softDot, 0.14, 0.5, true);
+    (botMist.material as THREE.SpriteMaterial).color.setHex(0xdff2ff);
+    botMist.position.y = -len + 0.04;
+    wf.add(topMist, botMist);
+    wf.position.set(Math.cos(angle) * rimR, 0.0, Math.sin(angle) * rimR * 0.78);
+    wf.rotation.y = -angle + Math.PI / 2;
+    grp.add(wf);
+    const scroll = 0.6 + Math.random() * 0.3;
+    anims.push((t) => {
+      tex.offset.y = -(t * scroll) % 1;
+      (botMist.material as THREE.SpriteMaterial).opacity = 0.4 + Math.sin(t * 6 + angle) * 0.15;
+    });
+  };
+
+  // A glowing crystal spire — emissive (so it blooms) with a colored halo.
+  // Echoes the reference's glowing flora/gems; the magic really shows under the
+  // new bloom pass.
+  const glowCrystal = (grp: THREE.Group, anims: ((t: number) => void)[], color: number, x: number, y: number, z: number, scale: number) => {
+    const mat = track(new T.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 1.7, roughness: 0.25, metalness: 0.0 }));
+    const crystal = mesh(g(new T.OctahedronGeometry(scale)), mat, x, y, z);
+    crystal.scale.y = 1.9;
+    grp.add(crystal);
+    const glow = spriteOf(glowTex, scale * 5, 0.6, true);
+    glow.position.set(x, y, z);
+    (glow.material as THREE.SpriteMaterial).color.setHex(color);
+    grp.add(glow);
+    anims.push((t) => {
+      crystal.rotation.y = t * 0.6 + x * 8;
+      (glow.material as THREE.SpriteMaterial).opacity = 0.4 + Math.sin(t * 2.2 + x * 10) * 0.22;
+    });
+  };
+
   // A smooth cone reads as a traffic cone, not a mountain — jittering the
   // base ring outward/inward at random per-vertex breaks the silhouette into
   // a craggy, rock-faceted peak while the apex stays a clean point.
@@ -1096,23 +1275,35 @@ async function buildScene(
         group.add(islandBase(0x2c7a7b, "grass", anims));
         // Real Kenney rock formations (Nature Kit, CC0) in place of jittered
         // cones — genuine rock-face detail instead of a faceted primitive.
-        const peak1 = placeModel("rockA", -0.12, 0.051, 0.02, 0.42, 0.5);
-        const peak2 = placeModel("rockB", 0.14, 0.047, -0.08, 0.34, 2.6);
-        const peak3 = placeModel("rockC", 0.05, 0.044, 0.16, 0.28, 4.1);
+        // Rock peaks flank the keep — moved outward/smaller so the castle
+        // reads as the clear centerpiece rather than getting lost among them.
+        const peak1 = placeModel("rockA", -0.24, 0.051, 0.02, 0.34, 0.5);
+        const peak2 = placeModel("rockB", 0.24, 0.047, -0.08, 0.3, 2.6);
+        const peak3 = placeModel("rockC", -0.08, 0.044, 0.24, 0.2, 4.1);
         for (const peak of [peak1, peak2, peak3]) if (peak) group.add(peak);
-        const tower = mesh(g(new T.CylinderGeometry(0.035, 0.045, 0.16, 6)), lam(0x241a38), 0.16, 0.36, -0.08);
-        const roof = mesh(g(new T.ConeGeometry(0.055, 0.08, 6)), lam(0x2e2447), 0.16, 0.48, -0.08);
-        const win = spriteOf(glowTex, 0.09, 0.9, true);
-        win.position.set(0.16, 0.38, -0.02);
-        group.add(tower, roof, win);
+        // A real Kenney stone keep (Castle Kit, CC0) assembled from base + mid
+        // + roof, standing proud at the island's center — replaces the plain
+        // cylinder tower.
+        const towerBase = placeModel("towerBase", 0, 0, 0, 1, 0);
+        const towerMid = placeModel("towerMid", 0, 1.01, 0, 1, 0);
+        const towerRoof = placeModel("towerRoof", 0, 2.02, 0, 1, 0);
+        const castle = new T.Group();
+        for (const piece of [towerBase, towerMid, towerRoof]) if (piece) castle.add(piece);
+        castle.scale.setScalar(0.125);
+        castle.position.set(0.03, 0.035, 0.02);
+        group.add(castle);
+        const win = spriteOf(glowTex, 0.07, 0.9, true);
+        win.position.set(0.03, 0.2, 0.12);
+        (win.material as THREE.SpriteMaterial).color.setHex(0xffcf8a);
+        group.add(win);
         // Pulsing candlelit window.
-        anims.push((t) => ((win.material as THREE.SpriteMaterial).opacity = 0.7 + Math.sin(t * 3) * 0.25));
-        // A little pennant on the tower spire that ripples in the wind.
+        anims.push((t) => ((win.material as THREE.SpriteMaterial).opacity = 0.42 + Math.sin(t * 3) * 0.16));
+        // A little pennant on the keep's spire that ripples in the wind.
         const flagGeo = g(new T.PlaneGeometry(0.06, 0.03, 4, 1));
         const flagBase = Float32Array.from(flagGeo.attributes.position.array);
         flagGeo.translate(0.03, 0, 0);
         const flag = new T.Mesh(flagGeo, track(new T.MeshLambertMaterial({ color: COLORS.gold, side: T.DoubleSide })));
-        flag.position.set(0.16, 0.53, -0.08);
+        flag.position.set(0.03, 0.49, 0.02);
         group.add(flag);
         anims.push((t) => {
           const pos = flagGeo.attributes.position as THREE.BufferAttribute;
@@ -1122,12 +1313,21 @@ async function buildScene(
           }
           pos.needsUpdate = true;
         });
-        for (const [x, z, ph] of [[-0.34, 0.2, 0], [0.38, -0.05, 2.4]]) {
-          const c = spriteOf(cloudTex, 0.24, 0.85);
-          c.position.set(x, 0.3, z);
+        for (const [x, z, ph] of [[-0.42, 0.22, 0], [0.44, -0.05, 2.4]]) {
+          const c = spriteOf(cloudTex, 0.18, 0.8);
+          c.position.set(x, 0.34, z);
           group.add(c);
           spin(c, 0.3, 0.02, 0.7, ph);
         }
+        // Waterfalls spilling off the island rim into the clouds below — the
+        // signature floating-island motif from the reference.
+        addWaterfall(group, anims, -0.5, 0.52);
+        addWaterfall(group, anims, 0.7, 0.44);
+        // Glowing crystal spires clustered on the island's front rim (toward
+        // the camera) — they light up under the bloom pass.
+        glowCrystal(group, anims, 0x6be0ff, 0.17, 0.06, 0.22, 0.03);
+        glowCrystal(group, anims, 0xa06bff, -0.13, 0.055, 0.26, 0.024);
+        glowCrystal(group, anims, 0x62e0d0, -0.26, 0.05, 0.1, 0.026);
         addFlock(group, anims, { count: 3, radius: 0.55, y: 0.72, speed: 0.55 });
         break;
       }
@@ -1137,18 +1337,36 @@ async function buildScene(
         const ring = mesh(g(new T.TorusGeometry(0.24, 0.02, 16, 56)), lam(0xffd18a), 0, 0.22, 0);
         ring.rotation.x = Math.PI / 2.4;
         group.add(planet, ring);
+        // A real Kenney spacecraft (Space Kit, CC0) orbiting the planet, in
+        // place of the hand-built cone-and-cylinder rocket.
         const orbiter = new T.Group();
-        const rocket = new T.Group();
-        rocket.add(
-          mesh(g(new T.CylinderGeometry(0.03, 0.035, 0.1, 8)), lam(0xf5f5fa)),
-          mesh(g(new T.ConeGeometry(0.03, 0.05, 8)), lam(0xe8472b), 0, 0.075, 0),
-          mesh(g(new T.ConeGeometry(0.02, 0.045, 6)), lam(0xffb02e), 0, -0.075, 0),
-        );
-        rocket.position.set(0.38, 0.22, 0);
-        rocket.rotation.z = -Math.PI / 2;
-        orbiter.add(rocket);
-        group.add(orbiter);
-        anims.push((t) => (orbiter.rotation.y = t * 1.4));
+        const craft = placeModel("craft", 0.4, 0.22, 0, 0.09, -Math.PI / 2);
+        if (craft) {
+          orbiter.add(craft);
+          group.add(orbiter);
+          anims.push((t) => (orbiter.rotation.y = t * 1.2));
+        }
+        // An astronaut tumbling in low orbit.
+        const astroOrbit = new T.Group();
+        astroOrbit.rotation.z = -0.5;
+        const astro = placeModel("astronaut", 0.34, 0.22, 0, 0.14, 0);
+        if (astro) {
+          astroOrbit.add(astro);
+          group.add(astroOrbit);
+          anims.push((t) => {
+            astroOrbit.rotation.y = t * 0.9 + 2;
+            astro.rotation.set(t * 1.5, t * 1.1, t * 0.7); // slow tumble
+          });
+        }
+        // A satellite dish on its own slow, tilted orbit.
+        const satOrbit = new T.Group();
+        satOrbit.rotation.z = 0.5;
+        const sat = placeModel("satellite", 0.32, 0.22, 0, 0.12, 0);
+        if (sat) {
+          satOrbit.add(sat);
+          group.add(satOrbit);
+          anims.push((t) => (satOrbit.rotation.y = -t * 0.7));
+        }
         // A little cratered moon on its own slower, tilted orbit.
         const moonOrbit = new T.Group();
         moonOrbit.rotation.z = 0.4;
@@ -1627,7 +1845,7 @@ async function buildScene(
       worldHolder.add(worlds[worldIdx].group);
       worlds[worldIdx].tick(2.0); // pose the new world's animated props
       drawCaption(WORLDS[worldIdx].caption);
-      renderer.render(scene, camera);
+      renderFrame();
       return;
     }
     startTurn();
@@ -1661,9 +1879,9 @@ async function buildScene(
     (halo.material as THREE.SpriteMaterial).color.copy(accent).lerp(WHITE, 0.35);
     (ray.material as THREE.MeshBasicMaterial).color.copy(accent).lerp(WHITE, 0.5);
     ray.rotation.y = t * 0.4;
-    (ray.material as THREE.MeshBasicMaterial).opacity = 0.06 + Math.sin(t * 1.7) * 0.02;
-    gutterLight.intensity = 2.2 + Math.sin(t * 2.1) * 0.5;
-    (halo.material as THREE.SpriteMaterial).opacity = 0.38 + Math.sin(t * 1.3) * 0.07;
+    (ray.material as THREE.MeshBasicMaterial).opacity = 0.032 + Math.sin(t * 1.7) * 0.01;
+    gutterLight.intensity = 1.2 + Math.sin(t * 2.1) * 0.28;
+    (halo.material as THREE.SpriteMaterial).opacity = 0.22 + Math.sin(t * 1.3) * 0.05;
     for (const tk of twinkles) (tk.s.material as THREE.SpriteMaterial).opacity = 0.35 + (Math.sin(t * tk.w + tk.p) + 1) * 0.3;
     for (let i = 0; i < EMBERS; i++) {
       const sa = emberSeed[i * 2];
@@ -1705,7 +1923,7 @@ async function buildScene(
     if (turning) updateTurn();
     else if (t >= nextTurnAt && !document.hidden) startTurn();
 
-    renderer.render(scene, camera);
+    renderFrame();
     if (running) raf = requestAnimationFrame(frame);
   };
 
@@ -1737,7 +1955,7 @@ async function buildScene(
     // props (orbiting rock chunks, birds, motes, the camel, …) are posed in
     // their spread-out positions rather than piled at the island's origin.
     worlds[worldIdx].tick(2.0);
-    renderer.render(scene, camera);
+    renderFrame();
   } else {
     setRunning(live);
   }
@@ -1752,6 +1970,9 @@ async function buildScene(
     for (const d of disposables) d.dispose();
     for (const geo of loadedGeometries) geo.dispose();
     for (const mat of loadedMaterials) mat.dispose();
+    composer.dispose();
+    envTex.dispose();
+    pmrem.dispose();
     renderer.dispose();
     renderer.domElement.remove();
   };
