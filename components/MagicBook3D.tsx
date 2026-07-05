@@ -12,10 +12,8 @@ import BookLogo from "./BookLogo";
  * of sparks while the next one — a floating low-poly island diorama — rises
  * up out of the light shaft and unfurls above the spread. Eight worlds cycle:
  * Dragon's Peak, To the Stars, Pirate Cove, Hidden Temple, Up & Away, The
- * Coral Deep, Aurora Camp, Desert Caravan. A proper little dragon (long neck,
- * bat wings, sinuous tail — no more angry bird) launches out of the gutter now
- * and then to circle the island before diving home. Clicking the book turns
- * the page immediately. The camera drifts and leans toward the pointer.
+ * Coral Deep, Aurora Camp, Desert Caravan. Clicking the book turns the page
+ * immediately. The camera drifts and leans toward the pointer.
  *
  * Performance & resilience:
  * - three.js loads inside this already-lazy client-only chunk, so nothing
@@ -23,7 +21,7 @@ import BookLogo from "./BookLogo";
  * - The render loop pauses whenever the tab is hidden or the book scrolls
  *   out of view (IntersectionObserver), and the pixel ratio is capped at 2.
  * - Under prefers-reduced-motion the scene renders a single static frame —
- *   full 3D depth, no animation, no dragon.
+ *   full 3D depth, no animation.
  * - If WebGL is unavailable the component simply keeps the <BookLogo />
  *   fallback that also holds the slot while the chunk loads.
  */
@@ -36,6 +34,7 @@ interface MagicBook3DProps {
 }
 
 type ThreeNS = typeof import("three");
+type GLTFLoaderCtor = typeof import("three/examples/jsm/loaders/GLTFLoader.js").GLTFLoader;
 
 const COLORS = {
   purple: 0x6b1c6f,
@@ -79,9 +78,17 @@ export default function MagicBook3D({ width = 330, height = 260, className = "",
     let disposed = false;
     let cleanup: (() => void) | null = null;
     (async () => {
-      const T = await import("three");
+      const [T, { GLTFLoader }] = await Promise.all([
+        import("three"),
+        import("three/examples/jsm/loaders/GLTFLoader.js"),
+      ]);
       if (disposed) return;
-      cleanup = buildScene(T, host, width, height, live, () => setReady(true));
+      const c = await buildScene(T, GLTFLoader, host, width, height, live, () => setReady(true));
+      // buildScene awaits model fetches internally, so disposal can land while
+      // it's still in flight — if so, clean up immediately since nothing else
+      // will ever call the cleanup this returned.
+      if (disposed) c?.();
+      else cleanup = c;
     })();
     return () => {
       disposed = true;
@@ -95,7 +102,7 @@ export default function MagicBook3D({ width = 330, height = 260, className = "",
       className={className}
       style={{ position: "relative", width, height }}
       role="img"
-      aria-label="An enchanted open book. Miniature floating worlds rise out of its pages as they turn, and a small dragon flies out now and then."
+      aria-label="An enchanted open book. Miniature floating worlds rise out of its pages as they turn."
     >
       {!ready && (
         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -108,14 +115,15 @@ export default function MagicBook3D({ width = 330, height = 260, className = "",
 
 /* ═══════════════════════ scene construction ═══════════════════════ */
 
-function buildScene(
+async function buildScene(
   T: ThreeNS,
+  GLTFLoaderCtor: GLTFLoaderCtor,
   host: HTMLDivElement,
   width: number,
   height: number,
   live: boolean,
   onReady: () => void,
-): (() => void) | null {
+): Promise<(() => void) | null> {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let renderer: THREE.WebGLRenderer;
@@ -154,6 +162,75 @@ function buildScene(
   const track = <D extends { dispose(): void }>(d: D): D => {
     disposables.push(d);
     return d;
+  };
+
+  /* ---------- real-world set dressing (Kenney CC0 models, self-hosted) ---------- */
+
+  // Fetched from same-origin /public/models, so this is fire-and-forget —
+  // failure just means that prop is quietly skipped below (see placeModel).
+  // Kicked off now, ahead of the (synchronous) texture/geometry work below,
+  // so the network round-trip overlaps with everything else instead of
+  // adding to it; awaited once, right before the worlds that need it are built.
+  const MODEL_URLS = {
+    ship: "/models/ship-pirate-small.glb",
+    palm: "/models/palm-bend.glb",
+    tree: "/models/tree-detailed.glb",
+    rockA: "/models/rock-tall-a.glb",
+    rockB: "/models/rock-tall-b.glb",
+    rockC: "/models/rock-tall-c.glb",
+    rockD: "/models/rock-tall-d.glb",
+  } as const;
+  type ModelKey = keyof typeof MODEL_URLS;
+  const gltfLoader = new GLTFLoaderCtor();
+  const loadedModels: Partial<Record<ModelKey, THREE.Object3D>> = {};
+  const loadedGeometries: THREE.BufferGeometry[] = [];
+  const loadedMaterials: THREE.Material[] = [];
+  const modelsReady = Promise.all(
+    (Object.keys(MODEL_URLS) as ModelKey[]).map(async (key) => {
+      try {
+        const gltf = await gltfLoader.loadAsync(MODEL_URLS[key]);
+        gltf.scene.traverse((o) => {
+          const m = o as THREE.Mesh;
+          if (m.isMesh) {
+            loadedGeometries.push(m.geometry);
+            const mats = Array.isArray(m.material) ? m.material : [m.material];
+            // Nature Kit's whole palette leans teal/turquoise (it's a
+            // deliberate stylized house look, confirmed against Kenney's own
+            // preview render — not a loading bug). That reads fine for rock,
+            // but tree foliage needs to read as green for the jungle world to
+            // make sense, so retint just its "grass"/"leafsGreen" material
+            // rather than the model's other materials.
+            if (key === "tree") {
+              for (const mat of mats) {
+                if (/grass|leaf/i.test(mat.name)) (mat as THREE.MeshStandardMaterial).color?.setHex(0x3fa34d);
+              }
+            }
+            loadedMaterials.push(...mats);
+          }
+        });
+        loadedModels[key] = gltf.scene;
+      } catch {
+        // Same-origin static asset — a failure here (e.g. offline dev server)
+        // just means placeModel() returns null and that prop is skipped.
+      }
+    }),
+  );
+
+  // Clones a loaded model template into the scene at the given local
+  // transform. Returns null (silently) if that model never loaded.
+  const placeModel = (key: ModelKey, x: number, y: number, z: number, scale: number, rotY = 0) => {
+    const template = loadedModels[key];
+    if (!template) return null;
+    const inst = template.clone(true);
+    inst.position.set(x, y, z);
+    inst.scale.setScalar(scale);
+    inst.rotation.y = rotY;
+    if (fancyShadows) {
+      inst.traverse((o) => {
+        if ((o as THREE.Mesh).isMesh) (o as THREE.Mesh).castShadow = true;
+      });
+    }
+    return inst;
   };
 
   /* ---------- tiny texture studio (canvas-painted) ---------- */
@@ -874,8 +951,10 @@ function buildScene(
     return mesh(geo, lam(color), x, y, z);
   };
 
-  // A cluster of overlapping spheres reads as a shrub/canopy far better than
-  // one smooth sphere, which just looks like a lollipop.
+  // A cluster of overlapping spheres reads as a shrub far better than one
+  // smooth sphere. Kept procedural — every Kenney Nature Kit bush variant is a
+  // spiky angular leaf-blade cluster (their house style, not a bad load), and
+  // none of them read as a rounded bush any better than this.
   const foliageClump = (color: number, r: number, x = 0, y = 0, z = 0) => {
     const grp = new T.Group();
     const lobes: [number, number, number, number][] = [
@@ -912,25 +991,6 @@ function buildScene(
     return grp;
   };
 
-  // A trunk plus fronds splayed around the top — a single green cone reads as
-  // a Christmas tree, not a palm.
-  const palmTree = (x = 0, y = 0, z = 0) => {
-    const grp = new T.Group();
-    const trunk = mesh(g(new T.CylinderGeometry(0.008, 0.014, 0.09, 6)), lam(0x8b5a2b), 0, 0.045, 0);
-    trunk.rotation.z = 0.1;
-    grp.add(trunk);
-    const frondGeo = g(new T.ConeGeometry(0.018, 0.075, 4));
-    for (let i = 0; i < 5; i++) {
-      const frond = new T.Mesh(frondGeo, lam(0x2e7d32));
-      frond.scale.set(1, 0.3, 1);
-      frond.position.set(0, 0.095, 0);
-      frond.rotation.z = Math.PI / 2 + (i - 2) * 0.32;
-      frond.rotation.y = i * 0.85;
-      grp.add(frond);
-    }
-    grp.position.set(x, y, z);
-    return grp;
-  };
 
   const buildWorld = (key: WorldKey): World => {
     const group = new T.Group();
@@ -941,9 +1001,12 @@ function buildScene(
     switch (key) {
       case "dragon": {
         group.add(islandBase(0x2c7a7b, "grass", anims));
-        group.add(jaggedPeak(0.16, 0.42, 0x173b4a, -0.12, 0.24, 0.02));
-        group.add(jaggedPeak(0.12, 0.3, 0x2c7a7b, 0.14, 0.18, -0.08));
-        group.add(jaggedPeak(0.09, 0.22, 0x3a8f8f, 0.05, 0.14, 0.16));
+        // Real Kenney rock formations (Nature Kit, CC0) in place of jittered
+        // cones — genuine rock-face detail instead of a faceted primitive.
+        const peak1 = placeModel("rockA", -0.12, 0.051, 0.02, 0.42, 0.5);
+        const peak2 = placeModel("rockB", 0.14, 0.047, -0.08, 0.34, 2.6);
+        const peak3 = placeModel("rockC", 0.05, 0.044, 0.16, 0.28, 4.1);
+        for (const peak of [peak1, peak2, peak3]) if (peak) group.add(peak);
         const tower = mesh(g(new T.CylinderGeometry(0.035, 0.045, 0.16, 6)), lam(0x241a38), 0.16, 0.36, -0.08);
         const roof = mesh(g(new T.ConeGeometry(0.055, 0.08, 6)), lam(0x2e2447), 0.16, 0.48, -0.08);
         const win = spriteOf(glowTex, 0.09, 0.9, true);
@@ -987,74 +1050,21 @@ function buildScene(
         group.add(islandBase(0x1fb6c9, "water", anims));
         const sea = mesh(g(new T.CylinderGeometry(0.35, 0.35, 0.02, 24)), lam(0x0e7c9e), 0, 0.035, 0);
         group.add(sea);
-        const ship = new T.Group();
-        // Hull as an extruded profile — pointed bow, flat transom — instead of
-        // a plain box, which read as a floating brick rather than a boat.
-        const hullShape = new T.Shape();
-        hullShape.moveTo(-0.1, -0.025);
-        hullShape.lineTo(0.06, -0.025);
-        hullShape.quadraticCurveTo(0.11, -0.02, 0.1, 0.02);
-        hullShape.lineTo(-0.09, 0.02);
-        hullShape.quadraticCurveTo(-0.12, 0.005, -0.1, -0.025);
-        const hullGeo = g(new T.ExtrudeGeometry(hullShape, { depth: 0.085, bevelEnabled: false, curveSegments: 6 }));
-        hullGeo.translate(0, 0, -0.085 / 2);
-        const hull = new T.Mesh(hullGeo, lam(0x7a4a2b));
-        const mast = mesh(g(new T.CylinderGeometry(0.008, 0.008, 0.18, 6)), lam(0x5a3620), 0, 0.11, 0);
-        // A gently bellied sail (as if filled with wind) with painted cloth
-        // seams, in place of a flat rigid plate.
-        const sailTex = makeTex(64, 64, (ctx, w, h) => {
-          ctx.fillStyle = "#E14B3A";
-          ctx.fillRect(0, 0, w, h);
-          ctx.strokeStyle = "rgba(0,0,0,0.15)";
-          ctx.lineWidth = 1;
-          for (let i = 1; i < 4; i++) {
-            ctx.beginPath();
-            ctx.moveTo((i * w) / 4, 0);
-            ctx.lineTo((i * w) / 4, h);
-            ctx.stroke();
-          }
-          const grad = ctx.createLinearGradient(0, 0, 0, h);
-          grad.addColorStop(0, "rgba(255,255,255,0.2)");
-          grad.addColorStop(1, "rgba(0,0,0,0.12)");
-          ctx.fillStyle = grad;
-          ctx.fillRect(0, 0, w, h);
-        });
-        const sailGeo = g(new T.PlaneGeometry(0.12, 0.12, 8, 1));
-        {
-          const pos = sailGeo.attributes.position;
-          for (let i = 0; i < pos.count; i++) {
-            const x = pos.getX(i);
-            pos.setZ(i, Math.cos((x / 0.06) * (Math.PI / 2)) * 0.03);
-          }
-          sailGeo.computeVertexNormals();
+        // Real Kenney models (Pirate Kit, CC0) in place of the hand-built hull
+        // + flat sail — a fully rigged ship reads far better than primitives.
+        const ship = placeModel("ship", -0.05, 0.08, 0.05, 0.022, Math.PI);
+        if (ship) {
+          group.add(ship);
+          anims.push((t) => {
+            ship.position.y = 0.08 + Math.sin(t * 1.8) * 0.012;
+            ship.rotation.z = Math.sin(t * 1.5) * 0.06;
+            ship.rotation.x = Math.sin(t * 1.1 + 1) * 0.05;
+          });
         }
-        const sail = new T.Mesh(sailGeo, track(new T.MeshLambertMaterial({ map: sailTex, side: T.DoubleSide })));
-        sail.position.set(0.02, 0.12, 0);
-        sail.rotation.y = Math.PI / 2;
-        // Tiny pennant flag at the masthead.
-        const flagShape = new T.Shape();
-        flagShape.moveTo(0, 0);
-        flagShape.lineTo(0.035, 0.012);
-        flagShape.lineTo(0, 0.024);
-        flagShape.closePath();
-        const flag = new T.Mesh(
-          g(new T.ShapeGeometry(flagShape)),
-          track(new T.MeshLambertMaterial({ color: COLORS.gold, side: T.DoubleSide })),
-        );
-        flag.position.set(0, 0.19, 0);
-        flag.rotation.y = Math.PI / 2;
-        ship.add(hull, mast, sail, flag);
-        ship.position.set(-0.05, 0.08, 0.05);
-        group.add(ship);
-        anims.push((t) => {
-          ship.position.y = 0.08 + Math.sin(t * 1.8) * 0.012;
-          ship.rotation.z = Math.sin(t * 1.5) * 0.06;
-          ship.rotation.x = Math.sin(t * 1.1 + 1) * 0.05;
-        });
         const isle = mesh(g(new T.ConeGeometry(0.08, 0.09, 6)), lam(0xead9a0), 0.22, 0.07, -0.14);
-        // A single green cone read as a Christmas tree, not a palm.
-        const palm = palmTree(0.22, 0.11, -0.14);
-        group.add(isle, palm);
+        const palm = placeModel("palm", 0.22, 0.11, -0.14, 0.038, 0.6);
+        group.add(isle);
+        if (palm) group.add(palm);
         break;
       }
       case "jungle": {
@@ -1062,13 +1072,11 @@ function buildScene(
         for (const [w, h, y] of [[0.3, 0.09, 0.075], [0.22, 0.08, 0.155], [0.14, 0.08, 0.235]])
           group.add(mesh(g(new T.BoxGeometry(w, h, w)), lam(0xb79b6e), 0, y, 0));
         group.add(mesh(g(new T.BoxGeometry(0.05, 0.07, 0.02)), lam(0x5a4632), 0, 0.065, 0.15));
-        for (const [x, z] of [[-0.26, 0.12], [0.27, -0.16]]) {
-          group.add(
-            mesh(g(new T.CylinderGeometry(0.012, 0.018, 0.14, 5)), lam(0x8b5a2b), x, 0.1, z),
-            // A clump of lobes reads as a leafy canopy; a single cone read as a
-            // Christmas tree standing in a jungle.
-            foliageClump(0x2e7d32, 0.085, x, 0.19, z),
-          );
+        // Real Kenney tree (Nature Kit, CC0) in place of a trunk cylinder +
+        // hand-built canopy clump.
+        for (const [x, z, rot] of [[-0.26, 0.12, 0.4], [0.27, -0.16, 2.1]] as const) {
+          const t = placeModel("tree", x, 0.03, z, 0.22, rot);
+          if (t) group.add(t);
         }
         for (let i = 0; i < 4; i++) {
           const f = spriteOf(glowTex, 0.05, 0.9, true);
@@ -1082,7 +1090,6 @@ function buildScene(
       }
       case "balloon": {
         group.add(islandBase(0x6fbf4a, "grass", anims));
-        // Clumps read as shrubs; a single smooth sphere just reads as a ball.
         group.add(foliageClump(0x4e9e33, 0.09, -0.15, 0.05, 0.1));
         group.add(foliageClump(0x6fbf4a, 0.07, 0.18, 0.04, -0.1));
         const bal = new T.Group();
@@ -1139,11 +1146,13 @@ function buildScene(
       }
       case "aurora": {
         group.add(islandBase(0xe8f1fa, "snow", anims));
-        // Faceted peaks read as craggy rock; nested white caps near each tip
-        // read as snow. Smooth single-color cones read as party hats.
-        group.add(jaggedPeak(0.14, 0.3, 0xc7d7e8, -0.14, 0.17, -0.04));
+        // Real Kenney rock formations (Nature Kit, CC0) for the two peaks —
+        // nested white cap accents near each tip still read as snow dusting.
+        const auroraPeak1 = placeModel("rockD", -0.14, 0.0395, -0.04, 0.39, 1.2);
+        const auroraPeak2 = placeModel("rockA", 0.05, 0.03, -0.14, 0.2, 3.4);
+        if (auroraPeak1) group.add(auroraPeak1);
         group.add(jaggedPeak(0.07, 0.12, 0xffffff, -0.14, 0.26, -0.04));
-        group.add(jaggedPeak(0.1, 0.2, 0x9fb3cc, 0.05, 0.12, -0.14));
+        if (auroraPeak2) group.add(auroraPeak2);
         group.add(jaggedPeak(0.05, 0.09, 0xffffff, 0.05, 0.175, -0.14));
         group.add(mesh(g(new T.ConeGeometry(0.07, 0.11, 5)), lam(0xe8472b), 0.16, 0.07, 0.12));
         const fire = spriteOf(glowTex, 0.13, 1, true);
@@ -1227,6 +1236,11 @@ function buildScene(
     return { group, tick: (t) => anims.forEach((a) => a(t)) };
   };
 
+  // Give the same-origin model fetches a chance to land before the worlds
+  // that use them are built — everything above (textures, book, lighting)
+  // ran synchronously while this was in flight, so it's typically already
+  // resolved by the time we get here.
+  await modelsReady;
   const worlds = WORLDS.map((s) => buildWorld(s.key));
   const worldHolder = new T.Group();
   const WORLD_Y = 1.02;
@@ -1235,131 +1249,9 @@ function buildScene(
   let worldIdx = 0;
   worldHolder.add(worlds[0].group);
 
-  /* ---------- the dragon (an actual dragon this time) ---------- */
-
-  const dragon = new T.Group();
-  const dTail: THREE.Object3D[] = [];
-  {
-    // Slimmer, longer body than before — a fat short ellipsoid reads as a
-    // caterpillar; stretching it and tapering the neck down before the head
-    // flares back out is what actually sells "dragon" in silhouette.
-    const body = mesh(g(new T.SphereGeometry(0.07, 20, 16)), lam(0x7b2480));
-    body.scale.set(0.86, 0.8, 1.95);
-    const belly = mesh(g(new T.SphereGeometry(0.054, 20, 16)), lam(0xf5cc45), 0, -0.026, 0.03);
-    belly.scale.set(0.82, 0.6, 1.5);
-    // Three tapering neck segments (was two) so the neck actually curves up
-    // and out from the shoulders instead of jumping straight to the head.
-    const neckA = mesh(g(new T.SphereGeometry(0.042, 16, 12)), lam(0x7b2480), 0, 0.07, 0.13);
-    const neckB = mesh(g(new T.SphereGeometry(0.036, 16, 12)), lam(0x7b2480), 0, 0.108, 0.185);
-    const neckC = mesh(g(new T.SphereGeometry(0.03, 16, 12)), lam(0x7b2480), 0, 0.148, 0.228);
-    const head = mesh(g(new T.SphereGeometry(0.05, 18, 14)), lam(0x8b2e90), 0, 0.175, 0.27);
-    const snout = mesh(g(new T.BoxGeometry(0.05, 0.03, 0.06)), lam(0x8b2e90), 0, 0.158, 0.32);
-    for (const s of [-1, 1]) {
-      const horn = mesh(g(new T.ConeGeometry(0.011, 0.05, 5)), lam(0xf5cc45), s * 0.022, 0.215, 0.245);
-      horn.rotation.x = -0.9;
-      const sclera = mesh(g(new T.SphereGeometry(0.014, 8, 7)), lam(0xffffff), s * 0.031, 0.187, 0.292);
-      const pupil = mesh(g(new T.SphereGeometry(0.008, 6, 6)), lam(0x1a1a1a), s * 0.034, 0.187, 0.302);
-      dragon.add(horn, sclera, pupil);
-      const wing = new T.Group();
-      const shape = new T.Shape();
-      shape.moveTo(0, 0);
-      shape.quadraticCurveTo(0.07, 0.1, 0.19, 0.1);
-      shape.lineTo(0.14, 0.045);
-      shape.lineTo(0.2, 0.045);
-      shape.lineTo(0.15, -0.005);
-      shape.lineTo(0.19, -0.03);
-      shape.lineTo(0.02, -0.03);
-      shape.closePath();
-      const wgeo = g(new T.ShapeGeometry(shape));
-      const wmesh = new T.Mesh(
-        wgeo,
-        track(new T.MeshLambertMaterial({ color: COLORS.gold, side: T.DoubleSide, transparent: true, opacity: 0.95 })),
-      );
-      wmesh.scale.x = s;
-      wmesh.rotation.y = (Math.PI / 2) * s * 0.15;
-      wing.add(wmesh);
-      // Bat-wing "finger" creases radiating from the wing root to each fold
-      // point — a flat gold silhouette alone reads as a paper fan, not a
-      // membrane. THREE.Line stays crisp at any scale, unlike a thin mesh.
-      const creaseMat = track(new T.LineBasicMaterial({ color: 0xc98f14, transparent: true, opacity: 0.55 }));
-      const wingRoot = new T.Vector3(0.01, -0.01, 0.001);
-      for (const [fx, fy] of [[0.19, 0.1], [0.2, 0.045], [0.19, -0.03]] as const) {
-        const lineGeo = g(new T.BufferGeometry().setFromPoints([wingRoot, new T.Vector3(fx, fy, 0.001)]));
-        const crease = new T.Line(lineGeo, creaseMat);
-        crease.scale.x = s;
-        wing.add(crease);
-      }
-      wing.scale.setScalar(1.25);
-      wing.position.set(s * 0.05, 0.06, 0.05);
-      wing.userData.side = s;
-      dragon.add(wing);
-        (dragon.userData.wings ??= []).push(wing);
-    }
-    dragon.add(body, belly, neckA, neckB, neckC, head, snout);
-    // Six tapering segments (was four) plus the fin: a longer, more serpentine
-    // tail balances the elongated neck instead of stopping short and stubby.
-    let pz = -0.13;
-    for (let i = 0; i < 6; i++) {
-      const r = Math.max(0.03 - i * 0.0045, 0.008);
-      const seg = mesh(g(new T.SphereGeometry(r, 7, 6)), lam(0x7b2480), 0, -0.006 - i * 0.006, pz);
-      pz -= 0.05;
-      dragon.add(seg);
-      dTail.push(seg);
-    }
-    const fin = new T.Mesh(
-      g(new T.ConeGeometry(0.026, 0.055, 4)),
-      track(new T.MeshLambertMaterial({ color: COLORS.gold, side: T.DoubleSide })),
-    );
-    fin.position.set(0, -0.03, pz + 0.02);
-    fin.rotation.x = Math.PI / 2;
-    dragon.add(fin);
-    dTail.push(fin);
-  }
-  dragon.visible = false;
-  dragon.scale.setScalar(1.15);
-  root.add(dragon);
   if (fancyShadows) {
     for (const w of worlds) w.group.traverse((o) => ((o as THREE.Mesh).isMesh ? ((o as THREE.Mesh).castShadow = true) : null));
-    dragon.traverse((o) => ((o as THREE.Mesh).isMesh ? ((o as THREE.Mesh).castShadow = true) : null));
   }
-
-  const TRAIL = 16;
-  const trailGeo = g(new T.BufferGeometry());
-  const trailPos = new Float32Array(TRAIL * 3);
-  for (let i = 0; i < TRAIL; i++) trailPos[i * 3 + 1] = -5;
-  trailGeo.setAttribute("position", new T.BufferAttribute(trailPos, 3));
-  const trailMat = track(
-    new T.PointsMaterial({
-      map: starTex,
-      color: 0xffe08a,
-      size: 0.055,
-      transparent: true,
-      opacity: 0,
-      depthWrite: false,
-      blending: T.AdditiveBlending,
-    }),
-  );
-  const trail = new T.Points(trailGeo, trailMat);
-  root.add(trail);
-  let trailHead = 0;
-  let trailLast = 0;
-
-  const flightCurve = new T.CatmullRomCurve3(
-    [
-      new T.Vector3(0, 0.15, 0.1),
-      new T.Vector3(0.35, 0.85, 0.55),
-      new T.Vector3(0.95, 1.25, 0),
-      new T.Vector3(0, 1.5, -0.9),
-      new T.Vector3(-0.95, 1.2, 0),
-      new T.Vector3(-0.3, 0.95, 0.75),
-      new T.Vector3(0.55, 0.8, 0.5),
-      new T.Vector3(0.15, 0.45, 0.3),
-      new T.Vector3(0, 0.1, 0.1),
-    ],
-    false,
-    "catmullrom",
-    0.4,
-  );
 
   /* ---------- animation state ---------- */
 
@@ -1383,9 +1275,6 @@ function buildScene(
   let swapped = false;
   const TURN_DUR = 1.8;
   let nextTurnAt = 4.2;
-  let nextDragonAt = 7;
-  let dragonMode: "none" | "flight" | "peek" = "none";
-  let dragonStart = 0;
 
   const fireBurst = () => {
     burstAt = elapsed;
@@ -1474,58 +1363,6 @@ function buildScene(
       pageMat.map = arts[worldIdx];
       pageMat.needsUpdate = true;
     }
-  };
-
-  const updateDragon = () => {
-    const t = elapsed - dragonStart;
-    if (dragonMode === "flight") {
-      const DUR = 8.5;
-      const k = t / DUR;
-      if (k >= 1) {
-        dragonMode = "none";
-        dragon.visible = false;
-        trailMat.opacity = 0;
-        nextDragonAt = elapsed + 11 + Math.random() * 10;
-        return;
-      }
-      const u = easeInOut(k);
-      const p = flightCurve.getPointAt(u);
-      dragon.position.copy(p);
-      if (elapsed - trailLast > 0.06) {
-        trailLast = elapsed;
-        trailPos[trailHead * 3] = p.x;
-        trailPos[trailHead * 3 + 1] = p.y;
-        trailPos[trailHead * 3 + 2] = p.z;
-        trailHead = (trailHead + 1) % TRAIL;
-        (trailGeo.attributes.position as THREE.BufferAttribute).needsUpdate = true;
-      }
-      trailMat.opacity = Math.min(k * 6, 1, (1 - k) * 6) * 0.7;
-      const ahead = flightCurve.getPointAt(Math.min(u + 0.012, 1));
-      dragon.lookAt(ahead);
-      const s = Math.min(t / 0.5, 1, (DUR - t) / 0.5);
-      dragon.scale.setScalar(1.1 * Math.max(s, 0.001));
-    } else if (dragonMode === "peek") {
-      const DUR = 4.6;
-      const k = t / DUR;
-      if (k >= 1) {
-        dragonMode = "none";
-        dragon.visible = false;
-        nextDragonAt = elapsed + 11 + Math.random() * 10;
-        return;
-      }
-      const rise = k < 0.18 ? easeInOut(k / 0.18) : k > 0.85 ? 1 - easeInOut((k - 0.85) / 0.15) : 1;
-      // Only head, neck and wings clear the pages — the body stays sunk in
-      // the gutter like it's peeking over a wall.
-      dragon.position.set(0.25, -0.16 + rise * 0.34, 0.38);
-      dragon.rotation.set(0.12, -0.6 + Math.sin(t * 1.1) * 0.3, Math.sin(t * 2.3) * 0.05);
-      dragon.scale.setScalar(1.2);
-    }
-    // Wing flap + tail wave, shared by both antics.
-    const wings = (dragon.userData.wings ?? []) as THREE.Group[];
-    for (const w of wings) w.rotation.z = (w.userData.side as number) * (0.35 + Math.sin(elapsed * 11) * 0.55);
-    dTail.forEach((seg, i) => {
-      seg.position.x = Math.sin(elapsed * 5 - i * 0.9) * 0.02 * (i + 1) * 0.5;
-    });
   };
 
   /* ---------- input ---------- */
@@ -1623,12 +1460,6 @@ function buildScene(
     // Choreography.
     if (turning) updateTurn();
     else if (t >= nextTurnAt && !document.hidden) startTurn();
-    if (dragonMode !== "none") updateDragon();
-    else if (t >= nextDragonAt && !document.hidden) {
-      dragonMode = Math.random() < 0.45 ? "flight" : "peek";
-      dragonStart = t;
-      dragon.visible = true;
-    }
 
     renderer.render(scene, camera);
     if (running) raf = requestAnimationFrame(frame);
@@ -1671,6 +1502,8 @@ function buildScene(
     if (fine && !reduced) window.removeEventListener("pointermove", onPointer);
     renderer.domElement.removeEventListener("click", onClick);
     for (const d of disposables) d.dispose();
+    for (const geo of loadedGeometries) geo.dispose();
+    for (const mat of loadedMaterials) mat.dispose();
     renderer.dispose();
     renderer.domElement.remove();
   };
