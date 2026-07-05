@@ -692,13 +692,21 @@ async function buildScene(
   pageGeo.rotateX(-Math.PI / 2);
   pageGeo.translate(0.5, 0, 0); // hinge at x=0 (the spine)
   const pageBase = Float32Array.from(pageGeo.attributes.position.array);
-  const pageMat = track(new T.MeshLambertMaterial({ map: arts[0], side: T.DoubleSide }));
+  // A real page leaf has two independent, opaque faces. A single double-sided
+  // plane instead shows one texture bleeding through from the back and — once
+  // the leaf curls into a C mid-turn — lets you see straight through the curl
+  // to the page and background behind it (it reads as translucent). Two stacked
+  // single-sided opaque meshes sharing the same (deforming) geometry fix both:
+  // each face is solid and carries its own art, so nothing shows through.
+  const pageMat = track(new T.MeshLambertMaterial({ map: arts[0], side: T.FrontSide }));
+  const pageMatBack = track(new T.MeshLambertMaterial({ map: artsBack[0], side: T.BackSide }));
   const page = new T.Mesh(pageGeo, pageMat);
-  page.castShadow = fancyShadows;
-  page.receiveShadow = true;
+  const pageBackMesh = new T.Mesh(pageGeo, pageMatBack);
+  page.castShadow = pageBackMesh.castShadow = fancyShadows;
+  page.receiveShadow = pageBackMesh.receiveShadow = true;
   const pagePivot = new T.Group();
   pagePivot.position.set(0, 0.2, 0);
-  pagePivot.add(page);
+  pagePivot.add(page, pageBackMesh);
   book.add(pagePivot);
 
   /* ---------- ambience: halo, god-ray, shadow, embers, stars ---------- */
@@ -914,23 +922,75 @@ async function buildScene(
       2,
     );
 
+  // A jagged floating-rock tier: a tapered cylinder whose lower rings are
+  // jittered per-vertex so the underside reads as a broken chunk of rock
+  // rather than a smooth funnel. The top ring is left clean so it seats
+  // flush against the grass / the tier above.
+  const rockTier = (rTop: number, rBot: number, h: number, y: number, color: number) => {
+    const geo = g(new T.CylinderGeometry(rTop, rBot, h, 9, 2));
+    const pos = geo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      if (pos.getY(i) < h / 2 - 0.001) {
+        const k = 0.78 + Math.random() * 0.4;
+        pos.setX(i, pos.getX(i) * k);
+        pos.setZ(i, pos.getZ(i) * k);
+      }
+    }
+    geo.computeVertexNormals();
+    return mesh(geo, lam(color), 0, y, 0);
+  };
+
   const islandBase = (topColor: number, biome: Biome, anims: ((t: number) => void)[]) => {
     const grp = new T.Group();
-    const rock = mesh(g(new T.CylinderGeometry(0.3, 0.05, 0.22, 7)), lam(0x6b4a75), 0, -0.125, 0);
+    // Two stratified, craggy rock tiers instead of one smooth 7-gon cone —
+    // gives the underside a chunky, stratified "torn from the ground" look.
+    grp.add(rockTier(0.3, 0.16, 0.17, -0.055, 0x6b4a75));
+    grp.add(rockTier(0.15, 0.035, 0.17, -0.2, 0x5a3b63));
+    // A dirt cliff band tucked under the grassy overhang so the grass→rock
+    // transition reads as a proper little cliff edge, not a flat seam.
+    grp.add(mesh(g(new T.CylinderGeometry(0.318, 0.298, 0.045, 9)), lam(0x6e4b34), 0, -0.017, 0));
     // Overhanging grassy lip reads far more "floating island" than a flush disc.
     const topMat = track(new T.MeshLambertMaterial({ map: groundTex(biome, topColor) }));
-    const top = mesh(g(new T.CylinderGeometry(0.35, 0.315, 0.055, 7)), topMat, 0, 0.008, 0);
-    grp.add(rock, top);
+    const top = mesh(g(new T.CylinderGeometry(0.35, 0.322, 0.05, 9)), topMat, 0, 0.012, 0);
+    grp.add(top);
     for (const [x, z, l] of [[-0.12, 0.06, 0.1], [0.08, -0.09, 0.14], [0.03, 0.11, 0.08]] as const)
-      grp.add(mesh(g(new T.ConeGeometry(0.013, l, 4)), lam(0x5a3b63), x, -0.14 - l / 2, z));
-    ([[0.3, -0.3, 0.12, 0.035], [-0.24, -0.42, -0.06, 0.024], [0.06, -0.54, 0.02, 0.018]] as const).forEach(([x, y, z, r], i) => {
-      const shard = mesh(g(new T.TetrahedronGeometry(r)), lam(0x6b4a75), x, y, z);
-      grp.add(shard);
+      grp.add(mesh(g(new T.ConeGeometry(0.013, l, 4)), lam(0x5a3b63), x, -0.16 - l / 2, z));
+
+    // Chunks of rock that broke off and now slowly orbit the island — the
+    // classic "floating island" motif, and the main new moving element. Each
+    // orbits on its own radius/height/phase/speed so the set never marches in
+    // lockstep. (anims only ticks for the currently-visible world.)
+    ([
+      [0.44, -0.28, 0.9, 0.03, 0],
+      [0.5, -0.46, -0.6, 0.022, 2.2],
+      [0.38, -0.6, 0.75, 0.017, 4.1],
+      [0.54, -0.16, -0.45, 0.02, 1.1],
+    ] as const).forEach(([rad, y, spd, size, ph], i) => {
+      const chunk = mesh(g(new T.TetrahedronGeometry(size)), lam(i % 2 ? 0x6b4a75 : 0x5a3b63), 0, 0, 0);
+      grp.add(chunk);
       anims.push((t) => {
-        shard.position.y = y + Math.sin(t * 1.1 + i * 2.1) * 0.035;
-        shard.rotation.y = t * 0.4 + i;
+        const a = t * spd + ph;
+        chunk.position.set(Math.cos(a) * rad, y + Math.sin(t * 1.1 + ph) * 0.03, Math.sin(a) * rad * 0.7);
+        chunk.rotation.set(t * 0.5 + i, t * 0.4 + i, 0);
       });
     });
+
+    // A few motes drifting up off the island — dust catching the light. Tiny,
+    // additive, on a slow rising loop so there's always gentle life around it.
+    for (let i = 0; i < 5; i++) {
+      const mote = spriteOf(softDot, 0.03, 0.7, true);
+      grp.add(mote);
+      const rad = 0.24 + Math.random() * 0.16;
+      const a0 = (i / 5) * Math.PI * 2;
+      const spd = 0.18 + Math.random() * 0.14;
+      const off = Math.random();
+      anims.push((t) => {
+        const life = (t * spd + off) % 1;
+        const a = a0 + life * 0.8;
+        mote.position.set(Math.cos(a) * rad, -0.05 + life * 0.5, Math.sin(a) * rad * 0.8);
+        (mote.material as THREE.SpriteMaterial).opacity = Math.sin(life * Math.PI) * 0.7;
+      });
+    }
     return grp;
   };
 
@@ -991,6 +1051,39 @@ async function buildScene(
     return grp;
   };
 
+  // A little flock of silhouette birds circling above an island, wings
+  // flapping. Reused across the open-sky worlds — the biggest, cheapest
+  // "there's always something moving" win. Adds its meshes to `grp` and its
+  // motion to `anims` (which only ticks for the currently-visible world).
+  const addFlock = (
+    grp: THREE.Group,
+    anims: ((t: number) => void)[],
+    opts: { count?: number; radius?: number; y?: number; speed?: number; color?: number } = {},
+  ) => {
+    const { count = 3, radius = 0.5, y = 0.6, speed = 0.5, color = 0x4a3a55 } = opts;
+    const wingGeo = g(new T.BoxGeometry(0.055, 0.006, 0.02));
+    const birdMat = lam(color);
+    for (let i = 0; i < count; i++) {
+      const bird = new T.Group();
+      const wl = new T.Mesh(wingGeo, birdMat);
+      const wr = new T.Mesh(wingGeo, birdMat);
+      wl.position.x = -0.03;
+      wr.position.x = 0.03;
+      bird.add(wl, wr);
+      grp.add(bird);
+      const ph = (i / count) * Math.PI * 2;
+      const rad = radius * (0.8 + Math.random() * 0.35);
+      const yy = y + (Math.random() - 0.5) * 0.2;
+      anims.push((t) => {
+        const a = t * speed + ph;
+        bird.position.set(Math.cos(a) * rad, yy + Math.sin(t * 1.3 + ph) * 0.05, Math.sin(a) * rad * 0.75);
+        bird.rotation.y = -a + Math.PI / 2;
+        const flap = 0.5 + Math.sin(t * 12 + ph) * 0.6;
+        wl.rotation.z = flap;
+        wr.rotation.z = -flap;
+      });
+    }
+  };
 
   const buildWorld = (key: WorldKey): World => {
     const group = new T.Group();
@@ -1012,12 +1105,30 @@ async function buildScene(
         const win = spriteOf(glowTex, 0.09, 0.9, true);
         win.position.set(0.16, 0.38, -0.02);
         group.add(tower, roof, win);
+        // Pulsing candlelit window.
+        anims.push((t) => ((win.material as THREE.SpriteMaterial).opacity = 0.7 + Math.sin(t * 3) * 0.25));
+        // A little pennant on the tower spire that ripples in the wind.
+        const flagGeo = g(new T.PlaneGeometry(0.06, 0.03, 4, 1));
+        const flagBase = Float32Array.from(flagGeo.attributes.position.array);
+        flagGeo.translate(0.03, 0, 0);
+        const flag = new T.Mesh(flagGeo, track(new T.MeshLambertMaterial({ color: COLORS.gold, side: T.DoubleSide })));
+        flag.position.set(0.16, 0.53, -0.08);
+        group.add(flag);
+        anims.push((t) => {
+          const pos = flagGeo.attributes.position as THREE.BufferAttribute;
+          for (let i = 0; i < pos.count; i++) {
+            const bx = flagBase[i * 3] + 0.03;
+            pos.setZ(i, Math.sin(bx * 30 + t * 8) * 0.012 * (bx / 0.06));
+          }
+          pos.needsUpdate = true;
+        });
         for (const [x, z, ph] of [[-0.34, 0.2, 0], [0.38, -0.05, 2.4]]) {
           const c = spriteOf(cloudTex, 0.24, 0.85);
           c.position.set(x, 0.3, z);
           group.add(c);
           spin(c, 0.3, 0.02, 0.7, ph);
         }
+        addFlock(group, anims, { count: 3, radius: 0.55, y: 0.72, speed: 0.55 });
         break;
       }
       case "rocket": {
@@ -1038,12 +1149,27 @@ async function buildScene(
         orbiter.add(rocket);
         group.add(orbiter);
         anims.push((t) => (orbiter.rotation.y = t * 1.4));
-        for (let i = 0; i < 5; i++) {
+        // A little cratered moon on its own slower, tilted orbit.
+        const moonOrbit = new T.Group();
+        moonOrbit.rotation.z = 0.4;
+        const moon = mesh(g(new T.SphereGeometry(0.045, 16, 12)), lam(0xcfc8d8), 0.3, 0.22, 0);
+        moonOrbit.add(moon);
+        group.add(moonOrbit);
+        anims.push((t) => (moonOrbit.rotation.y = -t * 0.8));
+        const starSprites: THREE.Sprite[] = [];
+        for (let i = 0; i < 6; i++) {
           const s = spriteOf(starTex, 0.05, 0.9, true);
-          const a = (i / 5) * Math.PI * 2;
-          s.position.set(Math.cos(a) * 0.42, 0.28 + Math.sin(i * 2.1) * 0.18, Math.sin(a) * 0.4);
+          const a = (i / 6) * Math.PI * 2;
+          s.position.set(Math.cos(a) * 0.42, 0.28 + Math.sin(i * 2.1) * 0.2, Math.sin(a) * 0.4);
           group.add(s);
+          starSprites.push(s);
         }
+        // Twinkle: each star pulses on its own offset.
+        anims.push((t) => {
+          starSprites.forEach((s, i) => {
+            (s.material as THREE.SpriteMaterial).opacity = 0.5 + (Math.sin(t * 3 + i * 1.7) + 1) * 0.25;
+          });
+        });
         break;
       }
       case "pirate": {
@@ -1065,25 +1191,69 @@ async function buildScene(
         const palm = placeModel("palm", 0.22, 0.11, -0.14, 0.038, 0.6);
         group.add(isle);
         if (palm) group.add(palm);
+        // A fish that arcs up out of the sea and dives back on a loop.
+        const fish = new T.Group();
+        const fishBody = mesh(g(new T.SphereGeometry(0.022, 10, 8)), lam(0x5aa9c9));
+        fishBody.scale.set(1.7, 1, 0.7);
+        const fishTail = mesh(g(new T.ConeGeometry(0.016, 0.026, 4)), lam(0x5aa9c9), -0.035, 0, 0);
+        fishTail.rotation.z = Math.PI / 2;
+        fish.add(fishBody, fishTail);
+        group.add(fish);
+        anims.push((t) => {
+          const cyc = (t * 0.5) % 1; // 0..1 arc, then submerged pause
+          if (cyc < 0.5) {
+            const k = cyc / 0.5;
+            fish.visible = true;
+            fish.position.set(-0.18 + k * 0.12, 0.04 + Math.sin(k * Math.PI) * 0.16, 0.12);
+            fish.rotation.z = (0.5 - k) * 2.2;
+          } else {
+            fish.visible = false;
+          }
+        });
+        // Seagulls wheeling over the cove.
+        addFlock(group, anims, { count: 3, radius: 0.5, y: 0.6, speed: 0.5, color: 0xf2ede4 });
         break;
       }
       case "jungle": {
         group.add(islandBase(0x3fa34d, "grass", anims));
-        for (const [w, h, y] of [[0.3, 0.09, 0.075], [0.22, 0.08, 0.155], [0.14, 0.08, 0.235]])
-          group.add(mesh(g(new T.BoxGeometry(w, h, w)), lam(0xb79b6e), 0, y, 0));
-        group.add(mesh(g(new T.BoxGeometry(0.05, 0.07, 0.02)), lam(0x5a4632), 0, 0.065, 0.15));
+        // Stepped stone pyramid — now with recessed shading per tier and a
+        // proper carved look rather than three plain tan boxes.
+        const stoneCols = [0xa8895f, 0xb79b6e, 0xc4a878];
+        for (const [i, [w, h, y]] of [[0.3, 0.09, 0.075], [0.22, 0.08, 0.155], [0.14, 0.08, 0.235]].entries())
+          group.add(mesh(g(new T.BoxGeometry(w, h, w)), lam(stoneCols[i]), 0, y, 0));
+        // Dark doorway set into the base tier.
+        group.add(mesh(g(new T.BoxGeometry(0.05, 0.07, 0.02)), lam(0x2c2418), 0, 0.065, 0.151));
+        // Steps leading up to the doorway.
+        group.add(mesh(g(new T.BoxGeometry(0.08, 0.02, 0.03)), lam(0x9a7d54), 0, 0.03, 0.17));
+        // A glowing capstone gem on the summit that pulses.
+        const gem = mesh(g(new T.OctahedronGeometry(0.028)), track(new T.MeshLambertMaterial({ color: 0x62e0d0, emissive: 0x2aa89a })), 0, 0.3, 0);
+        group.add(gem);
+        const gemGlow = spriteOf(glowTex, 0.14, 0.8, true);
+        gemGlow.position.set(0, 0.3, 0);
+        (gemGlow.material as THREE.SpriteMaterial).color.setHex(0x8ff2e6);
+        group.add(gemGlow);
+        anims.push((t) => {
+          gem.rotation.y = t * 1.2;
+          gem.position.y = 0.3 + Math.sin(t * 1.6) * 0.008;
+          (gemGlow.material as THREE.SpriteMaterial).opacity = 0.55 + Math.sin(t * 2.4) * 0.25;
+        });
         // Real Kenney tree (Nature Kit, CC0) in place of a trunk cylinder +
-        // hand-built canopy clump.
+        // hand-built canopy clump. Given a gentle sway.
         for (const [x, z, rot] of [[-0.26, 0.12, 0.4], [0.27, -0.16, 2.1]] as const) {
-          const t = placeModel("tree", x, 0.03, z, 0.22, rot);
-          if (t) group.add(t);
+          const tree = placeModel("tree", x, 0.03, z, 0.22, rot);
+          if (tree) {
+            group.add(tree);
+            const swayPh = x;
+            anims.push((t) => (tree.rotation.z = Math.sin(t * 1.1 + swayPh) * 0.04));
+          }
         }
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 6; i++) {
           const f = spriteOf(glowTex, 0.05, 0.9, true);
           group.add(f);
           const ph = i * 1.7;
           anims.push((t) => {
             f.position.set(Math.cos(t * 0.9 + ph) * 0.26, 0.2 + Math.sin(t * 1.3 + ph) * 0.08, Math.sin(t * 0.9 + ph) * 0.26);
+            (f.material as THREE.SpriteMaterial).opacity = 0.5 + Math.sin(t * 5 + ph) * 0.4;
           });
         }
         break;
@@ -1102,10 +1272,22 @@ async function buildScene(
         bal.position.set(0, 0.42, 0);
         group.add(bal);
         spin(bal, 0.42, 0.045, 1.1);
+        // Gentle horizontal drift on top of the vertical bob, so the balloon
+        // wanders rather than just bobbing in place.
+        anims.push((t) => {
+          bal.position.x = Math.sin(t * 0.4) * 0.06;
+          bal.rotation.z = Math.sin(t * 0.5) * 0.08;
+        });
         const c = spriteOf(cloudTex, 0.26, 0.9);
         c.position.set(-0.35, 0.5, -0.1);
         group.add(c);
         spin(c, 0.5, 0.02, 0.6, 1);
+        // A second, smaller cloud drifting the other way.
+        const c2 = spriteOf(cloudTex, 0.16, 0.8);
+        c2.position.set(0.34, 0.34, 0.05);
+        group.add(c2);
+        anims.push((t) => (c2.position.x = 0.34 + Math.sin(t * 0.5 + 2) * 0.04));
+        addFlock(group, anims, { count: 3, radius: 0.5, y: 0.66, speed: 0.5, color: 0x5a6b7a });
         break;
       }
       case "reef": {
@@ -1142,6 +1324,25 @@ async function buildScene(
           whale.position.set(Math.sin(t * 0.45) * 0.1, 0.1 + Math.sin(k * Math.PI) * 0.16, 0);
           whale.rotation.z = Math.cos(t * 0.9) * 0.5;
         });
+        // Streams of bubbles rising from the reef and popping at the surface.
+        for (let i = 0; i < 7; i++) {
+          const bub = spriteOf(softDot, 0.022, 0.6, true);
+          (bub.material as THREE.SpriteMaterial).color.setHex(0xcfeeff);
+          group.add(bub);
+          const bx = (Math.random() - 0.5) * 0.4;
+          const bz = (Math.random() - 0.5) * 0.4;
+          const spd = 0.25 + Math.random() * 0.2;
+          const off = Math.random();
+          const sz = 0.016 + Math.random() * 0.02;
+          anims.push((t) => {
+            const life = (t * spd + off) % 1;
+            bub.position.set(bx + Math.sin(life * 8 + i) * 0.01, 0.05 + life * 0.34, bz);
+            bub.scale.setScalar(sz);
+            (bub.material as THREE.SpriteMaterial).opacity = Math.sin(life * Math.PI) * 0.6;
+          });
+        }
+        // Gulls over the water.
+        addFlock(group, anims, { count: 2, radius: 0.52, y: 0.62, speed: 0.46, color: 0xf2ede4 });
         break;
       }
       case "aurora": {
@@ -1162,6 +1363,20 @@ async function buildScene(
           const m = fire.material as THREE.SpriteMaterial;
           m.opacity = 0.7 + Math.sin(t * 9) * 0.15 + Math.sin(t * 23) * 0.08;
         });
+        // Embers spitting up out of the campfire.
+        for (let i = 0; i < 5; i++) {
+          const ember = spriteOf(softDot, 0.014, 0.9, true);
+          (ember.material as THREE.SpriteMaterial).color.setHex(0xffb457);
+          group.add(ember);
+          const spd = 0.6 + Math.random() * 0.5;
+          const off = Math.random();
+          const drift = (Math.random() - 0.5) * 0.08;
+          anims.push((t) => {
+            const life = (t * spd + off) % 1;
+            ember.position.set(0.02 + drift * life, 0.06 + life * 0.22, 0.2 + drift * life * 0.5);
+            (ember.material as THREE.SpriteMaterial).opacity = (1 - life) * 0.9;
+          });
+        }
         const ribbonGeo = g(new T.PlaneGeometry(0.9, 0.16, 18, 1));
         const ribbonBase = Float32Array.from(ribbonGeo.attributes.position.array);
         const ribbon = new T.Mesh(
@@ -1227,9 +1442,39 @@ async function buildScene(
         camel.position.set(-0.14, 0.02, 0.14);
         camel.rotation.y = 0.7;
         group.add(camel);
+        // The camel plods a slow circular path around the pyramid with a
+        // gentle walking bob, its head nodding and tail swishing — it was
+        // completely static before.
+        anims.push((t) => {
+          const a = t * 0.28;
+          camel.position.set(Math.cos(a) * 0.16, 0.02 + Math.abs(Math.sin(t * 3)) * 0.006, Math.sin(a) * 0.13);
+          camel.rotation.y = -a + Math.PI / 2 + 0.7;
+          head.rotation.z = Math.sin(t * 3) * 0.12;
+          camelTail.rotation.y = Math.sin(t * 4) * 0.3;
+        });
         const sun = spriteOf(glowTex, 0.34, 0.85, true);
         sun.position.set(0.26, 0.5, -0.2);
         group.add(sun);
+        // Sun rays: thin spokes radiating from the sun, slowly rotating.
+        const rays = new T.Group();
+        rays.position.set(0.26, 0.5, -0.2);
+        const rayGeoD = g(new T.PlaneGeometry(0.02, 0.12));
+        const rayMatD = track(new T.MeshBasicMaterial({ color: 0xffe08a, transparent: true, opacity: 0.4, side: T.DoubleSide, depthWrite: false, blending: T.AdditiveBlending }));
+        for (let i = 0; i < 8; i++) {
+          const ray = new T.Mesh(rayGeoD, rayMatD);
+          ray.position.y = 0.22;
+          const rg = new T.Group();
+          rg.rotation.z = (i / 8) * Math.PI * 2;
+          rg.add(ray);
+          rays.add(rg);
+        }
+        group.add(rays);
+        anims.push((t) => {
+          rays.rotation.z = t * 0.3;
+          rayMatD.opacity = 0.3 + Math.sin(t * 2) * 0.12;
+        });
+        // A lone bird gliding over the dunes.
+        addFlock(group, anims, { count: 2, radius: 0.5, y: 0.66, speed: 0.42, color: 0x6b4a3a });
         break;
       }
     }
@@ -1272,7 +1517,6 @@ async function buildScene(
 
   let turning = false;
   let turnStart = 0;
-  let swapped = false;
   const TURN_DUR = 1.8;
   let nextTurnAt = 4.2;
 
@@ -1290,14 +1534,18 @@ async function buildScene(
   const startTurn = () => {
     if (turning) return;
     turning = true;
-    swapped = false;
     turnStart = elapsed;
     nextTurnAt = elapsed + 6.8;
+    const incomingIdx = (worldIdx + 1) % WORLDS.length;
+    // Front face carries the current world (visible as the leaf lifts); the
+    // back face carries the incoming world (revealed as it flips past vertical).
+    // Both are set once here — no mid-flip texture swap that could flash.
     pageMat.map = arts[worldIdx];
     pageMat.needsUpdate = true;
+    pageMatBack.map = artsBack[incomingIdx];
+    pageMatBack.needsUpdate = true;
 
     const outgoing = worlds[worldIdx].group;
-    const incomingIdx = (worldIdx + 1) % WORLDS.length;
     // Sink the current world into the gutter…
     tw(0.05, 0.55, easeIn, (k) => {
       outgoing.scale.setScalar(Math.max(1 - k, 0.001));
@@ -1341,11 +1589,6 @@ async function buildScene(
     const k = Math.min((elapsed - turnStart) / TURN_DUR, 1);
     const phase = easeInOut(k);
     pagePivot.rotation.z = phase * Math.PI;
-    if (!swapped && phase >= 0.5) {
-      swapped = true;
-      pageMat.map = artsBack[(worldIdx + 1) % WORLDS.length];
-      pageMat.needsUpdate = true;
-    }
     // Cloth-like curl, strongest mid-turn.
     const curl = 0.17 * Math.sin(phase * Math.PI);
     const pos = pageGeo.attributes.position as THREE.BufferAttribute;
@@ -1382,6 +1625,7 @@ async function buildScene(
       worldHolder.remove(worlds[worldIdx].group);
       worldIdx = (worldIdx + 1) % WORLDS.length;
       worldHolder.add(worlds[worldIdx].group);
+      worlds[worldIdx].tick(2.0); // pose the new world's animated props
       drawCaption(WORLDS[worldIdx].caption);
       renderer.render(scene, camera);
       return;
@@ -1488,7 +1732,11 @@ async function buildScene(
   document.addEventListener("visibilitychange", onVisibility);
 
   if (reduced) {
-    // One perfect still: world raised, caption set, soft light.
+    // One perfect still: world raised, caption set, soft light. Tick the
+    // visible world's animations once at a representative time so the animated
+    // props (orbiting rock chunks, birds, motes, the camel, …) are posed in
+    // their spread-out positions rather than piled at the island's origin.
+    worlds[worldIdx].tick(2.0);
     renderer.render(scene, camera);
   } else {
     setRunning(live);
