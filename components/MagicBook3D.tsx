@@ -90,7 +90,13 @@ export default function MagicBook3D({ width = 330, height = 260, className = "",
     if (weakDevice) return;
     let disposed = false;
     let cleanup: (() => void) | null = null;
-    (async () => {
+
+    const boot = async () => {
+      // The postprocessing pipeline (bloom shader compile) + PMREM environment
+      // generation are one-off main-thread/GPU costs. Loading the modules and
+      // building the scene is deferred to browser idle (below) so none of it
+      // competes with the page's initial load metrics (LCP/TBT). The BookLogo
+      // placeholder holds the slot until the scene is ready.
       const [T, { GLTFLoader }, composer, renderPass, bloom, output, roomEnv] = await Promise.all([
         import("three"),
         import("three/examples/jsm/loaders/GLTFLoader.js"),
@@ -114,9 +120,25 @@ export default function MagicBook3D({ width = 330, height = 260, className = "",
       // will ever call the cleanup this returned.
       if (disposed) c?.();
       else cleanup = c;
-    })();
+    };
+
+    // Defer the WebGL boot to idle time (fallback: a short timeout) so the
+    // heavy init lands after the page has settled, not during first paint.
+    const ric = (window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number })
+      .requestIdleCallback;
+    const cic = (window as Window & { cancelIdleCallback?: (h: number) => void }).cancelIdleCallback;
+    let idleHandle: number;
+    let timeoutHandle: number;
+    if (ric) {
+      idleHandle = ric(() => void boot(), { timeout: 2000 });
+    } else {
+      timeoutHandle = window.setTimeout(() => void boot(), 200);
+    }
+
     return () => {
       disposed = true;
+      if (idleHandle !== undefined && cic) cic(idleHandle);
+      if (timeoutHandle !== undefined) window.clearTimeout(timeoutHandle);
       cleanup?.();
     };
   }, [width, height, live]);
@@ -160,12 +182,14 @@ async function buildScene(
   } catch {
     return null; // No WebGL — the BookLogo fallback stays.
   }
-  // Supersample: render the small canvas at up to ~2.6× device pixels so the
-  // gilt lines, page art, and text stay crisp instead of soft. The canvas is
-  // tiny (≈330×260 CSS px) so even at 2.6× the buffer is modest.
+  // Supersample the tiny canvas (≈330×260 CSS px) so the gilt lines, page art
+  // and text stay crisp. Capped lower than before because the bloom pass now
+  // softens the image anyway and the whole pipeline (bloom + PBR) is drawn each
+  // frame through the composer — trimming the pixel budget keeps the per-frame
+  // and per-pass GPU cost down for a lighter homepage hero.
   const cores = navigator.hardwareConcurrency ?? 8;
-  const ssBudget = cores >= 8 ? 2.6 : cores >= 6 ? 2.2 : 2;
-  renderer.setPixelRatio(Math.min((window.devicePixelRatio || 1) * 1.35, ssBudget));
+  const ssBudget = cores >= 8 ? 2 : cores >= 6 ? 1.8 : 1.6;
+  renderer.setPixelRatio(Math.min((window.devicePixelRatio || 1) * 1.2, ssBudget));
   renderer.setSize(width, height);
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.82;
@@ -626,9 +650,11 @@ async function buildScene(
   const root = new T.Group(); // pointer-parallax pivot
   scene.add(root);
 
-  root.add(new T.AmbientLight(0xfff1dc, 0.22));
-  root.add(new T.HemisphereLight(0xdce8ff, 0x9a6ab0, 0.5));
-  const key = new T.DirectionalLight(0xfff2e0, 1.5);
+  // Lower fill + a stronger, warmer key so forms model with real light/shadow
+  // contrast instead of the flat, evenly-lit look that reads as "primitive".
+  root.add(new T.AmbientLight(0xfff1dc, 0.16));
+  root.add(new T.HemisphereLight(0xdce8ff, 0x8a5a9e, 0.38));
+  const key = new T.DirectionalLight(0xfff2e0, 2.0);
   key.position.set(2, 3.2, 2.2);
   if (fancyShadows) {
     key.castShadow = true;
@@ -662,7 +688,7 @@ async function buildScene(
   composer.addPass(new fx.RenderPass(scene, camera));
   // Only genuinely bright / emissive pixels glow (high threshold) so the sky
   // and paper don't wash out — candlelit windows, god-rays, embers, crystals.
-  const bloomPass = new fx.UnrealBloomPass(new T.Vector2(width, height), 0.36, 0.3, 0.92);
+  const bloomPass = new fx.UnrealBloomPass(new T.Vector2(width, height), 0.18, 0.4, 0.85);
   composer.addPass(bloomPass);
   composer.addPass(new fx.OutputPass());
   const renderFrame = () => composer.render();
@@ -1138,12 +1164,14 @@ async function buildScene(
     const sheet = new T.Mesh(geo, mat);
     sheet.position.y = -len / 2 + 0.02;
     wf.add(sheet);
-    const topMist = spriteOf(softDot, 0.11, 0.5, true);
+    // Faint mist where the water leaves the rim and where it dissipates — kept
+    // small and dim so it reads as spray, not floating white blobs.
+    const topMist = spriteOf(softDot, 0.06, 0.3, true);
     (topMist.material as THREE.SpriteMaterial).color.setHex(0xdff2ff);
-    topMist.position.y = 0.03;
-    const botMist = spriteOf(softDot, 0.14, 0.5, true);
+    topMist.position.y = 0.02;
+    const botMist = spriteOf(softDot, 0.08, 0.3, true);
     (botMist.material as THREE.SpriteMaterial).color.setHex(0xdff2ff);
-    botMist.position.y = -len + 0.04;
+    botMist.position.y = -len + 0.02;
     wf.add(topMist, botMist);
     wf.position.set(Math.cos(angle) * rimR, 0.0, Math.sin(angle) * rimR * 0.78);
     wf.rotation.y = -angle + Math.PI / 2;
@@ -1151,7 +1179,7 @@ async function buildScene(
     const scroll = 0.6 + Math.random() * 0.3;
     anims.push((t) => {
       tex.offset.y = -(t * scroll) % 1;
-      (botMist.material as THREE.SpriteMaterial).opacity = 0.4 + Math.sin(t * 6 + angle) * 0.15;
+      (botMist.material as THREE.SpriteMaterial).opacity = 0.22 + Math.sin(t * 6 + angle) * 0.08;
     });
   };
 
@@ -1159,17 +1187,17 @@ async function buildScene(
   // Echoes the reference's glowing flora/gems; the magic really shows under the
   // new bloom pass.
   const glowCrystal = (grp: THREE.Group, anims: ((t: number) => void)[], color: number, x: number, y: number, z: number, scale: number) => {
-    const mat = track(new T.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 1.7, roughness: 0.25, metalness: 0.0 }));
+    const mat = track(new T.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 1.1, roughness: 0.25, metalness: 0.0 }));
     const crystal = mesh(g(new T.OctahedronGeometry(scale)), mat, x, y, z);
     crystal.scale.y = 1.9;
     grp.add(crystal);
-    const glow = spriteOf(glowTex, scale * 5, 0.6, true);
+    const glow = spriteOf(glowTex, scale * 3, 0.6, true);
     glow.position.set(x, y, z);
     (glow.material as THREE.SpriteMaterial).color.setHex(color);
     grp.add(glow);
     anims.push((t) => {
       crystal.rotation.y = t * 0.6 + x * 8;
-      (glow.material as THREE.SpriteMaterial).opacity = 0.4 + Math.sin(t * 2.2 + x * 10) * 0.22;
+      (glow.material as THREE.SpriteMaterial).opacity = 0.22 + Math.sin(t * 2.2 + x * 10) * 0.12;
     });
   };
 
@@ -1292,12 +1320,12 @@ async function buildScene(
         castle.scale.setScalar(0.125);
         castle.position.set(0.03, 0.035, 0.02);
         group.add(castle);
-        const win = spriteOf(glowTex, 0.07, 0.9, true);
-        win.position.set(0.03, 0.2, 0.12);
+        const win = spriteOf(glowTex, 0.045, 0.9, true);
+        win.position.set(0.03, 0.18, 0.12);
         (win.material as THREE.SpriteMaterial).color.setHex(0xffcf8a);
         group.add(win);
-        // Pulsing candlelit window.
-        anims.push((t) => ((win.material as THREE.SpriteMaterial).opacity = 0.42 + Math.sin(t * 3) * 0.16));
+        // A small, softly pulsing candlelit window — not a floodlight.
+        anims.push((t) => ((win.material as THREE.SpriteMaterial).opacity = 0.24 + Math.sin(t * 3) * 0.08));
         // A little pennant on the keep's spire that ripples in the wind.
         const flagGeo = g(new T.PlaneGeometry(0.06, 0.03, 4, 1));
         const flagBase = Float32Array.from(flagGeo.attributes.position.array);
@@ -1879,9 +1907,9 @@ async function buildScene(
     (halo.material as THREE.SpriteMaterial).color.copy(accent).lerp(WHITE, 0.35);
     (ray.material as THREE.MeshBasicMaterial).color.copy(accent).lerp(WHITE, 0.5);
     ray.rotation.y = t * 0.4;
-    (ray.material as THREE.MeshBasicMaterial).opacity = 0.032 + Math.sin(t * 1.7) * 0.01;
-    gutterLight.intensity = 1.2 + Math.sin(t * 2.1) * 0.28;
-    (halo.material as THREE.SpriteMaterial).opacity = 0.22 + Math.sin(t * 1.3) * 0.05;
+    (ray.material as THREE.MeshBasicMaterial).opacity = 0.02 + Math.sin(t * 1.7) * 0.006;
+    gutterLight.intensity = 0.9 + Math.sin(t * 2.1) * 0.2;
+    (halo.material as THREE.SpriteMaterial).opacity = 0.13 + Math.sin(t * 1.3) * 0.03;
     for (const tk of twinkles) (tk.s.material as THREE.SpriteMaterial).opacity = 0.35 + (Math.sin(t * tk.w + tk.p) + 1) * 0.3;
     for (let i = 0; i < EMBERS; i++) {
       const sa = emberSeed[i * 2];
