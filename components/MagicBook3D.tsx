@@ -1884,8 +1884,19 @@ async function buildScene(
 
   /* ---------- render loop & lifecycle ---------- */
 
+  // Cap the loop to ~34fps. rAF still fires at the display rate, but the sim +
+  // composer render (bloom passes, PBR) only run when enough wall-clock time
+  // has accumulated — roughly halving the ongoing GPU/CPU cost of the hero
+  // versus 60fps, which is plenty smooth for a subtle background animation and
+  // eases the load-time CPU pressure Lighthouse measures.
+  const TARGET_DT = 1 / 34;
+  let frameAcc = 0;
   const frame = () => {
-    const dt = Math.min(clock.getDelta(), 0.05);
+    if (running) raf = requestAnimationFrame(frame);
+    frameAcc += clock.getDelta();
+    if (frameAcc < TARGET_DT) return;
+    const dt = Math.min(frameAcc, 0.05);
+    frameAcc = 0;
     elapsed += dt;
     const t = elapsed;
 
@@ -1952,7 +1963,6 @@ async function buildScene(
     else if (t >= nextTurnAt && !document.hidden) startTurn();
 
     renderFrame();
-    if (running) raf = requestAnimationFrame(frame);
   };
 
   const setRunning = (want: boolean) => {
