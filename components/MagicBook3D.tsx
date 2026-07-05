@@ -843,6 +843,15 @@ async function buildScene(
   const pageMatBack = track(new T.MeshLambertMaterial({ map: artsBack[0], side: T.BackSide }));
   const page = new T.Mesh(pageGeo, pageMat);
   const pageBackMesh = new T.Mesh(pageGeo, pageMatBack);
+  // Give the leaf a hair of real thickness: the two faces share one deforming
+  // geometry, so if they sit coincident they z-fight where the leaf curls —
+  // the depth buffer flickers between the front art (current world) and the
+  // back art (incoming), which reads as the previous page bleeding through.
+  // Nudging the back face a sliver below the front along the pivot's local
+  // normal keeps them separated through the whole curl+flip, so each face
+  // stays solidly its own art. (0.008 of a ~1-unit page ≈ sub-pixel at the
+  // hero's on-screen size — reads as a page's thickness, not a gap.)
+  pageBackMesh.position.y = -0.008;
   page.castShadow = pageBackMesh.castShadow = fancyShadows;
   page.receiveShadow = pageBackMesh.receiveShadow = true;
   const pagePivot = new T.Group();
@@ -1158,7 +1167,15 @@ async function buildScene(
   // A waterfall cascading off the island rim — a tapered translucent sheet with
   // a scrolling streak texture and a soft mist glow at top and bottom. Each
   // fall scrolls its own cloned texture so they don't march in lockstep.
-  const addWaterfall = (grp: THREE.Group, anims: ((t: number) => void)[], angle: number, len = 0.5, rimR = 0.31) => {
+  const addWaterfall = (
+    grp: THREE.Group,
+    anims: ((t: number) => void)[],
+    angle: number,
+    len = 0.5,
+    rimR = 0.31,
+    color = 0xbfe8ff,
+    mistColor = 0xdff2ff,
+  ) => {
     const tex = track(waterfallTex.clone());
     tex.wrapT = T.RepeatWrapping;
     tex.wrapS = T.ClampToEdgeWrapping;
@@ -1179,7 +1196,7 @@ async function buildScene(
         side: T.DoubleSide,
         depthWrite: false,
         blending: T.AdditiveBlending,
-        color: 0xbfe8ff,
+        color,
         fog: false,
       }),
     );
@@ -1190,10 +1207,10 @@ async function buildScene(
     // Faint mist where the water leaves the rim and where it dissipates — kept
     // small and dim so it reads as spray, not floating white blobs.
     const topMist = spriteOf(softDot, 0.06, 0.3, true);
-    (topMist.material as THREE.SpriteMaterial).color.setHex(0xdff2ff);
+    (topMist.material as THREE.SpriteMaterial).color.setHex(mistColor);
     topMist.position.y = 0.02;
     const botMist = spriteOf(softDot, 0.08, 0.3, true);
-    (botMist.material as THREE.SpriteMaterial).color.setHex(0xdff2ff);
+    (botMist.material as THREE.SpriteMaterial).color.setHex(mistColor);
     botMist.position.y = -len + 0.02;
     wf.add(topMist, botMist);
     wf.position.set(Math.cos(angle) * rimR, 0.0, Math.sin(angle) * rimR * 0.78);
@@ -1479,6 +1496,10 @@ async function buildScene(
             (s.material as THREE.SpriteMaterial).opacity = 0.5 + (Math.sin(t * 3 + i * 1.7) + 1) * 0.25;
           });
         });
+        // Glowing crystal formations jutting from the asteroid rim — the same
+        // faceted clusters as Dragon's Peak, reading here as crystal asteroids.
+        crystalFormation(group, anims, "crystalCluster", 0x8fd8ff, 0.22, 0.02, 0.17, 0.12, -0.6);
+        crystalFormation(group, anims, "crystalCluster", 0xb98bff, -0.21, 0.02, 0.15, 0.09, 2.1);
         break;
       }
       case "pirate": {
@@ -1521,6 +1542,12 @@ async function buildScene(
         });
         // Seagulls wheeling over the cove.
         addFlock(group, anims, { count: 3, radius: 0.5, y: 0.6, speed: 0.5, color: 0xf2ede4 });
+        // The cove's sea spills off the floating island's rim — the signature
+        // floating-island waterfall motif, here fed by the lagoon. Pushed just
+        // past the sea disk's edge (R=0.35) so the falls read as the lagoon
+        // overflowing its rim rather than hiding under the opaque water.
+        addWaterfall(group, anims, 0.6, 0.5, 0.37);
+        addWaterfall(group, anims, 2.5, 0.44, 0.37);
         break;
       }
       case "jungle": {
@@ -1565,6 +1592,11 @@ async function buildScene(
             (f.material as THREE.SpriteMaterial).opacity = 0.5 + Math.sin(t * 5 + ph) * 0.4;
           });
         }
+        // Jungle cataracts pouring off the island rim, and an emerald crystal
+        // outcrop at the temple's foot — the Dragon's Peak treatment, in green.
+        addWaterfall(group, anims, 0.7, 0.5);
+        addWaterfall(group, anims, 2.4, 0.46);
+        crystalFormation(group, anims, "crystalCluster", 0x8ff2b0, 0.22, 0.03, 0.22, 0.1, 0.9);
         break;
       }
       case "balloon": {
@@ -1597,6 +1629,9 @@ async function buildScene(
         group.add(c2);
         anims.push((t) => (c2.position.x = 0.34 + Math.sin(t * 0.5 + 2) * 0.04));
         addFlock(group, anims, { count: 3, radius: 0.5, y: 0.66, speed: 0.5, color: 0x5a6b7a });
+        // Brooks spilling off the floating meadow's rim into the clouds below.
+        addWaterfall(group, anims, 0.8, 0.52);
+        addWaterfall(group, anims, 2.5, 0.46);
         break;
       }
       case "reef": {
@@ -1652,6 +1687,9 @@ async function buildScene(
         }
         // Gulls over the water.
         addFlock(group, anims, { count: 2, radius: 0.52, y: 0.62, speed: 0.46, color: 0xf2ede4 });
+        // The lagoon overflows off the island rim in two falls.
+        addWaterfall(group, anims, 0.6, 0.5);
+        addWaterfall(group, anims, 2.5, 0.46);
         break;
       }
       case "aurora": {
@@ -1712,6 +1750,10 @@ async function buildScene(
           }
           pos.needsUpdate = true;
         });
+        // Meltwater icefalls off the rim — the floating-island falls, tinted
+        // pale glacial blue to read as ice rather than open water.
+        addWaterfall(group, anims, 0.7, 0.5, 0.31, 0xd6efff, 0xeef9ff);
+        addWaterfall(group, anims, 2.5, 0.44, 0.31, 0xd6efff, 0xeef9ff);
         break;
       }
       case "desert": {
@@ -1784,6 +1826,10 @@ async function buildScene(
         });
         // A lone bird gliding over the dunes.
         addFlock(group, anims, { count: 2, radius: 0.5, y: 0.66, speed: 0.42, color: 0x6b4a3a });
+        // Sand cascading off the island rim, caught gold in the sun — the
+        // floating-island falls, dressed for the desert.
+        addWaterfall(group, anims, 0.7, 0.48, 0.31, 0xe6c07a, 0xf0d9a6);
+        addWaterfall(group, anims, 2.5, 0.42, 0.31, 0xe6c07a, 0xf0d9a6);
         break;
       }
     }
