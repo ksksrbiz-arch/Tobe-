@@ -857,6 +857,81 @@ function buildScene(
     return grp;
   };
 
+  // A smooth cone reads as a traffic cone, not a mountain — jittering the
+  // base ring outward/inward at random per-vertex breaks the silhouette into
+  // a craggy, rock-faceted peak while the apex stays a clean point.
+  const jaggedPeak = (radius: number, height: number, color: number, x = 0, y = 0, z = 0) => {
+    const geo = g(new T.ConeGeometry(radius, height, 7, 1));
+    const pos = geo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      if (Math.abs(pos.getY(i) - height / 2) > 0.001) {
+        const k = 0.82 + Math.random() * 0.32;
+        pos.setX(i, pos.getX(i) * k);
+        pos.setZ(i, pos.getZ(i) * k);
+      }
+    }
+    geo.computeVertexNormals();
+    return mesh(geo, lam(color), x, y, z);
+  };
+
+  // A cluster of overlapping spheres reads as a shrub/canopy far better than
+  // one smooth sphere, which just looks like a lollipop.
+  const foliageClump = (color: number, r: number, x = 0, y = 0, z = 0) => {
+    const grp = new T.Group();
+    const lobes: [number, number, number, number][] = [
+      [0, 0, 0, 1],
+      [r * 0.55, r * 0.12, r * 0.2, 0.72],
+      [-r * 0.5, r * 0.05, -r * 0.22, 0.66],
+      [r * 0.1, r * 0.32, -r * 0.4, 0.6],
+    ];
+    for (const [lx, ly, lz, s] of lobes) grp.add(mesh(g(new T.SphereGeometry(r * s, 8, 6)), lam(color), lx, ly, lz));
+    grp.position.set(x, y, z);
+    return grp;
+  };
+
+  // A handful of tapered, splayed branches from a common base reads as
+  // branching coral; a single solid cone just reads as a traffic cone.
+  const coralClump = (color: number, scale: number, x = 0, y = 0, z = 0) => {
+    const grp = new T.Group();
+    const n = 3 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < n; i++) {
+      const h = (0.045 + Math.random() * 0.045) * scale;
+      const r = 0.011 * scale;
+      const branch = mesh(
+        g(new T.CylinderGeometry(r * 0.25, r, h, 5)),
+        lam(color),
+        (Math.random() - 0.5) * 0.03 * scale,
+        h / 2,
+        (Math.random() - 0.5) * 0.03 * scale,
+      );
+      branch.rotation.z = (Math.random() - 0.5) * 0.6;
+      branch.rotation.x = (Math.random() - 0.5) * 0.6;
+      grp.add(branch);
+    }
+    grp.position.set(x, y, z);
+    return grp;
+  };
+
+  // A trunk plus fronds splayed around the top — a single green cone reads as
+  // a Christmas tree, not a palm.
+  const palmTree = (x = 0, y = 0, z = 0) => {
+    const grp = new T.Group();
+    const trunk = mesh(g(new T.CylinderGeometry(0.008, 0.014, 0.09, 6)), lam(0x8b5a2b), 0, 0.045, 0);
+    trunk.rotation.z = 0.1;
+    grp.add(trunk);
+    const frondGeo = g(new T.ConeGeometry(0.018, 0.075, 4));
+    for (let i = 0; i < 5; i++) {
+      const frond = new T.Mesh(frondGeo, lam(0x2e7d32));
+      frond.scale.set(1, 0.3, 1);
+      frond.position.set(0, 0.095, 0);
+      frond.rotation.z = Math.PI / 2 + (i - 2) * 0.32;
+      frond.rotation.y = i * 0.85;
+      grp.add(frond);
+    }
+    grp.position.set(x, y, z);
+    return grp;
+  };
+
   const buildWorld = (key: WorldKey): World => {
     const group = new T.Group();
     const anims: ((t: number) => void)[] = [];
@@ -866,9 +941,9 @@ function buildScene(
     switch (key) {
       case "dragon": {
         group.add(islandBase(0x2c7a7b, "grass", anims));
-        group.add(mesh(g(new T.ConeGeometry(0.16, 0.42, 6)), lam(0x173b4a), -0.12, 0.24, 0.02));
-        group.add(mesh(g(new T.ConeGeometry(0.12, 0.3, 6)), lam(0x2c7a7b), 0.14, 0.18, -0.08));
-        group.add(mesh(g(new T.ConeGeometry(0.09, 0.22, 6)), lam(0x3a8f8f), 0.05, 0.14, 0.16));
+        group.add(jaggedPeak(0.16, 0.42, 0x173b4a, -0.12, 0.24, 0.02));
+        group.add(jaggedPeak(0.12, 0.3, 0x2c7a7b, 0.14, 0.18, -0.08));
+        group.add(jaggedPeak(0.09, 0.22, 0x3a8f8f, 0.05, 0.14, 0.16));
         const tower = mesh(g(new T.CylinderGeometry(0.035, 0.045, 0.16, 6)), lam(0x241a38), 0.16, 0.36, -0.08);
         const roof = mesh(g(new T.ConeGeometry(0.055, 0.08, 6)), lam(0x2e2447), 0.16, 0.48, -0.08);
         const win = spriteOf(glowTex, 0.09, 0.9, true);
@@ -977,7 +1052,8 @@ function buildScene(
           ship.rotation.x = Math.sin(t * 1.1 + 1) * 0.05;
         });
         const isle = mesh(g(new T.ConeGeometry(0.08, 0.09, 6)), lam(0xead9a0), 0.22, 0.07, -0.14);
-        const palm = mesh(g(new T.ConeGeometry(0.05, 0.05, 5)), lam(0x2e7d32), 0.22, 0.14, -0.14);
+        // A single green cone read as a Christmas tree, not a palm.
+        const palm = palmTree(0.22, 0.11, -0.14);
         group.add(isle, palm);
         break;
       }
@@ -989,7 +1065,9 @@ function buildScene(
         for (const [x, z] of [[-0.26, 0.12], [0.27, -0.16]]) {
           group.add(
             mesh(g(new T.CylinderGeometry(0.012, 0.018, 0.14, 5)), lam(0x8b5a2b), x, 0.1, z),
-            mesh(g(new T.ConeGeometry(0.09, 0.07, 5)), lam(0x2e7d32), x, 0.19, z),
+            // A clump of lobes reads as a leafy canopy; a single cone read as a
+            // Christmas tree standing in a jungle.
+            foliageClump(0x2e7d32, 0.085, x, 0.19, z),
           );
         }
         for (let i = 0; i < 4; i++) {
@@ -1004,8 +1082,9 @@ function buildScene(
       }
       case "balloon": {
         group.add(islandBase(0x6fbf4a, "grass", anims));
-        group.add(mesh(g(new T.SphereGeometry(0.1, 8, 6)), lam(0x4e9e33), -0.15, 0.05, 0.1));
-        group.add(mesh(g(new T.SphereGeometry(0.08, 8, 6)), lam(0x6fbf4a), 0.18, 0.04, -0.1));
+        // Clumps read as shrubs; a single smooth sphere just reads as a ball.
+        group.add(foliageClump(0x4e9e33, 0.09, -0.15, 0.05, 0.1));
+        group.add(foliageClump(0x6fbf4a, 0.07, 0.18, 0.04, -0.1));
         const bal = new T.Group();
         const envelope = mesh(g(new T.SphereGeometry(0.13, 28, 20)), lam(0xe8472b));
         envelope.scale.set(1, 1.15, 1);
@@ -1030,15 +1109,26 @@ function buildScene(
         );
         water.position.y = 0.06;
         group.add(water);
+        // Branching clumps read as coral; plain solid cones read as buoys.
         for (const [x, z, c, h] of [[-0.2, 0.1, 0xff6f91, 0.1], [0.16, -0.14, 0x7b61ff, 0.13], [0.05, 0.2, 0xffb85c, 0.08]] as const)
-          group.add(mesh(g(new T.ConeGeometry(0.035, h, 5)), lam(c), x, h / 2, z));
+          group.add(coralClump(c, h / 0.05, x, 0, z));
         const whale = new T.Group();
         const body = mesh(g(new T.SphereGeometry(0.09, 20, 14)), lam(0x4a78b0));
         body.scale.set(1.6, 0.9, 0.9);
-        const tail = mesh(g(new T.ConeGeometry(0.05, 0.07, 4)), lam(0x4a78b0), -0.16, 0.02, 0);
-        tail.rotation.z = Math.PI / 2.4;
+        const whaleBelly = mesh(g(new T.SphereGeometry(0.075, 16, 12)), lam(0xdcefff), 0, -0.02, 0.01);
+        whaleBelly.scale.set(1.3, 0.55, 0.75);
+        // A two-lobe fluke reads as a whale tail; a single cone read as a fin.
+        const flukeGeo = g(new T.ConeGeometry(0.045, 0.05, 4));
+        const flukeL = mesh(flukeGeo, lam(0x4a78b0), -0.19, 0.02, 0.032);
+        flukeL.rotation.set(0, -0.28, Math.PI / 2.3);
+        flukeL.scale.set(1, 1, 0.35);
+        const flukeR = mesh(flukeGeo, lam(0x4a78b0), -0.19, 0.02, -0.032);
+        flukeR.rotation.set(0, 0.28, Math.PI / 2.3);
+        flukeR.scale.set(1, 1, 0.35);
+        const peduncle = mesh(g(new T.CylinderGeometry(0.015, 0.03, 0.08, 8)), lam(0x4a78b0), -0.14, 0.015, 0);
+        peduncle.rotation.z = Math.PI / 2;
         const eye = mesh(g(new T.SphereGeometry(0.012, 6, 6)), lam(0xffffff), 0.09, 0.02, 0.07);
-        whale.add(body, tail, eye);
+        whale.add(body, whaleBelly, peduncle, flukeL, flukeR, eye);
         group.add(whale);
         anims.push((t) => {
           const k = (Math.sin(t * 0.9) + 1) / 2;
@@ -1049,8 +1139,12 @@ function buildScene(
       }
       case "aurora": {
         group.add(islandBase(0xe8f1fa, "snow", anims));
-        group.add(mesh(g(new T.ConeGeometry(0.14, 0.3, 6)), lam(0xc7d7e8), -0.14, 0.17, -0.04));
-        group.add(mesh(g(new T.ConeGeometry(0.1, 0.2, 6)), lam(0x9fb3cc), 0.05, 0.12, -0.14));
+        // Faceted peaks read as craggy rock; nested white caps near each tip
+        // read as snow. Smooth single-color cones read as party hats.
+        group.add(jaggedPeak(0.14, 0.3, 0xc7d7e8, -0.14, 0.17, -0.04));
+        group.add(jaggedPeak(0.07, 0.12, 0xffffff, -0.14, 0.26, -0.04));
+        group.add(jaggedPeak(0.1, 0.2, 0x9fb3cc, 0.05, 0.12, -0.14));
+        group.add(jaggedPeak(0.05, 0.09, 0xffffff, 0.05, 0.175, -0.14));
         group.add(mesh(g(new T.ConeGeometry(0.07, 0.11, 5)), lam(0xe8472b), 0.16, 0.07, 0.12));
         const fire = spriteOf(glowTex, 0.13, 1, true);
         fire.position.set(0.02, 0.06, 0.2);
