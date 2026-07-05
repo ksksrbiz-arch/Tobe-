@@ -16,14 +16,16 @@ import BookLogo from "./BookLogo";
  * immediately. The camera drifts and leans toward the pointer.
  *
  * The whole scene sits in an atmospheric pink/lavender cloudscape with fog for
- * depth, PBR image-based lighting, and a bloom post-process pass so candlelight,
- * god-rays and glowing crystals bloom. Dragon's Peak is the fully-dressed
+ * depth and a warm key light for form contrast; candlelight, god-rays and
+ * glowing crystals are additive glow sprites (no bloom post-process, which was
+ * too costly for an above-the-fold hero). Dragon's Peak is the fully-dressed
  * showcase: a Kenney stone keep, waterfalls spilling off the island rim, and
- * emissive glowing crystals.
+ * glowing crystals.
  *
  * Performance & resilience:
- * - three.js + postprocessing load inside this already-lazy client-only chunk,
- *   so nothing here ever competes with the LCP headline.
+ * - three.js loads inside this already-lazy client-only chunk, deferred to
+ *   browser idle, and the loop is capped at ~34fps — so nothing here ever
+ *   competes with the LCP headline or hammers the main thread.
  * - The render loop pauses whenever the tab is hidden or the book scrolls
  *   out of view (IntersectionObserver), and the pixel ratio is capped at 2.
  * - Under prefers-reduced-motion the scene renders a single static frame —
@@ -41,13 +43,6 @@ interface MagicBook3DProps {
 
 type ThreeNS = typeof import("three");
 type GLTFLoaderCtor = typeof import("three/examples/jsm/loaders/GLTFLoader.js").GLTFLoader;
-type PostFX = {
-  EffectComposer: typeof import("three/examples/jsm/postprocessing/EffectComposer.js").EffectComposer;
-  RenderPass: typeof import("three/examples/jsm/postprocessing/RenderPass.js").RenderPass;
-  UnrealBloomPass: typeof import("three/examples/jsm/postprocessing/UnrealBloomPass.js").UnrealBloomPass;
-  OutputPass: typeof import("three/examples/jsm/postprocessing/OutputPass.js").OutputPass;
-  RoomEnvironment: typeof import("three/examples/jsm/environments/RoomEnvironment.js").RoomEnvironment;
-};
 
 const COLORS = {
   purple: 0x6b1c6f,
@@ -92,29 +87,16 @@ export default function MagicBook3D({ width = 330, height = 260, className = "",
     let cleanup: (() => void) | null = null;
 
     const boot = async () => {
-      // The postprocessing pipeline (bloom shader compile) + PMREM environment
-      // generation are one-off main-thread/GPU costs. Loading the modules and
-      // building the scene is deferred to browser idle (below) so none of it
-      // competes with the page's initial load metrics (LCP/TBT). The BookLogo
-      // placeholder holds the slot until the scene is ready.
-      const [T, { GLTFLoader }, composer, renderPass, bloom, output, roomEnv] = await Promise.all([
+      // three.js parse + WebGL boot is a one-off main-thread/GPU cost, so the
+      // module load + scene build are deferred to browser idle (below) so they
+      // don't compete with the page's initial load metrics (LCP/TBT). The
+      // BookLogo placeholder holds the slot until the scene is ready.
+      const [T, { GLTFLoader }] = await Promise.all([
         import("three"),
         import("three/examples/jsm/loaders/GLTFLoader.js"),
-        import("three/examples/jsm/postprocessing/EffectComposer.js"),
-        import("three/examples/jsm/postprocessing/RenderPass.js"),
-        import("three/examples/jsm/postprocessing/UnrealBloomPass.js"),
-        import("three/examples/jsm/postprocessing/OutputPass.js"),
-        import("three/examples/jsm/environments/RoomEnvironment.js"),
       ]);
       if (disposed) return;
-      const fx: PostFX = {
-        EffectComposer: composer.EffectComposer,
-        RenderPass: renderPass.RenderPass,
-        UnrealBloomPass: bloom.UnrealBloomPass,
-        OutputPass: output.OutputPass,
-        RoomEnvironment: roomEnv.RoomEnvironment,
-      };
-      const c = await buildScene(T, GLTFLoader, fx, host, width, height, live, () => setReady(true));
+      const c = await buildScene(T, GLTFLoader, host, width, height, live, () => setReady(true));
       // buildScene awaits model fetches internally, so disposal can land while
       // it's still in flight — if so, clean up immediately since nothing else
       // will ever call the cleanup this returned.
@@ -165,7 +147,6 @@ export default function MagicBook3D({ width = 330, height = 260, className = "",
 async function buildScene(
   T: ThreeNS,
   GLTFLoaderCtor: GLTFLoaderCtor,
-  fx: PostFX,
   host: HTMLDivElement,
   width: number,
   height: number,
@@ -183,10 +164,8 @@ async function buildScene(
     return null; // No WebGL — the BookLogo fallback stays.
   }
   // Supersample the tiny canvas (≈330×260 CSS px) so the gilt lines, page art
-  // and text stay crisp. Capped lower than before because the bloom pass now
-  // softens the image anyway and the whole pipeline (bloom + PBR) is drawn each
-  // frame through the composer — trimming the pixel budget keeps the per-frame
-  // and per-pass GPU cost down for a lighter homepage hero.
+  // and text stay crisp. Kept modest to hold down the per-frame GPU cost of an
+  // above-the-fold homepage hero.
   const cores = navigator.hardwareConcurrency ?? 8;
   const ssBudget = cores >= 8 ? 2 : cores >= 6 ? 1.8 : 1.6;
   renderer.setPixelRatio(Math.min((window.devicePixelRatio || 1) * 1.2, ssBudget));
@@ -636,17 +615,6 @@ async function buildScene(
   // the book stays crisp and only the far background hazes.
   scene.fog = new T.Fog(0xd8c1d4, 4.8, 9.5);
 
-  // PBR image-based lighting from a procedural room environment (no asset
-  // download) so MeshStandardMaterial surfaces get real reflections/roughness.
-  const pmrem = new T.PMREMGenerator(renderer);
-  pmrem.compileEquirectangularShader();
-  const envTex = pmrem.fromScene(new fx.RoomEnvironment(), 0.04).texture;
-  scene.environment = envTex;
-  // RoomEnvironment is a bright studio light; at full strength it floods every
-  // material with white ambient. Keep it very low so it only adds subtle
-  // reflection to the PBR hero elements without washing out the scene.
-  scene.environmentIntensity = 0.22;
-
   const root = new T.Group(); // pointer-parallax pivot
   scene.add(root);
 
@@ -680,18 +648,12 @@ async function buildScene(
   const accent = new T.Color(WORLDS[0].accent);
   const accentTarget = new T.Color(WORLDS[0].accent);
 
-  /* ---------- post-processing: bloom for the magical glow ---------- */
-
-  const composer = new fx.EffectComposer(renderer);
-  composer.setPixelRatio(renderer.getPixelRatio());
-  composer.setSize(width, height);
-  composer.addPass(new fx.RenderPass(scene, camera));
-  // Only genuinely bright / emissive pixels glow (high threshold) so the sky
-  // and paper don't wash out — candlelit windows, god-rays, embers, crystals.
-  const bloomPass = new fx.UnrealBloomPass(new T.Vector2(width, height), 0.18, 0.4, 0.85);
-  composer.addPass(bloomPass);
-  composer.addPass(new fx.OutputPass());
-  const renderFrame = () => composer.render();
+  // The "glow" is carried by additive glow sprites (candlelight, crystals,
+  // god-rays) rather than a bloom post-process — a full EffectComposer + bloom
+  // pass renders the whole scene an extra time plus several blur passes every
+  // frame, which was too costly for an above-the-fold homepage hero. Direct
+  // rendering keeps the atmospheric look at a fraction of the GPU cost.
+  const renderFrame = () => renderer.render(scene, camera);
 
   /* ---------- materials & mesh helpers ---------- */
 
@@ -1187,17 +1149,19 @@ async function buildScene(
   // Echoes the reference's glowing flora/gems; the magic really shows under the
   // new bloom pass.
   const glowCrystal = (grp: THREE.Group, anims: ((t: number) => void)[], color: number, x: number, y: number, z: number, scale: number) => {
-    const mat = track(new T.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 1.1, roughness: 0.25, metalness: 0.0 }));
+    // Unlit full-bright material so the crystal reads as glowing on its own
+    // (no bloom/PBR needed) — the additive halo sprite adds the soft glow.
+    const mat = track(new T.MeshBasicMaterial({ color, fog: false }));
     const crystal = mesh(g(new T.OctahedronGeometry(scale)), mat, x, y, z);
     crystal.scale.y = 1.9;
     grp.add(crystal);
-    const glow = spriteOf(glowTex, scale * 3, 0.6, true);
+    const glow = spriteOf(glowTex, scale * 4.5, 0.6, true);
     glow.position.set(x, y, z);
     (glow.material as THREE.SpriteMaterial).color.setHex(color);
     grp.add(glow);
     anims.push((t) => {
       crystal.rotation.y = t * 0.6 + x * 8;
-      (glow.material as THREE.SpriteMaterial).opacity = 0.22 + Math.sin(t * 2.2 + x * 10) * 0.12;
+      (glow.material as THREE.SpriteMaterial).opacity = 0.34 + Math.sin(t * 2.2 + x * 10) * 0.14;
     });
   };
 
@@ -1885,10 +1849,10 @@ async function buildScene(
   /* ---------- render loop & lifecycle ---------- */
 
   // Cap the loop to ~34fps. rAF still fires at the display rate, but the sim +
-  // composer render (bloom passes, PBR) only run when enough wall-clock time
-  // has accumulated — roughly halving the ongoing GPU/CPU cost of the hero
-  // versus 60fps, which is plenty smooth for a subtle background animation and
-  // eases the load-time CPU pressure Lighthouse measures.
+  // render only run when enough wall-clock time has accumulated — roughly
+  // halving the ongoing GPU/CPU cost of the hero versus 60fps, which is plenty
+  // smooth for a subtle background animation and eases the load-time CPU
+  // pressure Lighthouse measures.
   const TARGET_DT = 1 / 34;
   let frameAcc = 0;
   const frame = () => {
@@ -2008,9 +1972,6 @@ async function buildScene(
     for (const d of disposables) d.dispose();
     for (const geo of loadedGeometries) geo.dispose();
     for (const mat of loadedMaterials) mat.dispose();
-    composer.dispose();
-    envTex.dispose();
-    pmrem.dispose();
     renderer.dispose();
     renderer.domElement.remove();
   };
