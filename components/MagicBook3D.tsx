@@ -1072,39 +1072,86 @@ async function buildScene(
       2,
     );
 
-  // A jagged floating-rock tier: a tapered cylinder whose lower rings are
-  // jittered per-vertex so the underside reads as a broken chunk of rock
-  // rather than a smooth funnel. The top ring is left clean so it seats
-  // flush against the grass / the tier above.
-  const rockTier = (rTop: number, rBot: number, h: number, y: number, color: number) => {
-    const geo = g(new T.CylinderGeometry(rTop, rBot, h, 9, 2));
-    const pos = geo.attributes.position;
-    for (let i = 0; i < pos.count; i++) {
-      if (pos.getY(i) < h / 2 - 0.001) {
-        const k = 0.78 + Math.random() * 0.4;
-        pos.setX(i, pos.getX(i) * k);
-        pos.setZ(i, pos.getZ(i) * k);
-      }
+  // An irregular chunk of rock: a low icosahedron jittered per-vertex so no two
+  // faces match — reads as a broken boulder rather than a die. Used for the
+  // island's underside outcrops and the debris orbiting it.
+  const chunkRock = (s: number) => {
+    const geo = g(new T.IcosahedronGeometry(s, 0));
+    const p = geo.attributes.position as THREE.BufferAttribute;
+    for (let i = 0; i < p.count; i++) {
+      const k = 0.66 + Math.random() * 0.62;
+      p.setX(i, p.getX(i) * k);
+      p.setY(i, p.getY(i) * (0.7 + Math.random() * 0.5));
+      p.setZ(i, p.getZ(i) * k);
     }
     geo.computeVertexNormals();
-    return mesh(geo, lam(color), 0, y, 0);
+    return geo;
+  };
+
+  // The craggy rock root that plunges below the island and tapers to a rough
+  // point — the signature "torn from the earth" floating-island underside, in
+  // place of a stubby stack of cones. One tall, many-sided cone is jittered
+  // per-vertex for broken rock faces, leaned + lobed so it isn't a symmetric
+  // funnel, and vertex-coloured into strata (lit rock up top → deep shadow at
+  // the tip) so it reads as layered stone rather than a flat-shaded horn.
+  const rootSpike = (rTop: number, len: number, yTop: number) => {
+    const geo = g(new T.CylinderGeometry(rTop, 0.02, len, 16, 8, false));
+    const pos = geo.attributes.position as THREE.BufferAttribute;
+    const yTopL = len / 2;
+    const colTop = new T.Color(0x7d5a86);
+    const colBot = new T.Color(0x38263f);
+    const cols: number[] = [];
+    const leanX = (Math.random() - 0.5) * 0.13;
+    const leanZ = (Math.random() - 0.5) * 0.13;
+    const lobe = Math.random() * Math.PI * 2;
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i),
+        y = pos.getY(i),
+        z = pos.getZ(i);
+      const tt = (yTopL - y) / len; // 0 at the rim → 1 at the tip
+      if (y < yTopL - 0.001) {
+        // craggy jitter + a directional bulge lobe (fattest mid-way down) + lean
+        const ang = Math.atan2(z, x);
+        const bulge = 1 + Math.cos(ang - lobe) * 0.18 * Math.sin(tt * Math.PI);
+        const k = (0.72 + Math.random() * 0.5) * bulge;
+        pos.setX(i, x * k + leanX * tt * tt);
+        pos.setZ(i, z * k + leanZ * tt * tt);
+      }
+      const c = colTop.clone().lerp(colBot, tt * tt);
+      const n = (Math.random() - 0.5) * 0.05;
+      cols.push(Math.max(0, c.r + n), Math.max(0, c.g + n), Math.max(0, c.b + n));
+    }
+    geo.setAttribute("color", new T.Float32BufferAttribute(cols, 3));
+    geo.computeVertexNormals();
+    return mesh(geo, track(new T.MeshLambertMaterial({ vertexColors: true })), 0, yTop - len / 2, 0);
   };
 
   const islandBase = (topColor: number, biome: Biome, anims: ((t: number) => void)[]) => {
     const grp = new T.Group();
-    // Two stratified, craggy rock tiers instead of one smooth 7-gon cone —
-    // gives the underside a chunky, stratified "torn from the ground" look.
-    grp.add(rockTier(0.3, 0.16, 0.17, -0.055, 0x6b4a75));
-    grp.add(rockTier(0.15, 0.035, 0.17, -0.2, 0x5a3b63));
+    // The craggy rock root plunging below the island and tapering to a point.
+    const spike = rootSpike(0.3, 0.62, -0.02);
+    spike.castShadow = fancyShadows;
+    grp.add(spike);
+    // A few asymmetric boulders clinging to the root at different heights so the
+    // underside silhouette is broken and organic, not a clean cone.
+    for (const [ang, oy, r, s] of [
+      [0.7, -0.14, 0.19, 0.075],
+      [3.9, -0.3, 0.13, 0.06],
+      [2.3, -0.09, 0.22, 0.055],
+      [5.2, -0.42, 0.08, 0.05],
+    ] as const) {
+      const rock = mesh(chunkRock(s), lam(ang % 2 < 1 ? 0x5a3b63 : 0x6b4a75), Math.cos(ang) * r, oy, Math.sin(ang) * r * 0.82);
+      rock.rotation.set(ang, ang * 1.7, 0);
+      grp.add(rock);
+    }
     // A dirt cliff band tucked under the grassy overhang so the grass→rock
     // transition reads as a proper little cliff edge, not a flat seam.
-    grp.add(mesh(g(new T.CylinderGeometry(0.318, 0.298, 0.045, 9)), lam(0x6e4b34), 0, -0.017, 0));
+    grp.add(mesh(g(new T.CylinderGeometry(0.318, 0.3, 0.05, 16)), lam(0x6e4b34), 0, -0.02, 0));
     // Overhanging grassy lip reads far more "floating island" than a flush disc.
+    // Smoother 16-gon cap so the top rim doesn't read as a chunky heptagon.
     const topMat = track(new T.MeshLambertMaterial({ map: groundTex(biome, topColor) }));
-    const top = mesh(g(new T.CylinderGeometry(0.35, 0.322, 0.05, 9)), topMat, 0, 0.012, 0);
+    const top = mesh(g(new T.CylinderGeometry(0.35, 0.322, 0.05, 16)), topMat, 0, 0.012, 0);
     grp.add(top);
-    for (const [x, z, l] of [[-0.12, 0.06, 0.1], [0.08, -0.09, 0.14], [0.03, 0.11, 0.08]] as const)
-      grp.add(mesh(g(new T.ConeGeometry(0.013, l, 4)), lam(0x5a3b63), x, -0.16 - l / 2, z));
 
     // Chunks of rock that broke off and now slowly orbit the island — the
     // classic "floating island" motif, and the main new moving element. Each
@@ -1116,7 +1163,7 @@ async function buildScene(
       [0.38, -0.6, 0.75, 0.017, 4.1],
       [0.54, -0.16, -0.45, 0.02, 1.1],
     ] as const).forEach(([rad, y, spd, size, ph], i) => {
-      const chunk = mesh(g(new T.TetrahedronGeometry(size)), lam(i % 2 ? 0x6b4a75 : 0x5a3b63), 0, 0, 0);
+      const chunk = mesh(chunkRock(size), lam(i % 2 ? 0x6b4a75 : 0x5a3b63), 0, 0, 0);
       grp.add(chunk);
       anims.push((t) => {
         const a = t * spd + ph;
@@ -1750,10 +1797,6 @@ async function buildScene(
           }
           pos.needsUpdate = true;
         });
-        // Meltwater icefalls off the rim — the floating-island falls, tinted
-        // pale glacial blue to read as ice rather than open water.
-        addWaterfall(group, anims, 0.7, 0.5, 0.31, 0xd6efff, 0xeef9ff);
-        addWaterfall(group, anims, 2.5, 0.44, 0.31, 0xd6efff, 0xeef9ff);
         break;
       }
       case "desert": {
@@ -1826,10 +1869,6 @@ async function buildScene(
         });
         // A lone bird gliding over the dunes.
         addFlock(group, anims, { count: 2, radius: 0.5, y: 0.66, speed: 0.42, color: 0x6b4a3a });
-        // Sand cascading off the island rim, caught gold in the sun — the
-        // floating-island falls, dressed for the desert.
-        addWaterfall(group, anims, 0.7, 0.48, 0.31, 0xe6c07a, 0xf0d9a6);
-        addWaterfall(group, anims, 2.5, 0.42, 0.31, 0xe6c07a, 0xf0d9a6);
         break;
       }
     }
