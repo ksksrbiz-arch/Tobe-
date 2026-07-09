@@ -214,52 +214,121 @@ export default function HeroSection() {
           Neighborhood bookstore · Milwaukie, OR
         </div>
 
-        {/* Logo */}
+        {/* Logo — the enchanted tome staged inside a gilt "portal" window: a
+            passe-partout frame, a twilight sky with drifting aurora + starfield,
+            a warm candle-glow spotlight and a reflective pedestal grounding the
+            floating world. The frame wraps BOTH the WebGL scene and its static
+            <BookLogo /> fallback, so the always-on first-paint state is staged
+            just as richly as the live 3D one. */}
         <div className="fade-in-up mb-6 flex justify-center" style={{ animationDelay: "100ms" }}>
-          <div className="relative lamp-glow magical-glow">
-            {/* Tiny constellation of twinkling stars around the logo */}
-            {[
-              { x: "-12%", y: "8%", size: 10, delay: "0.2s", color: "#F1BB1A" },
-              { x: "108%", y: "12%", size: 8, delay: "1.1s", color: "#FCE8A6" },
-              { x: "-8%", y: "78%", size: 7, delay: "2.3s", color: "#8B2E90" },
-              { x: "104%", y: "70%", size: 9, delay: "0.8s", color: "#F1BB1A" },
-              { x: "50%", y: "-10%", size: 6, delay: "1.7s", color: "#FCE8A6" },
-            ].map((s, i) => (
-              <svg
-                key={i}
-                className="absolute animate-star-twinkle pointer-events-none"
-                width={s.size}
-                height={s.size}
-                viewBox="0 0 10 10"
-                style={{
-                  left: s.x,
-                  top: s.y,
-                  animationDelay: s.delay,
-                  filter: `drop-shadow(0 0 4px ${s.color})`,
-                }}
-                aria-hidden="true"
-              >
-                <path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill={s.color} />
-              </svg>
-            ))}
-            {/* Fixed-size slot keeps the placeholder and the book the same
-                footprint, so swapping them in causes no layout shift. */}
-            <div className="relative flex items-center justify-center" style={{ width: 330, height: 260 }}>
-              {bookLive ? (
-                <MagicBook3D width={330} height={260} live className="fade-in" />
-              ) : (
-                <BookLogo
-                  size={150}
-                  showText={false}
-                  className="drop-shadow-[0_18px_28px_rgba(107,28,111,0.18)]"
-                />
-              )}
+          <div className="hero-portal">
+            {/* Breathing gold/plum aura pooled behind the whole frame. Deferred
+                past first paint (decorReady) so its large blur never competes
+                with the hero headline's LCP paint. */}
+            {decorReady && <div className="hero-portal__aura" aria-hidden="true" />}
+
+            <div className={`hero-portal__frame${decorReady ? " hero-portal__frame--live" : ""}`}>
+              <div className="hero-portal__window">
+                {/* Layered twilight backdrop (palette-matched to the scene's own
+                    sky so the WebGL canvas's feathered edges blend in). The base
+                    sky is a static gradient — cheap enough to paint immediately;
+                    the animated aurora/starfield/sheen below wait for idle. */}
+                <div className="hero-portal__sky" aria-hidden="true" />
+                {decorReady && <div className="hero-portal__aurora" aria-hidden="true" />}
+
+                {/* Twinkling starfield scattered across the window. */}
+                {decorReady && (
+                <div className="hero-portal__stars" aria-hidden="true">
+                  {[
+                    { x: "12%", y: "16%", s: 3, d: "0s", c: "#FCE8A6" },
+                    { x: "26%", y: "70%", s: 2, d: "1.2s", c: "#ffffff" },
+                    { x: "42%", y: "12%", s: 2.5, d: "2.1s", c: "#F1BB1A" },
+                    { x: "58%", y: "22%", s: 2, d: "0.6s", c: "#ffffff" },
+                    { x: "74%", y: "14%", s: 3, d: "1.7s", c: "#FCE8A6" },
+                    { x: "86%", y: "40%", s: 2, d: "2.6s", c: "#ffffff" },
+                    { x: "80%", y: "72%", s: 2.5, d: "0.9s", c: "#F1BB1A" },
+                    { x: "16%", y: "44%", s: 2, d: "3.1s", c: "#ffffff" },
+                    { x: "50%", y: "82%", s: 2, d: "1.9s", c: "#FCE8A6" },
+                    { x: "34%", y: "34%", s: 1.6, d: "2.4s", c: "#ffffff" },
+                    { x: "66%", y: "60%", s: 1.6, d: "0.4s", c: "#ffffff" },
+                    { x: "90%", y: "22%", s: 1.6, d: "1.4s", c: "#ffffff" },
+                  ].map((st, i) => (
+                    <span
+                      key={i}
+                      className="hero-portal__star animate-star-twinkle"
+                      style={{
+                        left: st.x,
+                        top: st.y,
+                        width: st.s,
+                        height: st.s,
+                        background: st.c,
+                        boxShadow: `0 0 6px ${st.c}`,
+                        animationDelay: st.d,
+                      }}
+                    />
+                  ))}
+                </div>
+                )}
+
+                {/* Warm shaft of candlelight rising up the centre — a static
+                    glow that lights the tome from first paint; it only gains its
+                    slow pulse once the frame goes "live" (post-idle). */}
+                <div className="hero-portal__shaft" aria-hidden="true" />
+
+                {/* Fixed-size slot keeps the placeholder and the book the same
+                    footprint, so swapping them in causes no layout shift. */}
+                <div className="hero-portal__stage">
+                  <div className="hero-portal__book" style={{ width: 330, height: 260 }}>
+                    {bookLive ? (
+                      <MagicBook3D width={330} height={260} live className="fade-in" />
+                    ) : (
+                      <BookLogo
+                        size={150}
+                        showText={false}
+                        className="drop-shadow-[0_18px_28px_rgba(107,28,111,0.18)]"
+                      />
+                    )}
+                  </div>
+                  {/* Reflective light-pool pedestal beneath the tome. */}
+                  <div className="hero-portal__pedestal" aria-hidden="true" />
+                </div>
+
+                {/* Rim-light sweep (deferred) + inner vignette (static, cheap)
+                    sit above everything. */}
+                {decorReady && <div className="hero-portal__sheen" aria-hidden="true" />}
+                <div className="hero-portal__vignette" aria-hidden="true" />
+              </div>
+
+              {/* Gilt corner filigree on the mat. */}
+              {(["tl", "tr", "bl", "br"] as const).map((pos) => (
+                <svg
+                  key={pos}
+                  className={`hero-portal__corner hero-portal__corner--${pos}`}
+                  width="26"
+                  height="26"
+                  viewBox="0 0 26 26"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M1 25 L1 9 Q1 1 9 1 L25 1"
+                    stroke="#F1BB1A"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                  />
+                  <path d="M6 20 Q6 6 20 6" stroke="rgba(107,28,111,0.45)" strokeWidth="1" strokeLinecap="round" />
+                  <circle cx="6" cy="20" r="1.5" fill="#F1BB1A" />
+                </svg>
+              ))}
             </div>
-            <span
-              className="absolute -right-3 -top-2 inline-flex h-7 items-center rounded-full px-2.5 text-[10px] font-bold uppercase tracking-widest text-white animate-wiggle"
-              style={{ background: "#F1BB1A", color: "#1a1a1a", boxShadow: "0 8px 20px rgba(241,187,26,0.35)" }}
-            >
-              Est. 1981
+
+            {/* Gilt wax-seal medallion. Its wiggle + rotating gleam only kick in
+                once decor is ready, keeping the load path still. */}
+            <span className={`hero-portal__seal${decorReady ? " hero-portal__seal--live animate-wiggle" : ""}`}>
+              <span className="hero-portal__seal-inner">
+                Est.
+                <strong>1981</strong>
+              </span>
             </span>
           </div>
         </div>

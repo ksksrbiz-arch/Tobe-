@@ -995,6 +995,272 @@ summary:focus-visible,
   border-radius: 50%;
 }
 
+/* ═══════════════════ Hero enchanted portal ═══════════════════ */
+/* The hero tome is staged inside a gilt "portal" window — a passe-partout mat,
+   a twilight sky with a drifting aurora + starfield, a warm candle-shaft and a
+   reflective pedestal. The frame wraps both the WebGL scene and its static
+   <BookLogo /> fallback, so the always-on first-paint state is staged just as
+   richly as the live 3D one. Everything here is cheap compositing (gradients,
+   transforms, opacity) and all motion is disabled under reduced-motion by the
+   global rule below. */
+
+.hero-portal {
+  position: relative;
+  width: min(384px, 100%);
+  margin-inline: auto;
+  perspective: 1100px;
+}
+
+/* Breathing gold/plum aura pooled behind the whole frame. Only mounted once
+   decor is ready (past the headline's LCP paint), so its blur never competes
+   with first paint. */
+.hero-portal__aura {
+  position: absolute;
+  inset: -14% -10% -22%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(241,187,26,0.34) 0%, rgba(241,187,26,0.10) 34%, transparent 66%),
+    radial-gradient(ellipse at 50% 82%, rgba(107,28,111,0.30) 0%, transparent 60%);
+  filter: blur(26px);
+  border-radius: 50%;
+  animation: portalAura 6.5s ease-in-out infinite;
+}
+
+/* Passe-partout gilt mat. */
+.hero-portal__frame {
+  position: relative;
+  padding: 13px;
+  border-radius: 32px;
+  background:
+    linear-gradient(160deg, rgba(255,252,245,0.96), rgba(247,240,255,0.92));
+  border: 1px solid rgba(107,28,111,0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.85),
+    inset 0 0 0 1px rgba(241,187,26,0.28),
+    0 34px 80px rgba(107,28,111,0.24),
+    0 12px 26px rgba(241,187,26,0.14);
+  transform-style: preserve-3d;
+}
+/* The gentle 3D float only starts once decor is ready, so no continuous
+   compositing work runs during the load path. */
+.hero-portal__frame--live {
+  animation: portalFloat 9s ease-in-out infinite;
+}
+
+/* The twilight window that holds the tome. */
+.hero-portal__window {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  border-radius: 21px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 10px rgba(42,9,48,0.35);
+  isolation: isolate;
+}
+
+/* Palette-matched to the scene's own sky so the WebGL canvas's feathered edges
+   melt into the surround; deeper plum at the rim frames the tome. */
+.hero-portal__sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 96% at 50% 30%, #b9a6e0 0%, #a487cf 34%, #6f4a93 74%, #46285f 100%),
+    linear-gradient(180deg, transparent 55%, rgba(246,217,200,0.28) 100%);
+}
+
+/* Slow drifting aurora ribbons (deferred; normal blend to avoid the extra
+   compositing pass mix-blend-mode forces). */
+.hero-portal__aurora {
+  position: absolute;
+  inset: -20% -30%;
+  background:
+    radial-gradient(38% 60% at 30% 30%, rgba(150,232,255,0.36), transparent 70%),
+    radial-gradient(42% 66% at 72% 40%, rgba(188,158,255,0.40), transparent 70%),
+    radial-gradient(36% 54% at 52% 66%, rgba(255,214,120,0.28), transparent 72%);
+  filter: blur(10px);
+  opacity: 0.65;
+  animation: portalAurora 14s ease-in-out infinite;
+}
+
+.hero-portal__stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hero-portal__star {
+  position: absolute;
+  border-radius: 50%;
+}
+
+/* Warm shaft of candlelight rising up the centre, behind the tome. Static from
+   first paint (it lights the fallback logo); its slow pulse only runs once the
+   frame is live. Normal blend keeps it off the expensive compositing path. */
+.hero-portal__shaft {
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  width: 46%;
+  height: 84%;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 62% at 50% 66%, rgba(255,214,120,0.5) 0%, rgba(255,196,90,0.16) 40%, transparent 74%);
+  filter: blur(6px);
+}
+.hero-portal__frame--live .hero-portal__shaft {
+  animation: portalShaft 5s ease-in-out infinite;
+}
+
+.hero-portal__stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-portal__book {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Reflective light-pool pedestal grounding the floating world. */
+.hero-portal__pedestal {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  z-index: 1;
+  width: 62%;
+  height: 30px;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 100% at 50% 50%, rgba(255,222,140,0.55) 0%, rgba(241,187,26,0.18) 46%, transparent 72%);
+  filter: blur(3px);
+}
+.hero-portal__frame--live .hero-portal__pedestal {
+  animation: portalPedestal 5s ease-in-out infinite;
+}
+
+/* Rim-light sweep — a diagonal gleam that crosses on entrance and idles slowly. */
+.hero-portal__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 34%, rgba(255,255,255,0.28) 48%, rgba(255,247,224,0.12) 54%, transparent 66%);
+  transform: translateX(-120%);
+  animation: portalSheen 7.5s ease-in-out 0.8s infinite;
+}
+
+/* Inner vignette unifies the composition and hides any canvas-edge seam. */
+.hero-portal__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: 21px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,251,240,0.14),
+    inset 0 22px 40px rgba(42,9,48,0.30),
+    inset 0 -18px 34px rgba(42,9,48,0.28);
+  background: radial-gradient(120% 100% at 50% 40%, transparent 58%, rgba(58,15,64,0.30) 100%);
+}
+
+/* Gilt corner filigree on the mat. */
+.hero-portal__corner {
+  position: absolute;
+  opacity: 0.9;
+  filter: drop-shadow(0 1px 1px rgba(107,28,111,0.2));
+}
+.hero-portal__corner--tl { top: 6px; left: 6px; }
+.hero-portal__corner--tr { top: 6px; right: 6px; transform: rotate(90deg); }
+.hero-portal__corner--br { bottom: 6px; right: 6px; transform: rotate(180deg); }
+.hero-portal__corner--bl { bottom: 6px; left: 6px; transform: rotate(270deg); }
+
+/* Gilt wax-seal medallion. */
+.hero-portal__seal {
+  position: absolute;
+  top: -16px;
+  right: -12px;
+  z-index: 4;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #4a1410;
+  background:
+    radial-gradient(circle at 34% 30%, #ffe9a8 0%, #f1bb1a 42%, #d69a12 78%, #b07d0c 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.5),
+    inset 0 0 0 4px rgba(176,125,12,0.5),
+    0 10px 22px rgba(176,125,12,0.45);
+  overflow: hidden;
+  transform-origin: 60% 40%;
+}
+.hero-portal__seal::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.55) 40deg, transparent 90deg, transparent 360deg);
+}
+.hero-portal__seal--live::before {
+  animation: portalSeal 6s linear infinite;
+}
+.hero-portal__seal-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  font-family: var(--font-serif);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.hero-portal__seal-inner strong {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+@keyframes portalFloat {
+  0%, 100% { transform: translateY(0) rotateX(0deg) rotateZ(0deg); }
+  50% { transform: translateY(-7px) rotateX(1.4deg) rotateZ(-0.5deg); }
+}
+@keyframes portalAura {
+  0%, 100% { opacity: 0.72; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+@keyframes portalAurora {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.8; }
+  33% { transform: translate3d(6%, -3%, 0) scale(1.08); opacity: 1; }
+  66% { transform: translate3d(-5%, 2%, 0) scale(1.03); opacity: 0.88; }
+}
+@keyframes portalShaft {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+@keyframes portalPedestal {
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) scaleX(0.94); }
+  50% { opacity: 1; transform: translateX(-50%) scaleX(1.06); }
+}
+@keyframes portalSheen {
+  0% { transform: translateX(-120%); }
+  16%, 100% { transform: translateX(120%); }
+}
+@keyframes portalSeal {
+  to { transform: rotate(360deg); }
+}
+
+/* On narrow screens scale the whole portal down so the fixed-width tome slot
+   never overflows the hero card (the WebGL backing store stays full-res). */
+@media (max-width: 400px) {
+  .hero-portal { transform: scale(0.9); transform-origin: top center; }
+}
+
 /* Mobile: thin out ambient density so the magic feels intimate, not busy */
 @media (max-width: 640px) {
   .cozy-firefly:nth-child(odd) { display: none; }
