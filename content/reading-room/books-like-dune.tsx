@@ -91,7 +91,11 @@ export default function Body() {
         <Link href="/reading-room/books-like-project-hail-mary">
           Project Hail Mary readalikes
         </Link>
-        .
+        , or go back to the genre&rsquo;s roots with our{" "}
+        <Link href="/reading-room/best-classic-science-fiction-novels">
+          classic science fiction novels
+        </Link>{" "}
+        that still hold up.
       </p>
     </>
   );

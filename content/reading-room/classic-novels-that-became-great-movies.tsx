@@ -48,7 +48,14 @@ export default function Body() {
       <p>Pulpier and juicier than the (perfect) films, with backstory they left out.</p>
 
       <h2>3. Jurassic Park — Michael Crichton</h2>
-      <p>Darker and more thrilling than the movie, with extra science and scares.</p>
+      <p>
+        Darker and more thrilling than the movie, with extra science and
+        scares — in the same vein as our{" "}
+        <Link href="/reading-room/best-classic-science-fiction-novels">
+          classic science fiction novels
+        </Link>{" "}
+        list.
+      </p>
 
       <h2>4. The Shining — Stephen King</h2>
       <p>King famously disliked Kubrick&rsquo;s film — read the book and join the debate.</p>
@@ -66,7 +73,14 @@ export default function Body() {
       <p>The epic behind the epic. Sprawling, controversial, unputdownable.</p>
 
       <h2>9. Sense and Sensibility — Jane Austen</h2>
-      <p>The Emma Thompson adaptation is wonderful; Austen&rsquo;s wit is even better.</p>
+      <p>
+        The Emma Thompson adaptation is wonderful; Austen&rsquo;s wit is even
+        better, and it sits right alongside our{" "}
+        <Link href="/reading-room/best-classic-romance-novels">
+          classic romance novels
+        </Link>{" "}
+        picks.
+      </p>
 
       <h2>From screen to shelf</h2>
       <p>

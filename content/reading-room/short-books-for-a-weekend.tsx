@@ -54,7 +54,11 @@ export default function Body() {
       <p>Gothic, eerie, and delicious. The ideal one-sitting unsettler.</p>
 
       <h2>5. The Stranger — Albert Camus</h2>
-      <p>Short, cool, and endlessly discussable. A philosophy seminar in 120 pages.</p>
+      <p>
+        Short, cool, and{" "}
+        <Link href="/reading-room/best-book-club-books">endlessly discussable</Link>.
+        A philosophy seminar in 120 pages.
+      </p>
 
       <h2>6. Animal Farm — George Orwell</h2>
       <p>A fable that still bites. You&rsquo;ll finish it in a sitting and think about it for weeks.</p>
@@ -77,6 +81,10 @@ export default function Body() {
         powerful. For more on beating a slump, see our{" "}
         <Link href="/reading-room/build-a-reading-habit-tbr-pile">
           guide to building a reading habit
+        </Link>
+        , or browse our{" "}
+        <Link href="/reading-room/short-classic-novels-under-200-pages">
+          short classic novels you can read in a sitting
         </Link>
         .
       </p>

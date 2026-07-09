@@ -93,7 +93,12 @@ export default function Body() {
         <Link href="/visit">the store in Milwaukie</Link> to dig through the
         stacks, or keep exploring with our{" "}
         <Link href="/reading-room/best-book-club-books">best book club books</Link>{" "}
-        for your next group read.
+        for your next group read. Want the same emotional pull with a fantasy
+        escape built in? Try our{" "}
+        <Link href="/reading-room/books-like-a-court-of-thorns-and-roses">
+          books like A Court of Thorns and Roses
+        </Link>{" "}
+        guide.
       </p>
     </>
   );

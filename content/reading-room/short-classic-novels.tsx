@@ -78,6 +78,14 @@ export default function Body() {
         <Link href="/reading-room/short-books-to-finish-in-a-weekend">
           weekend reads guide
         </Link>
+        . If you&rsquo;d rather stick with American classics, see our{" "}
+        <Link href="/reading-room/american-classic-novels">
+          guide to American classic novels
+        </Link>
+        , or for the doorstoppers, our{" "}
+        <Link href="/reading-room/best-victorian-novels">
+          guide to the best Victorian novels
+        </Link>
         .
       </p>
     </>

@@ -95,6 +95,11 @@ export default function Body() {
         <Link href="/#next-read">Next Read Matchmaker</Link> the last book that
         moved you and let it find the next. When you&rsquo;ve recovered,{" "}
         <Link href="/trade">trade it forward</Link> so it can wreck someone else.
+        Several of these overlap with our{" "}
+        <Link href="/reading-room/best-book-club-books">
+          best book club books
+        </Link>{" "}
+        list, if you want picks that spark discussion too.
       </p>
     </>
   );

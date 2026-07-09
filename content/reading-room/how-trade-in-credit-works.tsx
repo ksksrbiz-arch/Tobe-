@@ -89,7 +89,16 @@ export default function Body() {
         Want the step-by-step with photos and the full FAQ?{" "}
         <Link href="/how-it-works">See exactly how it works</Link>, or{" "}
         <Link href="/visit">plan your visit</Link> — we&rsquo;re at 7931 SE King
-        Rd in Milwaukie, open Monday through Saturday, 10am&ndash;5pm.
+        Rd in Milwaukie, open Monday through Saturday, 10am&ndash;5pm. For tips
+        on getting the most out of the books you bring in, see{" "}
+        <Link href="/reading-room/how-to-sell-your-used-books">
+          how to sell your used books (and get the most for them)
+        </Link>
+        , or, if you&rsquo;re weighing other options first,{" "}
+        <Link href="/reading-room/where-to-trade-used-books-portland">
+          where else to trade used books around Portland
+        </Link>
+        .
       </p>
     </>
   );

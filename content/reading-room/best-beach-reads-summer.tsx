@@ -62,6 +62,11 @@ export default function Body() {
         <Link href="/#next-read">Matchmaker</Link> for your perfect summer read,
         or browse{" "}
         <Link href="/reading-room/romance-novels-for-skeptics">romance for people who don&rsquo;t read romance</Link>.
+        Several of the big-hearted picks above also show up on our{" "}
+        <Link href="/reading-room/best-book-club-books">
+          best book club books
+        </Link>{" "}
+        list, if you want a beach read that doubles as a discussion pick.
       </p>
     </>
   );

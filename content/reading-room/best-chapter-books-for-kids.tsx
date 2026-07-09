@@ -78,7 +78,12 @@ export default function Body() {
       <p>
         Kids outgrow books fast, which is exactly what trade-in is for — bring
         the ones they&rsquo;ve finished and <Link href="/trade">swap them for
-        credit</Link> toward the next level up. Come{" "}
+        credit</Link> toward the next level up, whether that&rsquo;s the next
+        series or, eventually, an{" "}
+        <Link href="/reading-room/american-classic-novels">
+          American classic novel
+        </Link>
+        . Come{" "}
         <Link href="/visit">browse the kids&rsquo; section in person</Link>, or
         let the <Link href="/#next-read">Matchmaker</Link> suggest a next read.
       </p>

@@ -69,7 +69,12 @@ export default function Body() {
       <p>
         Thomas Cromwell&rsquo;s rise in the court of Henry VIII, told with
         startling intimacy. <em>Wolf Hall</em> asks a little more of you up front,
-        but it rewards that attention more than almost any novel we know.
+        but it rewards that attention more than almost any novel we know — and
+        it&rsquo;s the first of a trilogy, so it&rsquo;s a good one for our{" "}
+        <Link href="/reading-room/best-book-series-to-binge">
+          best book series to binge
+        </Link>{" "}
+        list if you fall for it.
       </p>
 
       <h2>The Book Thief — Markus Zusak</h2>
@@ -106,7 +111,11 @@ export default function Body() {
         ask the <Link href="/#next-read">Matchmaker</Link> for one set in a
         century you love, or <Link href="/visit">stop by</Link> and let us point
         you to a few. When you&rsquo;re done, trade it forward for someone
-        else&rsquo;s next great read.
+        else&rsquo;s next great read. The Nightingale also turns up on our{" "}
+        <Link href="/reading-room/best-book-club-books">
+          best book club books
+        </Link>{" "}
+        list, if you&rsquo;re picking for a group.
       </p>
     </>
   );

@@ -77,7 +77,16 @@ export default function Body() {
       <p>
         If trading sounds like your move, here&rsquo;s{" "}
         <Link href="/visit">how to find us</Link> — 7931 SE King Rd, Unit 1, Milwaukie,
-        open Monday through Saturday, 10am&ndash;5pm.
+        open Monday through Saturday, 10am&ndash;5pm. Coming from the Clackamas
+        Town Center area? See our{" "}
+        <Link href="/reading-room/bookstore-near-clackamas-town-center">
+          guide to the bookstore nearest you
+        </Link>
+        . And for more on why locals rate us among the{" "}
+        <Link href="/reading-room/best-used-bookstore-portland-area">
+          best used bookstores in the Portland area
+        </Link>
+        , we cover that too.
       </p>
     </>
   );

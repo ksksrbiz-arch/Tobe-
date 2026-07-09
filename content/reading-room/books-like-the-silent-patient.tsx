@@ -91,7 +91,13 @@ export default function Body() {
           best thrillers to keep you up
         </Link>{" "}
         list, or tell the <Link href="/#next-read">Next Read Matchmaker</Link> what
-        rattled you last. Closer to home? <Link href="/visit">Stop by</Link> our
+        rattled you last. If you&rsquo;d rather trade psychological dread for
+        political betrayal on an epic scale, our{" "}
+        <Link href="/reading-room/books-like-a-game-of-thrones">
+          books like A Game of Thrones
+        </Link>{" "}
+        list has just as many gut-punch turns. Closer to home?{" "}
+        <Link href="/visit">Stop by</Link> our
         Milwaukie shop — free parking, no judgment about your TBR pile.
       </p>
     </>

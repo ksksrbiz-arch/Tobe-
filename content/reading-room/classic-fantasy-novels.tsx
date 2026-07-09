@@ -36,8 +36,10 @@ export default function Body() {
       </QuickAnswer>
       <p>
         Today&rsquo;s romantasy and doorstopper epics stand on the shoulders of
-        these. Two of our best-selling sections — classics and fantasy — meet
-        right here. Eight foundational reads every fantasy fan should know.
+        these. Two of our best-selling sections —{" "}
+        <Link href="/reading-room/american-classic-novels">classics</Link> and
+        fantasy — meet right here. Eight foundational reads every fantasy fan
+        should know.
       </p>
 
       <h2>1. The Hobbit — J. R. R. Tolkien</h2>
@@ -74,7 +76,11 @@ export default function Body() {
         <Link href="/reading-room/best-romantasy-books-to-start-with">
           romantasy starter guide
         </Link>
-        .
+        . Prefer science fiction to sword and sorcery? Our{" "}
+        <Link href="/reading-room/best-classic-science-fiction-novels">
+          classic science fiction novels
+        </Link>{" "}
+        list covers the genre&rsquo;s other classic wing.
       </p>
     </>
   );

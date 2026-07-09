@@ -94,6 +94,11 @@ export default function Body() {
         meant to be passed on. Find one on <Link href="/shop">our shelves</Link>,
         ask the <Link href="/#next-read">Matchmaker</Link> for one in your wheelhouse,
         and <Link href="/trade">trade it forward</Link> when you&rsquo;re done.
+        Several of these also make{" "}
+        <Link href="/reading-room/best-book-club-books">
+          strong book club picks
+        </Link>
+        , if you&rsquo;re choosing for a group.
       </p>
     </>
   );

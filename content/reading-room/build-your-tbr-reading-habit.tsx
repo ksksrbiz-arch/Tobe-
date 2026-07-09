@@ -59,7 +59,11 @@ export default function Body() {
         Reading more is easy when you&rsquo;re reading what you actually like. If
         you&rsquo;re not sure what that is right now, describe a book you loved to
         the <Link href="/#next-read">Next Read Matchmaker</Link> and let it find
-        the next one.
+        the next one, or read our guide on{" "}
+        <Link href="/reading-room/how-to-choose-your-next-book">
+          how to choose your next book
+        </Link>
+        .
       </p>
 
       <h2>5. Let books circulate</h2>
@@ -68,6 +72,11 @@ export default function Body() {
         to gather dust — <Link href="/trade">trade them for credit</Link>, and the
         pile pays for its own replacements. That&rsquo;s the whole idea behind the
         shop: books keep moving, and reading more never has to mean spending more.
+        For more on making room, see our guide to{" "}
+        <Link href="/reading-room/decluttering-books-what-to-do-with-them">
+          decluttering books
+        </Link>
+        .
       </p>
 
       <p>

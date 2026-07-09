@@ -40,10 +40,17 @@ export default function Body() {
       </p>
 
       <h2>1. A Court of Thorns and Roses — Sarah J. Maas</h2>
-      <p>Five books of fae courts and a romance that reorders your priorities. The genre&rsquo;s cornerstone.</p>
+      <p>
+        Five books of{" "}
+        <Link href="/reading-room/fae-romantasy-books">fae courts</Link> and a
+        romance that reorders your priorities. The genre&rsquo;s cornerstone.
+      </p>
 
       <h2>2. The Empyrean (Fourth Wing) — Rebecca Yarros</h2>
-      <p>Dragon riders, war college, and cliffhangers that will ruin your week (lovingly).</p>
+      <p>
+        <Link href="/reading-room/romantasy-books-with-dragons">Dragon riders</Link>,
+        war college, and cliffhangers that will ruin your week (lovingly).
+      </p>
 
       <h2>3. Throne of Glass — Sarah J. Maas</h2>
       <p>An assassin&rsquo;s sprawling, escalating saga. A big commitment with a big payoff.</p>

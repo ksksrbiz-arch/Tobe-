@@ -37,8 +37,11 @@ export default function Body() {
       <p>
         Romantasy — romance braided through epic fantasy — is having a moment,
         and it&rsquo;s one of the genres that moves fastest off our shelves. Fae
-        courts, dragon riders, enemies-to-lovers, and very high stakes. If
-        you&rsquo;re ready to fall in, here&rsquo;s where to start.
+        courts,{" "}
+        <Link href="/reading-room/romantasy-books-with-dragons">
+          dragon riders
+        </Link>, enemies-to-lovers, and very high stakes. If you&rsquo;re
+        ready to fall in, here&rsquo;s where to start.
       </p>
 
       <h2>1. A Court of Thorns and Roses — Sarah J. Maas</h2>
@@ -74,8 +77,12 @@ export default function Body() {
 
       <h2>6. Divine Rivals — Rebecca Ross</h2>
       <p>
-        Rival journalists, magic typewriters, and a gentler, aching romance.
-        A lovely lower-spice entry point.
+        Rival journalists, magic typewriters, and a gentler, aching romance. A
+        lovely{" "}
+        <Link href="/reading-room/clean-romantasy-low-spice">
+          lower-spice entry point
+        </Link>
+        .
       </p>
 
       <h2>7. The Bridge Kingdom — Danielle L. Jensen</h2>

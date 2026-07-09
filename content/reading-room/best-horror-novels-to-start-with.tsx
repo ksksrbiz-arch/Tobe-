@@ -104,6 +104,12 @@ export default function Body() {
         on fast. Browse <Link href="/shop">our shelves</Link>, ask the{" "}
         <Link href="/#next-read">Matchmaker</Link> to match your scare tolerance,
         or <Link href="/visit">come in</Link> and we&rsquo;ll find your level.
+        A book like <em>Mexican Gothic</em> also makes a great pick for a
+        meeting that gets a little heated — see our{" "}
+        <Link href="/reading-room/best-book-club-books">
+          best book club books
+        </Link>{" "}
+        for more discussable reads.
       </p>
     </>
   );

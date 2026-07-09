@@ -72,7 +72,13 @@ export default function Body() {
         <Link href="/reading-room/cozy-mystery-starter-shelf">
           cozy mystery starter shelf
         </Link>
-        .
+        . A twist ending like <em>Gone Girl</em>&rsquo;s or{" "}
+        <em>The Silent Patient</em>&rsquo;s also makes for a great book club
+        pick — see our{" "}
+        <Link href="/reading-room/best-book-club-books">
+          best book club books
+        </Link>{" "}
+        for more discussable reads.
       </p>
     </>
   );

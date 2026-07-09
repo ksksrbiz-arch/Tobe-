@@ -89,7 +89,13 @@ export default function Body() {
         <em>The Immortal Life of Henrietta Lacks</em> or{" "}
         <em>Killers of the Flower Moon</em>. These sit shelf-to-shelf with great
         fiction, so don&rsquo;t be surprised if one becomes your favorite read of
-        the year.
+        the year. Titles like <em>Killers of the Flower Moon</em> and{" "}
+        <em>Bad Blood</em> also turn up again and again on book club lists —
+        see our{" "}
+        <Link href="/reading-room/best-book-club-books">
+          best book club books
+        </Link>{" "}
+        for more picks built for discussion.
       </p>
 
       <h2>Find your next true story</h2>

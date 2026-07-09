@@ -89,7 +89,16 @@ export default function Body() {
         <Link href="/#next-read">Next Read Matchmaker</Link> what you already love
         and it&rsquo;ll point you to the right gateway, or browse{" "}
         <Link href="/shop">our shelves</Link>. Bounced off one?{" "}
-        <Link href="/trade">Trade it back</Link> and try a different flavor.
+        <Link href="/trade">Trade it back</Link> and try a different flavor. Ready
+        to go deeper into the canon? See our list of{" "}
+        <Link href="/reading-room/classic-fantasy-novels-everyone-should-read">
+          classic fantasy novels
+        </Link>
+        , or if romance is more your speed, start with{" "}
+        <Link href="/reading-room/best-romantasy-books-to-start-with">
+          the best romantasy books to start with
+        </Link>
+        .
       </p>
     </>
   );

@@ -51,7 +51,14 @@ export default function Body() {
       <p>Short, shimmering, and sad. The Great American Novel in under 200 pages.</p>
 
       <h2>4. Jane Eyre — Charlotte Brontë</h2>
-      <p>Gothic, fierce, and surprisingly modern in its heroine. A proper page-turner.</p>
+      <p>
+        Gothic, fierce, and surprisingly modern in its heroine. A proper
+        page-turner, and one of our{" "}
+        <Link href="/reading-room/best-victorian-novels">
+          best Victorian novels
+        </Link>
+        .
+      </p>
 
       <h2>5. Their Eyes Were Watching God — Zora Neale Hurston</h2>
       <p>Lyrical and alive, a landmark of American literature too often skipped. Read it.</p>
@@ -74,7 +81,11 @@ export default function Body() {
         everywhere, and meant to be passed on. Find one on{" "}
         <Link href="/shop">our shelves</Link>, or ask the{" "}
         <Link href="/#next-read">Matchmaker</Link> which classic fits your taste.
-        Want something shorter to start? See our{" "}
+        Want to focus on the American classics on this list? See our{" "}
+        <Link href="/reading-room/american-classic-novels">
+          American classic novels
+        </Link>{" "}
+        guide. Want something shorter to start? See our{" "}
         <Link href="/reading-room/short-books-to-finish-in-a-weekend">
           weekend reads
         </Link>

@@ -80,7 +80,12 @@ export default function Body() {
         <Link href="/reading-room/romance-novels-for-skeptics">
           romance for people who don&rsquo;t read romance
         </Link>
-        .
+        . Jane Eyre and Wuthering Heights are also proper Victorian
+        doorstoppers — see our{" "}
+        <Link href="/reading-room/best-victorian-novels">
+          best Victorian novels
+        </Link>{" "}
+        for more in that vein.
       </p>
     </>
   );

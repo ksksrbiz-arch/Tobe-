@@ -53,7 +53,14 @@ export default function Body() {
       <p>Grimoires that come alive, a sorcerer, and a sweet romance. Charming and clean.</p>
 
       <h2>5. The Cruel Prince — Holly Black</h2>
-      <p>Sharp fae intrigue with tension and longing rather than explicit scenes.</p>
+      <p>
+        Sharp fae intrigue with tension and longing rather than explicit
+        scenes — the same territory as our{" "}
+        <Link href="/reading-room/fae-romantasy-books">
+          fae romantasy books
+        </Link>{" "}
+        list, just lower heat.
+      </p>
 
       <h2>6. Uprooted — Naomi Novik</h2>
       <p>A standalone fairy tale with a slow, low-heat romance and gorgeous magic.</p>
@@ -71,7 +78,11 @@ export default function Body() {
         <Link href="/reading-room/best-romantasy-books-to-start-with">
           romantasy starter guide
         </Link>
-        .
+        . More interested in world-building than heat level? See our{" "}
+        <Link href="/reading-room/romantasy-for-fantasy-readers">
+          romantasy for fantasy readers
+        </Link>{" "}
+        list.
       </p>
     </>
   );
