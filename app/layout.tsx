@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { SITE_URL } from "@/lib/seo";
+import { getUpcomingClosures } from "@/lib/storeHours";
 
 // Self-hosted via next/font: removes the render-blocking third-party Google
 // Fonts stylesheet, adds `font-display: swap`, preloads only the glyphs we
@@ -195,6 +196,20 @@ const jsonLd = {
       closes: "17:00",
     },
   ],
+  // One-off closures (see lib/storeHours.ts CLOSURES) as exceptions to the
+  // regular hours above, so Google Search/Maps doesn't show "Open" on a day
+  // the shop is actually closed. Omitted entirely once nothing's upcoming.
+  ...(getUpcomingClosures().length > 0
+    ? {
+        specialOpeningHoursSpecification: getUpcomingClosures().map((c) => ({
+          "@type": "OpeningHoursSpecification",
+          opens: "00:00",
+          closes: "00:00",
+          validFrom: c.date,
+          validThrough: c.date,
+        })),
+      }
+    : {}),
   // No aggregateRating here: a hardcoded, Google-review-derived rating violates
   // Google's review-snippet policy (self-serving LocalBusiness markup must come
   // from reviews collected on the site itself), goes stale silently, and
