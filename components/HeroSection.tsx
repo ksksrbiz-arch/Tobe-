@@ -222,17 +222,22 @@ export default function HeroSection() {
             just as richly as the live 3D one. */}
         <div className="fade-in-up mb-6 flex justify-center" style={{ animationDelay: "100ms" }}>
           <div className="hero-portal">
-            {/* Breathing gold/plum aura pooled behind the whole frame */}
-            <div className="hero-portal__aura" aria-hidden="true" />
+            {/* Breathing gold/plum aura pooled behind the whole frame. Deferred
+                past first paint (decorReady) so its large blur never competes
+                with the hero headline's LCP paint. */}
+            {decorReady && <div className="hero-portal__aura" aria-hidden="true" />}
 
-            <div className="hero-portal__frame">
+            <div className={`hero-portal__frame${decorReady ? " hero-portal__frame--live" : ""}`}>
               <div className="hero-portal__window">
                 {/* Layered twilight backdrop (palette-matched to the scene's own
-                    sky so the WebGL canvas's feathered edges blend in). */}
+                    sky so the WebGL canvas's feathered edges blend in). The base
+                    sky is a static gradient — cheap enough to paint immediately;
+                    the animated aurora/starfield/sheen below wait for idle. */}
                 <div className="hero-portal__sky" aria-hidden="true" />
-                <div className="hero-portal__aurora" aria-hidden="true" />
+                {decorReady && <div className="hero-portal__aurora" aria-hidden="true" />}
 
                 {/* Twinkling starfield scattered across the window. */}
+                {decorReady && (
                 <div className="hero-portal__stars" aria-hidden="true">
                   {[
                     { x: "12%", y: "16%", s: 3, d: "0s", c: "#FCE8A6" },
@@ -263,8 +268,11 @@ export default function HeroSection() {
                     />
                   ))}
                 </div>
+                )}
 
-                {/* Warm shaft of candlelight rising up the centre. */}
+                {/* Warm shaft of candlelight rising up the centre — a static
+                    glow that lights the tome from first paint; it only gains its
+                    slow pulse once the frame goes "live" (post-idle). */}
                 <div className="hero-portal__shaft" aria-hidden="true" />
 
                 {/* Fixed-size slot keeps the placeholder and the book the same
@@ -285,8 +293,9 @@ export default function HeroSection() {
                   <div className="hero-portal__pedestal" aria-hidden="true" />
                 </div>
 
-                {/* Rim-light sweep + inner vignette sit above everything. */}
-                <div className="hero-portal__sheen" aria-hidden="true" />
+                {/* Rim-light sweep (deferred) + inner vignette (static, cheap)
+                    sit above everything. */}
+                {decorReady && <div className="hero-portal__sheen" aria-hidden="true" />}
                 <div className="hero-portal__vignette" aria-hidden="true" />
               </div>
 
@@ -313,8 +322,9 @@ export default function HeroSection() {
               ))}
             </div>
 
-            {/* Gilt wax-seal medallion. */}
-            <span className="hero-portal__seal animate-wiggle">
+            {/* Gilt wax-seal medallion. Its wiggle + rotating gleam only kick in
+                once decor is ready, keeping the load path still. */}
+            <span className={`hero-portal__seal${decorReady ? " hero-portal__seal--live animate-wiggle" : ""}`}>
               <span className="hero-portal__seal-inner">
                 Est.
                 <strong>1981</strong>

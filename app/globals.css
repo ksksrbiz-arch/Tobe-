@@ -1011,7 +1011,9 @@ summary:focus-visible,
   perspective: 1100px;
 }
 
-/* Breathing gold/plum aura pooled behind the whole frame. */
+/* Breathing gold/plum aura pooled behind the whole frame. Only mounted once
+   decor is ready (past the headline's LCP paint), so its blur never competes
+   with first paint. */
 .hero-portal__aura {
   position: absolute;
   inset: -14% -10% -22%;
@@ -1020,7 +1022,7 @@ summary:focus-visible,
   background:
     radial-gradient(ellipse at 50% 40%, rgba(241,187,26,0.34) 0%, rgba(241,187,26,0.10) 34%, transparent 66%),
     radial-gradient(ellipse at 50% 82%, rgba(107,28,111,0.30) 0%, transparent 60%);
-  filter: blur(30px);
+  filter: blur(26px);
   border-radius: 50%;
   animation: portalAura 6.5s ease-in-out infinite;
 }
@@ -1039,6 +1041,10 @@ summary:focus-visible,
     0 34px 80px rgba(107,28,111,0.24),
     0 12px 26px rgba(241,187,26,0.14);
   transform-style: preserve-3d;
+}
+/* The gentle 3D float only starts once decor is ready, so no continuous
+   compositing work runs during the load path. */
+.hero-portal__frame--live {
   animation: portalFloat 9s ease-in-out infinite;
 }
 
@@ -1063,17 +1069,17 @@ summary:focus-visible,
     linear-gradient(180deg, transparent 55%, rgba(246,217,200,0.28) 100%);
 }
 
-/* Slow drifting aurora ribbons. */
+/* Slow drifting aurora ribbons (deferred; normal blend to avoid the extra
+   compositing pass mix-blend-mode forces). */
 .hero-portal__aurora {
   position: absolute;
   inset: -20% -30%;
   background:
-    radial-gradient(38% 60% at 30% 30%, rgba(122,224,255,0.30), transparent 70%),
-    radial-gradient(42% 66% at 72% 40%, rgba(168,133,255,0.34), transparent 70%),
-    radial-gradient(36% 54% at 52% 66%, rgba(241,187,26,0.22), transparent 72%);
+    radial-gradient(38% 60% at 30% 30%, rgba(150,232,255,0.36), transparent 70%),
+    radial-gradient(42% 66% at 72% 40%, rgba(188,158,255,0.40), transparent 70%),
+    radial-gradient(36% 54% at 52% 66%, rgba(255,214,120,0.28), transparent 72%);
   filter: blur(10px);
-  mix-blend-mode: screen;
-  opacity: 0.9;
+  opacity: 0.65;
   animation: portalAurora 14s ease-in-out infinite;
 }
 
@@ -1087,7 +1093,9 @@ summary:focus-visible,
   border-radius: 50%;
 }
 
-/* Warm shaft of candlelight rising up the centre, behind the tome. */
+/* Warm shaft of candlelight rising up the centre, behind the tome. Static from
+   first paint (it lights the fallback logo); its slow pulse only runs once the
+   frame is live. Normal blend keeps it off the expensive compositing path. */
 .hero-portal__shaft {
   position: absolute;
   left: 50%;
@@ -1095,9 +1103,10 @@ summary:focus-visible,
   width: 46%;
   height: 84%;
   transform: translateX(-50%);
-  background: radial-gradient(50% 62% at 50% 66%, rgba(255,214,120,0.55) 0%, rgba(255,196,90,0.18) 40%, transparent 74%);
+  background: radial-gradient(50% 62% at 50% 66%, rgba(255,214,120,0.5) 0%, rgba(255,196,90,0.16) 40%, transparent 74%);
   filter: blur(6px);
-  mix-blend-mode: screen;
+}
+.hero-portal__frame--live .hero-portal__shaft {
   animation: portalShaft 5s ease-in-out infinite;
 }
 
@@ -1127,6 +1136,8 @@ summary:focus-visible,
   transform: translateX(-50%);
   background: radial-gradient(50% 100% at 50% 50%, rgba(255,222,140,0.55) 0%, rgba(241,187,26,0.18) 46%, transparent 72%);
   filter: blur(3px);
+}
+.hero-portal__frame--live .hero-portal__pedestal {
   animation: portalPedestal 5s ease-in-out infinite;
 }
 
@@ -1192,6 +1203,8 @@ summary:focus-visible,
   position: absolute;
   inset: -30%;
   background: conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.55) 40deg, transparent 90deg, transparent 360deg);
+}
+.hero-portal__seal--live::before {
   animation: portalSeal 6s linear infinite;
 }
 .hero-portal__seal-inner {
