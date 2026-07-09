@@ -96,7 +96,11 @@ export default function Body() {
         <Link href="/reading-room/books-like-the-silent-patient">
           twisty-thriller read-alikes
         </Link>{" "}
-        are right next door. Already nearby? <Link href="/visit">Come visit</Link> —
+        are right next door. Prefer your complicated, secret-keeping women
+        wrapped in myth instead of old Hollywood? Our{" "}
+        <Link href="/reading-room/books-like-circe">books like Circe</Link>{" "}
+        list scratches the same itch. Already nearby?{" "}
+        <Link href="/visit">Come visit</Link> —
         free parking, and decades of secondhand finds waiting.
       </p>
     </>

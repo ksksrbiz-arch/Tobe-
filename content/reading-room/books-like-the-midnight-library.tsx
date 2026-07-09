@@ -92,7 +92,10 @@ export default function Body() {
         for more, or describe a favorite to the{" "}
         <Link href="/#next-read">Next Read Matchmaker</Link>. If you&rsquo;d rather
         browse in person, <Link href="/visit">come see us</Link> — free parking and
-        plenty of shelves to wander.
+        plenty of shelves to wander. If it was the idea of a life reshaped by
+        a different choice that hooked you, our{" "}
+        <Link href="/reading-room/books-like-circe">books like Circe</Link>{" "}
+        list follows that same thread through myth.
       </p>
     </>
   );

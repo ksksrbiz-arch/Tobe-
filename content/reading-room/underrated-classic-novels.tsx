@@ -75,6 +75,14 @@ export default function Body() {
         <Link href="/reading-room/short-classic-novels-under-200-pages">
           short classics guide
         </Link>
+        . For more overlooked American classics, see our{" "}
+        <Link href="/reading-room/american-classic-novels">
+          guide to American classic novels
+        </Link>
+        , or if you liked The Pursuit of Love, try our{" "}
+        <Link href="/reading-room/best-classic-romance-novels">
+          list of classic romance novels that still hold up
+        </Link>
         .
       </p>
     </>

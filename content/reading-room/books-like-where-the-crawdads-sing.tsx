@@ -91,7 +91,12 @@ export default function Body() {
         pick together, then <Link href="/trade">bring the copies back for credit</Link>{" "}
         toward the next month&rsquo;s read. Browse what&rsquo;s on{" "}
         <Link href="/shop">our shelves</Link>, or describe your last favorite to
-        the <Link href="/#next-read">Next Read Matchmaker</Link>.
+        the <Link href="/#next-read">Next Read Matchmaker</Link>. For more picks
+        that spark real discussion, see our list of{" "}
+        <Link href="/reading-room/best-book-club-books">
+          the best book club books
+        </Link>
+        .
       </p>
     </>
   );

@@ -49,8 +49,11 @@ export default function Body() {
 
       <h2>2. The Hating Game — Sally Thorne</h2>
       <p>
-        The definitive enemies-to-lovers office comedy. Fast, funny, and almost
-        impossible to put down.
+        The definitive{" "}
+        <Link href="/reading-room/enemies-to-lovers-romantasy">
+          enemies-to-lovers
+        </Link>{" "}
+        office comedy. Fast, funny, and almost impossible to put down.
       </p>
 
       <h2>3. Red, White &amp; Royal Blue — Casey McQuiston</h2>
@@ -89,6 +92,11 @@ export default function Body() {
         cheap to sample widely. Browse <Link href="/shop">our shelves</Link>,
         ask the <Link href="/#next-read">Matchmaker</Link> for a pick in your
         comfort zone, and <Link href="/trade">trade them back</Link> for the next.
+        Liked the Austen pick? See our roundup of{" "}
+        <Link href="/reading-room/best-classic-romance-novels">
+          classic romance novels that still hold up
+        </Link>
+        .
       </p>
     </>
   );

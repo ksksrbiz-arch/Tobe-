@@ -93,7 +93,9 @@ export default function Body() {
         <Link href="/reading-room/classic-fantasy-novels-everyone-should-read">
           classic fantasy novels everyone should read
         </Link>
-        .
+        . Want the same political scheming on an even bigger canvas? See our
+        list of{" "}
+        <Link href="/reading-room/books-like-dune">books like Dune</Link>.
       </p>
     </>
   );

@@ -100,7 +100,13 @@ export default function Body() {
         with? Tell the <Link href="/#next-read">Next Read Matchmaker</Link> what
         you loved about <em>The Secret History</em> and let it pick. When you&rsquo;re
         done, bring them back to <Link href="/trade">trade for credit</Link>{" "}
-        toward the next obsession.
+        toward the next obsession. If it was the fantasy threads in{" "}
+        <em>Babel</em> and <em>Ninth House</em> that pulled you in, our lists of{" "}
+        <Link href="/reading-room/books-like-dune">books like Dune</Link> and{" "}
+        <Link href="/reading-room/books-like-a-court-of-thorns-and-roses">
+          books like A Court of Thorns and Roses
+        </Link>{" "}
+        go further in that direction.
       </p>
     </>
   );

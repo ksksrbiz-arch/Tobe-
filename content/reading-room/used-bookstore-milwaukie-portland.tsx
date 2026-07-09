@@ -28,8 +28,11 @@ export default function Body() {
         <strong>7931 SE King Rd, Unit 1, Milwaukie, OR 97222</strong>, open{" "}
         <strong>Monday through Saturday, 10am&ndash;5pm</strong>. We&rsquo;re a
         neighborhood used bookshop that&rsquo;s been part of the community for
-        decades — and we&rsquo;re a quick hop from Clackamas, Oak Grove,
-        Gladstone, Happy Valley, and the rest of the east side.
+        decades — and we&rsquo;re a quick hop from{" "}
+        <Link href="/reading-room/bookstore-near-clackamas-town-center">
+          Clackamas
+        </Link>
+        , Oak Grove, Gladstone, Happy Valley, and the rest of the east side.
       </p>
 
       <h2>What kind of shop is this?</h2>
@@ -42,6 +45,13 @@ export default function Body() {
       </p>
 
       <h2>Making the most of a first visit</h2>
+      <p>
+        For the fuller rundown, see{" "}
+        <Link href="/reading-room/first-visit-to-be-read-bookstore-guide">
+          your first visit to To Be Read: what to know
+        </Link>
+        . The short version:
+      </p>
       <ul>
         <li>
           <strong>Come ready to browse.</strong> The shelves reward a slow

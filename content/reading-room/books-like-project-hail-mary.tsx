@@ -88,7 +88,13 @@ export default function Body() {
         Not sure where to jump in? Tell the{" "}
         <Link href="/#next-read">Next Read Matchmaker</Link> what you loved about{" "}
         <em>Project Hail Mary</em> and let it choose — then{" "}
-        <Link href="/trade">trade it back</Link> when you&rsquo;re done.
+        <Link href="/trade">trade it back</Link> when you&rsquo;re done. For more
+        big-idea reading, see our lists of{" "}
+        <Link href="/reading-room/books-like-dune">books like Dune</Link> and{" "}
+        <Link href="/reading-room/best-classic-science-fiction-novels">
+          classic science fiction novels
+        </Link>
+        .
       </p>
     </>
   );

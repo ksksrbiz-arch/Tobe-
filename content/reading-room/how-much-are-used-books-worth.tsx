@@ -56,7 +56,11 @@ export default function Body() {
         read regularly, the &ldquo;value&rdquo; of your books is effectively
         higher when you take credit and roll it straight into your next stack.
         Cash is fine if you simply need to clear shelves, but credit is where the
-        deal gets good.
+        deal gets good. For a closer look at the tradeoff, see our comparison of{" "}
+        <Link href="/reading-room/cash-for-books-vs-store-credit">
+          cash for books vs. store credit
+        </Link>
+        .
       </p>
 
       <h2>What about &ldquo;valuable&rdquo; old books?</h2>
@@ -82,7 +86,11 @@ export default function Body() {
       <p>
         The only way to know for sure is to let us look. See whether{" "}
         <Link href="/reading-room/do-bookstores-buy-used-books">a bookstore will buy your used books</Link>,
-        check the <Link href="/trade">trade-in details</Link>, or simply{" "}
+        check{" "}
+        <Link href="/reading-room/what-books-can-you-sell-to-a-used-bookstore">
+          what books you can actually sell to a used bookstore
+        </Link>
+        , check the <Link href="/trade">trade-in details</Link>, or simply{" "}
         <Link href="/visit">bring a box by the shop</Link>. Then turn that credit
         into your <Link href="/#next-read">next read</Link>.
       </p>

@@ -95,7 +95,11 @@ export default function Body() {
         <Link href="/trade">turn them into credit</Link> toward the next batch.
         Browse what&rsquo;s in now on <Link href="/shop">our shelves</Link>, or
         let the <Link href="/#next-read">Matchmaker</Link> point you to your next
-        village full of suspects.
+        village full of suspects. A few of these also turn up on our list of{" "}
+        <Link href="/reading-room/best-book-club-books">
+          the best book club books
+        </Link>
+        , for readers who want to discuss the case afterward.
       </p>
     </>
   );

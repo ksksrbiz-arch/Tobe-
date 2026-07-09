@@ -69,7 +69,10 @@ export default function Body() {
         Ready to age up? Pierce Brown&rsquo;s <em>Red Rising</em> takes the
         oppressed-underclass-rises premise to a savage, sci-fi extreme on a
         terraformed Mars. It&rsquo;s more adult and more violent, with an
-        infiltration plot that scratches the same itch.
+        infiltration plot that scratches the same itch. If that epic-scope
+        sci-fi is what you&rsquo;re after, our{" "}
+        <Link href="/reading-room/books-like-dune">books like Dune</Link> list
+        goes even further.
       </p>
 
       <h2>For the moral gut-check: Scythe</h2>
@@ -100,6 +103,11 @@ export default function Body() {
         Drifting toward fantasy? See our{" "}
         <Link href="/reading-room/fantasy-books-for-beginners">
           fantasy books for beginners
+        </Link>
+        . Want the political scheming and rebellion in a full epic-fantasy
+        world instead? Try our{" "}
+        <Link href="/reading-room/books-like-a-game-of-thrones">
+          A Game of Thrones read-alikes
         </Link>
         .
       </p>

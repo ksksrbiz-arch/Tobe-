@@ -78,7 +78,16 @@ export default function Body() {
       <p>
         Rotate genres so it&rsquo;s not all heavy literary fiction, keep an eye on
         length for busy months, and choose at least one book a year that someone
-        will <em>hate</em> — those are the best meetings.
+        will <em>hate</em> — those are the best meetings. For an off-genre pick,
+        our{" "}
+        <Link href="/reading-room/best-classic-romance-novels">
+          best classic romance novels
+        </Link>{" "}
+        and{" "}
+        <Link href="/reading-room/best-classic-science-fiction-novels">
+          best classic science fiction novels
+        </Link>{" "}
+        roundups are both good places to change the pace.
       </p>
 
       <h2>Stock the whole club</h2>

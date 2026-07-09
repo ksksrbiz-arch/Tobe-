@@ -57,7 +57,11 @@ export default function Body() {
         This is Oregon, so have a plan B. Browsing the stacks at{" "}
         <strong>To Be Read</strong> is its own slow pleasure on a wet afternoon —
         come find your next read, then take it somewhere warm. We&rsquo;re at{" "}
-        <Link href="/visit">7931 SE King Rd, Unit 1</Link>.
+        <Link href="/visit">7931 SE King Rd, Unit 1</Link>. See our{" "}
+        <Link href="/reading-room/rainy-day-things-to-do-milwaukie-oregon">
+          guide to rainy-day things to do in Milwaukie
+        </Link>{" "}
+        for more ways to fill a wet afternoon.
       </p>
 
       <h2>Fill your bag first</h2>
@@ -65,7 +69,11 @@ export default function Body() {
         Stock up on our <Link href="/shop">shelves</Link>, see our{" "}
         <Link href="/reading-room/milwaukie-oregon-book-lovers-day-out">book lover&rsquo;s day out in Milwaukie</Link>,
         or ask the <Link href="/#next-read">Matchmaker</Link> what to bring to the
-        river.
+        river. New to the shop? Start with our{" "}
+        <Link href="/reading-room/first-visit-to-be-read-bookstore-guide">
+          guide to your first visit
+        </Link>
+        .
       </p>
     </>
   );

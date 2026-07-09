@@ -41,7 +41,14 @@ export default function Body() {
       </p>
 
       <h2>1. A Court of Thorns and Roses — Sarah J. Maas</h2>
-      <p>The cornerstone of modern romantasy. If you haven&rsquo;t, start now.</p>
+      <p>
+        The cornerstone of modern romantasy. If you haven&rsquo;t, start now —
+        and once you have, our{" "}
+        <Link href="/reading-room/books-like-a-court-of-thorns-and-roses">
+          books like ACOTAR
+        </Link>{" "}
+        guide has more where that came from.
+      </p>
 
       <h2>2. From Blood and Ash — Jennifer L. Armentrout</h2>
       <p>Forbidden romance, big twists, and the same can&rsquo;t-stop momentum.</p>
@@ -56,7 +63,14 @@ export default function Body() {
       <p>A deadly tournament, a vampire rival, and a slow-burn made for <em>Fourth Wing</em> fans.</p>
 
       <h2>6. A Deal with the Elf King — Elise Kova</h2>
-      <p>A human bargained to a fae king. Cozy-leaning romantasy with a satisfying arc.</p>
+      <p>
+        A human bargained to a fae king. Cozy-leaning romantasy with a
+        satisfying arc — closer to our{" "}
+        <Link href="/reading-room/clean-romantasy-low-spice">
+          low-spice romantasy
+        </Link>{" "}
+        picks if that&rsquo;s more your speed.
+      </p>
 
       <h2>7. The Bridge Kingdom — Danielle L. Jensen</h2>
       <p>Warrior princess, enemy king, espionage and sparks. Tropey in the best way.</p>
