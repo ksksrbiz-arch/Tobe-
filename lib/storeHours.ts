@@ -58,6 +58,16 @@ export function getActiveClosure(now: Date = new Date()): StoreClosure | null {
   return CLOSURES.find((c) => today <= c.date) ?? null;
 }
 
+/**
+ * Closures that haven't passed yet, for the site-wide BookStore JSON-LD's
+ * `specialOpeningHoursSpecification` — so Google Search/Maps knows the shop
+ * is closed that day instead of relying only on the regular weekly hours.
+ */
+export function getUpcomingClosures(now: Date = new Date()): StoreClosure[] {
+  const today = localDateString(now);
+  return CLOSURES.filter((c) => today <= c.date);
+}
+
 export function getStoreStatus(now: Date = new Date()): StoreStatus {
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone: STORE_TIMEZONE,
