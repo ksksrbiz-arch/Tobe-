@@ -78,7 +78,7 @@ export default function ReviewForm() {
         </div>
         <h3
           className="mb-1 text-lg font-bold"
-          style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+          style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
         >
           Thank you!
         </h3>
@@ -94,16 +94,16 @@ export default function ReviewForm() {
     <form
       onSubmit={handleSubmit}
       className="rounded-2xl border bg-white p-6 sm:p-8"
-      style={{ borderColor: "rgba(107,28,111,0.12)", boxShadow: "var(--shadow-sm)" }}
+      style={{ borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)", boxShadow: "var(--shadow-sm)" }}
       noValidate
     >
       <h3
         className="mb-1 text-xl font-bold"
-        style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+        style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
       >
         Share your experience
       </h3>
-      <p className="mb-5 text-sm" style={{ color: "#6B7280" }}>
+      <p className="mb-5 text-sm" style={{ color: "var(--muted)" }}>
         Visited the shop or traded some books? We&apos;d love to hear about it.
       </p>
 
@@ -121,10 +121,10 @@ export default function ReviewForm() {
               aria-pressed={rating === n}
               onClick={() => setRating(n)}
               onMouseEnter={() => setHover(n)}
-              className="rounded p-0.5 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2"
-              style={{ color: "#F1BB1A" }}
+              className="touch-target flex items-center justify-center rounded transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2"
+              style={{ color: "var(--gold)" }}
             >
-              <Star size={30} fill={n <= shown ? "#F1BB1A" : "transparent"} />
+              <Star size={30} fill={n <= shown ? "var(--gold)" : "transparent"} />
             </button>
           ))}
         </div>
@@ -141,8 +141,9 @@ export default function ReviewForm() {
           maxLength={NAME_MAX}
           onChange={(e) => setName(e.target.value)}
           placeholder="Jamie R."
+          autoComplete="name"
           className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:ring-2"
-          style={{ borderColor: "rgba(107,28,111,0.20)", color: "#1F1A2E" }}
+          style={{ borderColor: "color-mix(in srgb, var(--purple) 20%, transparent)", color: "var(--ink)" }}
           required
         />
       </label>
@@ -150,7 +151,7 @@ export default function ReviewForm() {
       {/* Title (optional) */}
       <label className="mb-4 block">
         <span className="mb-1 block text-sm font-semibold" style={{ color: "#374151" }}>
-          Headline <span style={{ color: "#6B7280" }}>(optional)</span>
+          Headline <span style={{ color: "var(--muted)" }}>(optional)</span>
         </span>
         <input
           type="text"
@@ -159,7 +160,7 @@ export default function ReviewForm() {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="A cozy neighborhood gem"
           className="w-full rounded-xl border px-4 py-3 text-sm outline-none focus:ring-2"
-          style={{ borderColor: "rgba(107,28,111,0.20)", color: "#1F1A2E" }}
+          style={{ borderColor: "color-mix(in srgb, var(--purple) 20%, transparent)", color: "var(--ink)" }}
         />
       </label>
 
@@ -175,11 +176,11 @@ export default function ReviewForm() {
           onChange={(e) => setBody(e.target.value)}
           placeholder="Tell other readers what you loved…"
           className="w-full resize-y rounded-xl border px-4 py-3 text-sm outline-none focus:ring-2"
-          style={{ borderColor: "rgba(107,28,111,0.20)", color: "#1F1A2E" }}
+          style={{ borderColor: "color-mix(in srgb, var(--purple) 20%, transparent)", color: "var(--ink)" }}
           required
         />
       </label>
-      <p className="mb-4 text-right text-[11px]" style={{ color: "#6B7280" }}>
+      <p className="mb-4 text-right text-[11px]" style={{ color: "var(--muted)" }}>
         {body.length}/{BODY_MAX}
       </p>
 
@@ -216,7 +217,7 @@ export default function ReviewForm() {
           "Submit review"
         )}
       </button>
-      <p className="mt-3 text-[11px]" style={{ color: "#6B7280" }}>
+      <p className="mt-3 text-[11px]" style={{ color: "var(--muted)" }}>
         Reviews are read by our team before they&apos;re published. The name you
         enter is shown publicly with your review. See our{" "}
         <Link href="/privacy" className="underline hover:text-purple">

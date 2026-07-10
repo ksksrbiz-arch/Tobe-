@@ -75,7 +75,7 @@ export default function NewsletterCTA() {
     <section
       id="newsletter"
       className="px-4 py-12 sm:py-20 sm:px-6 lg:px-8"
-      style={{ background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)" }}
+      style={{ background: "linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)" }}
     >
       <div className="mx-auto max-w-4xl">
         <Reveal>
@@ -83,28 +83,28 @@ export default function NewsletterCTA() {
             className="relative overflow-hidden rounded-[36px] p-8 sm:p-12"
             style={{
               background:
-                "radial-gradient(circle at 12% 20%, rgba(241,187,26,0.30), transparent 38%), linear-gradient(135deg, #6B1C6F 0%, #4A1350 100%)",
-              boxShadow: "0 30px 80px rgba(107,28,111,0.30)",
+                "radial-gradient(circle at 12% 20%, color-mix(in srgb, var(--gold) 30%, transparent), transparent 38%), linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%)",
+              boxShadow: "0 30px 80px color-mix(in srgb, var(--purple) 30%, transparent)",
             }}
           >
             {/* Decorative book shapes */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute -right-20 -bottom-16 h-48 w-48 rounded-full opacity-20 blur-3xl"
-              style={{ background: "#F1BB1A" }}
+              style={{ background: "var(--gold)" }}
             />
             <BookOpen
               aria-hidden="true"
               size={140}
               className="absolute -right-8 -top-8 opacity-10"
-              style={{ color: "#F1BB1A", transform: "rotate(-15deg)" }}
+              style={{ color: "var(--gold)", transform: "rotate(-15deg)" }}
             />
 
             <div className="relative grid grid-cols-1 items-center gap-8 lg:grid-cols-[1.2fr_1fr]">
               <div>
                 <span
                   className="mb-3 inline-block rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.25em]"
-                  style={{ background: "rgba(241,187,26,0.18)", color: "#F1BB1A" }}
+                  style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--gold)" }}
                 >
                   Stay in the loop
                 </span>
@@ -115,7 +115,7 @@ export default function NewsletterCTA() {
                     fontSize: "clamp(1.8rem, 4.5vw, 2.6rem)",
                   }}
                 >
-                  New arrivals, store events, and a peek at our <span style={{ color: "#F1BB1A" }}>2026 rebrand</span>.
+                  New arrivals, store events, and a peek at our <span style={{ color: "var(--gold)" }}>2026 rebrand</span>.
                 </h2>
                 <p className="text-sm leading-relaxed text-white/75">
                   {EMAIL_ENABLED
@@ -134,11 +134,11 @@ export default function NewsletterCTA() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="pressable group flex items-center gap-3 rounded-2xl px-4 py-3 transition-all"
-                      style={{ background: "rgba(255,255,255,0.10)", border: "1px solid rgba(241,187,26,0.30)" }}
+                      style={{ background: "rgba(255,255,255,0.10)", border: "1px solid color-mix(in srgb, var(--gold) 30%, transparent)" }}
                     >
                       <span
                         className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full"
-                        style={{ background: "rgba(241,187,26,0.18)", color: "#F1BB1A" }}
+                        style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--gold)" }}
                       >
                         <Icon />
                       </span>
@@ -153,15 +153,15 @@ export default function NewsletterCTA() {
               ) : status === "success" ? (
                 <div
                   className="flex flex-col items-center justify-center rounded-2xl px-5 py-8 text-center animate-page-enter"
-                  style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(241,187,26,0.30)" }}
+                  style={{ background: "rgba(255,255,255,0.1)", border: "1px solid color-mix(in srgb, var(--gold) 30%, transparent)" }}
                   role="status"
                   aria-live="polite"
                 >
                   <span
                     className="mb-3 flex h-12 w-12 items-center justify-center rounded-full"
-                    style={{ background: "rgba(241,187,26,0.2)" }}
+                    style={{ background: "color-mix(in srgb, var(--gold) 20%, transparent)" }}
                   >
-                    <CheckCircle2 size={26} style={{ color: "#F1BB1A" }} />
+                    <CheckCircle2 size={26} style={{ color: "var(--gold)" }} />
                   </span>
                   <p className="text-base font-bold text-white" style={{ fontFamily: "var(--font-serif)" }}>
                     You&apos;re on the list!
@@ -204,9 +204,9 @@ export default function NewsletterCTA() {
                   <button
                     type="submit"
                     disabled={busy}
-                    className="btn-warm flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-bold uppercase tracking-wider shadow-md transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="btn-warm flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-bold uppercase tracking-wider shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
                     style={{
-                      background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)",
+                      background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)",
                       color: "#1a1a1a",
                     }}
                   >

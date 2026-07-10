@@ -48,11 +48,11 @@ interface FeaturedBook {
 }
 
 const featuredBooks: FeaturedBook[] = [
-  { title: "The Midnight Library", author: "Matt Haig", genre: "Fiction", price: "$6", isbn: "9780525559474", accentFrom: "#6B1C6F", accentTo: "#8B2E90" },
+  { title: "The Midnight Library", author: "Matt Haig", genre: "Fiction", price: "$6", isbn: "9780525559474", accentFrom: "var(--purple)", accentTo: "var(--purple-light)" },
   { title: "Educated", author: "Tara Westover", genre: "Memoir", price: "$5", isbn: "9780399590504", accentFrom: "#1a6b1c", accentTo: "#16a34a" },
   { title: "Piranesi", author: "Susanna Clarke", genre: "Fantasy", price: "$7", isbn: "9781635575637", accentFrom: "#1e3a8a", accentTo: "#3b82f6" },
-  { title: "A Gentleman in Moscow", author: "Amor Towles", genre: "Historical", price: "$8", isbn: "9780143110439", accentFrom: "#b45309", accentTo: "#F1BB1A" },
-  { title: "Tomorrow, and Tomorrow, and Tomorrow", author: "Gabrielle Zevin", genre: "Fiction", price: "$7", isbn: "9780593321201", accentFrom: "#6B1C6F", accentTo: "#F1BB1A" },
+  { title: "A Gentleman in Moscow", author: "Amor Towles", genre: "Historical", price: "$8", isbn: "9780143110439", accentFrom: "#b45309", accentTo: "var(--gold)" },
+  { title: "Tomorrow, and Tomorrow, and Tomorrow", author: "Gabrielle Zevin", genre: "Fiction", price: "$7", isbn: "9780593321201", accentFrom: "var(--purple)", accentTo: "var(--gold)" },
   { title: "Project Hail Mary", author: "Andy Weir", genre: "Sci-Fi", price: "$8", isbn: "9780593135204", accentFrom: "#0f766e", accentTo: "#14b8a6" },
   { title: "Lessons in Chemistry", author: "Bonnie Garmus", genre: "Fiction", price: "$6", isbn: "9780385547345", accentFrom: "#9a3412", accentTo: "#f97316" },
   { title: "The Covenant of Water", author: "Abraham Verghese", genre: "Literary", price: "$9", isbn: "9780802162175", accentFrom: "#4c1d95", accentTo: "#7c3aed" },
@@ -62,10 +62,10 @@ function FeaturedCard({ book }: { book: FeaturedBook }) {
   const [coverFailed, setCoverFailed] = useState(false);
   return (
     <article
-      className="card-cozy group flex h-full flex-col overflow-hidden rounded-2xl border bg-white transition-transform active:scale-[0.98]"
-      style={{ borderColor: "rgba(107,28,111,0.08)", boxShadow: "var(--shadow-sm)" }}
+      className="card-cozy group flex h-full flex-col overflow-hidden rounded-2xl border bg-white"
+      style={{ borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)", boxShadow: "var(--shadow-sm)" }}
     >
-      <div className="relative aspect-[2/3] w-full overflow-hidden" style={{ background: "rgba(107,28,111,0.06)" }}>
+      <div className="relative aspect-[2/3] w-full overflow-hidden" style={{ background: "color-mix(in srgb, var(--purple) 6%, transparent)" }}>
         {coverFailed ? (
           // On a missing cover, fall back to the title on the book's accent gradient.
           <div
@@ -89,7 +89,7 @@ function FeaturedCard({ book }: { book: FeaturedBook }) {
         )}
         <span
           className="absolute right-2 top-2 rounded-full px-2 py-0.5 text-xs font-bold text-white shadow-sm backdrop-blur-sm"
-          style={{ background: "rgba(31,26,46,0.62)" }}
+          style={{ background: "color-mix(in srgb, var(--ink) 62%, transparent)" }}
         >
           {book.price}
         </span>
@@ -103,11 +103,11 @@ function FeaturedCard({ book }: { book: FeaturedBook }) {
         </span>
         <p
           className="mt-2 line-clamp-2 text-sm font-bold leading-tight"
-          style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+          style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
         >
           {book.title}
         </p>
-        <p className="mt-0.5 truncate text-xs" style={{ color: "#6B7280" }}>
+        <p className="mt-0.5 truncate text-xs" style={{ color: "var(--muted)" }}>
           by {book.author}
         </p>
       </div>
@@ -154,11 +154,11 @@ export default function ShopPage() {
             We carry gently-used books across <strong>every genre</strong>{" "}&mdash; literary fiction,
             fantasy and sci-fi, mystery, romance, memoir, kids and YA — most just a few dollars each.
             The shelves rotate constantly, so browse the highlights below to see what&rsquo;s new, then{" "}
-            <Link href="/visit" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+            <Link href="/visit" style={{ color: "var(--purple)", fontWeight: 600, textDecoration: "underline" }}>
               come dig through the rest in person
             </Link>{" "}
             in Milwaukie. Cleared out your own shelves? You can{" "}
-            <Link href="/trade" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+            <Link href="/trade" style={{ color: "var(--purple)", fontWeight: 600, textDecoration: "underline" }}>
               trade them in for credit
             </Link>{" "}
             while you&rsquo;re here.
@@ -171,13 +171,13 @@ export default function ShopPage() {
       {/* Genre quick filters */}
       <section
         className="px-4 py-16 sm:px-6 lg:px-8"
-        style={{ background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)" }}
+        style={{ background: "linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)" }}
       >
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-8 text-center">
             <span
               className="mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
             >
               <Tag size={12} />
               What we stock
@@ -186,7 +186,7 @@ export default function ShopPage() {
               className="font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.7rem, 3.5vw, 2.2rem)",
               }}
             >
@@ -199,11 +199,11 @@ export default function ShopPage() {
               {genreChips.map((g) => (
                 <span
                   key={g}
-                  className="rounded-full border px-4 py-2 text-sm font-medium transition-all hover:-translate-y-0.5 hover:shadow-md"
+                  className="rounded-full border px-4 py-2 text-sm font-medium"
                   style={{
                     background: "white",
-                    borderColor: "rgba(107,28,111,0.14)",
-                    color: "#6B1C6F",
+                    borderColor: "color-mix(in srgb, var(--purple) 14%, transparent)",
+                    color: "var(--purple)",
                   }}
                 >
                   {g}
@@ -219,14 +219,14 @@ export default function ShopPage() {
         className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
-            "radial-gradient(ellipse at 0% 0%, rgba(107,28,111,0.07) 0%, transparent 50%), radial-gradient(ellipse at 100% 100%, rgba(241,187,26,0.10) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+            "radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--purple) 7%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 100% 100%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
         }}
       >
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-12 text-center">
             <span
               className="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               <Star size={12} />
               New &amp; Notable
@@ -235,14 +235,14 @@ export default function ShopPage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
             >
               On the table this <span className="underline-accent">week</span>
             </h2>
             <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
-            <p className="mx-auto mt-4 max-w-xl text-sm" style={{ color: "#6B7280" }}>
+            <p className="mx-auto mt-4 max-w-xl text-sm" style={{ color: "var(--muted)" }}>
               Examples only — our shelves change daily, so come hunt for something you didn&apos;t expect.
             </p>
           </Reveal>

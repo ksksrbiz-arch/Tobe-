@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ChefHat, X } from "lucide-react";
 import Reveal from "@/components/Reveal";
@@ -52,6 +52,30 @@ const photos: CookbookPhoto[] = [
 export function CookbookCurationGallery() {
   const [active, setActive] = useState<CookbookPhoto | null>(null);
   const isEmpty = photos.length === 0;
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+
+  const openPhoto = (photo: CookbookPhoto) => {
+    // Remember the tile that opened the dialog so focus can return to it on close.
+    triggerRef.current = document.activeElement as HTMLElement | null;
+    setActive(photo);
+  };
+
+  // Dialog a11y: move focus into the dialog on open, close on Escape, and
+  // restore focus to the triggering tile on close.
+  useEffect(() => {
+    if (!active) return;
+    const returnTo = triggerRef.current;
+    closeBtnRef.current?.focus();
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActive(null);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      returnTo?.focus?.();
+    };
+  }, [active]);
 
   return (
     <section
@@ -59,14 +83,14 @@ export function CookbookCurationGallery() {
       className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
-          "radial-gradient(circle at 90% 10%, rgba(241,187,26,0.10), transparent 40%), linear-gradient(180deg, #FDF8F0 0%, #FFFDF9 100%)",
+          "radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 40%), linear-gradient(180deg, var(--paper) 0%, #FFFDF9 100%)",
       }}
     >
       <div className="mx-auto max-w-6xl">
         <Reveal className="mb-10 text-center">
           <span
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-            style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+            style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
           >
             <ChefHat size={12} />
             Newly Curated
@@ -75,13 +99,13 @@ export function CookbookCurationGallery() {
             className="mt-4 font-bold"
             style={{
               fontFamily: "var(--font-serif)",
-              color: "#6B1C6F",
+              color: "var(--purple)",
               fontSize: "clamp(2rem, 5vw, 2.8rem)",
             }}
           >
             Step into the new <span className="underline-accent">cookbook area</span>
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "#6B7280" }}>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "var(--muted)" }}>
             We just rebuilt the cookbook section from the ground up — world cuisines, celebrity chefs,
             baking, grilling, healthy living, and a drinks corner you can actually browse.
           </p>
@@ -91,10 +115,10 @@ export function CookbookCurationGallery() {
         {isEmpty ? (
           <div
             className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed py-16 text-center"
-            style={{ borderColor: "rgba(107,28,111,0.15)" }}
+            style={{ borderColor: "color-mix(in srgb, var(--purple) 15%, transparent)" }}
           >
-            <ChefHat size={36} style={{ color: "rgba(107,28,111,0.30)" }} />
-            <p className="mt-4 text-sm font-medium" style={{ color: "#6B7280" }}>
+            <ChefHat size={36} style={{ color: "color-mix(in srgb, var(--purple) 30%, transparent)" }} />
+            <p className="mt-4 text-sm font-medium" style={{ color: "var(--muted)" }}>
               Photos of the cookbook nook are on their way — check back soon!
             </p>
           </div>
@@ -108,8 +132,8 @@ export function CookbookCurationGallery() {
             >
               <button
                 type="button"
-                onClick={() => setActive(photo)}
-                className="group relative h-full w-full overflow-hidden rounded-2xl text-left shadow-md transition-transform hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6B1C6F]"
+                onClick={() => openPhoto(photo)}
+                className="group relative h-full w-full overflow-hidden rounded-2xl text-left shadow-md transition-transform hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--purple)]"
                 style={{ minHeight: i === 0 ? "320px" : "180px" }}
                 aria-label={`View larger photo: ${photo.caption}`}
               >
@@ -130,7 +154,7 @@ export function CookbookCurationGallery() {
                   className="absolute inset-0 transition-opacity duration-300"
                   style={{
                     background:
-                      "linear-gradient(180deg, rgba(74,19,80,0) 35%, rgba(74,19,80,0.88) 100%)",
+                      "linear-gradient(180deg, color-mix(in srgb, var(--purple-dark) 0%, transparent) 35%, color-mix(in srgb, var(--purple-dark) 88%, transparent) 100%)",
                   }}
                 />
                 <div className="absolute bottom-3 left-3 right-3 text-white">
@@ -141,7 +165,7 @@ export function CookbookCurationGallery() {
                 </div>
                 <span
                   className="absolute left-2 top-2 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
-                  style={{ background: "#F1BB1A", color: "#1a1a1a" }}
+                  style={{ background: "var(--gold)", color: "#1a1a1a" }}
                 >
                   Just curated
                 </span>
@@ -166,10 +190,11 @@ export function CookbookCurationGallery() {
             onClick={(e) => e.stopPropagation()}
           >
             <button
+              ref={closeBtnRef}
               type="button"
               onClick={() => setActive(null)}
               aria-label="Close photo"
-              className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#6B1C6F] shadow-md transition-colors hover:bg-white"
+              className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-[var(--purple)] shadow-md transition-colors hover:bg-white"
             >
               <X size={18} />
             </button>
@@ -187,7 +212,7 @@ export function CookbookCurationGallery() {
             <div className="px-6 py-4">
               <p
                 className="text-lg font-bold"
-                style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
               >
                 {active.caption}
               </p>

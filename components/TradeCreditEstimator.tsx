@@ -99,26 +99,26 @@ export default function TradeCreditEstimator() {
       className="mx-auto max-w-xl rounded-[28px] border-2 p-7 shadow-xl"
       style={{
         background: "linear-gradient(180deg, rgba(253,248,240,0.98) 0%, rgba(255,255,255,0.98) 100%)",
-        borderColor: "rgba(107,28,111,0.18)",
-        boxShadow: "0 20px 60px rgba(107,28,111,0.12)",
+        borderColor: "color-mix(in srgb, var(--purple) 18%, transparent)",
+        boxShadow: "0 20px 60px color-mix(in srgb, var(--purple) 12%, transparent)",
       }}
     >
       {/* Header */}
       <div className="mb-6 flex items-center gap-3">
         <div
           className="flex h-11 w-11 items-center justify-center rounded-xl"
-          style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+          style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
         >
           <Receipt size={20} className="text-white" />
         </div>
         <div>
           <h3
             className="font-bold"
-            style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F", fontSize: "1.15rem" }}
+            style={{ fontFamily: "var(--font-serif)", color: "var(--purple)", fontSize: "1.15rem" }}
           >
             Trade Credit Estimator
           </h3>
-          <p className="text-xs" style={{ color: "#6B7280" }}>
+          <p className="text-xs" style={{ color: "var(--muted)" }}>
             See your instant credit before you walk in
           </p>
         </div>
@@ -129,7 +129,7 @@ export default function TradeCreditEstimator() {
         role="group"
         aria-label="Estimate by"
         className="mb-5 flex rounded-xl p-1"
-        style={{ background: "rgba(107,28,111,0.07)" }}
+        style={{ background: "color-mix(in srgb, var(--purple) 7%, transparent)" }}
       >
         {(["price", "isbn"] as const).map((m) => (
           <button
@@ -137,10 +137,10 @@ export default function TradeCreditEstimator() {
             type="button"
             aria-pressed={mode === m}
             onClick={() => { setMode(m); reset(); }}
-            className="flex-1 rounded-lg py-2 text-sm font-semibold transition-all active:scale-[0.98]"
+            className="flex-1 rounded-lg py-3 text-sm font-semibold transition-all active:scale-[0.98]"
             style={{
-              background: mode === m ? "#6B1C6F" : "transparent",
-              color: mode === m ? "white" : "#6B1C6F",
+              background: mode === m ? "var(--purple)" : "transparent",
+              color: mode === m ? "white" : "var(--purple)",
             }}
           >
             {m === "price" ? "Enter List Price" : "Look Up ISBN"}
@@ -154,7 +154,7 @@ export default function TradeCreditEstimator() {
           <div className="relative flex-1">
             <span
               className="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold"
-              style={{ color: "#6B1C6F" }}
+              style={{ color: "var(--purple)" }}
             >
               $
             </span>
@@ -162,6 +162,8 @@ export default function TradeCreditEstimator() {
               type="number"
               aria-label="Book list price in dollars"
               inputMode="decimal"
+              enterKeyHint="go"
+              autoComplete="off"
               min="0"
               max={MAX_LIST_PRICE}
               step="0.01"
@@ -171,8 +173,8 @@ export default function TradeCreditEstimator() {
               onKeyDown={(e) => e.key === "Enter" && handleManualPrice()}
               className="w-full rounded-xl border py-3 pl-7 pr-4 text-sm font-medium outline-none transition-all focus:ring-2"
               style={{
-                borderColor: "rgba(107,28,111,0.18)",
-                color: "#1F1A2E",
+                borderColor: "color-mix(in srgb, var(--purple) 18%, transparent)",
+                color: "var(--ink)",
                 background: "white",
               }}
             />
@@ -181,7 +183,7 @@ export default function TradeCreditEstimator() {
             type="button"
             onClick={handleManualPrice}
             className="flex items-center gap-1.5 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.03] active:scale-[0.98]"
-            style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+            style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
           >
             <RefreshCw size={14} />
             Calculate
@@ -192,6 +194,9 @@ export default function TradeCreditEstimator() {
           <input
             type="text"
             aria-label="Book ISBN"
+            inputMode="numeric"
+            enterKeyHint="search"
+            autoComplete="off"
             placeholder="978-0-06-112008-4"
             value={isbnInput}
             onChange={(e) => { setIsbnInput(e.target.value); reset(); }}
@@ -199,8 +204,8 @@ export default function TradeCreditEstimator() {
             maxLength={17}
             className="flex-1 rounded-xl border py-3 px-4 text-sm font-medium outline-none transition-all focus:ring-2"
             style={{
-              borderColor: "rgba(107,28,111,0.18)",
-              color: "#1F1A2E",
+              borderColor: "color-mix(in srgb, var(--purple) 18%, transparent)",
+              color: "var(--ink)",
               background: "white",
             }}
           />
@@ -209,7 +214,7 @@ export default function TradeCreditEstimator() {
             onClick={() => lookupISBN(isbnInput)}
             disabled={loading}
             className="flex items-center gap-1.5 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.03] active:scale-[0.98] disabled:opacity-60"
-            style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+            style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
           >
             {loading ? (
               <RefreshCw size={14} className="animate-spin" />
@@ -241,16 +246,16 @@ export default function TradeCreditEstimator() {
           style={{
             fontFamily: "'Courier New', Courier, monospace",
             background: "white",
-            borderColor: "rgba(107,28,111,0.14)",
-            boxShadow: "0 8px 28px rgba(107,28,111,0.08)",
+            borderColor: "color-mix(in srgb, var(--purple) 14%, transparent)",
+            boxShadow: "0 8px 28px color-mix(in srgb, var(--purple) 8%, transparent)",
           }}
         >
           {/* Receipt header */}
-          <div className="mb-3 border-b pb-3 text-center" style={{ borderColor: "rgba(107,28,111,0.10)", borderStyle: "dashed" }}>
-            <p className="text-[10px] uppercase tracking-[0.28em]" style={{ color: "#6B7280" }}>
+          <div className="mb-3 border-b pb-3 text-center" style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)", borderStyle: "dashed" }}>
+            <p className="text-[10px] uppercase tracking-[0.28em]" style={{ color: "var(--muted)" }}>
               To Be Read · Clackamas Book Exchange
             </p>
-            <p className="text-[9px] uppercase tracking-widest" style={{ color: "#6B7280" }}>
+            <p className="text-[9px] uppercase tracking-widest" style={{ color: "var(--muted)" }}>
               Trade Credit Estimate
             </p>
           </div>
@@ -272,11 +277,11 @@ export default function TradeCreditEstimator() {
               />
             )}
             <div className="min-w-0">
-              <p className="truncate text-sm font-bold" style={{ color: "#1F1A2E" }}>
+              <p className="truncate text-sm font-bold" style={{ color: "var(--ink)" }}>
                 {book.title}
               </p>
               {book.author && (
-                <p className="text-[11px]" style={{ color: "#6B7280" }}>
+                <p className="text-[11px]" style={{ color: "var(--muted)" }}>
                   {book.author}
                 </p>
               )}
@@ -286,30 +291,30 @@ export default function TradeCreditEstimator() {
           {/* Line items */}
           <div className="space-y-2 text-xs">
             <div className="flex justify-between">
-              <span style={{ color: "#6B7280" }}>List price</span>
-              <span className="font-bold" style={{ color: "#1F1A2E" }}>{fmt(book.listPrice)}</span>
+              <span style={{ color: "var(--muted)" }}>List price</span>
+              <span className="font-bold" style={{ color: "var(--ink)" }}>{fmt(book.listPrice)}</span>
             </div>
 
             <div
               className="flex justify-between rounded-lg px-3 py-2.5 border-t mt-1 pt-3"
               style={{
-                background: "linear-gradient(135deg, rgba(107,28,111,0.06), rgba(241,187,26,0.08))",
-                borderColor: "rgba(107,28,111,0.12)",
+                background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 6%, transparent), color-mix(in srgb, var(--gold) 8%, transparent))",
+                borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)",
                 borderStyle: "dashed",
               }}
             >
-              <span className="font-bold uppercase tracking-wider text-[11px]" style={{ color: "#6B1C6F" }}>
+              <span className="font-bold uppercase tracking-wider text-[11px]" style={{ color: "var(--purple)" }}>
                 Store credit (25%)
               </span>
               <span
                 className="font-bold text-sm"
-                style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
               >
                 {fmt(result.credit)}
               </span>
             </div>
 
-            <p className="pt-1 text-[10px] leading-4" style={{ color: "#6B7280" }}>
+            <p className="pt-1 text-[10px] leading-4" style={{ color: "var(--muted)" }}>
               At the register: {TRADE_POLICY_REDEMPTION}
             </p>
           </div>
@@ -317,7 +322,7 @@ export default function TradeCreditEstimator() {
           {/* Footer */}
           <div
             className="mt-4 border-t pt-3 text-center text-[9px] uppercase tracking-widest"
-            style={{ borderColor: "rgba(107,28,111,0.10)", borderStyle: "dashed", color: "#6B7280" }}
+            style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)", borderStyle: "dashed", color: "var(--muted)" }}
           >
             <Printer size={10} className="mb-1 inline-block" /> Estimate only · Actual credit subject to condition review
           </div>
@@ -325,7 +330,7 @@ export default function TradeCreditEstimator() {
       )}
 
       {/* Disclaimer */}
-      <p className="mt-4 text-center text-[10px] leading-4" style={{ color: "#6B7280" }}>
+      <p className="mt-4 text-center text-[10px] leading-4" style={{ color: "var(--muted)" }}>
         {`Credit is issued as store credit, not cash. ${TRADE_POLICY_ROLLOVER} Final amount may vary based on condition and staff review.`}
       </p>
     </div>
