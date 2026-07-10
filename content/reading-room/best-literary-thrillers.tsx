@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "A thriller can keep you up all night and still be beautifully written. These literary thrillers deliver suspense and prose worth savoring — the best of both shelves.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "The Secret History", author: "Donna Tartt" },
     { name: "In the Woods", author: "Tana French" },
@@ -68,7 +69,11 @@ export default function Body() {
         Her follow-up, and a favorite of many. <em>The Likeness</em> sends an
         undercover detective to impersonate a murder victim she happens to
         resemble, inside a closed circle of housemates. It&rsquo;s a slow,
-        hypnotic, dark-academia-adjacent spiral — eerie and gorgeous.
+        hypnotic spiral that will delight anyone who loves{" "}
+        <Link href="/reading-room/best-dark-academia-books">
+          dark academia
+        </Link>{" "}
+        — eerie, gorgeous, and quietly menacing.
       </p>
 
       <h2>We Need to Talk About Kevin — Lionel Shriver</h2>
