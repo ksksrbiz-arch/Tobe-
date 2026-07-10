@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Hooked on Katniss and the arena? Here are six dystopian and survival reads, from Divergent to Red Rising, to feed your need for high-stakes YA.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,

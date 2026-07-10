@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Some books just make the day lighter. These heartwarming, uplifting reads are the ones to reach for when you need a reminder that people are mostly good.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
@@ -86,7 +87,12 @@ export default function Body() {
         gentle and reflective? <em>Harold Fry</em>. A bookish adventure?{" "}
         <em>Mr Penumbra&rsquo;s 24-Hour Bookstore</em>. If you&rsquo;re unsure,{" "}
         <Link href="/reading-room/how-to-choose-your-next-book">how to choose your next book</Link>
-        {" "}can help you read your own mood.
+        {" "}can help you read your own mood. Happy to have a good weep along the
+        way? <em>A Man Called Ove</em> and several of these also appear on our{" "}
+        <Link href="/reading-room/literary-fiction-that-makes-you-cry">
+          literary fiction that makes you cry
+        </Link>{" "}
+        list.
       </p>
 
       <h2>Find your next pick-me-up</h2>

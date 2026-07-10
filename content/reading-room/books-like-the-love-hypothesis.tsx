@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Fake dating, brilliant heroines, and a grumpy hero who melts. If The Love Hypothesis left you grinning, here are five books to read next.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "The Spanish Love Deception", author: "Elena Armas" },
     { name: "Love, Theoretically", author: "Ali Hazelwood" },
@@ -99,6 +100,11 @@ export default function Body() {
         or, if romance isn&rsquo;t usually your thing, try{" "}
         <Link href="/reading-room/romance-novels-for-skeptics">
           romance for people who don&rsquo;t read romance
+        </Link>
+        . Since <em>Beach Read</em> made the cut above, several of these also
+        turn up on our{" "}
+        <Link href="/reading-room/best-beach-reads-summer">
+          best summer beach reads
         </Link>
         . Craving sweeping worlds next? See{" "}
         <Link href="/reading-room/books-like-the-priory-of-the-orange-tree">
