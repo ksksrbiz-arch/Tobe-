@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "What makes a used bookstore the best in its area? Here's the honest case for To Be Read, a 45-year favorite serving Portland and Clackamas readers.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Local guide", "Visit"],
   readingMinutes: 4,

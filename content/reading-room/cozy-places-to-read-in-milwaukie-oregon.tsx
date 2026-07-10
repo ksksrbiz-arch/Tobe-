@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Found a good book and need somewhere to read it? Here are the coziest spots around Milwaukie, OR — riverside benches, shady parks, and a rainy-day plan B.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Visit", "Milwaukie", "Local guide"],
-  readingMinutes: 3,
+  readingMinutes: 4,
 };
 
 export default function Body() {
@@ -40,16 +41,26 @@ export default function Body() {
 
       <h2>On the move: the Trolley Trail</h2>
       <p>
-        The flat, tree-lined Trolley Trail runs for miles through Milwaukie and
-        beyond. Walk until you find a quiet bench, then read until your feet
-        recover. Great for audiobooks, too.
+        The flat, tree-lined Trolley Trail follows the old streetcar route south
+        from Milwaukie through Oak Grove and Gladstone toward Oregon City. Walk
+        until you find a quiet bench, then read until your feet recover. It links
+        up with the Springwater Corridor near the river, so you can string
+        together a long, easy loop &mdash; and it&rsquo;s great for audiobooks,
+        too.
       </p>
 
       <h2>A quiet corner downtown</h2>
       <p>
-        Downtown Milwaukie&rsquo;s Main Street is compact and calm — easy to grab
-        a coffee and find a sidewalk table or a shady spot to read without the
-        bustle of inner Portland.
+        Downtown Milwaukie&rsquo;s Main Street is compact and calm &mdash; easy
+        to grab a coffee and find a sidewalk table or a shady spot to read
+        without the bustle of inner Portland. Time it with the Sunday farmers
+        market in season and you can browse produce, then settle in with your
+        book a block away. If you&rsquo;re making a whole afternoon of it,
+        our{" "}
+        <Link href="/reading-room/milwaukie-oregon-book-lovers-day-out">
+          book lover&rsquo;s day out in Milwaukie
+        </Link>{" "}
+        maps out the food, the walk, and the shop in one go.
       </p>
 
       <h2>Rainy day? Start at the shop</h2>
@@ -66,8 +77,8 @@ export default function Body() {
 
       <h2>Fill your bag first</h2>
       <p>
-        Stock up on our <Link href="/shop">shelves</Link>, see our{" "}
-        <Link href="/reading-room/milwaukie-oregon-book-lovers-day-out">book lover&rsquo;s day out in Milwaukie</Link>,
+        Stock up on our <Link href="/shop">shelves</Link>, bring a box to{" "}
+        <Link href="/trade">trade for store credit</Link> while you browse,
         or ask the <Link href="/#next-read">Matchmaker</Link> what to bring to the
         river. New to the shop? Start with our{" "}
         <Link href="/reading-room/first-visit-to-be-read-bookstore-guide">

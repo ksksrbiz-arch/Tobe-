@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "From Le Guin to Beverly Cleary, the Pacific Northwest has shaped some of America's best writers. Here are local-pride picks, most easy to find used.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Local guide", "Recommendations"],
   readingMinutes: 4,
@@ -91,8 +92,20 @@ export default function Body() {
         The happy thing about reading local legends is that, around here, their
         books are everywhere secondhand. Le Guin paperbacks, Cleary
         hardcovers, and well-loved copies of <em>Wild</em> pass across our
-        counter all the time — often for a few dollars and a little trade-in
-        credit. It&rsquo;s the most affordable way to build a Northwest shelf.
+        counter all the time &mdash; often for a few dollars and a little
+        trade-in credit. It&rsquo;s the most affordable way to build a Northwest
+        shelf, and if you bring in books you&rsquo;ve finished, you can{" "}
+        <Link href="/trade">trade them for store credit</Link> toward the next
+        one. We&rsquo;re a used bookstore in Milwaukie, just south of Portland
+        &mdash; here&rsquo;s{" "}
+        <Link href="/reading-room/used-bookstore-milwaukie-southeast-portland">
+          how to find the shop
+        </Link>
+        , and a{" "}
+        <Link href="/reading-room/milwaukie-oregon-book-lovers-day-out">
+          reader&rsquo;s day out in Milwaukie
+        </Link>{" "}
+        if you want to make an afternoon of it.
       </p>
 
       <p>
