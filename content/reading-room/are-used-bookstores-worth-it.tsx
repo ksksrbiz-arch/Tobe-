@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Are used bookstores worth it in the age of one-click shopping? Absolutely, for value, discovery, and community. Here's what makes a great one.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Local guide", "Reading life"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -39,6 +40,16 @@ export default function Body() {
         <Link href="/reading-room/how-book-trade-in-credit-works">how trade-in credit works</Link>{" "}
         and the deeper case in{" "}
         <Link href="/reading-room/why-buy-used-books-instead-of-new">why buy used books instead of new</Link>.
+      </p>
+      <p>
+        The catch worth naming: the value only lands if you actually come back to
+        spend it. Most shops pay more in store credit than in cash precisely
+        because credit keeps you shopping there, so a regular reader comes out
+        ahead while a one-time declutterer might prefer cash. It&rsquo;s a genuine
+        choice, and we walk through it in{" "}
+        <Link href="/reading-room/cash-for-books-vs-store-credit">cash for books vs. store credit</Link>. Either way, you can{" "}
+        <Link href="/trade">trade a box the same day you browse</Link>, which is
+        why the value compounds instead of sitting in a drawer.
       </p>
 
       <h2>Discovery you can&rsquo;t algorithm your way into</h2>

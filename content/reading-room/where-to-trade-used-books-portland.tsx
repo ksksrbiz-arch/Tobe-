@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import QuickAnswer from "@/components/QuickAnswer";
-import { TRADE_POLICY_ROLLOVER } from "@/lib/tradePolicy";
+import { TRADE_POLICY_ROLLOVER, TRADE_POLICY_WAIT } from "@/lib/tradePolicy";
 import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
@@ -12,9 +12,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Boxes of books you've finished and a shelf that's overflowing? Here's a practical rundown of what to do with used books in the Portland area — trade, donate, or rehome.",
   date: "2026-06-16",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Trade-in", "Portland", "Local guide"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -37,11 +38,17 @@ export default function Body() {
         original list price in store credit toward anything in the shop. It keeps
         books circulating in
         the neighborhood and keeps your next read cheap. A couple of things worth
-        knowing: {TRADE_POLICY_ROLLOVER} Full details are on the{" "}
-        <Link href="/how-it-works">how-it-works page</Link>, and a plain-English
-        walkthrough lives in our{" "}
+        knowing before you load the car: {TRADE_POLICY_WAIT} {TRADE_POLICY_ROLLOVER}{" "}
+        Full details live on the{" "}
+        <Link href="/trade">trade page</Link>, and a plain-English walkthrough of
+        how credit is earned and spent is in our{" "}
         <Link href="/reading-room/how-book-trade-in-credit-works">
           trade-in guide
+        </Link>
+        . If you&rsquo;re weighing whether to take that value as credit or ask for
+        cash, we compare the two in{" "}
+        <Link href="/reading-room/cash-for-books-vs-store-credit">
+          cash for books vs. store credit
         </Link>
         .
       </p>
@@ -49,6 +56,17 @@ export default function Body() {
         One quick note: we trade for store credit — we don&rsquo;t buy books for
         cash.
       </blockquote>
+      <p>
+        To make the counter visit quick, bring books clean and readable, and leave
+        out the categories most shops pass on &mdash; textbooks, encyclopedias,
+        magazines, and anything water- or smoke-damaged. Recent, in-print fiction
+        and popular nonfiction are the easiest yes. Not sure a shop trades at all?
+        Our rundown on{" "}
+        <Link href="/reading-room/do-bookstores-buy-used-books">
+          whether bookstores buy used books
+        </Link>{" "}
+        covers what to expect before you go.
+      </p>
 
       <h2>Donate them</h2>
       <p>
@@ -56,7 +74,12 @@ export default function Body() {
         sales and accept gently used donations to raise funds. Schools,
         senior centers, shelters, and little free libraries around the metro are
         usually glad to take books in good condition too. Call ahead — most have
-        guidelines about what they can use.
+        guidelines about what they can use. For a county-specific list of drop-off
+        spots, see{" "}
+        <Link href="/reading-room/where-to-sell-or-donate-books-clackamas-county">
+          where to sell or donate books in Clackamas County
+        </Link>
+        .
       </p>
 
       <h2>Rehome the special ones</h2>

@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Used books cost less, tread lighter on the planet, and turn up treasures you can't get new. Here's why a used bookstore beats the retail shelf.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Local guide", "Reading life"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -36,6 +37,17 @@ export default function Body() {
         hardcover can fill a whole bag. That math is freeing: you can take
         chances on authors you&rsquo;ve never tried, follow a whim down a new
         genre, and never feel like a gamble cost too much.
+      </p>
+      <p>
+        The savings compound if you trade. Most used shops, ours included, take
+        the books you&rsquo;ve finished for store credit toward your next stack,
+        so a single collection can quietly fund months of reading. Over a year
+        that turns book-buying from a steady expense into something closer to a
+        swap. If you want the mechanics, see{" "}
+        <Link href="/reading-room/how-book-trade-in-credit-works">how trade-in credit works</Link>{" "}
+        and whether to take{" "}
+        <Link href="/reading-room/cash-for-books-vs-store-credit">cash or store credit</Link>{" "}
+        for the books you bring in.
       </p>
 
       <h2>It&rsquo;s a lighter footprint</h2>
@@ -83,8 +95,9 @@ export default function Body() {
         shopping feels like at <strong>To Be Read</strong> in Milwaukie. Browse
         our <Link href="/shop">shelves online</Link>, plan a{" "}
         <Link href="/visit">visit</Link> (free parking out front), and bring the
-        books you&rsquo;ve finished &mdash; trade them for store credit and the
-        savings compound. Want the bigger picture first? Read{" "}
+        books you&rsquo;ve finished to{" "}
+        <Link href="/trade">trade them for store credit</Link> &mdash; the savings
+        compound. Want the bigger picture first? Read{" "}
         <Link href="/reading-room/are-used-bookstores-worth-it">are used bookstores worth it</Link>{" "}
         and our case for the{" "}
         <Link href="/reading-room/best-used-bookstore-portland-area">best used bookstore in the Portland area</Link>.
