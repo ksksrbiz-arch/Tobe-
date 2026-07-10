@@ -1591,6 +1591,61 @@ async function buildScene(
     }
   };
 
+  // A living water surface: a ringed disc whose vertices roll with two crossed
+  // sine waves, plus drifting sun-glints. Replaces the static "glass disc" look
+  // of the lagoon tops. Returns the mesh so callers can position it.
+  const livingWater = (
+    grp: THREE.Group,
+    anims: ((t: number) => void)[],
+    radius: number,
+    color: number,
+    y: number,
+    opacity = 1,
+  ) => {
+    // RingGeometry with a near-zero inner radius gives a disc with several
+    // concentric vertex rings (CircleGeometry has only the rim ring — nothing
+    // in the interior to displace).
+    const geo = g(new T.RingGeometry(radius * 0.02, radius, 28, 6));
+    geo.rotateX(-Math.PI / 2);
+    const base = Float32Array.from(geo.attributes.position.array);
+    const mat = track(
+      new T.MeshLambertMaterial({ color, transparent: opacity < 1, opacity, flatShading: true }),
+    );
+    const surf = new T.Mesh(geo, mat);
+    surf.position.y = y;
+    surf.receiveShadow = true;
+    grp.add(surf);
+    // Sun-glints: tiny additive sparkles that drift and shimmer on the surface.
+    const glints: THREE.Sprite[] = [];
+    for (let i = 0; i < 5; i++) {
+      const gl = spriteOf(softDot, 0.016, 0.5, true);
+      (gl.material as THREE.SpriteMaterial).color.setHex(0xeafaff);
+      grp.add(gl);
+      glints.push(gl);
+    }
+    anims.push((t) => {
+      const pos = geo.attributes.position;
+      for (let i = 0; i < pos.count; i++) {
+        const x = base[i * 3];
+        const z = base[i * 3 + 2];
+        const rr = Math.sqrt(x * x + z * z) / radius; // 0 centre → 1 rim
+        // Two crossed travelling waves; damped to zero at the rim so the
+        // water never lifts off the island's edge.
+        const damp = 1 - rr * rr;
+        pos.setY(i, (Math.sin(x * 26 + t * 1.7) + Math.sin(z * 22 - t * 1.3)) * 0.004 * damp);
+      }
+      pos.needsUpdate = true;
+      geo.computeVertexNormals();
+      glints.forEach((gl, i) => {
+        const a = t * 0.25 + i * 1.9;
+        const r = radius * (0.25 + ((i * 7) % 4) * 0.15);
+        gl.position.set(Math.cos(a) * r, y + 0.012, Math.sin(a) * r * 0.8);
+        (gl.material as THREE.SpriteMaterial).opacity = 0.2 + (Math.sin(t * 3 + i * 2.2) + 1) * 0.2;
+      });
+    });
+    return surf;
+  };
+
   const buildWorld = (key: WorldKey): World => {
     const group = new T.Group();
     const anims: ((t: number) => void)[] = [];
@@ -1737,6 +1792,16 @@ async function buildScene(
             shoulders.push(sh);
             dragon.add(sh);
           }
+          // Every few seconds the dragon huffs a little plume of fire: three
+          // glow puffs stream from its snout, swelling and fading as they fall
+          // behind. Parented to the dragon so they travel with the flight.
+          const puffs: THREE.Sprite[] = [];
+          for (let i = 0; i < 3; i++) {
+            const puff = spriteOf(glowTex, 0.05, 0, true);
+            (puff.material as THREE.SpriteMaterial).color.setHex(i === 0 ? 0xffe08a : 0xff9e4a);
+            dragon.add(puff);
+            puffs.push(puff);
+          }
           group.add(dragon);
           anims.push((t) => {
             const a = t * 0.4;
@@ -1754,6 +1819,15 @@ async function buildScene(
             for (let i = 0; i < segs.length; i++) {
               segs[i].position.y = Math.sin(t * 5 - i * 0.7) * 0.006 * (i / 3 + 0.4);
             }
+            // Fire huff: active for the first quarter of each ~4.2s cycle.
+            const cyc = (t * 0.24) % 1;
+            puffs.forEach((puff, i) => {
+              const k = Math.max(0, Math.min(1, (cyc - i * 0.05) / 0.22));
+              const on = cyc < 0.3;
+              puff.position.set(0.075 + k * 0.06, 0.006 - k * 0.01, 0);
+              puff.scale.setScalar(0.02 + k * 0.05);
+              (puff.material as THREE.SpriteMaterial).opacity = on ? Math.sin(k * Math.PI) * 0.8 : 0;
+            });
           });
         }
         break;
@@ -1878,8 +1952,11 @@ async function buildScene(
       }
       case "pirate": {
         group.add(islandBase(0x1fb6c9, "water", anims));
+        // A thin rim wall for the lagoon's edge, topped by a living, rolling
+        // water surface with drifting sun-glints (was a static glass disc).
         const sea = mesh(g(new T.CylinderGeometry(0.35, 0.35, 0.02, 24)), lam(0x0e7c9e), 0, 0.035, 0);
         group.add(sea);
+        livingWater(group, anims, 0.348, 0x129cb8, 0.047);
         // Real Kenney models (Pirate Kit, CC0) in place of the hand-built hull
         // + flat sail — a fully rigged ship reads far better than primitives.
         const ship = placeModel("ship", -0.05, 0.08, 0.05, 0.022, Math.PI);
@@ -2010,6 +2087,37 @@ async function buildScene(
         anims.push((t) => ((doorGlow.material as THREE.SpriteMaterial).opacity = 0.28 + Math.sin(t * 1.4) * 0.14));
         // Steps leading up to the doorway.
         group.add(mesh(g(new T.BoxGeometry(0.08, 0.02, 0.03)), lam(0x9a7d54), 0, 0.03, 0.17));
+        // A toucan perched on the temple's second tier — black body, white
+        // chest, oversized two-tone beak — tilting its head as it watches.
+        {
+          const toucan = new T.Group();
+          const tbody = mesh(g(new T.SphereGeometry(0.02, 12, 10)), lam(0x22242e), 0, 0, 0);
+          tbody.scale.set(0.9, 1.1, 0.85);
+          const chest = mesh(g(new T.SphereGeometry(0.014, 10, 8)), lam(0xfdf3d0), 0, -0.002, 0.011);
+          chest.scale.set(0.8, 0.95, 0.55);
+          const thead = new T.Group();
+          thead.add(mesh(g(new T.SphereGeometry(0.012, 10, 8)), lam(0x22242e), 0, 0, 0));
+          const beakTop = mesh(g(new T.ConeGeometry(0.006, 0.03, 6)), lam(0xff9e2e), 0, 0.001, 0.02);
+          beakTop.rotation.x = Math.PI / 2;
+          const beakTip = mesh(g(new T.SphereGeometry(0.0045, 6, 5)), lam(0xe0483a), 0, 0.001, 0.034);
+          thead.add(beakTop, beakTip);
+          for (const s of [-1, 1] as const) {
+            thead.add(mesh(g(new T.SphereGeometry(0.0035, 6, 5)), lam(0xffffff), s * 0.006, 0.004, 0.009));
+            thead.add(mesh(g(new T.SphereGeometry(0.002, 6, 5)), lam(0x241a2a), s * 0.006, 0.004, 0.011));
+          }
+          thead.position.set(0, 0.018, 0.004);
+          const ttail = mesh(g(new T.BoxGeometry(0.006, 0.004, 0.022)), lam(0x22242e), 0, -0.006, -0.02);
+          ttail.rotation.x = -0.5;
+          toucan.add(tbody, chest, thead, ttail);
+          toucan.position.set(0.1, 0.215, 0.06);
+          toucan.rotation.y = 0.8;
+          group.add(toucan);
+          anims.push((t) => {
+            toucan.position.y = 0.215 + Math.sin(t * 2.2) * 0.003;
+            thead.rotation.z = Math.sin(t * 0.9) > 0.6 ? 0.35 : 0; // curious head-tilt
+            ttail.rotation.x = -0.5 + Math.sin(t * 3) * 0.1;
+          });
+        }
         // A glowing capstone gem on the summit that pulses.
         const gem = mesh(g(new T.OctahedronGeometry(0.028)), track(new T.MeshLambertMaterial({ color: 0x62e0d0, emissive: 0x2aa89a })), 0, 0.3, 0);
         group.add(gem);
@@ -2118,12 +2226,15 @@ async function buildScene(
       }
       case "reef": {
         group.add(islandBase(0xead9a0, "sand", anims));
+        // Translucent lagoon wall + a living, rolling surface above the reef
+        // (was a static glass disc).
         const water = new T.Mesh(
           g(new T.CylinderGeometry(0.35, 0.35, 0.02, 24)),
           track(new T.MeshLambertMaterial({ color: 0x1fb6c9, transparent: true, opacity: 0.65 })),
         );
         water.position.y = 0.06;
         group.add(water);
+        livingWater(group, anims, 0.348, 0x25b6cd, 0.072, 0.7);
         // Branching clumps read as coral; plain solid cones read as buoys.
         for (const [x, z, c, h] of [[-0.2, 0.1, 0xff6f91, 0.1], [0.16, -0.14, 0x7b61ff, 0.13], [0.05, 0.2, 0xffb85c, 0.08]] as const)
           group.add(coralClump(c, h / 0.05, x, 0, z));
@@ -2211,6 +2322,26 @@ async function buildScene(
       }
       case "aurora": {
         group.add(islandBase(0xe8f1fa, "snow", anims));
+        // Gentle snowfall: flakes drift down over the island on wandering
+        // paths, fading in at the top of their fall and out near the ground.
+        for (let i = 0; i < 10; i++) {
+          const flake = spriteOf(softDot, 0.012 + ((i * 3) % 4) * 0.004, 0, true);
+          (flake.material as THREE.SpriteMaterial).color.setHex(0xf6fbff);
+          group.add(flake);
+          const fx = ((i * 37) % 10) / 10 - 0.5; // deterministic scatter
+          const fz = ((i * 53) % 10) / 10 - 0.5;
+          const spd = 0.1 + ((i * 7) % 4) * 0.03;
+          const off = ((i * 29) % 10) / 10;
+          anims.push((t) => {
+            const life = (t * spd + off) % 1;
+            flake.position.set(
+              fx * 0.6 + Math.sin(t * 0.8 + i) * 0.04,
+              0.5 - life * 0.48,
+              fz * 0.5 + Math.cos(t * 0.6 + i * 2) * 0.03,
+            );
+            (flake.material as THREE.SpriteMaterial).opacity = Math.sin(life * Math.PI) * 0.75;
+          });
+        }
         // A round little penguin waddle-bobs by the campfire — white belly,
         // orange beak, no ears.
         critter(group, anims, 0x2b2f3a, { x: -0.17, z: 0.17, ears: "none", belly: 0xf3f7fb, beak: 0xffa42e, body: 0.045, hopH: 0.02, hopSpeed: 2.0, look: 0.6 });
@@ -2346,6 +2477,24 @@ async function buildScene(
         duneB.scale.set(1.3, 0.4, 1);
         group.add(duneA, duneB);
         group.add(mesh(g(new T.ConeGeometry(0.13, 0.22, 4)), lam(0xb0793f), 0.12, 0.13, -0.12));
+        // A tumbleweed rolls across the dunes, bouncing over the bumps, then
+        // loops around to cross again.
+        {
+          const weedGeo = chunkRock(0.024);
+          const weed = new T.Mesh(
+            weedGeo,
+            track(new T.MeshLambertMaterial({ color: 0xb08d54, flatShading: true, wireframe: true })),
+          );
+          group.add(weed);
+          anims.push((t) => {
+            const life = (t * 0.14) % 1;
+            const x = -0.42 + life * 0.84;
+            weed.position.set(x, 0.055 + Math.abs(Math.sin(life * Math.PI * 6)) * 0.02, 0.16 + Math.sin(life * Math.PI) * 0.06);
+            weed.rotation.z = -life * 14; // rolling with travel
+            weed.rotation.x = Math.sin(t * 2) * 0.2;
+            weed.visible = life > 0.04 && life < 0.96; // pop at the rims, not mid-air
+          });
+        }
         // A big-eared fennec fox perks up on the dunes.
         critter(group, anims, 0xe6b877, { x: 0.02, z: 0.2, ears: "tall", earColor: 0xf2d7a8, belly: 0xfbf0dc, body: 0.042, hopH: 0.035, hopSpeed: 2.6, look: -0.3 });
         // A little saguaro cactus with a pink bloom on top.
