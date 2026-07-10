@@ -68,7 +68,7 @@ export default function Body() {
           cash for books vs. store credit
         </Link>
         , or the step-by-step in{" "}
-        <Link href="/reading-room/how-trade-in-credit-works">how our trade-in credit works</Link>.
+        <Link href="/reading-room/how-book-trade-in-credit-works">how our trade-in credit works</Link>.
       </p>
 
       <h2>What about &ldquo;valuable&rdquo; old books?</h2>

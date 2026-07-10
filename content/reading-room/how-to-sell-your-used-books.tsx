@@ -41,7 +41,7 @@ export default function Body() {
         full tradeoff in{" "}
         <Link href="/reading-room/cash-for-books-vs-store-credit">cash for books vs. store credit</Link>,
         and you can see the exact mechanics in{" "}
-        <Link href="/reading-room/how-trade-in-credit-works">how our trade-in credit works</Link>.
+        <Link href="/reading-room/how-book-trade-in-credit-works">how our trade-in credit works</Link>.
       </p>
 
       <h2>What stores look for</h2>

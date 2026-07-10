@@ -37,7 +37,7 @@ export default function Body() {
         old reads into <strong>store credit</strong> toward new ones.{" "}
         <strong>To Be Read</strong> in Milwaukie takes trades in person during
         open hours, no appointment needed &mdash;{" "}
-        <Link href="/reading-room/how-trade-in-credit-works">here&rsquo;s exactly how our trade-in credit works</Link>,
+        <Link href="/reading-room/how-book-trade-in-credit-works">here&rsquo;s exactly how our trade-in credit works</Link>,
         and{" "}
         <Link href="/reading-room/what-books-can-you-sell-to-a-used-bookstore">what we tend to look for</Link>.
         Clean, in-demand fiction, popular series, cookbooks, and well-kept

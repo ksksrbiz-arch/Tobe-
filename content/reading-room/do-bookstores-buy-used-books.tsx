@@ -64,7 +64,7 @@ export default function Body() {
         We lay the two side by side in{" "}
         <Link href="/reading-room/cash-for-books-vs-store-credit">cash for books vs. store credit</Link>,
         and walk through the mechanics in{" "}
-        <Link href="/reading-room/how-trade-in-credit-works">how our trade-in credit works</Link>.
+        <Link href="/reading-room/how-book-trade-in-credit-works">how our trade-in credit works</Link>.
       </p>
 
       <h2>Why bring books to a used bookstore at all?</h2>
