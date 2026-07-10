@@ -1392,26 +1392,201 @@ async function buildScene(
     opts: { count?: number; radius?: number; y?: number; speed?: number; color?: number } = {},
   ) => {
     const { count = 3, radius = 0.5, y = 0.6, speed = 0.5, color = 0x4a3a55 } = opts;
-    const wingGeo = g(new T.BoxGeometry(0.055, 0.006, 0.02));
+    // Wing hinged at its inner edge (x=0) so it flaps from the shoulder, not
+    // about its own centre; a slim tapered body so each bird reads as a bird
+    // rather than a bare flapping "V".
+    const wingGeo = g(new T.BoxGeometry(0.05, 0.005, 0.02));
+    wingGeo.translate(0.025, 0, 0);
+    const bodyGeo = g(new T.BoxGeometry(0.016, 0.012, 0.05));
     const birdMat = lam(color);
     for (let i = 0; i < count; i++) {
       const bird = new T.Group();
+      const body = new T.Mesh(bodyGeo, birdMat);
+      const lp = new T.Group();
+      const rp = new T.Group();
+      lp.position.x = -0.007;
+      rp.position.x = 0.007;
       const wl = new T.Mesh(wingGeo, birdMat);
+      wl.scale.x = -1; // mirror the shared wing to the left side
       const wr = new T.Mesh(wingGeo, birdMat);
-      wl.position.x = -0.03;
-      wr.position.x = 0.03;
-      bird.add(wl, wr);
+      lp.add(wl);
+      rp.add(wr);
+      bird.add(body, lp, rp);
       grp.add(bird);
       const ph = (i / count) * Math.PI * 2;
       const rad = radius * (0.8 + Math.random() * 0.35);
       const yy = y + (Math.random() - 0.5) * 0.2;
+      const flapSpeed = 10 + Math.random() * 4;
       anims.push((t) => {
         const a = t * speed + ph;
         bird.position.set(Math.cos(a) * rad, yy + Math.sin(t * 1.3 + ph) * 0.05, Math.sin(a) * rad * 0.75);
         bird.rotation.y = -a + Math.PI / 2;
-        const flap = 0.5 + Math.sin(t * 12 + ph) * 0.6;
-        wl.rotation.z = flap;
-        wr.rotation.z = -flap;
+        // Bank inward into the circling turn, with a little pitch on the bob.
+        bird.rotation.z = -0.16 + Math.sin(t * 1.3 + ph) * 0.06;
+        bird.rotation.x = Math.cos(t * 1.3 + ph) * 0.07;
+        // A powered down-stroke (fast, deep) and a lighter recovery up-stroke.
+        const s = Math.sin(t * flapSpeed + ph);
+        const flap = (s > 0 ? s * 0.9 : s * 0.5) + 0.12;
+        lp.rotation.z = flap;
+        rp.rotation.z = -flap;
+      });
+    }
+  };
+
+  // A palm-sized round critter with a face — the single biggest "cute" win:
+  // big glossy forward eyes, a nose (or beak), optional ears/antennae and a
+  // belly patch, plus a bouncy idle hop with squash-and-stretch so it reads as
+  // a living character where a bare primitive reads as a sketch. Adds itself to
+  // `grp` and its hop to `anims` (which only ticks for the visible world).
+  type CritterOpts = {
+    x?: number;
+    z?: number;
+    groundY?: number;
+    body?: number;
+    ears?: "round" | "tall" | "none";
+    earColor?: number;
+    belly?: number;
+    beak?: number;
+    hopH?: number;
+    hopSpeed?: number;
+    phase?: number;
+    look?: number;
+  };
+  const critter = (grp: THREE.Group, anims: ((t: number) => void)[], color: number, o: CritterOpts = {}) => {
+    const {
+      x = 0,
+      z = 0,
+      groundY = 0.037,
+      body = 0.05,
+      ears = "round",
+      earColor = color,
+      belly = 0,
+      beak = 0,
+      hopH = 0.03,
+      hopSpeed = 2.4,
+      phase = Math.random() * Math.PI * 2,
+      look = 0,
+    } = o;
+    const c = new T.Group();
+    const bodyMesh = mesh(g(new T.SphereGeometry(body, 16, 12)), lam(color), 0, body * 0.9, 0);
+    bodyMesh.scale.set(1, 1.06, 0.95);
+    c.add(bodyMesh);
+    if (belly) {
+      const bl = mesh(g(new T.SphereGeometry(body * 0.72, 12, 10)), lam(belly), 0, body * 0.82, body * 0.42);
+      bl.scale.set(0.82, 0.94, 0.5);
+      c.add(bl);
+    }
+    // Eyes: white sclera + dark pupil + a tiny catch-light, forward-facing and
+    // set close together (close-set eyes read as "cute", wide-set as "creature").
+    const eyeR = body * 0.24;
+    for (const s of [-1, 1] as const) {
+      const ex = s * body * 0.32;
+      c.add(mesh(g(new T.SphereGeometry(eyeR, 10, 8)), lam(0xffffff), ex, body * 1.18, body * 0.72));
+      c.add(mesh(g(new T.SphereGeometry(eyeR * 0.55, 8, 6)), lam(0x241a2a), ex, body * 1.18, body * 0.72 + eyeR * 0.55));
+      const spark = mesh(g(new T.SphereGeometry(eyeR * 0.2, 6, 5)), lam(0xffffff), ex + eyeR * 0.2, body * 1.24, body * 0.72 + eyeR * 0.7);
+      c.add(spark);
+    }
+    if (beak) {
+      const bk = mesh(g(new T.ConeGeometry(body * 0.16, body * 0.3, 6)), lam(beak), 0, body * 1.02, body * 0.86);
+      bk.rotation.x = Math.PI / 2;
+      c.add(bk);
+    } else {
+      c.add(mesh(g(new T.SphereGeometry(body * 0.1, 8, 6)), lam(0x3a2630), 0, body * 1.02, body * 0.88));
+    }
+    if (ears === "round") {
+      for (const s of [-1, 1] as const) {
+        const e = mesh(g(new T.SphereGeometry(body * 0.3, 10, 8)), lam(earColor), s * body * 0.52, body * 1.52, 0);
+        e.scale.set(0.7, 1, 0.55);
+        c.add(e);
+      }
+    } else if (ears === "tall") {
+      for (const s of [-1, 1] as const) {
+        const e = mesh(g(new T.ConeGeometry(body * 0.16, body * 0.9, 7)), lam(earColor), s * body * 0.34, body * 1.9, 0);
+        e.rotation.z = s * 0.18;
+        e.scale.z = 0.6;
+        c.add(e);
+      }
+    }
+    c.position.set(x, groundY, z);
+    grp.add(c);
+    anims.push((t) => {
+      const s = Math.sin(t * hopSpeed + phase);
+      const hop = Math.max(0, s);
+      c.position.y = groundY + hop * hopH;
+      // Stretch on the way up, squash on landing — volume-preserving so it reads
+      // as a springy little body, not a scaling blob.
+      const stretch = 1 + Math.cos(t * hopSpeed + phase) * 0.07;
+      c.scale.set(1 / Math.sqrt(stretch), stretch, 1 / Math.sqrt(stretch));
+      c.rotation.y = look + Math.sin(t * 0.5 + phase) * 0.35;
+    });
+    return c;
+  };
+
+  // Scatters little 3D flowers and spotted toadstools across a grass island's
+  // top — the cheap detail that turns a flat green disc into a storybook meadow.
+  const FLOWER_COLORS = [0xff6f91, 0xffd23f, 0xa06bff, 0xff9e5e, 0xff5e8a, 0x7ad0ff];
+  const meadowFlora = (grp: THREE.Group, count = 9) => {
+    const stemMat = lam(0x4e9e33);
+    for (let i = 0; i < count; i++) {
+      const a = (i / count) * Math.PI * 2 + (i % 3);
+      const r = 0.1 + ((i * 7) % 5) * 0.035;
+      const x = Math.cos(a) * r;
+      const z = Math.sin(a) * r * 0.85;
+      if (i % 3 === 0) {
+        // A spotted toadstool.
+        grp.add(mesh(g(new T.CylinderGeometry(0.006, 0.008, 0.028, 6)), lam(0xf3ead6), x, 0.05, z));
+        const cap = mesh(g(new T.SphereGeometry(0.016, 10, 8)), lam(0xe0483a), x, 0.066, z);
+        cap.scale.y = 0.62;
+        grp.add(cap);
+        grp.add(mesh(g(new T.SphereGeometry(0.003, 6, 5)), lam(0xfff2d6), x + 0.006, 0.072, z));
+      } else {
+        // A little flower: stem, petal ring, gold centre.
+        const h = 0.03 + ((i * 3) % 4) * 0.008;
+        grp.add(mesh(g(new T.CylinderGeometry(0.0035, 0.0035, h, 5)), stemMat, x, 0.037 + h / 2, z));
+        const petal = mesh(g(new T.SphereGeometry(0.012, 8, 6)), lam(FLOWER_COLORS[i % FLOWER_COLORS.length]), x, 0.037 + h, z);
+        petal.scale.y = 0.55;
+        grp.add(petal);
+        grp.add(mesh(g(new T.SphereGeometry(0.005, 6, 5)), lam(0xffe08a), x, 0.037 + h + 0.003, z));
+      }
+    }
+  };
+
+  // A few colourful butterflies wander over an island on looping paths, wings
+  // flapping — the cheapest bit of delightful ambient motion for a meadow.
+  const addButterflies = (
+    grp: THREE.Group,
+    anims: ((t: number) => void)[],
+    opts: { count?: number; y?: number; rad?: number; colors?: number[] } = {},
+  ) => {
+    const { count = 2, y = 0.14, rad = 0.22, colors = [0xff8ac4, 0xffd23f, 0x8fd0ff, 0xff9e5e] } = opts;
+    const wingGeo = g(new T.CircleGeometry(0.018, 10));
+    wingGeo.translate(0.016, 0, 0); // hinge at the inner edge
+    for (let i = 0; i < count; i++) {
+      const bfly = new T.Group();
+      const wingMat = track(new T.MeshLambertMaterial({ color: colors[i % colors.length], side: T.DoubleSide, flatShading: true }));
+      const lp = new T.Group();
+      const rp = new T.Group();
+      const lw = new T.Mesh(wingGeo, wingMat);
+      lw.scale.x = -1;
+      const rw = new T.Mesh(wingGeo, wingMat);
+      lp.add(lw);
+      rp.add(rw);
+      const bodyB = mesh(g(new T.CylinderGeometry(0.0018, 0.0018, 0.022, 5)), lam(0x352230));
+      bodyB.rotation.x = Math.PI / 2;
+      bfly.add(bodyB, lp, rp);
+      grp.add(bfly);
+      const ph = i * 2.3;
+      const r = rad * (0.7 + ((i * 3) % 4) * 0.12);
+      const spd = 0.5 + ((i * 7) % 3) * 0.12;
+      anims.push((t) => {
+        const a = t * spd + ph;
+        bfly.position.set(Math.cos(a) * r, y + Math.sin(t * 1.6 + ph) * 0.05 + Math.sin(t * 0.7) * 0.03, Math.sin(a * 1.3) * r * 0.8);
+        bfly.rotation.y = -a + Math.PI / 2;
+        bfly.rotation.z = Math.sin(t * 1.6 + ph) * 0.25;
+        // Wings meet at the top of the up-stroke and open flat at the bottom.
+        const flap = 0.15 + (Math.sin(t * 17 + ph) * 0.5 + 0.5) * 1.15;
+        lp.rotation.z = flap;
+        rp.rotation.z = -flap;
       });
     }
   };
@@ -1433,6 +1608,25 @@ async function buildScene(
         const peak2 = placeModel("rockB", 0.24, 0.047, -0.08, 0.3, 2.6);
         const peak3 = placeModel("rockC", -0.08, 0.044, 0.24, 0.2, 4.1);
         for (const peak of [peak1, peak2, peak3]) if (peak) group.add(peak);
+        // A pudgy baby dragon guards the keep — gold horns, a jewel belly, and
+        // little wings that flutter. Built on the critter base, then given wings
+        // and a tail.
+        const baby = critter(group, anims, 0x8b2e90, { x: 0.17, z: 0.24, ears: "tall", earColor: 0xf1bb1a, belly: 0xf6c452, body: 0.042, hopH: 0.028, hopSpeed: 2.3, look: -0.5 });
+        const wingGeoD = g(new T.ConeGeometry(0.03, 0.05, 3));
+        const wingMatD = lam(0xb85fbf);
+        for (const s of [-1, 1] as const) {
+          const wing = new T.Mesh(wingGeoD, wingMatD);
+          wing.scale.set(1, 1, 0.32);
+          wing.position.set(s * 0.045, 0.05, -0.022);
+          wing.rotation.x = Math.PI / 2;
+          baby.add(wing);
+          anims.push((t) => (wing.rotation.z = s * (0.5 + Math.sin(t * 9) * 0.4)));
+        }
+        const babyTail = mesh(g(new T.ConeGeometry(0.012, 0.055, 6)), lam(0x8b2e90), 0, 0.03, -0.05);
+        babyTail.rotation.x = -Math.PI / 2.3;
+        baby.add(babyTail);
+        meadowFlora(group, 6);
+        addButterflies(group, anims, { count: 2, y: 0.22, rad: 0.26, colors: [0xff8ac4, 0xffd23f] });
         // A real Kenney stone keep (Castle Kit, CC0) assembled from base + mid
         // + roof, standing proud at the island's center — replaces the plain
         // cylinder tower.
@@ -1488,10 +1682,43 @@ async function buildScene(
       }
       case "rocket": {
         group.add(islandBase(0x241a38, "rock", anims));
-        const planet = mesh(g(new T.SphereGeometry(0.15, 28, 20)), lam(0xf2a65a), 0, 0.22, 0);
+        // A friendly banded gas-giant instead of a flat orange ball: painted
+        // warm cloud bands with a little storm-spot, a soft glow halo, and a
+        // slow spin so the bands drift.
+        const planetTex = makeTex(
+          96,
+          96,
+          (ctx, w, h) => {
+            const cols = ["#ffe2b6", "#f7ab63", "#ef8f4c", "#ffd390", "#e8814f", "#f9bd78", "#f29a5c"];
+            let y = 0;
+            let i = 0;
+            while (y < h) {
+              const bh = h * (0.08 + ((i * 37) % 7) / 100);
+              ctx.fillStyle = cols[i % cols.length];
+              ctx.fillRect(0, y, w, bh + 1);
+              y += bh;
+              i++;
+            }
+            ctx.fillStyle = "rgba(198,74,40,0.55)";
+            ctx.beginPath();
+            ctx.ellipse(w * 0.62, h * 0.56, w * 0.11, h * 0.06, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = "rgba(255,240,210,0.5)";
+            ctx.beginPath();
+            ctx.ellipse(w * 0.6, h * 0.54, w * 0.05, h * 0.028, 0, 0, Math.PI * 2);
+            ctx.fill();
+          },
+          2,
+        );
+        const planet = mesh(g(new T.SphereGeometry(0.15, 32, 24)), track(new T.MeshLambertMaterial({ map: planetTex })), 0, 0.22, 0);
+        planet.rotation.z = 0.28;
         const ring = mesh(g(new T.TorusGeometry(0.24, 0.02, 16, 56)), lam(0xffd18a), 0, 0.22, 0);
         ring.rotation.x = Math.PI / 2.4;
-        group.add(planet, ring);
+        const planetGlow = spriteOf(glowTex, 0.62, 0.42, true);
+        planetGlow.position.set(0, 0.22, -0.02);
+        (planetGlow.material as THREE.SpriteMaterial).color.setHex(0xffcf8a);
+        group.add(planet, ring, planetGlow);
+        anims.push((t) => (planet.rotation.y = t * 0.22));
         // A real Kenney spacecraft (Space Kit, CC0) orbiting the planet, in
         // place of the hand-built cone-and-cylinder rocket.
         const orbiter = new T.Group();
@@ -1529,20 +1756,42 @@ async function buildScene(
         moonOrbit.add(moon);
         group.add(moonOrbit);
         anims.push((t) => (moonOrbit.rotation.y = -t * 0.8));
+        // A denser scatter of stars filling the sky dome, in varied sizes so it
+        // reads as a real starfield rather than six lonely points.
         const starSprites: THREE.Sprite[] = [];
-        for (let i = 0; i < 6; i++) {
-          const s = spriteOf(starTex, 0.05, 0.9, true);
-          const a = (i / 6) * Math.PI * 2;
-          s.position.set(Math.cos(a) * 0.42, 0.28 + Math.sin(i * 2.1) * 0.2, Math.sin(a) * 0.4);
+        for (let i = 0; i < 16; i++) {
+          const sz = 0.03 + ((i * 13) % 5) * 0.012;
+          const s = spriteOf(starTex, sz, 0.9, true);
+          const a = (i / 16) * Math.PI * 2 * 1.3;
+          const rad = 0.34 + ((i * 7) % 5) * 0.045;
+          s.position.set(Math.cos(a) * rad, 0.16 + ((i * 5) % 9) * 0.055, Math.sin(a) * rad * 0.9 - 0.05);
           group.add(s);
           starSprites.push(s);
         }
         // Twinkle: each star pulses on its own offset.
         anims.push((t) => {
           starSprites.forEach((s, i) => {
-            (s.material as THREE.SpriteMaterial).opacity = 0.5 + (Math.sin(t * 3 + i * 1.7) + 1) * 0.25;
+            (s.material as THREE.SpriteMaterial).opacity = 0.45 + (Math.sin(t * 3 + i * 1.7) + 1) * 0.27;
           });
         });
+        // Shooting stars: a couple of streaks that flash diagonally across the
+        // sky on staggered loops.
+        for (let k = 0; k < 2; k++) {
+          const streak = spriteOf(starTex, 0.14, 0, true);
+          streak.scale.set(0.17, 0.028, 1);
+          (streak.material as THREE.SpriteMaterial).color.setHex(0xfff2c8);
+          group.add(streak);
+          const off = k * 0.53;
+          const yTop = 0.6 - k * 0.12;
+          anims.push((t) => {
+            const life = (t * 0.32 + off) % 1;
+            streak.position.set(-0.42 + life * 0.95, yTop - life * 0.4, -0.18 + life * 0.12);
+            (streak.material as THREE.SpriteMaterial).opacity = life < 0.22 ? Math.sin((life / 0.22) * Math.PI) * 0.95 : 0;
+          });
+        }
+        // A wide-eyed little green alien sits on the asteroid, antennae twitching
+        // as it gazes up at the planet.
+        critter(group, anims, 0x8fe07a, { x: -0.19, z: 0.2, groundY: 0.02, ears: "tall", earColor: 0x6fc95c, belly: 0xd6f4c2, body: 0.038, hopH: 0.018, hopSpeed: 1.7, look: 0.5 });
         // Glowing crystal formations jutting from the asteroid rim — the same
         // faceted clusters as Dragon's Peak, reading here as crystal asteroids.
         crystalFormation(group, anims, "crystalCluster", 0x8fd8ff, 0.22, 0.02, 0.17, 0.12, -0.6);
@@ -1568,6 +1817,47 @@ async function buildScene(
         const palm = placeModel("palm", 0.22, 0.11, -0.14, 0.038, 0.6);
         group.add(isle);
         if (palm) group.add(palm);
+        // A bright parrot perched in the palm, bobbing and ruffling a wing.
+        {
+          const parrot = new T.Group();
+          parrot.add(mesh(g(new T.SphereGeometry(0.02, 12, 10)), lam(0xe4483a), 0, 0, 0));
+          parrot.add(mesh(g(new T.SphereGeometry(0.013, 10, 8)), lam(0xe4483a), 0, 0.022, 0.006));
+          const beak = mesh(g(new T.ConeGeometry(0.006, 0.014, 6)), lam(0xffc02e), 0, 0.02, 0.02);
+          beak.rotation.x = Math.PI / 2.2;
+          parrot.add(beak);
+          for (const s of [-1, 1] as const) {
+            parrot.add(mesh(g(new T.SphereGeometry(0.004, 6, 5)), lam(0xffffff), s * 0.006, 0.026, 0.013));
+            parrot.add(mesh(g(new T.SphereGeometry(0.0022, 6, 5)), lam(0x241a2a), s * 0.006, 0.026, 0.016));
+          }
+          const wing = mesh(g(new T.SphereGeometry(0.014, 8, 6)), lam(0x2f7ad0), -0.014, 0.004, -0.004);
+          wing.scale.set(0.55, 1, 1.2);
+          parrot.add(wing);
+          const tail = mesh(g(new T.ConeGeometry(0.008, 0.05, 5)), lam(0x2f9e6a), 0, -0.008, -0.03);
+          tail.rotation.x = -Math.PI / 2.2;
+          parrot.add(tail);
+          parrot.position.set(0.22, 0.2, -0.13);
+          parrot.rotation.y = 2.4;
+          group.add(parrot);
+          anims.push((t) => {
+            parrot.position.y = 0.2 + Math.sin(t * 2) * 0.006;
+            parrot.rotation.z = Math.sin(t * 0.8) * 0.08;
+            wing.rotation.z = Math.max(0, Math.sin(t * 3)) * 0.5;
+          });
+        }
+        // A half-buried treasure chest on the sand isle, its gold spilling a
+        // soft glimmer.
+        const chest = new T.Group();
+        chest.add(mesh(g(new T.BoxGeometry(0.06, 0.032, 0.04)), lam(0x7a4a2b), 0, 0.016, 0));
+        chest.add(mesh(g(new T.BoxGeometry(0.062, 0.018, 0.042)), lam(0x8a5533), 0, 0.04, 0));
+        chest.add(mesh(g(new T.BoxGeometry(0.064, 0.05, 0.008)), lam(0xf1bb1a), 0, 0.024, 0));
+        const chestGold = spriteOf(glowTex, 0.07, 0.8, true);
+        chestGold.position.set(0, 0.05, 0);
+        (chestGold.material as THREE.SpriteMaterial).color.setHex(0xffd75e);
+        chest.add(chestGold);
+        chest.position.set(0.19, 0.075, -0.02);
+        chest.rotation.y = -0.6;
+        group.add(chest);
+        anims.push((t) => ((chestGold.material as THREE.SpriteMaterial).opacity = 0.45 + Math.sin(t * 3) * 0.22));
         // A fish that arcs up out of the sea and dives back on a loop.
         const fish = new T.Group();
         const fishBody = mesh(g(new T.SphereGeometry(0.022, 10, 8)), lam(0x5aa9c9));
@@ -1575,6 +1865,10 @@ async function buildScene(
         const fishTail = mesh(g(new T.ConeGeometry(0.016, 0.026, 4)), lam(0x5aa9c9), -0.035, 0, 0);
         fishTail.rotation.z = Math.PI / 2;
         fish.add(fishBody, fishTail);
+        for (const zz of [0.011, -0.011]) {
+          fish.add(mesh(g(new T.SphereGeometry(0.006, 8, 6)), lam(0xffffff), 0.026, 0.006, zz));
+          fish.add(mesh(g(new T.SphereGeometry(0.003, 6, 5)), lam(0x241a2a), 0.03, 0.006, zz));
+        }
         group.add(fish);
         anims.push((t) => {
           const cyc = (t * 0.5) % 1; // 0..1 arc, then submerged pause
@@ -1599,6 +1893,10 @@ async function buildScene(
       }
       case "jungle": {
         group.add(islandBase(0x3fa34d, "grass", anims));
+        meadowFlora(group, 7);
+        addButterflies(group, anims, { count: 2, y: 0.2, rad: 0.24, colors: [0xffd23f, 0x7ad0ff] });
+        // A curious little jungle critter peeks out beside the temple steps.
+        critter(group, anims, 0xd98a3d, { x: 0.16, z: 0.22, ears: "round", earColor: 0x8a4f24, belly: 0xf4d8a8, body: 0.04, hopH: 0.045, hopSpeed: 3.2, look: -0.7 });
         // Stepped stone pyramid — now with recessed shading per tier and a
         // proper carved look rather than three plain tan boxes.
         const stoneCols = [0xa8895f, 0xb79b6e, 0xc4a878];
@@ -1650,6 +1948,10 @@ async function buildScene(
         group.add(islandBase(0x6fbf4a, "grass", anims));
         group.add(foliageClump(0x4e9e33, 0.09, -0.15, 0.05, 0.1));
         group.add(foliageClump(0x6fbf4a, 0.07, 0.18, 0.04, -0.1));
+        meadowFlora(group, 11);
+        addButterflies(group, anims, { count: 3, y: 0.16, rad: 0.24 });
+        // A little white bunny hops in the meadow, watching the balloon.
+        critter(group, anims, 0xfbf3e8, { x: 0.05, z: 0.2, ears: "tall", earColor: 0xf3c7d0, belly: 0xffffff, body: 0.04, hopH: 0.05, hopSpeed: 3.0, look: -0.4 });
         const bal = new T.Group();
         const envelope = mesh(g(new T.SphereGeometry(0.13, 28, 20)), lam(0xe8472b));
         envelope.scale.set(1, 1.15, 1);
@@ -1657,6 +1959,23 @@ async function buildScene(
         stripe.scale.set(0.4, 1.16, 1.01);
         const basket = mesh(g(new T.BoxGeometry(0.07, 0.05, 0.07)), lam(0x8b5a2b), 0, -0.21, 0);
         bal.add(envelope, stripe, basket);
+        // A little bear rides in the basket, peeking over the rim and waving.
+        const riderCol = 0xb5773f;
+        const riderHead = mesh(g(new T.SphereGeometry(0.026, 12, 10)), lam(riderCol), 0, -0.172, 0.006);
+        bal.add(riderHead);
+        for (const s of [-1, 1] as const) {
+          const ear = mesh(g(new T.SphereGeometry(0.011, 8, 6)), lam(riderCol), s * 0.02, -0.152, 0.006);
+          bal.add(ear);
+          bal.add(mesh(g(new T.SphereGeometry(0.006, 8, 6)), lam(0xffffff), s * 0.01, -0.17, 0.03));
+          bal.add(mesh(g(new T.SphereGeometry(0.0032, 6, 5)), lam(0x241a2a), s * 0.01, -0.17, 0.033));
+        }
+        bal.add(mesh(g(new T.SphereGeometry(0.009, 8, 6)), lam(0xe4cba3), 0, -0.178, 0.026));
+        const riderPaw = mesh(g(new T.SphereGeometry(0.01, 8, 6)), lam(riderCol), 0.03, -0.19, 0.03);
+        bal.add(riderPaw);
+        anims.push((t) => {
+          riderPaw.position.set(0.03, -0.17 + Math.abs(Math.sin(t * 5)) * 0.018, 0.03);
+          riderPaw.rotation.z = Math.sin(t * 10) * 0.5;
+        });
         bal.position.set(0, 0.42, 0);
         group.add(bal);
         spin(bal, 0.42, 0.045, 1.1);
@@ -1692,6 +2011,25 @@ async function buildScene(
         // Branching clumps read as coral; plain solid cones read as buoys.
         for (const [x, z, c, h] of [[-0.2, 0.1, 0xff6f91, 0.1], [0.16, -0.14, 0x7b61ff, 0.13], [0.05, 0.2, 0xffb85c, 0.08]] as const)
           group.add(coralClump(c, h / 0.05, x, 0, z));
+        // A little clownfish weaves through the coral, white-banded with a
+        // wide eye.
+        const clown = new T.Group();
+        const cbody = mesh(g(new T.SphereGeometry(0.02, 12, 10)), lam(0xff8a3c));
+        cbody.scale.set(1.5, 1, 0.7);
+        const cstripe = mesh(g(new T.SphereGeometry(0.0206, 12, 10)), lam(0xfdf3e6), 0.004, 0, 0);
+        cstripe.scale.set(0.26, 1.02, 0.72);
+        const ctail = mesh(g(new T.ConeGeometry(0.013, 0.02, 5)), lam(0xff7a2c), -0.03, 0, 0);
+        ctail.rotation.z = Math.PI / 2;
+        clown.add(cbody, cstripe, ctail);
+        for (const zz of [0.009, -0.009]) {
+          clown.add(mesh(g(new T.SphereGeometry(0.005, 8, 6)), lam(0xffffff), 0.02, 0.004, zz));
+          clown.add(mesh(g(new T.SphereGeometry(0.0026, 6, 5)), lam(0x241a2a), 0.023, 0.004, zz));
+        }
+        group.add(clown);
+        anims.push((t) => {
+          clown.position.set(-0.16 + Math.sin(t * 0.8) * 0.06, 0.12 + Math.sin(t * 1.6) * 0.015, 0.12 + Math.cos(t * 0.8) * 0.05);
+          clown.rotation.y = -Math.cos(t * 0.8) * 0.6 + Math.PI;
+        });
         const whale = new T.Group();
         const body = mesh(g(new T.SphereGeometry(0.09, 20, 14)), lam(0x4a78b0));
         body.scale.set(1.6, 0.9, 0.9);
@@ -1741,6 +2079,36 @@ async function buildScene(
       }
       case "aurora": {
         group.add(islandBase(0xe8f1fa, "snow", anims));
+        // A round little penguin waddle-bobs by the campfire — white belly,
+        // orange beak, no ears.
+        critter(group, anims, 0x2b2f3a, { x: -0.17, z: 0.17, ears: "none", belly: 0xf3f7fb, beak: 0xffa42e, body: 0.045, hopH: 0.02, hopSpeed: 2.0, look: 0.6 });
+        // A cheery little snowman: three stacked snowballs, coal eyes + buttons,
+        // a carrot nose, twig arms and a red scarf.
+        {
+          const snowman = new T.Group();
+          const snow = lam(0xf4f9ff);
+          snowman.add(mesh(g(new T.SphereGeometry(0.045, 14, 12)), snow, 0, 0.045, 0));
+          snowman.add(mesh(g(new T.SphereGeometry(0.033, 14, 12)), snow, 0, 0.1, 0));
+          snowman.add(mesh(g(new T.SphereGeometry(0.024, 14, 12)), snow, 0, 0.142, 0));
+          const coal = lam(0x2a2430);
+          for (const s of [-1, 1] as const) snowman.add(mesh(g(new T.SphereGeometry(0.004, 6, 5)), coal, s * 0.008, 0.15, 0.021));
+          for (const yy of [0.092, 0.108]) snowman.add(mesh(g(new T.SphereGeometry(0.004, 6, 5)), coal, 0, yy, 0.032));
+          const nose = mesh(g(new T.ConeGeometry(0.005, 0.026, 6)), lam(0xff8a2c), 0, 0.144, 0.028);
+          nose.rotation.x = Math.PI / 2;
+          snowman.add(nose);
+          const scarf = mesh(g(new T.TorusGeometry(0.026, 0.007, 8, 16)), lam(0xe0483a), 0, 0.12, 0);
+          scarf.rotation.x = Math.PI / 2;
+          snowman.add(scarf);
+          const twig = lam(0x6b4a2b);
+          for (const s of [-1, 1] as const) {
+            const arm = mesh(g(new T.CylinderGeometry(0.0025, 0.0025, 0.05, 4)), twig, s * 0.045, 0.1, 0);
+            arm.rotation.z = s * 1.0;
+            snowman.add(arm);
+          }
+          snowman.position.set(0.17, 0.037, 0.08);
+          snowman.rotation.y = -0.5;
+          group.add(snowman);
+        }
         // Real Kenney rock formations (Nature Kit, CC0) for the two peaks —
         // nested white cap accents near each tip still read as snow dusting.
         const auroraPeak1 = placeModel("rockD", -0.14, 0.0395, -0.04, 0.39, 1.2);
@@ -1807,6 +2175,25 @@ async function buildScene(
         duneB.scale.set(1.3, 0.4, 1);
         group.add(duneA, duneB);
         group.add(mesh(g(new T.ConeGeometry(0.13, 0.22, 4)), lam(0xb0793f), 0.12, 0.13, -0.12));
+        // A big-eared fennec fox perks up on the dunes.
+        critter(group, anims, 0xe6b877, { x: 0.02, z: 0.2, ears: "tall", earColor: 0xf2d7a8, belly: 0xfbf0dc, body: 0.042, hopH: 0.035, hopSpeed: 2.6, look: -0.3 });
+        // A little saguaro cactus with a pink bloom on top.
+        {
+          const cg = lam(0x4fa85f);
+          const cac = new T.Group();
+          cac.add(mesh(g(new T.CylinderGeometry(0.024, 0.028, 0.1, 10)), cg, 0, 0.05, 0));
+          cac.add(mesh(g(new T.SphereGeometry(0.024, 10, 8)), cg, 0, 0.1, 0));
+          for (const s of [-1, 1] as const) {
+            const arm = mesh(g(new T.CylinderGeometry(0.01, 0.012, 0.04, 8)), cg, s * 0.028, 0.062, 0);
+            arm.rotation.z = -s * 0.9;
+            cac.add(arm);
+            cac.add(mesh(g(new T.CylinderGeometry(0.01, 0.01, 0.028, 8)), cg, s * 0.048, 0.08, 0));
+            cac.add(mesh(g(new T.SphereGeometry(0.01, 8, 6)), cg, s * 0.048, 0.094, 0));
+          }
+          cac.add(mesh(g(new T.SphereGeometry(0.012, 8, 6)), lam(0xff6f91), 0, 0.116, 0));
+          cac.position.set(-0.17, 0.037, 0.04);
+          group.add(cac);
+        }
         // Rebuilt with an actual neck, a visible hump, ears and a tail, and
         // four legs instead of two — the old version was a body box with a
         // head box glued on, no neck between them, and read as a crude toy.
@@ -1823,6 +2210,13 @@ async function buildScene(
         const snout = mesh(g(new T.BoxGeometry(0.022, 0.016, 0.018)), lam(camelDark), 0.135, 0.148, 0);
         const earL = mesh(g(new T.ConeGeometry(0.008, 0.016, 5)), lam(camelDark), 0.115, 0.172, 0.012);
         const earR = mesh(g(new T.ConeGeometry(0.008, 0.016, 5)), lam(camelDark), 0.115, 0.172, -0.012);
+        // Little eyes so the camel has a face rather than a blank head-box.
+        const camelEyes = [0.014, -0.014].map((zz) => {
+          const e = new T.Group();
+          e.add(mesh(g(new T.SphereGeometry(0.006, 8, 6)), lam(0xffffff), 0.128, 0.162, zz));
+          e.add(mesh(g(new T.SphereGeometry(0.0032, 6, 5)), lam(0x241a2a), 0.132, 0.162, zz));
+          return e;
+        });
         const camelTail = mesh(g(new T.ConeGeometry(0.008, 0.04, 5)), lam(camelDark), -0.085, 0.06, 0);
         camelTail.rotation.x = Math.PI / 2 + 0.3;
         const legGeo = g(new T.CylinderGeometry(0.007, 0.009, 0.075, 6));
@@ -1832,7 +2226,7 @@ async function buildScene(
           mesh(legGeo, lam(camelDark), -0.05, 0.02, 0.02),
           mesh(legGeo, lam(camelDark), -0.05, 0.02, -0.02),
         ];
-        camel.add(camelBody, hump, neck, head, snout, earL, earR, camelTail, ...legs);
+        camel.add(camelBody, hump, neck, head, snout, earL, earR, ...camelEyes, camelTail, ...legs);
         camel.position.set(-0.14, 0.02, 0.14);
         camel.rotation.y = 0.7;
         group.add(camel);
@@ -1982,13 +2376,25 @@ async function buildScene(
   const updateTurn = () => {
     const k = Math.min((elapsed - turnStart) / TURN_DUR, 1);
     const phase = easeInOut(k);
+    const bend = Math.sin(phase * Math.PI); // 0 → 1 mid-turn → 0
+    // Flip about the spine, but lift the leaf off the spread and lean it a touch
+    // toward the reader as it goes over, so it arcs up like a real page instead
+    // of sweeping flat across the paper.
     pagePivot.rotation.z = phase * Math.PI;
-    // Cloth-like curl, strongest mid-turn.
-    const curl = 0.17 * Math.sin(phase * Math.PI);
+    pagePivot.rotation.x = bend * 0.14;
+    pagePivot.position.y = 0.2 + bend * 0.06;
     const pos = pageGeo.attributes.position as THREE.BufferAttribute;
     for (let i = 0; i < pos.count; i++) {
       const u = pageBase[i * 3]; // 0 at spine → 1 at fore-edge
-      pos.setY(i, pageBase[i * 3 + 1] + Math.sin(u * Math.PI) * curl);
+      const z = pageBase[i * 3 + 2]; // page depth — drives the corner lead
+      // A broad arch across the whole leaf, plus a tighter curl that concentrates
+      // at the unsupported fore-edge (where paper bows most), plus a faint
+      // diagonal so one corner leads the turn. Together they read as a bending
+      // sheet rather than a stiff flap pivoting in one piece.
+      const arch = Math.sin(u * Math.PI) * 0.11 * bend;
+      const tipCurl = Math.pow(u, 2.4) * 0.14 * bend;
+      const cornerLead = u * z * 0.09 * bend;
+      pos.setY(i, pageBase[i * 3 + 1] + arch + tipCurl + cornerLead);
     }
     pos.needsUpdate = true;
     pageGeo.computeVertexNormals();
@@ -1997,6 +2403,8 @@ async function buildScene(
       // Lie flat again showing the (new) current world's illustration, so the
       // open spread always carries its world's storybook page.
       pagePivot.rotation.z = 0;
+      pagePivot.rotation.x = 0;
+      pagePivot.position.y = 0.2;
       pageMat.map = arts[worldIdx];
       pageMat.needsUpdate = true;
     }
@@ -2032,17 +2440,23 @@ async function buildScene(
 
   /* ---------- render loop & lifecycle ---------- */
 
-  // Cap the loop to ~34fps. rAF still fires at the display rate, but the sim +
-  // render only run when enough wall-clock time has accumulated — roughly
-  // halving the ongoing GPU/CPU cost of the hero versus 60fps, which is plenty
-  // smooth for a subtle background animation and eases the load-time CPU
-  // pressure Lighthouse measures.
-  const TARGET_DT = 1 / 34;
+  // Frame-rate budget, matched to the device. The scene only ever boots on a
+  // real hardware interaction (never under Lighthouse, which tanks its score on
+  // 60fps loops), so we can afford genuine smoothness for real visitors: a full
+  // 60fps on capable hardware where the page-turn curl and the island's drift
+  // read fluid, stepping down on weaker CPUs to protect the main thread. rAF
+  // still fires at the display rate; the sim + render only run once enough
+  // wall-clock time has accumulated.
+  const TARGET_FPS = cores >= 8 ? 60 : cores >= 6 ? 48 : 36;
+  const TARGET_DT = 1 / TARGET_FPS;
+  // A hair of slack so a rAF that lands a fraction early at a matched refresh
+  // rate still renders, instead of being skipped into visible judder.
+  const FRAME_EPS = 0.003;
   let frameAcc = 0;
   const frame = () => {
     if (running) raf = requestAnimationFrame(frame);
     frameAcc += clock.getDelta();
-    if (frameAcc < TARGET_DT) return;
+    if (frameAcc < TARGET_DT - FRAME_EPS) return;
     const dt = Math.min(frameAcc, 0.05);
     frameAcc = 0;
     elapsed += dt;
@@ -2054,10 +2468,18 @@ async function buildScene(
     root.rotation.y = px * 0.3 + Math.sin(t * 0.25) * 0.035;
     root.rotation.x = py * 0.12 + Math.sin(t * 0.18) * 0.015;
 
-    // The tome and its world breathe.
+    // The tome and its world breathe. The book bobs with a whisper of roll so
+    // it reads as buoyant, not rigidly fixed.
     book.position.y = -0.12 + Math.sin(t * 0.8) * 0.02;
+    book.rotation.z = Math.sin(t * 0.6) * 0.006;
+    // The floating world drifts rather than spinning on a turntable: a slow net
+    // yaw carries a much larger eased sway (its own derivative accelerates and
+    // decelerates the turn, killing the constant-velocity "display stand" tell),
+    // and a gentle pitch/roll buoyancy makes the island ride unseen air currents.
     worldHolder.position.y = WORLD_Y + Math.sin(t * 0.9 + 1) * 0.035 + (book.position.y + 0.12);
-    worldHolder.rotation.y = t * 0.22;
+    worldHolder.rotation.y = t * 0.09 + Math.sin(t * 0.33) * 0.14;
+    worldHolder.rotation.z = Math.sin(t * 0.47 + 0.6) * 0.03;
+    worldHolder.rotation.x = Math.sin(t * 0.4) * 0.02;
     worlds[worldIdx].tick(t);
 
     // Ambience.
