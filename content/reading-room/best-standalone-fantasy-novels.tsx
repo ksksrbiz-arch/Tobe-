@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Sometimes you want a whole world and a whole ending in a single book. These standalone fantasy novels deliver wonder, magic, and a real conclusion — no sequels required.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "Piranesi", author: "Susanna Clarke" },
     { name: "The Night Circus", author: "Erin Morgenstern" },
@@ -72,7 +73,12 @@ export default function Body() {
         A gentle, big-hearted court fantasy about an unloved half-goblin prince
         who unexpectedly inherits a throne. <em>The Goblin Emperor</em> is low
         on swordfights and high on kindness, politics, and the quiet drama of a
-        decent person trying to do right. Deeply comforting.
+        decent person trying to do right. Deeply comforting — and a natural next
+        step if you love{" "}
+        <Link href="/reading-room/best-cozy-fantasy-books">
+          the best cozy fantasy books
+        </Link>
+        .
       </p>
 
       <h2>Stardust — Neil Gaiman</h2>
@@ -96,7 +102,7 @@ export default function Body() {
         </Link>{" "}
         guide is a friendly starting point, and the{" "}
         <Link href="/reading-room/classic-fantasy-novels-everyone-should-read">
-          classic fantasy novels everyone should read
+          classic fantasy novels
         </Link>{" "}
         round out the shelf. Ready to commit to something bigger? See our{" "}
         <Link href="/reading-room/best-book-series-to-binge">

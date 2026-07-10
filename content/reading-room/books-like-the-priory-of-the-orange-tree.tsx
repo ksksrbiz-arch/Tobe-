@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Queens, dragons, and women who hold up the sky. If The Priory of the Orange Tree wrecked you in the best way, here are five epic fantasies to read next.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 5,
@@ -49,7 +50,12 @@ export default function Body() {
         can command the earth itself. Jemisin&rsquo;s structure is dazzling and
         her anger is righteous &mdash; the most acclaimed epic fantasy of the
         last decade, and a worthy next mountain to climb. It opens a trilogy, so
-        there is plenty of world to live in once it hooks you.
+        there is plenty of world to live in once it hooks you — one reason it
+        turns up again and again on our{" "}
+        <Link href="/reading-room/best-book-series-to-binge">
+          best book series to binge
+        </Link>
+        .
       </p>
 
       <h2>2. A Memory Called Empire &mdash; Arkady Martine</h2>
@@ -91,15 +97,21 @@ export default function Body() {
       <p>
         Big fantasy is one of our most-loved sections, and the good ones move
         fast &mdash; <Link href="/visit">come browse in person</Link> or shop{" "}
-        <Link href="/shop">online</Link>, and trade finished tomes back for
-        credit toward the next. Want a hand deciding? Our{" "}
+        <Link href="/shop">online</Link>, and{" "}
+        <Link href="/trade">trade finished tomes back</Link> for credit toward the
+        next. Want a hand deciding? Our{" "}
         <Link href="/#next-read">AI Matchmaker</Link> can point the way. New to
         the genre? Start with{" "}
         <Link href="/reading-room/fantasy-books-for-beginners">
           fantasy books for beginners
         </Link>
         , or, since one of these picks is a myth retelling, see{" "}
-        <Link href="/reading-room/books-like-circe">books like Circe</Link>.
+        <Link href="/reading-room/books-like-circe">books like Circe</Link>. If
+        the dragons are what you&rsquo;re really here for, our{" "}
+        <Link href="/reading-room/romantasy-books-with-dragons">
+          romantasy books with dragons
+        </Link>{" "}
+        scratch that itch too.
       </p>
     </>
   );
