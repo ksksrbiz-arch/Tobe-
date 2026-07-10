@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Live in Oregon City? Your closest used bookstore is a quick drive up 99E in Milwaukie. Here's what To Be Read keeps on the shelves — and how to get there.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Visit", "Local guide"],
-  readingMinutes: 3,
+  readingMinutes: 4,
 };
 
 export default function Body() {
@@ -47,31 +48,43 @@ export default function Body() {
         backed up, hop on <strong>I-205 north</strong> to OR-224 and cut over to
         King Road. Either way it&rsquo;s a short, flat drive with no bridges to
         fuss over, and there&rsquo;s <strong>free parking</strong> at the store.
+        You&rsquo;ll pass right by the{" "}
+        <Link href="/reading-room/used-books-near-oak-grove-gladstone-oregon">Oak Grove and Gladstone stretch</Link>{" "}
+        on the way, so if you&rsquo;ve got a friend up that way it&rsquo;s an easy
+        detour to pick them up.
       </p>
 
       <p>
         That short distance is the whole point: instead of settling for a thin
         shelf at a big-box store or paying full price online, you get a real
         used bookstore within easy reach. Many Oregon City readers fold the visit
-        into errands they&rsquo;re already running up McLoughlin &mdash; a stop on
-        the way to or from Milwaukie&rsquo;s shops and restaurants.
+        into errands they&rsquo;re already running up McLoughlin, and plenty turn
+        it into a proper outing &mdash; here&rsquo;s a{" "}
+        <Link href="/reading-room/milwaukie-oregon-book-lovers-day-out">book lover&rsquo;s day out in Milwaukie</Link>{" "}
+        to build the trip around.
       </p>
 
       <h2>What&rsquo;s on the shelves</h2>
-      <ul>
-        <li><strong>Thousands of used titles</strong> &mdash; fiction, classics, mystery, sci-fi and fantasy, romance, kids&rsquo; books, history, and nonfiction &mdash; all at used-book prices.</li>
-        <li><strong>Trade-in store credit</strong> for the books you&rsquo;re finished with, so a carload from your shelves can fund the next stack.</li>
-        <li><strong>Staff who actually read</strong> and are glad to steer you toward your next favorite.</li>
-      </ul>
+      <p>
+        Expect <strong>thousands of used titles</strong> &mdash; fiction,
+        classics, mystery, sci-fi and fantasy, romance, kids&rsquo; books,
+        history, and nonfiction &mdash; all at used-book prices. There&rsquo;s{" "}
+        <strong>trade-in store credit</strong> for the books you&rsquo;re finished
+        with, so a carload from your shelves can fund the next stack, and staff
+        who actually read and are glad to steer you toward your next favorite.
+        Not sure a secondhand shop is worth the drive? Here&rsquo;s the case for{" "}
+        <Link href="/reading-room/are-used-bookstores-worth-it">why used bookstores are worth it</Link>.
+      </p>
 
       <h2>Make the drive count</h2>
       <p>
-        Box up the books you&rsquo;re done with before you head out &mdash;{" "}
-        <Link href="/reading-room/how-book-trade-in-credit-works">here&rsquo;s how trade-in credit works</Link>{" "}
-        &mdash; and check our <Link href="/visit">hours and directions</Link>{" "}
-        first. While you&rsquo;re planning, see why{" "}
-        <Link href="/reading-room/used-bookstore-milwaukie-southeast-portland">readers across the area make the trip</Link>,
-        browse the <Link href="/shop">shop</Link>, or line up titles with the{" "}
+        Box up the books you&rsquo;re done with before you head out &mdash;
+        here&rsquo;s{" "}
+        <Link href="/reading-room/how-book-trade-in-credit-works">how trade-in credit works</Link>{" "}
+        &mdash; and see our <Link href="/trade">sell &amp; trade page</Link> for
+        what we take. Check our{" "}
+        <Link href="/visit">hours and directions</Link> first, then browse the{" "}
+        <Link href="/shop">shop</Link> or line up titles with the{" "}
         <Link href="/#next-read">Matchmaker</Link>. Coming from nearby? We&rsquo;ve
         also mapped the drive from{" "}
         <Link href="/reading-room/used-books-near-west-linn-oregon">West Linn</Link>{" "}
