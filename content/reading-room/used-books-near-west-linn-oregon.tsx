@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "From West Linn, your closest used bookstore is a short hop across the river in Milwaukie. Here's what's on To Be Read's shelves and how to get there.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Visit", "Local guide"],
-  readingMinutes: 3,
+  readingMinutes: 4,
 };
 
 export default function Body() {
@@ -47,7 +48,9 @@ export default function Body() {
         Abernethy Bridge and follow OR-224 toward Milwaukie, then onto SE King
         Road. Yes, you cross the river either way &mdash; but it&rsquo;s a quick,
         familiar trip, and there&rsquo;s <strong>free parking</strong> waiting at
-        the store.
+        the store. Neighbors in{" "}
+        <Link href="/reading-room/used-books-near-lake-oswego-oregon">Lake Oswego</Link>{" "}
+        make the same crossing, so it&rsquo;s an easy trip to share.
       </p>
 
       <p>
@@ -55,29 +58,37 @@ export default function Body() {
         readers: rather than a thin shelf at a chain store or full retail prices
         online, you get a genuine used bookstore close to home. Plenty of West
         Linn folks pair the visit with a trip into Milwaukie for shops, coffee,
-        or a meal, so the books are an easy add-on rather than a special errand.
+        or a meal, so the books are an easy add-on rather than a special errand
+        &mdash; here&rsquo;s a{" "}
+        <Link href="/reading-room/milwaukie-oregon-book-lovers-day-out">book lover&rsquo;s day out in Milwaukie</Link>{" "}
+        to build around it.
       </p>
 
       <h2>What&rsquo;s on the shelves</h2>
-      <ul>
-        <li><strong>Thousands of used titles</strong> &mdash; fiction, classics, mystery, sci-fi and fantasy, romance, kids&rsquo; books, history, and nonfiction &mdash; all at used-book prices.</li>
-        <li><strong>Trade-in store credit</strong> for the books you&rsquo;ve finished, so the ones you bring in help pay for the ones you take home.</li>
-        <li><strong>Staff who read</strong> and love handing a good book to the right person.</li>
-      </ul>
+      <p>
+        Expect <strong>thousands of used titles</strong> &mdash; fiction,
+        classics, mystery, sci-fi and fantasy, romance, kids&rsquo; books,
+        history, and nonfiction &mdash; all at used-book prices. There&rsquo;s{" "}
+        <strong>trade-in store credit</strong> for the books you&rsquo;ve
+        finished, so the ones you bring in help pay for the ones you take home,
+        and staff who read and love handing a good book to the right person.
+        Weighing the drive? Here&rsquo;s the case for{" "}
+        <Link href="/reading-room/are-used-bookstores-worth-it">why used bookstores are worth it</Link>.
+      </p>
 
       <h2>Make the trip count</h2>
       <p>
-        Bring a box to trade &mdash;{" "}
-        <Link href="/reading-room/how-book-trade-in-credit-works">here&rsquo;s how trade-in credit works</Link>{" "}
-        &mdash; and check our <Link href="/visit">hours and directions</Link>{" "}
-        before you set out. New to us? See why{" "}
+        Bring a box to trade &mdash; here&rsquo;s{" "}
+        <Link href="/reading-room/how-book-trade-in-credit-works">how trade-in credit works</Link>{" "}
+        and what we take on our{" "}
+        <Link href="/trade">sell &amp; trade page</Link> &mdash; and check our{" "}
+        <Link href="/visit">hours and directions</Link> before you set out. New to
+        us? See why{" "}
         <Link href="/reading-room/used-bookstore-milwaukie-southeast-portland">readers across the area make the drive</Link>,
         browse the <Link href="/shop">shop</Link>, or queue up picks with the{" "}
-        <Link href="/#next-read">Matchmaker</Link>. Coming from a neighboring
-        town? We&rsquo;ve mapped the route from{" "}
+        <Link href="/#next-read">Matchmaker</Link>. Coming up 99E instead? We&rsquo;ve
+        mapped the route from{" "}
         <Link href="/reading-room/used-books-near-oregon-city-oregon">Oregon City</Link>{" "}
-        and{" "}
-        <Link href="/reading-room/used-books-near-lake-oswego-oregon">Lake Oswego</Link>{" "}
         too.
       </p>
     </>

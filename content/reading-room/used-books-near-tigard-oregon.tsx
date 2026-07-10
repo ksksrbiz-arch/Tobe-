@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Tigard readers: the nearest deep used bookstore worth the trip is a short hop across the metro in Milwaukie. Here's the route and what's waiting at To Be Read.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Visit", "Local guide"],
-  readingMinutes: 3,
+  readingMinutes: 4,
 };
 
 export default function Body() {
@@ -39,23 +40,26 @@ export default function Body() {
         <Link href="/visit">7931 SE King Rd, Unit 1 in Milwaukie</Link>. To set
         expectations: we&rsquo;re not in Tigard &mdash; we&rsquo;re an
         honest-to-goodness secondhand bookstore in Milwaukie, and easy to reach.
-        From Tigard the natural route is Highway 217 down to 99W, then over toward
-        Milwaukie; many drivers find it simplest to cut across on 99E once
-        they&rsquo;re past the river. It&rsquo;s a short cross-town trip rather
-        than a haul, and there&rsquo;s free parking when you land.
+        From Tigard the natural route is Highway 217 down to I-5, then across the
+        river toward Milwaukie; many drivers find it simplest to cut over to 99E
+        (McLoughlin Blvd) and follow it into old-town Milwaukie, then onto SE King
+        Road. It&rsquo;s a short cross-town trip rather than a haul, and
+        there&rsquo;s free parking when you land.
       </p>
 
       <h2>Why make the hop</h2>
       <p>
         The point of crossing town is the kind of shelf you can&rsquo;t get from
-        an app. Here&rsquo;s what&rsquo;s waiting:
+        an app: <strong>thousands of used titles</strong> &mdash; fiction,
+        classics, romantasy, mystery, sci-fi and fantasy, kids&rsquo; books, and
+        nonfiction &mdash; all at used-book prices, so you can fill a bag without
+        flinching. There&rsquo;s <strong>trade-in store credit</strong> for the
+        books you&rsquo;ve finished, so your shelves keep moving and your next
+        stack costs less, plus genuine recommendations from staff who actually
+        read. And <strong>free parking</strong> means the only browsing you do is
+        for books. Weighing the drive? Here&rsquo;s the honest case for{" "}
+        <Link href="/reading-room/are-used-bookstores-worth-it">why used bookstores are worth it</Link>.
       </p>
-      <ul>
-        <li><strong>Thousands of used titles</strong> &mdash; fiction, classics, romantasy, mystery, sci-fi, kids&rsquo;, and nonfiction &mdash; all at used-book prices, so you can fill a bag without flinching.</li>
-        <li><strong>Trade-in store credit</strong> for the books you&rsquo;ve finished, so your shelves keep moving and your next stack costs less.</li>
-        <li><strong>Genuine recommendations</strong> from staff who actually read and love a good match.</li>
-        <li><strong>Free parking</strong>, so the only browsing you do is for books.</li>
-      </ul>
 
       <p>
         It helps to picture the visit before you go. To Be Read isn&rsquo;t a
@@ -70,14 +74,16 @@ export default function Body() {
       <h2>Plan the trip</h2>
       <p>
         Since you&rsquo;re crossing the metro, make the visit count: bring a box
-        to trade and give yourself time to wander the shelves rather than rushing
-        a single aisle. Here&rsquo;s{" "}
+        to trade and give yourself time to wander. Here&rsquo;s{" "}
         <Link href="/reading-room/how-book-trade-in-credit-works">how trade-in credit works</Link>{" "}
+        and what we take on our <Link href="/trade">sell &amp; trade page</Link>,
         so you arrive ready to swap your finished books for store credit. And
         you&rsquo;re far from the only one making the trip &mdash; readers come
         our way from{" "}
-        <Link href="/reading-room/used-books-near-gresham-oregon">Gresham</Link> and{" "}
-        <Link href="/reading-room/used-books-near-canby-oregon">Canby</Link> as well.
+        <Link href="/reading-room/used-books-near-gresham-oregon">Gresham</Link>{" "}
+        and{" "}
+        <Link href="/reading-room/used-books-near-canby-oregon">Canby</Link> as
+        well.
       </p>
 
       <p>
