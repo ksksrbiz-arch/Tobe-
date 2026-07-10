@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Second chances, gentle philosophy, and a hopeful heart. Six uplifting novels to read after The Midnight Library.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
@@ -72,8 +73,14 @@ export default function Body() {
       <h2>5. Life After Life — Kate Atkinson</h2>
       <p>
         Ursula Todd dies and is reborn again and again, living her twentieth century
-        in countless variations. The literary heavyweight of this list and the
-        closest cousin to Haig&rsquo;s &ldquo;roads not taken&rdquo; premise.
+        in countless variations &mdash; a birth in a snowstorm that goes differently
+        every time. It is the literary heavyweight of this list and the closest
+        cousin to Haig&rsquo;s &ldquo;roads not taken&rdquo; premise, and it sits
+        comfortably among the{" "}
+        <Link href="/reading-room/best-literary-fiction-21st-century">
+          best literary fiction of the 21st century
+        </Link>{" "}
+        if you want to keep climbing.
       </p>
 
       <h2>6. The House in the Cerulean Sea — TJ Klune</h2>

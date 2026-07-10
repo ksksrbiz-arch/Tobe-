@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Cloistered campuses, brilliant friends, and a secret worth killing for. Dark academia is the genre of beautiful obsession — here are the essential titles.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
@@ -76,7 +77,12 @@ export default function Body() {
         A boarding school with a witchy history, a grieving narrator, and a new
         girl asking too many questions. <em>A Lesson in Vengeance</em> brings a
         sapphic slow burn and a satisfying gothic chill &mdash; a great pick if
-        you want the mood with a tighter, twistier plot.
+        you want the mood with a tighter, twistier plot. If that gothic streak is
+        the draw, our{" "}
+        <Link href="/reading-room/gothic-classic-novels">
+          gothic classic novels
+        </Link>{" "}
+        trace where all this dread came from.
       </p>
 
       <h2>Where to start</h2>

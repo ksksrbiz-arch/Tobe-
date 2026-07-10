@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Donna Tartt ruined you for normal campus novels. Here are eight dark-academia reads — secret societies, obsessive friendships, beautiful dread — to fill the hole she left.",
   date: "2026-06-19",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Dark academia", "Read-alikes"],
-  readingMinutes: 5,
+  readingMinutes: 6,
   items: [
     { name: "If We Were Villains", author: "M. L. Rio" },
     { name: "Babel", author: "R. F. Kuang" },
@@ -39,57 +40,78 @@ export default function Body() {
         There&rsquo;s a very specific ache that sets in after the last page of{" "}
         <em>The Secret History</em>: you want more cloistered classrooms, more
         beautiful and terrible friends, more of that creeping sense that
-        knowledge has a body count. Good news — dark academia is a deep shelf.
-        Here are eight to reach for next.
+        knowledge has a body count. Good news &mdash; dark academia is a deep
+        shelf, and if you want the full lay of the land, our guide to the{" "}
+        <Link href="/reading-room/best-dark-academia-books">
+          best dark academia books
+        </Link>{" "}
+        maps it out. Here are eight to reach for next.
       </p>
 
       <h2>1. If We Were Villains — M. L. Rio</h2>
       <p>
         Seven Shakespeare students at an elite conservatory; one death; a web of
-        loyalty and performance. The closest cousin to Tartt&rsquo;s novel in
-        mood, and the one most readers reach for first.
+        loyalty and performance so total the characters slip into iambic
+        pentameter when the pressure spikes. It is the closest cousin to
+        Tartt&rsquo;s novel in mood &mdash; that same intoxication with a beautiful,
+        insular world &mdash; and the one most readers reach for first.
       </p>
 
       <h2>2. Babel — R. F. Kuang</h2>
       <p>
-        Oxford, translation magic, and the violence underneath empire. Bigger in
-        scope than most dark academia, and angrier — in the best way.
+        Oxford, translation magic, and the violence underneath empire. Kuang keeps
+        the candlelit-library atmosphere but points it outward: this is dark
+        academia with a thesis, angrier and bigger in scope than most, about who
+        the institution is really built to serve. Bring your feelings about
+        prestige.
       </p>
 
       <h2>3. Bunny — Mona Awad</h2>
       <p>
-        An MFA program, a clique of unbearably twee &ldquo;Bunnies,&rdquo; and a
-        slow slide into surreal horror. Strange, funny, and genuinely unsettling.
+        An MFA program, a clique of unbearably twee women who call each other
+        &ldquo;Bunny,&rdquo; and a slow slide into surreal horror. It skewers the
+        cultish belonging at the heart of <em>The Secret History</em> and then
+        turns genuinely strange. Funny, unsettling, and unlike anything else here.
       </p>
 
       <h2>4. Ninth House — Leigh Bardugo</h2>
       <p>
-        Yale&rsquo;s secret societies turn out to run on actual occult power.
-        Darker and more violent than Tartt, with a propulsive mystery engine.
+        Yale&rsquo;s secret societies turn out to run on actual occult power, and
+        the scholarship kid recruited to police them has already survived worse.
+        Darker and more violent than Tartt, with a propulsive mystery engine &mdash;
+        the pick when you want the dread plus a plot that yanks you forward.
       </p>
 
       <h2>5. The Maidens — Alex Michaelides</h2>
       <p>
-        A Greek-tragedy-obsessed professor at Cambridge and a string of murders.
-        Pure plot-driven comfort food for the campus-thriller craving.
+        A Greek-tragedy-obsessed professor at Cambridge, a secret society of female
+        students, and a string of murders. It is the most straightforwardly
+        plot-driven title on this list &mdash; comfort food for the campus-thriller
+        craving, best read fast and without too many questions.
       </p>
 
       <h2>6. Catherine House — Elisabeth Thomas</h2>
       <p>
-        A reclusive, prestigious school that asks for total devotion — and gives
-        something unnerving back. Atmospheric and quietly dreadful.
+        A reclusive, prestigious school cuts its students off from the outside
+        world for three years and asks for total devotion &mdash; and gives
+        something unnerving back. Atmospheric and quietly dreadful, it trades
+        Tartt&rsquo;s murder plot for a creeping, dreamlike unease.
       </p>
 
       <h2>7. A Lesson in Vengeance — Victoria Lee</h2>
       <p>
-        A haunted boarding school, witchy history, and a narrator you can&rsquo;t
-        quite trust. Moodier and more gothic than most.
+        A haunted boarding school, a witchy local history, and a grieving narrator
+        you can&rsquo;t quite trust. Moodier and more gothic than most, with a
+        sapphic slow burn threaded through the dread &mdash; the atmosphere is the
+        whole point, and it delivers.
       </p>
 
       <h2>8. Black Chalk — Christopher J. Yates</h2>
       <p>
-        Six Oxford students invent a game of escalating dares. Years later it&rsquo;s
-        still being played. A slow, dread-soaked unraveling.
+        Six Oxford students invent a game of escalating dares. Years later it is
+        still being played, and the stakes have turned lethal. A slow, dread-soaked
+        unraveling built on the exact <em>Secret History</em> question: what will
+        clever, cruel young people do to each other when no one is watching?
       </p>
 
       <h2>Where to find them</h2>

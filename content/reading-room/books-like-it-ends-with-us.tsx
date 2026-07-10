@@ -11,15 +11,17 @@ export const meta: BlogMeta = {
   excerpt:
     "If Colleen Hoover wrecked you in the best way, here are six emotional contemporary romances to read next — tears, second chances, and all.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
   items: [
     { name: "Verity", author: "Colleen Hoover" },
     { name: "Reminders of Him", author: "Colleen Hoover" },
-    { name: "The Love Hypothesis" },
-    { name: "People We Meet on Vacation" },
-    { name: "Every Summer After" },
+    { name: "The Love Hypothesis", author: "Ali Hazelwood" },
+    { name: "People We Meet on Vacation", author: "Emily Henry" },
+    { name: "Beach Read", author: "Emily Henry" },
+    { name: "Every Summer After", author: "Carley Fortune" },
   ],
 };
 
@@ -55,7 +57,12 @@ export default function Body() {
         If you want the ache without quite as much heartbreak, Ali Hazelwood&rsquo;s{" "}
         <em>The Love Hypothesis</em> is a warm, funny fake-dating romance set in
         the world of grad-school academia. It&rsquo;s lighter on its feet than
-        Hoover but just as easy to inhale in a weekend.
+        Hoover but just as easy to inhale in a weekend &mdash; and if it clicks,
+        our{" "}
+        <Link href="/reading-room/books-like-the-love-hypothesis">
+          books like The Love Hypothesis
+        </Link>{" "}
+        list keeps the same charm going.
       </p>
 
       <h2>For the friends-to-lovers feels: People We Meet on Vacation</h2>

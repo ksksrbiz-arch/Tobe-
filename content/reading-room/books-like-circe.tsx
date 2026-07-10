@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Goddesses, witches, and the women myth left out. If Circe moved you, here are five mythology retellings to read next.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
@@ -67,7 +68,12 @@ export default function Body() {
         Greek camp, where the heroes we grew up admiring look very different up
         close. Barker is unflinching about the brutality the epics romanticize
         &mdash; a darker, sharper companion to Miller&rsquo;s warmth, and a
-        bracing reminder of who paid for all that glory.
+        bracing reminder of who paid for all that glory. If it&rsquo;s the ancient
+        setting that pulls you, our{" "}
+        <Link href="/reading-room/best-historical-fiction-novels">
+          best historical fiction novels
+        </Link>{" "}
+        reach past the myths into the real past.
       </p>
 
       <h2>4. A Thousand Ships &mdash; Natalie Haynes</h2>
