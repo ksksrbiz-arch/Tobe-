@@ -1,8 +1,10 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
+import QuickAnswer from "@/components/QuickAnswer";
 import TradeSection from "@/components/TradeSection";
 import TradeCreditEstimator from "@/components/TradeCreditEstimator";
 import FAQSection, { type Faq } from "@/components/FAQSection";
@@ -103,6 +105,27 @@ export default function TradePage() {
         imageUrl="/images/shelves/store-kids-chapter-wall.jpg"
         scrollTargetId="trade"
       />
+
+      {/* Answer-first summary: the one-paragraph takeaway before the long-form
+          steps/estimator/FAQ — good for featured snippets and skimming visitors. */}
+      <section className="px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8" style={{ background: "var(--background)" }}>
+        <Reveal className="mx-auto max-w-4xl">
+          <QuickAnswer>
+            Bring your gently-used books to our shop in Milwaukie and trade them for{" "}
+            <strong>store credit</strong> toward your next reads — no appointment needed. Make sure
+            each book is clean and unmarked, bring a good stack, and come earlier in the day so we can
+            sort through them while you browse. Want a rough idea of your credit first? Try the{" "}
+            <a href="#estimator" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+              trade estimator
+            </a>{" "}
+            below, or just{" "}
+            <Link href="/visit" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+              plan a visit
+            </Link>
+            .
+          </QuickAnswer>
+        </Reveal>
+      </section>
 
       {/* How it works */}
       <section

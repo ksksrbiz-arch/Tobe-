@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
+import QuickAnswer from "@/components/QuickAnswer";
 import ShopSection from "@/components/ShopSection";
 import FAQSection, { type Faq } from "@/components/FAQSection";
 import Footer from "@/components/Footer";
@@ -143,6 +145,27 @@ export default function ShopPage() {
         imageUrl="/images/shelves/store-kids-ya-shelves.jpg"
         scrollTargetId="shop"
       />
+
+      {/* Answer-first summary before the browsing sections — the quick takeaway
+          for skimmers and featured snippets. */}
+      <section className="px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8" style={{ background: "var(--background)" }}>
+        <Reveal className="mx-auto max-w-4xl">
+          <QuickAnswer>
+            We carry gently-used books across <strong>every genre</strong>{" "}&mdash; literary fiction,
+            fantasy and sci-fi, mystery, romance, memoir, kids and YA — most just a few dollars each.
+            The shelves rotate constantly, so browse the highlights below to see what&rsquo;s new, then{" "}
+            <Link href="/visit" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+              come dig through the rest in person
+            </Link>{" "}
+            in Milwaukie. Cleared out your own shelves? You can{" "}
+            <Link href="/trade" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+              trade them in for credit
+            </Link>{" "}
+            while you&rsquo;re here.
+          </QuickAnswer>
+        </Reveal>
+      </section>
+
       <ShopSection />
 
       {/* Genre quick filters */}
