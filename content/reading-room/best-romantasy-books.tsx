@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Romantasy — romance with dragons, fae courts, and high stakes — is one of the most-loved (and best-selling) genres on our shelves. Here's where to start.",
   date: "2026-06-20",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Romance", "Genre guide"],
   readingMinutes: 5,
@@ -54,7 +55,12 @@ export default function Body() {
       <h2>2. Fourth Wing — Rebecca Yarros</h2>
       <p>
         Dragon-rider war college, deadly trials, and crackling tension. The book
-        that put &ldquo;romantasy&rdquo; on every bestseller list. Wildly fun.
+        that put &ldquo;romantasy&rdquo; on every bestseller list — start here if
+        the dragons are the draw, then raid our{" "}
+        <Link href="/reading-room/books-like-fourth-wing">
+          books like Fourth Wing
+        </Link>{" "}
+        list for the next fix. Wildly fun and hard to put down.
       </p>
 
       <h2>3. From Blood and Ash — Jennifer L. Armentrout</h2>
@@ -88,7 +94,11 @@ export default function Body() {
       <h2>7. The Bridge Kingdom — Danielle L. Jensen</h2>
       <p>
         A warrior princess sent to spy on (and marry) an enemy king. Tight,
-        tropey, and immensely satisfying.
+        tropey, and immensely satisfying — the gold standard if{" "}
+        <Link href="/reading-room/enemies-to-lovers-romantasy">
+          enemies-to-lovers
+        </Link>{" "}
+        is the trope you came for.
       </p>
 
       <h2>Come browse our romantasy shelf</h2>

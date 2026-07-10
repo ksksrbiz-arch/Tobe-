@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "They've got opinions about dragons and a lot of tabbed pages. Here's how to shop for the romantasy fan in your life — the books to give and the safe bet that never misses.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Gift guide", "Recommendations", "Romantasy"],
   readingMinutes: 4,
@@ -58,7 +59,10 @@ export default function Body() {
       <p>
         Used copies make it affordable to gift a <em>complete</em> set — the first
         three of a series, bundled, is a gift that lasts a month of evenings. See{" "}
-        <Link href="/reading-room/romantasy-series-worth-committing-to">series worth committing to</Link>.
+        <Link href="/reading-room/romantasy-series-worth-committing-to">series worth committing to</Link>{" "}
+        for the ones worth boxing up, or grab a fantasy-forward pick from our{" "}
+        <Link href="/reading-room/romantasy-for-fantasy-readers">romantasy for fantasy readers</Link>{" "}
+        list for the friend who claims they &ldquo;don&rsquo;t do romance.&rdquo;
       </p>
 
       <h2>The no-risk option</h2>
@@ -71,9 +75,13 @@ export default function Body() {
       <h2>Shop the shelves</h2>
       <p>
         Come <Link href="/visit">browse with us</Link> and we&rsquo;ll build a
-        romantasy stack to budget, or let the{" "}
+        romantasy stack to budget, pick up a{" "}
+        <Link href="/shop">gift-ready copy online</Link>, or let the{" "}
         <Link href="/#next-read">Matchmaker</Link> suggest a title they
-        haven&rsquo;t devoured yet.
+        haven&rsquo;t devoured yet. And if they&rsquo;ve already read half the
+        genre, remember they can{" "}
+        <Link href="/trade">trade their finished stacks for credit</Link> toward
+        whatever&rsquo;s next.
       </p>
     </>
   );
