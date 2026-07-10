@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "A great home library isn't bought all at once — it's gathered. Here's how to build one affordably, mostly from used books.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Reading life", "Recommendations"],
-  readingMinutes: 5,
+  readingMinutes: 6,
 };
 
 export default function Body() {
@@ -58,7 +59,13 @@ export default function Body() {
         you&rsquo;ll stumble on out-of-print editions, that next-in-a-series you
         needed, and writers you&rsquo;d never have picked online. Bring a running
         list of authors and titles you&rsquo;re hunting, but leave room to be
-        surprised. Browse our{" "}
+        surprised. Keep that hunting list in your phone so it&rsquo;s always with
+        you, and when you spot a title you weren&rsquo;t looking for, give
+        yourself the rule of buying it now — used copies of a specific edition
+        rarely wait around for a second visit. A quick condition check saves
+        regret: open to the middle to make sure the spine isn&rsquo;t cracked,
+        riffle for underlining or a musty smell, and skip ex-library copies
+        unless the price is right. Browse our{" "}
         <Link href="/shop">shelves</Link> or{" "}
         <Link href="/visit">come in to dig around</Link> in person — the
         serendipity is half the fun.
@@ -92,7 +99,14 @@ export default function Body() {
         The best libraries are patient. Set a modest monthly budget, browse more
         than you buy, and let the collection take on the shape of your reading
         life rather than a checklist. A shelf earned over years beats a wall
-        bought in a weekend every time.
+        bought in a weekend every time. If you want a gentle engine for it, tie
+        your buying to a small challenge — a season of backlist titles, or a
+        shelf built around one theme. Our{" "}
+        <Link href="/reading-room/reading-challenge-ideas">
+          reading challenge ideas
+        </Link>{" "}
+        double nicely as a collecting plan, giving the library a direction
+        instead of letting it drift into a pile of impulse buys.
       </p>
 
       <h2>Start your shelves</h2>

@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "A good reading challenge isn't a chore — it's a nudge toward books you'd never have picked. Here are a few of our favorites to try this year.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Reading life", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -39,7 +40,12 @@ export default function Body() {
         debut novel, a book in translation, something over 500 pages, a
         graphic novel, a reread, a book recommended by a stranger. Cross one off
         each time you finish a match. It&rsquo;s the easiest way to break out of
-        a one-genre rut without committing to anything rigid.
+        a one-genre rut without committing to anything rigid. Keep the grid
+        somewhere you&rsquo;ll see it — taped inside a cupboard, or as your
+        phone&rsquo;s lock screen — so a half-filled card nudges you toward the
+        empty squares. One tip that keeps it fun rather than fussy: let a single
+        book fill only one square, even when it technically fits three. The
+        friendly constraint is the whole point.
       </p>
 
       <h2>Read the alphabet</h2>
@@ -66,7 +72,14 @@ export default function Body() {
         decade or two old. Commit to reading only backlist titles — books
         published before, say, 2015 — for a season. Used shelves are perfect for
         this, and you&rsquo;ll rediscover modern classics everyone else has
-        already moved past.
+        already moved past. A gentle way in: read the older book that inspired a
+        recent favorite, or the debut by an author you&rsquo;ve only met through
+        their latest. The backlist is also where a home library really gets
+        built, so it pairs naturally with our guide to{" "}
+        <Link href="/reading-room/how-to-build-a-home-library">
+          building a home library on a budget
+        </Link>
+        .
       </p>
 
       <h2>A seasonal TBR</h2>

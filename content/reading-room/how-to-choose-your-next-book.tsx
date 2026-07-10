@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Standing in front of the shelf, unable to commit? Here's how to match a book to your mood, beat decision paralysis, and land on the right next read.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Reading life", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -36,7 +37,13 @@ export default function Body() {
         yourself what you&rsquo;re actually in the mood for: comfort or
         challenge? Fast and plotty, or slow and immersive? Funny, romantic,
         eerie, or escapist? The objectively &ldquo;great&rdquo; novel you&rsquo;re
-        not in the mood for will just sit there. Follow the feeling first.
+        not in the mood for will just sit there. Follow the feeling first. A
+        quick test that cuts through the fog: finish the sentence &ldquo;tonight
+        I want a book that feels like ___.&rdquo; Cozy? Twisty? Sweeping?
+        Whatever word lands is your filter, and it&rsquo;ll rule out three
+        quarters of the shelf in a second. If you keep landing on the same word
+        for weeks, that&rsquo;s worth noticing too — it&rsquo;s your taste
+        telling you where to shop next.
       </p>
 
       <h2>Narrow before you choose</h2>
@@ -62,7 +69,17 @@ export default function Body() {
         already loved and look for its cousins — same mood, same energy,
         different story. If a recent favorite knocked you flat, chase that
         feeling. It&rsquo;s how readers find their next obsession, and it almost
-        never disappoints.
+        never disappoints. Get specific about <em>why</em> you loved it, though —
+        &ldquo;a prickly narrator you slowly come to trust&rdquo; or &ldquo;a
+        slow-burn friendship&rdquo; leads somewhere far better than
+        &ldquo;another fantasy.&rdquo; The mechanism you fell for travels across
+        genres, which is how a thriller fan ends up loving a literary novel that
+        happens to share the same relentless pace. If you want to turn one
+        &ldquo;if you liked&rdquo; hunch into a whole year of them, our{" "}
+        <Link href="/reading-room/reading-challenge-ideas">
+          reading challenge ideas
+        </Link>{" "}
+        give the search a bit of structure.
       </p>
 
       <h2>Lean on staff picks and recommendations</h2>

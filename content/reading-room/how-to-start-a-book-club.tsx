@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Starting a book club is easier than you think. Here's how to gather people, pick books, run the first meeting, and keep everyone coming back.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Reading life", "Recommendations"],
-  readingMinutes: 5,
+  readingMinutes: 6,
 };
 
 export default function Body() {
@@ -51,7 +52,15 @@ export default function Body() {
         the{" "}
         <Link href="/reading-room/best-book-club-books">best book club books</Link>{" "}
         is built for exactly this. Let members take turns choosing — it keeps the
-        list from reflecting one person&rsquo;s taste.
+        list from reflecting one person&rsquo;s taste. A quick sanity check before
+        you commit the group to a title: keep most picks under 400 pages, make
+        sure the book is easy to get used or from the library, and skip anything
+        so beloved that disagreeing feels rude — the mild-controversy books draw
+        the best conversation. When a member freezes on their turn, our guide to{" "}
+        <Link href="/reading-room/how-to-choose-your-next-book">
+          choosing your next book
+        </Link>{" "}
+        works just as well for choosing the group&rsquo;s.
       </p>
 
       <h2>Setting a format</h2>
@@ -71,7 +80,12 @@ export default function Body() {
         prompts in your back pocket so silences don&rsquo;t stall things, but let
         the conversation wander — the best discussions go somewhere no one
         planned. End by choosing the next book together so everyone leaves with a
-        reason to come back.
+        reason to come back. If a lull hits, a couple of reliable prompts get
+        things moving again: &ldquo;What would you change about the ending?&rdquo;
+        and &ldquo;Who in your life should read this, and who absolutely
+        shouldn&rsquo;t?&rdquo; And resist the urge to police the tangents —
+        someone connecting the book to their own week is exactly the glue that
+        keeps a club together past its third meeting.
       </p>
 
       <h2>Sourcing affordable copies</h2>

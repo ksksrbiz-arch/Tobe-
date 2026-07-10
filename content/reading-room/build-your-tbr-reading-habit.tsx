@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "We named the shop after the to-be-read pile, so we have opinions. Here's a practical, guilt-free way to read more and build a TBR you'll actually finish.",
   date: "2026-06-15",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Reading habits", "TBR", "Reading life"],
-  readingMinutes: 5,
+  readingMinutes: 6,
 };
 
 export default function Body() {
@@ -38,6 +39,10 @@ export default function Body() {
         Habits form around low friction. Keep a book where you already are — on
         the nightstand, in your bag, by the kettle. Ten minutes before bed beats
         an ambitious hour you never get to. The goal is consistency, not volume.
+        Try anchoring the habit to something you already do without fail: read
+        two pages while the coffee brews, or one chapter after you brush your
+        teeth. When the new habit rides on the back of an old one, you
+        don&rsquo;t have to remember it — the trigger is already built in.
       </p>
 
       <h2>2. Give yourself permission to quit books</h2>
@@ -45,13 +50,21 @@ export default function Body() {
         The fastest way to kill a reading habit is to get stuck slogging through
         something you don&rsquo;t like out of obligation. Life is short and the
         shelves are long. If a book isn&rsquo;t working by page 50, set it free.
+        A reliable rule of thumb: subtract your age from 100, and that&rsquo;s
+        the page you can quit on without guilt. Put the abandoned book back in
+        rotation for another year — taste changes, and the book that bored you
+        at 30 can floor you at 40.
       </p>
 
       <h2>3. Keep the TBR small and physical</h2>
       <p>
         A 200-book digital wishlist is a to-do list, not a treat. Keep a shelf of
         five to ten books you genuinely intend to read next. When you finish one,
-        you&rsquo;ve earned the trip to replace it.
+        you&rsquo;ve earned the trip to replace it. Give the shelf a shape while
+        you&rsquo;re at it: one book that&rsquo;s pure fun, one that stretches you
+        a little, and one short enough to finish in a weekend. That way
+        there&rsquo;s always a match for your mood, and you&rsquo;re never staring
+        at five doorstoppers on a night you only have the energy for a novella.
       </p>
 
       <h2>4. Follow your taste, not the bestseller list</h2>
@@ -63,7 +76,12 @@ export default function Body() {
         <Link href="/reading-room/how-to-choose-your-next-book">
           how to choose your next book
         </Link>
-        .
+        . And if the habit keeps stalling no matter what you pick, our practical
+        tips on{" "}
+        <Link href="/reading-room/how-to-read-more-books">
+          how to read more books
+        </Link>{" "}
+        dig into the friction points that trip most readers up.
       </p>
 
       <h2>5. Let books circulate</h2>
