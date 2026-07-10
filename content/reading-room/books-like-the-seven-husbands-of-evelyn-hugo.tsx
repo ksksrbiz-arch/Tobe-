@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Glamour, ambition, a larger-than-life heroine, and a secret worth keeping. Six novels to read after The Seven Husbands of Evelyn Hugo.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
@@ -75,7 +76,12 @@ export default function Body() {
       <p>
         In 1950s Jaipur, a self-made woman builds an independent life among the
         city&rsquo;s elite while her carefully guarded past closes in. Lush, vivid,
-        and full of the secret-keeping tension Reid fans crave.
+        and full of the secret-keeping tension Reid fans crave &mdash; and a strong
+        gateway into our{" "}
+        <Link href="/reading-room/best-historical-fiction-novels">
+          best historical fiction novels
+        </Link>{" "}
+        if the period setting is half the pleasure for you.
       </p>
 
       <h2>6. The Final Revival of Opal &amp; Nev — Dawnie Walton</h2>

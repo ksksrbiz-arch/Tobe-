@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "What will last from this century's fiction? Six acclaimed, deeply rewarding literary novels worth your time, from The Road to The Overstory.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
@@ -69,7 +70,11 @@ export default function Body() {
         A Korean family across four generations in 20th-century Japan, enduring
         and persisting against the odds. <em>Pachinko</em> is a sweeping,
         big-hearted saga — historical in reach but unmistakably modern in its
-        empathy.
+        empathy, and a fine on-ramp to more of our{" "}
+        <Link href="/reading-room/best-historical-fiction-novels">
+          best historical fiction novels
+        </Link>
+        .
       </p>
 
       <h2>Cloud Cuckoo Land — Anthony Doerr</h2>
