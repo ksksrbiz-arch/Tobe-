@@ -51,7 +51,7 @@ export default function Body() {
         book two (<em>A Court of Mist and Fury</em>, the one everyone screams
         about). The genre&rsquo;s cornerstone and the safest place to start — if
         you&rsquo;ve read a{" "}
-        <Link href="/reading-room/books-like-acotar">books-like-ACOTAR</Link>{" "}
+        <Link href="/reading-room/books-like-a-court-of-thorns-and-roses">books-like-ACOTAR</Link>{" "}
         list, this is what it&rsquo;s chasing. Heat climbs as the series goes.
       </p>
 
