@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Cash or store credit for your old books? Here's why trade-in credit usually goes further at a used bookstore — and when taking cash is the smarter call.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Trade", "Local guide"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -49,6 +50,21 @@ export default function Body() {
         cover months of reading. For a steady reader, a store-credit balance
         behaves less like a coupon and more like an account you keep topping up
         with books you&rsquo;re already done with.
+      </p>
+      <p>
+        One detail that trips people up: credit rarely covers a whole purchase by
+        itself. At most shops it knocks down part of your total and you pay the
+        rest at the register, so it works as a standing discount rather than free
+        books. The exact split, and how long credit lasts, vary by store &mdash;
+        ours is spelled out in{" "}
+        <Link href="/reading-room/how-book-trade-in-credit-works">how our trade-in credit works</Link>{" "}
+        and on the{" "}
+        <Link href="/trade">trade page</Link>. It&rsquo;s worth reading the fine
+        print before you decide, because a store that gives &ldquo;more&rdquo;
+        credit but only lets you spend a sliver of it per visit may not beat a
+        simpler cash offer. If you&rsquo;re not sure a shop even trades the way
+        you expect, start with{" "}
+        <Link href="/reading-room/do-bookstores-buy-used-books">do bookstores buy used books</Link>.
       </p>
 
       <h2>When cash actually makes sense</h2>

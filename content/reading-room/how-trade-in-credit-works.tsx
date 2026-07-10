@@ -19,10 +19,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Bring books, earn store credit, take home your next read the same afternoon. Here's exactly how our trade-in works — what we accept, how credit adds up, and the rules worth knowing first.",
   date: "2026-06-19",
-  updated: "2026-07-02",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Trade-in", "Store credit", "How-to"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -85,9 +85,30 @@ export default function Body() {
         shelves moving without their book budget ever leaving the neighborhood.
       </p>
 
+      <h2>Why credit instead of cash?</h2>
+      <p>
+        We&rsquo;re a small shop, and store credit is what lets us keep taking
+        books in volume: the value stays on the shelves instead of leaving the
+        register, so we can be generous with what we accept. For a steady reader
+        that&rsquo;s the better deal anyway, since you were going to buy your next
+        stack regardless. If you&rsquo;re downsizing for good and want money in
+        hand instead, that&rsquo;s a real trade-off worth weighing &mdash; we lay
+        it out in{" "}
+        <Link href="/reading-room/cash-for-books-vs-store-credit">
+          cash for books vs. store credit
+        </Link>
+        . And if you&rsquo;re just wondering whether shops take used books at all,
+        start with{" "}
+        <Link href="/reading-room/do-bookstores-buy-used-books">
+          do bookstores buy used books
+        </Link>
+        .
+      </p>
+
       <p>
         Want the step-by-step with photos and the full FAQ?{" "}
-        <Link href="/how-it-works">See exactly how it works</Link>, or{" "}
+        <Link href="/how-it-works">See exactly how it works</Link>,{" "}
+        <Link href="/trade">start a trade</Link>, or{" "}
         <Link href="/visit">plan your visit</Link> — we&rsquo;re at 7931 SE King
         Rd in Milwaukie, open Monday through Saturday, 10am&ndash;5pm. For tips
         on getting the most out of the books you bring in, see{" "}

@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Ready to clear your bookshelves? Here's how to sort your books and decide what to trade, sell, donate, or recycle — so nothing useful ends up in the bin.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Trade", "Reading life"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -62,6 +63,19 @@ export default function Body() {
         to choose, and{" "}
         <Link href="/reading-room/what-books-can-you-sell-to-a-used-bookstore">what books a used bookstore wants</Link>{" "}
         to know what will qualify.
+      </p>
+      <p>
+        A little prep makes this pile go faster at the counter. Wipe down covers,
+        pull out any bookmarks or receipts, and skip the categories most shops
+        turn away anyway &mdash; textbooks, encyclopedias, condensed editions, and
+        anything musty or water-stained. Recent, in-print fiction and popular
+        nonfiction move best; a stack of clean, current paperbacks will almost
+        always beat a box of yellowed hardcovers nobody&rsquo;s asking for. If
+        you&rsquo;re not sure a given shop even takes trades, start with{" "}
+        <Link href="/reading-room/do-bookstores-buy-used-books">do bookstores buy used books</Link>, and if you want the mechanics of how credit is earned and spent,{" "}
+        <Link href="/reading-room/how-book-trade-in-credit-works">how trade-in credit works</Link>{" "}
+        walks through it. Textbooks are their own case &mdash; see{" "}
+        <Link href="/reading-room/sell-your-textbooks-portland">selling textbooks around Portland</Link>.
       </p>
 
       <h2>Donate what stores can&rsquo;t take</h2>
