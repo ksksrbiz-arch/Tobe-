@@ -1677,7 +1677,85 @@ async function buildScene(
         // vs teal) and scale give them distinct identities.
         crystalFormation(group, anims, "crystalCluster", 0x6be0ff, 0.19, 0.04, 0.2, 0.16, -0.5);
         crystalFormation(group, anims, "crystalCluster", 0x62e6cf, -0.24, 0.045, 0.23, 0.1, 1.9);
-        addFlock(group, anims, { count: 3, radius: 0.55, y: 0.72, speed: 0.55 });
+        addFlock(group, anims, { count: 3, radius: 0.55, y: 0.45, speed: 0.55 });
+        // The world is called Dragon's Peak — so a dragon finally circles the
+        // peak: a plum serpentine body of tapering segments that undulates in
+        // flight, broad membrane wings on a shoulder hinge beating a slow
+        // powerful stroke, a horned head, and golden eyes. It banks into its
+        // circle and the whole body rides the wing-beat.
+        {
+          const dragon = new T.Group();
+          const plum = lam(0x7d2f85);
+          const plumLight = lam(0x9a4aa2);
+          // Head with snout + horns + eyes.
+          const dhead = new T.Group();
+          dhead.add(mesh(g(new T.SphereGeometry(0.022, 12, 10)), plum, 0, 0, 0));
+          dhead.add(mesh(g(new T.BoxGeometry(0.024, 0.014, 0.016)), plumLight, 0.02, -0.004, 0));
+          for (const s of [-1, 1] as const) {
+            const horn = mesh(g(new T.ConeGeometry(0.004, 0.016, 5)), lam(0xf1bb1a), -0.006, 0.018, s * 0.009);
+            horn.rotation.x = s * 0.35;
+            horn.rotation.z = -0.5;
+            dhead.add(horn);
+            dhead.add(mesh(g(new T.SphereGeometry(0.0035, 6, 5)), lam(0xffd23f), 0.012, 0.006, s * 0.012));
+          }
+          dhead.position.set(0.055, 0.008, 0);
+          dragon.add(dhead);
+          // Segmented tapering body → tail, stored for per-frame undulation.
+          const segs: THREE.Mesh[] = [];
+          for (let i = 0; i < 7; i++) {
+            const r = 0.016 * (1 - i * 0.11);
+            const seg = mesh(g(new T.SphereGeometry(r, 10, 8)), i % 2 ? plumLight : plum, 0.03 - i * 0.024, 0, 0);
+            seg.scale.set(1.3, 1, 1);
+            segs.push(seg);
+            dragon.add(seg);
+          }
+          const tailFin = mesh(g(new T.ConeGeometry(0.01, 0.024, 4)), lam(0xf1bb1a), 0.03 - 7 * 0.024, 0, 0);
+          tailFin.rotation.z = Math.PI / 2;
+          segs.push(tailFin);
+          dragon.add(tailFin);
+          // Broad membrane wings hinged at the shoulder.
+          const wingGeoDr = g(new T.PlaneGeometry(0.075, 0.05, 4, 2));
+          {
+            const pos = wingGeoDr.attributes.position;
+            for (let i = 0; i < pos.count; i++) {
+              const u = (pos.getX(i) + 0.0375) / 0.075; // 0 shoulder → 1 tip
+              pos.setY(i, pos.getY(i) * (1 - u * 0.45)); // taper toward the tip
+              pos.setZ(i, -u * u * 0.012); // slight backward rake
+            }
+            wingGeoDr.computeVertexNormals();
+            wingGeoDr.translate(0.0375, 0, 0); // hinge at x=0
+          }
+          const wingMatDr = track(new T.MeshLambertMaterial({ color: 0xb85fbf, side: T.DoubleSide, flatShading: true }));
+          const shoulders: THREE.Group[] = [];
+          for (const s of [-1, 1] as const) {
+            const sh = new T.Group();
+            const w = new T.Mesh(wingGeoDr, wingMatDr);
+            if (s < 0) w.scale.x = -1;
+            sh.add(w);
+            sh.position.set(0.012, 0.012, s * 0.014);
+            sh.rotation.x = -s * Math.PI / 2; // wings sweep out sideways
+            shoulders.push(sh);
+            dragon.add(sh);
+          }
+          group.add(dragon);
+          anims.push((t) => {
+            const a = t * 0.4;
+            const beat = Math.sin(t * 5);
+            // Circle the peak level with the castle (higher orbits leave the
+            // hero's visible frame), riding each wing-beat, banking into the turn.
+            dragon.position.set(Math.cos(a) * 0.58, 0.3 + Math.sin(t * 0.9) * 0.07 + beat * 0.012, Math.sin(a) * 0.46);
+            dragon.rotation.y = -a;
+            dragon.rotation.z = 0.18 + beat * 0.06;
+            // Wings: fast powered downstroke, slower recovery.
+            const flap = beat > 0 ? beat * 0.85 : beat * 0.45;
+            shoulders[0].rotation.z = -flap;
+            shoulders[1].rotation.z = flap;
+            // The body undulates behind the head like a ribbon.
+            for (let i = 0; i < segs.length; i++) {
+              segs[i].position.y = Math.sin(t * 5 - i * 0.7) * 0.006 * (i / 3 + 0.4);
+            }
+          });
+        }
         break;
       }
       case "rocket": {
@@ -1812,6 +1890,26 @@ async function buildScene(
             ship.rotation.z = Math.sin(t * 1.5) * 0.06;
             ship.rotation.x = Math.sin(t * 1.1 + 1) * 0.05;
           });
+          // Ripple rings spreading out from the bobbing hull — the ship was
+          // sitting on glass before. Two staggered rings expand and fade on the
+          // water plane just above the sea disk.
+          for (let i = 0; i < 2; i++) {
+            const ringGeo = g(new T.RingGeometry(0.9, 1.0, 28));
+            ringGeo.rotateX(-Math.PI / 2);
+            const ringMat = track(
+              new T.MeshBasicMaterial({ color: 0xcfeeff, transparent: true, opacity: 0, depthWrite: false, side: T.DoubleSide }),
+            );
+            const ripple = new T.Mesh(ringGeo, ringMat);
+            ripple.position.set(-0.05, 0.047, 0.05);
+            group.add(ripple);
+            const off = i * 0.5;
+            anims.push((t) => {
+              const life = (t * 0.45 + off) % 1;
+              const r = 0.05 + life * 0.1;
+              ripple.scale.set(r, 1, r * 0.85);
+              ringMat.opacity = (1 - life) * 0.35;
+            });
+          }
         }
         const isle = mesh(g(new T.ConeGeometry(0.08, 0.09, 6)), lam(0xead9a0), 0.22, 0.07, -0.14);
         const palm = placeModel("palm", 0.22, 0.11, -0.14, 0.038, 0.6);
@@ -1882,7 +1980,7 @@ async function buildScene(
           }
         });
         // Seagulls wheeling over the cove.
-        addFlock(group, anims, { count: 3, radius: 0.5, y: 0.6, speed: 0.5, color: 0xf2ede4 });
+        addFlock(group, anims, { count: 3, radius: 0.5, y: 0.38, speed: 0.5, color: 0xf2ede4 });
         // The cove's sea spills off the floating island's rim — the signature
         // floating-island waterfall motif, here fed by the lagoon. Pushed just
         // past the sea disk's edge (R=0.35) so the falls read as the lagoon
@@ -1902,8 +2000,14 @@ async function buildScene(
         const stoneCols = [0xa8895f, 0xb79b6e, 0xc4a878];
         for (const [i, [w, h, y]] of [[0.3, 0.09, 0.075], [0.22, 0.08, 0.155], [0.14, 0.08, 0.235]].entries())
           group.add(mesh(g(new T.BoxGeometry(w, h, w)), lam(stoneCols[i]), 0, y, 0));
-        // Dark doorway set into the base tier.
+        // Dark doorway set into the base tier — with a faint teal glow breathing
+        // deep inside it, hinting at whatever the temple guards.
         group.add(mesh(g(new T.BoxGeometry(0.05, 0.07, 0.02)), lam(0x2c2418), 0, 0.065, 0.151));
+        const doorGlow = spriteOf(glowTex, 0.06, 0.4, true);
+        (doorGlow.material as THREE.SpriteMaterial).color.setHex(0x62e0d0);
+        doorGlow.position.set(0, 0.065, 0.155);
+        group.add(doorGlow);
+        anims.push((t) => ((doorGlow.material as THREE.SpriteMaterial).opacity = 0.28 + Math.sin(t * 1.4) * 0.14));
         // Steps leading up to the doorway.
         group.add(mesh(g(new T.BoxGeometry(0.08, 0.02, 0.03)), lam(0x9a7d54), 0, 0.03, 0.17));
         // A glowing capstone gem on the summit that pulses.
@@ -1959,6 +2063,18 @@ async function buildScene(
         stripe.scale.set(0.4, 1.16, 1.01);
         const basket = mesh(g(new T.BoxGeometry(0.07, 0.05, 0.07)), lam(0x8b5a2b), 0, -0.21, 0);
         bal.add(envelope, stripe, basket);
+        // Suspension ropes — the envelope and basket were floating disconnected,
+        // which quietly broke the toy's believability. Four thin lines run from
+        // the envelope's skirt down to the basket corners.
+        {
+          const ropeMat = lam(0x6b4a2b);
+          for (const [sx, sz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]] as const) {
+            const rope = mesh(g(new T.CylinderGeometry(0.0016, 0.0016, 0.1, 4)), ropeMat, sx * 0.045, -0.135, sz * 0.045);
+            rope.rotation.z = -sx * 0.38;
+            rope.rotation.x = sz * 0.38;
+            bal.add(rope);
+          }
+        }
         // A little bear rides in the basket, peeking over the rim and waving.
         const riderCol = 0xb5773f;
         const riderHead = mesh(g(new T.SphereGeometry(0.026, 12, 10)), lam(riderCol), 0, -0.172, 0.006);
@@ -1994,7 +2110,7 @@ async function buildScene(
         c2.position.set(0.34, 0.34, 0.05);
         group.add(c2);
         anims.push((t) => (c2.position.x = 0.34 + Math.sin(t * 0.5 + 2) * 0.04));
-        addFlock(group, anims, { count: 3, radius: 0.5, y: 0.66, speed: 0.5, color: 0x5a6b7a });
+        addFlock(group, anims, { count: 3, radius: 0.55, y: 0.34, speed: 0.5, color: 0x5a6b7a });
         // Brooks spilling off the floating meadow's rim into the clouds below.
         addWaterfall(group, anims, 0.8, 0.52);
         addWaterfall(group, anims, 2.5, 0.46);
@@ -2047,11 +2163,27 @@ async function buildScene(
         peduncle.rotation.z = Math.PI / 2;
         const eye = mesh(g(new T.SphereGeometry(0.012, 6, 6)), lam(0xffffff), 0.09, 0.02, 0.07);
         whale.add(body, whaleBelly, peduncle, flukeL, flukeR, eye);
+        // A spout that puffs from the blowhole at the crest of each breach —
+        // three tiny mist sprites fanning up and fading.
+        const spout: THREE.Sprite[] = [];
+        for (let i = 0; i < 3; i++) {
+          const sMist = spriteOf(softDot, 0.03 + i * 0.012, 0, true);
+          (sMist.material as THREE.SpriteMaterial).color.setHex(0xdff4ff);
+          whale.add(sMist);
+          spout.push(sMist);
+        }
         group.add(whale);
         anims.push((t) => {
           const k = (Math.sin(t * 0.9) + 1) / 2;
           whale.position.set(Math.sin(t * 0.45) * 0.1, 0.1 + Math.sin(k * Math.PI) * 0.16, 0);
           whale.rotation.z = Math.cos(t * 0.9) * 0.5;
+          // The spout fires near the top of the arc (k ≈ 0.5): mist rises off
+          // the blowhole, spreading and fading as it climbs.
+          const crest = Math.max(0, Math.sin(k * Math.PI) - 0.72) / 0.28;
+          spout.forEach((sMist, i) => {
+            sMist.position.set(0.045 - i * 0.008, 0.085 + crest * (0.03 + i * 0.03), (i - 1) * 0.008);
+            (sMist.material as THREE.SpriteMaterial).opacity = crest * (0.55 - i * 0.12);
+          });
         });
         // Streams of bubbles rising from the reef and popping at the surface.
         for (let i = 0; i < 7; i++) {
@@ -2071,7 +2203,7 @@ async function buildScene(
           });
         }
         // Gulls over the water.
-        addFlock(group, anims, { count: 2, radius: 0.52, y: 0.62, speed: 0.46, color: 0xf2ede4 });
+        addFlock(group, anims, { count: 2, radius: 0.52, y: 0.4, speed: 0.46, color: 0xf2ede4 });
         // The lagoon overflows off the island rim in two falls.
         addWaterfall(group, anims, 0.6, 0.5);
         addWaterfall(group, anims, 2.5, 0.46);
@@ -2164,6 +2296,45 @@ async function buildScene(
             pos.setZ(i, ribbonBase[i * 3 + 2] + Math.cos(x * 5 + t * 1.2) * 0.03);
           }
           pos.needsUpdate = true;
+        });
+        // A second violet ribbon behind and above the teal one, waving on its
+        // own slower phase — a lone curtain read as a decal; two at different
+        // depths read as a sky full of aurora.
+        const ribbon2Geo = g(new T.PlaneGeometry(1.05, 0.12, 18, 1));
+        const ribbon2Base = Float32Array.from(ribbon2Geo.attributes.position.array);
+        const ribbon2Mat = track(
+          new T.MeshBasicMaterial({
+            color: 0xa06bff,
+            transparent: true,
+            opacity: 0.28,
+            side: T.DoubleSide,
+            depthWrite: false,
+            blending: T.AdditiveBlending,
+          }),
+        );
+        const ribbon2 = new T.Mesh(ribbon2Geo, ribbon2Mat);
+        ribbon2.position.set(0.05, 0.62, -0.24);
+        group.add(ribbon2);
+        // …and the aurora light washes the snowfield below, breathing between
+        // teal and violet in time with the curtains.
+        const snowGlow = spriteOf(glowTex, 0.5, 0.2, true);
+        snowGlow.position.set(0, 0.14, -0.05);
+        group.add(snowGlow);
+        const glowCol = (snowGlow.material as THREE.SpriteMaterial).color;
+        const teal = new T.Color(0x3df5c0);
+        const violet = new T.Color(0xa06bff);
+        anims.push((t) => {
+          const pos = ribbon2Geo.attributes.position;
+          for (let i = 0; i < pos.count; i++) {
+            const x = ribbon2Base[i * 3];
+            pos.setY(i, ribbon2Base[i * 3 + 1] + Math.sin(x * 5 - t * 1.1 + 2) * 0.045);
+            pos.setZ(i, ribbon2Base[i * 3 + 2] + Math.cos(x * 4 - t * 0.9) * 0.035);
+          }
+          pos.needsUpdate = true;
+          ribbon2Mat.opacity = 0.2 + Math.sin(t * 0.7 + 1) * 0.08;
+          const mixK = (Math.sin(t * 0.5) + 1) / 2;
+          glowCol.copy(teal).lerp(violet, mixK);
+          (snowGlow.material as THREE.SpriteMaterial).opacity = 0.14 + Math.sin(t * 0.8) * 0.06;
         });
         break;
       }
@@ -2262,7 +2433,7 @@ async function buildScene(
           rayMatD.opacity = 0.3 + Math.sin(t * 2) * 0.12;
         });
         // A lone bird gliding over the dunes.
-        addFlock(group, anims, { count: 2, radius: 0.5, y: 0.66, speed: 0.42, color: 0x6b4a3a });
+        addFlock(group, anims, { count: 2, radius: 0.5, y: 0.42, speed: 0.42, color: 0x6b4a3a });
         break;
       }
     }
