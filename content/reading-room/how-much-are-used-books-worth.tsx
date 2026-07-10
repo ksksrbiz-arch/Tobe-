@@ -11,16 +11,17 @@ export const meta: BlogMeta = {
   excerpt:
     "Curious what your used books are worth? Here's an honest look at how condition, demand, and edition drive value — and why store credit goes further.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Trade", "Local guide"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
   return (
     <>
       <QuickAnswer>
-        Most used books are worth a fraction of their cover price — condition, demand, and edition set the value — but store credit stretches further than cash, so a well-kept box of the right titles can add up to a real shelf refresh.
+        Most used books are worth a fraction of their cover price &mdash; condition, demand, and edition set the value &mdash; but store credit stretches further than cash, so a well-kept box of the right titles can add up to a real shelf refresh. The value is in the pile, not the single book.
       </QuickAnswer>
       <p>
         It&rsquo;s the first question almost everyone asks: &ldquo;What are my
@@ -32,10 +33,16 @@ export default function Body() {
 
       <h2>Three things set the value</h2>
       <ul>
-        <li><strong>Condition.</strong> This is the big one. A clean, tight copy is worth taking; a water-stained or heavily highlighted one usually isn&rsquo;t, no matter the title.</li>
+        <li><strong>Condition.</strong> This is the big one. A clean, tight copy is worth taking; a water-stained or heavily highlighted one usually isn&rsquo;t, no matter the title. Hardcovers hold more value with their dust jackets intact.</li>
         <li><strong>Demand.</strong> A book is only worth what a reader will pay for it next. Current bestsellers, beloved series, and evergreen classics carry value; last decade&rsquo;s overstock often doesn&rsquo;t.</li>
         <li><strong>Edition.</strong> Format and printing matter. A sturdy trade paperback or hardcover beats a yellowed mass-market copy, and a current edition beats one that&rsquo;s been superseded.</li>
       </ul>
+      <p>
+        Those same three factors decide whether a shop will take a title at all,
+        which is why they&rsquo;re worth a quick sort before you go. Our guide to{" "}
+        <Link href="/reading-room/what-books-can-you-sell-to-a-used-bookstore">what books you can sell to a used bookstore</Link>{" "}
+        breaks the categories down further.
+      </p>
 
       <h2>Setting realistic expectations</h2>
       <p>
@@ -60,7 +67,8 @@ export default function Body() {
         <Link href="/reading-room/cash-for-books-vs-store-credit">
           cash for books vs. store credit
         </Link>
-        .
+        , or the step-by-step in{" "}
+        <Link href="/reading-room/how-book-trade-in-credit-works">how our trade-in credit works</Link>.
       </p>
 
       <h2>What about &ldquo;valuable&rdquo; old books?</h2>
@@ -86,11 +94,7 @@ export default function Body() {
       <p>
         The only way to know for sure is to let us look. See whether{" "}
         <Link href="/reading-room/do-bookstores-buy-used-books">a bookstore will buy your used books</Link>,
-        check{" "}
-        <Link href="/reading-room/what-books-can-you-sell-to-a-used-bookstore">
-          what books you can actually sell to a used bookstore
-        </Link>
-        , check the <Link href="/trade">trade-in details</Link>, or simply{" "}
+        check the <Link href="/trade">trade-in details</Link>, or simply{" "}
         <Link href="/visit">bring a box by the shop</Link>. Then turn that credit
         into your <Link href="/#next-read">next read</Link>.
       </p>
