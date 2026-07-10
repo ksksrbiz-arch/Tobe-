@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Horror isn't all gore — the best of it is atmosphere and dread. Six approachable starter novels, from quiet hauntings to modern gothic, with a line on each.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
   readingMinutes: 4,
@@ -104,6 +105,12 @@ export default function Body() {
         on fast. Browse <Link href="/shop">our shelves</Link>, ask the{" "}
         <Link href="/#next-read">Matchmaker</Link> to match your scare tolerance,
         or <Link href="/visit">come in</Link> and we&rsquo;ll find your level.
+        If it&rsquo;s pure dread you&rsquo;re after rather than the supernatural,
+        our{" "}
+        <Link href="/reading-room/best-thriller-books-to-keep-you-up">
+          best thrillers to keep you up
+        </Link>{" "}
+        scratch a similar itch with the lights on.
         A book like <em>Mexican Gothic</em> also makes a great pick for a
         meeting that gets a little heated — see our{" "}
         <Link href="/reading-room/best-book-club-books">

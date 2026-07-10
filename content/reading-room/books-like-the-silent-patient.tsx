@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Unreliable narrators, slow-burn dread, and a final-page twist that flips the whole book. Six thrillers to read after The Silent Patient.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
   readingMinutes: 4,
@@ -96,7 +97,12 @@ export default function Body() {
         <Link href="/reading-room/books-like-a-game-of-thrones">
           books like A Game of Thrones
         </Link>{" "}
-        list has just as many gut-punch turns. Closer to home?{" "}
+        list has just as many gut-punch turns. Want the same dread with prose
+        worth underlining? Our{" "}
+        <Link href="/reading-room/best-literary-thrillers">
+          best literary thrillers
+        </Link>{" "}
+        deliver the twist and the sentences. Closer to home?{" "}
         <Link href="/visit">Stop by</Link> our
         Milwaukie shop — free parking, no judgment about your TBR pile.
       </p>

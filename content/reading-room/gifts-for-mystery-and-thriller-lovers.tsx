@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "They guess the killer by chapter three and still can't put it down. Here's how to shop for the mystery and thriller lover — from cozies to white-knuckle thrillers.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Gift guide", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -41,22 +42,33 @@ export default function Body() {
         psychological thriller from our{" "}
         <Link href="/reading-room/best-thriller-books-to-keep-you-up">best thrillers to keep you up</Link>{" "}
         list — <em>The Silent Patient</em> and <em>Gone Girl</em> are reliable
-        gateway hits.
+        gateway hits, both built on a last-page turn that begs to be talked about.
+        Loved <em>The Silent Patient</em> already? Point them at our{" "}
+        <Link href="/reading-room/books-like-the-silent-patient">books like The Silent Patient</Link>{" "}
+        so you don&rsquo;t gift a repeat.
       </p>
 
       <h2>For the literary-crossover reader</h2>
       <p>
-        Some readers want a mystery with real prose behind it. Try{" "}
+        Some readers want a mystery with real prose behind it — dread you can
+        underline. Try{" "}
         <em>Where the Crawdads Sing</em> or other atmospheric, character-driven
-        reads — see our{" "}
-        <Link href="/reading-room/books-like-where-the-crawdads-sing">books like Where the Crawdads Sing</Link>.
+        reads (our{" "}
+        <Link href="/reading-room/books-like-where-the-crawdads-sing">books like Where the Crawdads Sing</Link>{" "}
+        has more), or reach for a{" "}
+        <Link href="/reading-room/best-literary-thrillers">literary thriller</Link>{" "}
+        like <em>The Secret History</em> that keeps the tension high and the
+        sentences sharp.
       </p>
 
       <h2>Give a series to binge</h2>
       <p>
         Crime readers love a detective to follow. Used copies make it affordable
-        to gift the first few books of a long-running series — enough to get them
-        properly hooked.
+        to gift the first three or four books of a long-running series — enough to
+        get someone properly hooked before they have to buy their own. A cozy
+        reader will tear through the{" "}
+        <Link href="/reading-room/cozy-mystery-starter-shelf">cozy mystery starter shelf</Link>{" "}
+        this way; start them on book one and let the habit take over.
       </p>
 
       <h2>The no-risk option</h2>
