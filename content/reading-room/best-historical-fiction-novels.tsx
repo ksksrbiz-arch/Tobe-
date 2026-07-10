@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Great historical fiction lets you live in another century for a few hundred pages. Six unforgettable novels to start with, with a line on each.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "The Nightingale", author: "Kristin Hannah" },
     { name: "All the Light We Cannot See", author: "Anthony Doerr" },
@@ -110,12 +111,18 @@ export default function Body() {
         these titles trade in often. Browse <Link href="/shop">our shelves</Link>,
         ask the <Link href="/#next-read">Matchmaker</Link> for one set in a
         century you love, or <Link href="/visit">stop by</Link> and let us point
-        you to a few. When you&rsquo;re done, trade it forward for someone
-        else&rsquo;s next great read. The Nightingale also turns up on our{" "}
+        you to a few. When you&rsquo;re done,{" "}
+        <Link href="/trade">trade it forward</Link> for someone else&rsquo;s
+        next great read. <em>The Nightingale</em> also turns up on our{" "}
         <Link href="/reading-room/best-book-club-books">
           best book club books
         </Link>{" "}
-        list, if you&rsquo;re picking for a group.
+        list, if you&rsquo;re picking for a group, and if these true-to-life wars
+        and dynasties leave you wanting real ones, try our{" "}
+        <Link href="/reading-room/best-narrative-nonfiction-books">
+          best narrative nonfiction
+        </Link>
+        .
       </p>
     </>
   );

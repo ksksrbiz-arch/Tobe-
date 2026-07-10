@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Some books end. These don't — at least not for a few hundred more pages. Here are the most addictive series worth committing a long weekend (or a whole season) to.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "Harry Potter", author: "J.K. Rowling" },
     { name: "The Empyrean (Fourth Wing)", author: "Rebecca Yarros" },
@@ -105,12 +106,18 @@ export default function Body() {
         <Link href="/visit">visit us in Milwaukie</Link> and ask what&rsquo;s on
         the shelf. Can&rsquo;t decide where to begin? Tell the{" "}
         <Link href="/#next-read">Next Read Matchmaker</Link> what you love and
-        let it pick. If you&rsquo;d rather read one perfect book and be done,
-        try our{" "}
+        let it pick, and{" "}
+        <Link href="/trade">trade your finished volumes</Link> back for credit
+        toward the next box. If you&rsquo;d rather read one perfect book and be
+        done, try our{" "}
         <Link href="/reading-room/best-standalone-fantasy-novels">
           best standalone fantasy novels
         </Link>{" "}
-        instead.
+        or, for a shorter commitment, our{" "}
+        <Link href="/reading-room/short-books-to-finish-in-a-weekend">
+          short books for a weekend
+        </Link>
+        .
       </p>
     </>
   );

@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Big payoffs in a small number of pages. Five short story collections worth keeping on the nightstand, whatever you usually read.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "Interpreter of Maladies", author: "Jhumpa Lahiri" },
     { name: "Tenth of December", author: "George Saunders" },
@@ -41,36 +42,45 @@ export default function Body() {
 
       <h2>Interpreter of Maladies — Jhumpa Lahiri</h2>
       <p>
-        Lahiri&rsquo;s Pulitzer-winning debut about Indian and
-        Indian-American lives is quietly perfect. Warm, precise, and emotionally
-        enormous — a flawless place to start.
+        Lahiri&rsquo;s debut about Indian and Indian-American lives won the
+        Pulitzer for a first collection — rare — and it&rsquo;s easy to see why:
+        every one of the nine stories is warm, precise, and quietly enormous.
+        Start with the title story or &ldquo;A Temporary Matter.&rdquo; A
+        flawless place to learn what the form can do.
       </p>
 
       <h2>Tenth of December — George Saunders</h2>
       <p>
-        Funny, strange, and unexpectedly tender. Saunders bends reality just
-        enough to break your heart; the title story alone is worth the price.
+        Funny, strange, and unexpectedly tender, Saunders bends reality just
+        enough to break your heart — a near-future here, a chemical mood-drug
+        there. The title story alone is worth the price. Read this when you want
+        to be surprised by how much a short story can hold.
       </p>
 
       <h2>Her Body and Other Parties — Carmen Maria Machado</h2>
       <p>
         Genre-blurring stories that mix horror, fairy tale, and fierce feminist
-        wit. Inventive and unsettling in the best way — perfect for readers who
-        want to be surprised.
+        wit, including a novella-length riff on urban legends. Inventive and
+        unsettling in the best way. If you love this, our{" "}
+        <Link href="/reading-room/best-book-club-books">book club picks</Link>{" "}
+        include more titles built to argue about.
       </p>
 
       <h2>What We Talk About When We Talk About Love — Raymond Carver</h2>
       <p>
-        The high-water mark of spare, minimalist American storytelling. Ordinary
-        people, ordinary kitchens, and an ache that sneaks up on you. A short
-        story masterclass.
+        The high-water mark of spare, minimalist American storytelling: ordinary
+        people, ordinary kitchens, and an ache that sneaks up on you. Nothing is
+        explained and everything is felt. A short-story masterclass in how much
+        you can leave off the page.
       </p>
 
       <h2>Nine Stories — J.D. Salinger</h2>
       <p>
         The companion to <em>The Catcher in the Rye</em>, and arguably the
         better book. &ldquo;A Perfect Day for Bananafish&rdquo; is one of the
-        most quietly devastating stories ever written.
+        most quietly devastating stories ever written — you&rsquo;ll reread the
+        last page twice. Proof that a great collection can outlast the famous
+        novel beside it.
       </p>
 
       <h2>How to read a collection</h2>
@@ -90,8 +100,14 @@ export default function Body() {
         </Link>{" "}
         pairs nicely, and a sharp collection is a great{" "}
         <Link href="/reading-room/best-book-club-books">book club pick</Link>{" "}
-        too. Ask the <Link href="/#next-read">Matchmaker</Link> for one in your
-        taste, then trade it in for credit when you&rsquo;re finished.
+        too. Prefer verse in small doses? Our{" "}
+        <Link href="/reading-room/best-poetry-collections-for-beginners">
+          poetry collections for beginners
+        </Link>{" "}
+        are another gentle, bite-size entry point. Ask the{" "}
+        <Link href="/#next-read">Matchmaker</Link> for one in your taste, then{" "}
+        <Link href="/trade">trade it in</Link> for credit when you&rsquo;re
+        finished.
       </p>
     </>
   );
