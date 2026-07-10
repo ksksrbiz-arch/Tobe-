@@ -2,8 +2,10 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
+import QuickAnswer from "@/components/QuickAnswer";
 import StorySection from "@/components/StorySection";
 import FAQSection, { type Faq } from "@/components/FAQSection";
 import Footer from "@/components/Footer";
@@ -124,6 +126,26 @@ export default function AboutPage() {
         imageUrl="/images/shelves/store-kids-room-overview.jpg"
         scrollTargetId="about"
       />
+
+      {/* Answer-first summary: who we are, in one paragraph, before the long story. */}
+      <section className="px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8" style={{ background: "var(--background)" }}>
+        <Reveal className="mx-auto max-w-4xl">
+          <QuickAnswer>
+            <strong>To Be Read</strong>{" "}is a neighborhood used bookstore in Milwaukie, Oregon — the
+            shop known for 45 years as the Clackamas Book Exchange, now under new ownership and
+            becoming TBR. We&rsquo;ve kept what regulars love — deep, ever-rotating shelves and
+            trade-in credit — and added a lighter, more welcoming space to wander. New here?{" "}
+            <Link href="/visit" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+              Plan your first visit
+            </Link>{" "}
+            or{" "}
+            <Link href="/reading-room" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+              browse the Reading Room
+            </Link>
+            .
+          </QuickAnswer>
+        </Reveal>
+      </section>
 
       <StorySection />
 
