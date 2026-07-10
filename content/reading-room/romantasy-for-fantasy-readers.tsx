@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Love epic fantasy but side-eye the romance shelf? These seven romantasy reads bring real world-building and plot — the romance is a bonus, not the whole point.",
   date: "2026-05-25",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Genre guide"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "Fourth Wing", author: "Rebecca Yarros" },
     { name: "The Cruel Prince", author: "Holly Black" },
@@ -36,31 +37,72 @@ export default function Body() {
       </QuickAnswer>
       <p>
         If you came up on Tolkien and Sanderson, &ldquo;romantasy&rdquo; might
-        sound like all kissing and no plot. Not these. Here are seven with the
-        maps, magic systems, and stakes a fantasy reader wants — the romance just
-        sweetens the deal.
+        sound like all kissing and no plot. Not these. The trick, for a fantasy
+        reader, is starting with the books where the world would hold up even if
+        you stripped the romance out — a real magic system, a map worth studying,
+        stakes beyond who-ends-up-with-whom. Here are seven with the bones a
+        fantasy reader wants, ordered loosely from most romance-forward to most
+        fantasy-forward, so you can pick your comfort level.
       </p>
 
       <h2>1. Fourth Wing — Rebecca Yarros</h2>
-      <p>A brutal dragon-rider war college with real stakes and a propulsive plot.</p>
+      <p>
+        A brutal dragon-rider war college where cadets die in the trials and the
+        dragons choose their own riders. The plot is propulsive and the stakes are
+        real — the romance is a bonus, not the engine. The obvious first step; if
+        it lands, our{" "}
+        <Link href="/reading-room/books-like-fourth-wing">
+          books like Fourth Wing
+        </Link>{" "}
+        list keeps the dragons coming.
+      </p>
 
       <h2>2. The Cruel Prince — Holly Black</h2>
-      <p>Cutthroat fae politics and scheming. Plot-forward and sharp; romance is the spice, not the meal.</p>
+      <p>
+        Cutthroat fae politics, court scheming, and a mortal girl who decides to
+        out-ruthless immortals. Plot-forward and sharp; the romance is the spice,
+        not the meal. Sits right alongside the darker end of our{" "}
+        <Link href="/reading-room/fae-romantasy-books">fae romantasy</Link> shelf.
+      </p>
 
       <h2>3. The Bridge Kingdom — Danielle L. Jensen</h2>
-      <p>Espionage, war, and a clever heroine. Tight plotting with a slow-burn underneath.</p>
+      <p>
+        A trained spy is married into the enemy court she&rsquo;s meant to help
+        destroy — then starts to doubt which side deserves to win. Tight,
+        clever plotting with a slow-burn running underneath rather than over the
+        top of everything.
+      </p>
 
       <h2>4. An Ember in the Ashes — Sabaa Tahir</h2>
-      <p>Brutal empire, dual POVs, and high stakes. More fantasy than romance, and excellent.</p>
+      <p>
+        A Rome-inspired empire at its most brutal, told in dual POVs — a soldier
+        and a rebel spy — with genuinely high stakes. This is more fantasy than
+        romance, and one of the best-built worlds on the list.
+      </p>
 
-      <h2>5. The Will of the Many — James Islington (fantasy-forward)</h2>
-      <p>For when you want the world-building dialed way up; romance lighter, plot enormous.</p>
+      <h2>5. The Will of the Many — James Islington</h2>
+      <p>
+        The fantasy-forward outlier: an ingenious magic system built on ceding
+        your own will up a hierarchy, a boarding-school-meets-conspiracy plot, and
+        romance kept light. Pick this when you want the world-building dialed all
+        the way up and the plot enormous.
+      </p>
 
       <h2>6. Crescent City — Sarah J. Maas</h2>
-      <p>A genuine mystery engine and a sprawling world alongside the romance.</p>
+      <p>
+        A genuine murder-mystery engine and a sprawling, modern-feeling world
+        alongside the romance — the most plot-driven of Maas&rsquo;s books and the
+        best entry point for a reader who needs a case to solve, not just a couple
+        to root for.
+      </p>
 
       <h2>7. The Jasmine Throne — Tasha Suri</h2>
-      <p>Lush epic fantasy with political depth and a sapphic romance woven through.</p>
+      <p>
+        Lush, India-inspired epic fantasy with real political depth — a deposed
+        princess and a maidservant with hidden power — and a sapphic romance woven
+        through the rebellion rather than pasted on top. Ambitious and beautifully
+        written.
+      </p>
 
       <h2>Cross the aisle</h2>
       <p>
