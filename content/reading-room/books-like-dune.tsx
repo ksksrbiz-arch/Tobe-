@@ -78,7 +78,7 @@ export default function Body() {
         that follows. It&rsquo;s cooler and more cerebral than <em>Dune</em> —
         Asimov cares about the sweep of centuries more than any single face — but
         the ambition to model an entire civilization is the same. A cornerstone of{" "}
-        <Link href="/reading-room/best-classic-science-fiction">
+        <Link href="/reading-room/best-classic-science-fiction-novels">
           classic science fiction that still holds up
         </Link>
         .
@@ -102,7 +102,7 @@ export default function Body() {
         Le Guin builds culture, gender, and religion from the ground up. If the
         idea of a whole society rendered convincingly is the draw, start here and
         keep going with the rest of her{" "}
-        <Link href="/reading-room/best-classic-science-fiction">
+        <Link href="/reading-room/best-classic-science-fiction-novels">
           essential classic SF
         </Link>
         .

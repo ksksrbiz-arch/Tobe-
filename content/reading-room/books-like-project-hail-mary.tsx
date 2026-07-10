@@ -98,7 +98,7 @@ export default function Body() {
         secret. It&rsquo;s older and denser, but the puzzle-box engineering and
         &ldquo;figure out the alien before it&rsquo;s too late&rdquo; tension will
         feel familiar. One of the anchors of{" "}
-        <Link href="/reading-room/best-classic-science-fiction">
+        <Link href="/reading-room/best-classic-science-fiction-novels">
           classic science fiction that still holds up
         </Link>
         .

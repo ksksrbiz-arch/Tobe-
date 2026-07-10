@@ -101,7 +101,7 @@ export default function Body() {
           fantasy books for beginners
         </Link>{" "}
         guide is a friendly starting point, and the{" "}
-        <Link href="/reading-room/classic-fantasy-novels">
+        <Link href="/reading-room/classic-fantasy-novels-everyone-should-read">
           classic fantasy novels
         </Link>{" "}
         round out the shelf. Ready to commit to something bigger? See our{" "}

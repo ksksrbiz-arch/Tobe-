@@ -101,7 +101,7 @@ export default function Body() {
         <Link href="/shop">online</Link> or{" "}
         <Link href="/visit">stop by the store in Milwaukie</Link>. New to the
         genre? Start with our{" "}
-        <Link href="/reading-room/classic-fantasy-novels">
+        <Link href="/reading-room/classic-fantasy-novels-everyone-should-read">
           classic fantasy novels
         </Link>
         . Want the same political scheming on an even bigger canvas? See our
