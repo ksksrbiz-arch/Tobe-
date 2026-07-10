@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Want to thank a teacher with more than a mug? Here's how to give books that build classroom libraries, win read-aloud time, and actually get used.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Gift guide", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -80,10 +81,13 @@ export default function Body() {
       <h2>When in doubt: store credit or a gift card</h2>
       <p>
         Teachers know exactly what their shelves are missing — so let them
-        choose. Store credit or a gift card to a used bookshop means they can
-        come in, browse, and load up on the levels and topics their students
-        actually need. It&rsquo;s the rare gift that never goes to waste. Stop
-        by and we&rsquo;ll set you up; here&rsquo;s{" "}
+        choose. Store credit or a gift card to our shop in Milwaukie means they
+        can come in, browse, and load up on the levels and topics their students
+        actually need. It pairs neatly with our{" "}
+        <Link href="/trade">trade-in program</Link> too, so a teacher clearing
+        out last year&rsquo;s bin books can stack your gift on top of their own
+        credit. It&rsquo;s the rare gift that never goes to waste. Stop by and
+        we&rsquo;ll set you up — gift receipt included; here&rsquo;s{" "}
         <Link href="/visit">how to find us</Link>.
       </p>
 
