@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Glittering courts, bargains with a catch, and fae princes you absolutely should not trust — eight romantasy reads that live in faerie, ranked for the obsessed.",
   date: "2026-06-19",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Reading guides", "Recommendations", "Romantasy", "Fantasy", "Genre guide"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "A Court of Thorns and Roses", author: "Sarah J. Maas" },
     { name: "The Cruel Prince", author: "Holly Black" },
@@ -32,47 +33,101 @@ export default function Body() {
     <>
       <QuickAnswer>
         The genre-defining fae romantasy is A Court of Thorns and Roses by
-        Sarah J. Maas — the book that launched a thousand others, built
-        around scheming courts, masks, and a slow-burn romance.
+        Sarah J. Maas &mdash; scheming courts, masked revels, and a slow-burn at
+        the center. For a sharper, more political take, Holly Black&rsquo;s The
+        Cruel Prince is the other essential.
       </QuickAnswer>
       <p>
-        Faerie is romantasy&rsquo;s natural habitat: a place of beautiful,
-        ruthless courts where every favor is a bargain and every prince is a
-        problem. If you want glamour with teeth, start here.
+        Faerie is romantasy&rsquo;s natural habitat: beautiful, ruthless courts
+        where every favor is a bargain, every word is a trap, and every prince is
+        a problem. What the eight below share is that fae logic &mdash; the sense
+        that the rules matter and the cost is always higher than it looks. If you
+        want glamour with teeth, start here.
       </p>
 
       <h2>1. A Court of Thorns and Roses — Sarah J. Maas</h2>
-      <p>The fae romantasy that launched a thousand others. Courts, masks, and a slow-burn at the center.</p>
+      <p>
+        The fae romantasy that launched a thousand others: a mortal huntress
+        dragged into a court of immortals, masks and bargains everywhere, and a
+        slow burn that becomes the spine of the whole series. If you want the full
+        read-alike map, our{" "}
+        <Link href="/reading-room/books-like-a-court-of-thorns-and-roses">
+          books like ACOTAR
+        </Link>{" "}
+        guide has it.
+      </p>
 
       <h2>2. The Cruel Prince — Holly Black</h2>
-      <p>Mortal Jude claws for power in a fae court that despises her. Sharp, dark, and addictive.</p>
+      <p>
+        Mortal Jude claws for power in a fae court that despises her, and her war
+        with wicked Prince Cardan is contempt sharpened into something dangerous.
+        The most cutthroat court intrigue in the genre, and a masterclass in fae
+        cruelty.
+      </p>
 
       <h2>3. An Enchantment of Ravens — Margaret Rogerson</h2>
-      <p>A standalone: a human portrait artist and the autumn prince who can&rsquo;t feel. Gorgeous and contained.</p>
+      <p>
+        A human portrait painter and the autumn prince who commissions her &mdash;
+        then can&rsquo;t stop feeling something he isn&rsquo;t supposed to. A
+        gorgeous, self-contained standalone; if series fatigue is the issue, see
+        our{" "}
+        <Link href="/reading-room/standalone-romantasy-books">
+          standalone romantasy books
+        </Link>{" "}
+        list.
+      </p>
 
       <h2>4. A Promise of Fire — Amanda Bouchet</h2>
-      <p>Magic, prophecy, and a soothsayer dragged along by a warlord. Banter-forward and steamy.</p>
+      <p>
+        A soothsayer with hidden magic is captured by a warlord who won&rsquo;t
+        let her go &mdash; banter-forward, steamy, and full of prophecy. The
+        enemies-to-lovers energy runs hot here.
+      </p>
 
       <h2>5. Radiance — Grace Draven</h2>
-      <p>An arranged marriage between two people who find each other &ldquo;ugly.&rdquo; Tender, original, low-drama.</p>
+      <p>
+        An arranged marriage between two people from different species who each
+        find the other plain &mdash; and slowly don&rsquo;t. Tender, original, and
+        refreshingly low on court melodrama.
+      </p>
 
-      <h2>6. The Hawthorne Legacy of faerie — Holly Black&rsquo;s Folk of the Air</h2>
-      <p>Continue Jude&rsquo;s story through <em>The Wicked King</em> and <em>The Queen of Nothing</em> — the trilogy only gets better.</p>
+      <h2>6. The Folk of the Air continues — Holly Black</h2>
+      <p>
+        Jude&rsquo;s story only gets better across{" "}
+        <em>The Wicked King</em> and <em>The Queen of Nothing</em>: deeper
+        betrayals, sharper politics, and a romance that keeps raising the stakes.
+        Read them straight after <em>The Cruel Prince</em>.
+      </p>
 
       <h2>7. A Deal with the Elf King — Elise Kova</h2>
-      <p>A human sacrifice-bride and the elf king who needs her. Cozy-leaning fae romantasy.</p>
+      <p>
+        A human sacrifice-bride and the elf king who needs her magic to save his
+        land &mdash; a cozy-leaning, lower-heat fae romance that resolves in a
+        tidy standalone. The fae-bargain premise, minus the doorstopper page
+        count.
+      </p>
 
       <h2>8. House of Earth and Blood (Crescent City) — Sarah J. Maas</h2>
-      <p>Fae among many species in a sprawling modern-fantasy world, with a mystery driving it all.</p>
+      <p>
+        Fae are one species among many in this sprawling modern-fantasy world,
+        with a murder mystery driving the plot and a partnership that smolders for
+        ages. The most grown-up pick here.
+      </p>
 
       <h2>Strike a bargain</h2>
       <p>
-        Browse our <Link href="/shop">romantasy shelves</Link> or ask the{" "}
+        If it&rsquo;s the dangerous-prince dynamic you&rsquo;re chasing, our{" "}
+        <Link href="/reading-room/enemies-to-lovers-romantasy">
+          enemies-to-lovers romantasy
+        </Link>{" "}
+        list runs deep. Browse our{" "}
+        <Link href="/shop">romantasy shelves</Link> or ask the{" "}
         <Link href="/#next-read">Matchmaker</Link> for fae-court romantasy. New to
         the genre? Start with our{" "}
-        <Link href="/reading-room/best-romantasy-books-to-start-with">best romantasy guide</Link>{" "}
-        or our{" "}
-        <Link href="/reading-room/books-like-a-court-of-thorns-and-roses">books like ACOTAR</Link> list.
+        <Link href="/reading-room/best-romantasy-books-to-start-with">
+          best romantasy guide
+        </Link>
+        .
       </p>
     </>
   );
