@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "True stories with the momentum of a thriller. Six narrative nonfiction books that read like the best novels — and happen to be real.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "In Cold Blood", author: "Truman Capote" },
     { name: "The Immortal Life of Henrietta Lacks", author: "Rebecca Skloot" },
@@ -106,10 +107,14 @@ export default function Body() {
         <Link href="/reading-room/best-memoirs-to-start-with">
           memoir starter list
         </Link>{" "}
-        is a natural next step, and the{" "}
-        <Link href="/#next-read">Matchmaker</Link> can match the true-crime,
-        survival, or science angle you love best. When you&rsquo;re done, trade
-        it forward for store credit.
+        is a natural next step, and if you&rsquo;re short on time, several of
+        these have slimmer cousins on our{" "}
+        <Link href="/reading-room/short-books-to-finish-in-a-weekend">
+          short books for a weekend
+        </Link>{" "}
+        list. The <Link href="/#next-read">Matchmaker</Link> can match the
+        true-crime, survival, or science angle you love best. When you&rsquo;re
+        done, <Link href="/trade">trade it forward</Link> for store credit.
       </p>
     </>
   );

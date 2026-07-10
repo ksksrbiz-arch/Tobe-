@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Poetry without the homework. Five approachable collections that make a warm, welcoming place to start reading verse.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "Milk and Honey", author: "Rupi Kaur" },
     { name: "Devotions", author: "Mary Oliver" },
@@ -41,37 +42,49 @@ export default function Body() {
 
       <h2>Milk and Honey — Rupi Kaur</h2>
       <p>
-        Short, direct, and intensely felt poems on love, loss, and healing. The
-        book that brought a whole generation to poetry — and an easy, encouraging
-        first step.
+        Short, direct poems on love, loss, and healing, grouped into four moods
+        that read like chapters of a diary. It sold millions and brought a whole
+        generation to poetry precisely because nothing about it is coded or
+        gatekept. A beginner gets confidence: you&rsquo;ll finish poems, feel
+        them, and want the next one.
       </p>
 
       <h2>Devotions — Mary Oliver</h2>
       <p>
-        A career-spanning selection from one of the most beloved American poets.
-        Oliver&rsquo;s clear-eyed wonder at the natural world is the gentlest
-        possible on-ramp to verse. Start with &ldquo;Wild Geese.&rdquo;
+        A career-spanning selection from one of the most beloved American poets,
+        chosen by Oliver herself. Her clear-eyed wonder at geese, ponds, and
+        morning walks is the gentlest possible on-ramp — no decoding required.
+        Start with &ldquo;Wild Geese,&rdquo; then &ldquo;The Summer Day&rdquo;
+        with its famous last line about your one wild and precious life.
       </p>
 
       <h2>The Sun and Her Flowers — Rupi Kaur</h2>
       <p>
-        Kaur&rsquo;s follow-up, organized like a blooming and wilting flower.
-        Accessible and emotionally generous — a natural next step if{" "}
-        <em>Milk and Honey</em> lands for you.
+        Kaur&rsquo;s follow-up, arranged in five parts that move like a flower
+        blooming and wilting and blooming again — wilting, falling, rooting,
+        rising, blooming. A little more ambitious than <em>Milk and Honey</em>{" "}
+        and the natural next step if that one lands for you.
       </p>
 
       <h2>Citizen — Claudia Rankine</h2>
       <p>
-        A genre-bending book-length poem on race and everyday life in America.
-        Urgent, lucid, and unforgettable — proof that poetry can speak directly
-        to the present moment.
+        A genre-bending, book-length poem on race and everyday life in America,
+        stitched together from small aggressions and public moments. It won the
+        National Book Critics Circle Award — for poetry <em>and</em> was a
+        finalist in criticism, a first. Proof that verse can speak directly to
+        the present, and a bridge if you like{" "}
+        <Link href="/reading-room/best-narrative-nonfiction-books">
+          true stories with an argument
+        </Link>
+        .
       </p>
 
       <h2>Selected Poems — Billy Collins</h2>
       <p>
         Witty, conversational, and quietly profound, Collins is a former U.S.
-        Poet Laureate who writes like he&rsquo;s talking just to you. Maybe the
-        friendliest doorway in all of poetry.
+        Poet Laureate who writes like he&rsquo;s talking just to you across a
+        kitchen table. He&rsquo;ll make you laugh, then land something that stops
+        you cold. Maybe the friendliest doorway in all of poetry.
       </p>
 
       <h2>How to read poetry</h2>
