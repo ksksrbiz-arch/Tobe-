@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Hooked on Westeros and its scheming, morally gray cast? Here are five epic and grimdark fantasy reads to fill the wait between books.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Read-alikes", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "The Name of the Wind" },
     { name: "The Way of Kings" },
@@ -43,7 +44,12 @@ export default function Body() {
         flavor &mdash; a single, brilliant narrator recounting his own legend
         &mdash; but the worldbuilding and lush writing make it an easy sell to
         anyone who reads fantasy for immersion. Fair warning: the series is also
-        famously unfinished, so you&rsquo;ll be waiting alongside us.
+        famously unfinished, so you&rsquo;ll be waiting alongside us. It&rsquo;s
+        also a favorite gateway drug on our list of{" "}
+        <Link href="/reading-room/fantasy-books-for-beginners">
+          fantasy books for beginners
+        </Link>
+        , so it&rsquo;s an easy one to press on a friend.
       </p>
 
       <h2>For the doorstopper epic: The Way of Kings</h2>
@@ -52,7 +58,12 @@ export default function Body() {
         Sanderson&rsquo;s <em>The Way of Kings</em> delivers an enormous,
         meticulously built world with warring nations, ancient magic, and a cast
         you&rsquo;ll follow for thousands of pages. The payoff-to-page ratio is
-        unmatched.
+        unmatched — and since <em>The Stormlight Archive</em> is one of the
+        longest, most rewarding sagas going, it earns its place among our{" "}
+        <Link href="/reading-room/best-book-series-to-binge">
+          best book series to binge
+        </Link>
+        .
       </p>
 
       <h2>For the grimdark edge: The First Law</h2>
@@ -90,12 +101,17 @@ export default function Body() {
         <Link href="/shop">online</Link> or{" "}
         <Link href="/visit">stop by the store in Milwaukie</Link>. New to the
         genre? Start with our{" "}
-        <Link href="/reading-room/classic-fantasy-novels-everyone-should-read">
-          classic fantasy novels everyone should read
+        <Link href="/reading-room/classic-fantasy-novels">
+          classic fantasy novels
         </Link>
         . Want the same political scheming on an even bigger canvas? See our
         list of{" "}
-        <Link href="/reading-room/books-like-dune">books like Dune</Link>.
+        <Link href="/reading-room/books-like-dune">books like Dune</Link>, or, if
+        you loved the dragons most of all, our{" "}
+        <Link href="/reading-room/books-like-the-priory-of-the-orange-tree">
+          books like The Priory of the Orange Tree
+        </Link>
+        .
       </p>
     </>
   );

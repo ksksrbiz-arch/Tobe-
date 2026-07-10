@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Dragons optional, comfort guaranteed. Cozy fantasy trades epic battles for warm hearths, found family, and small magic — here are the titles to start with.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Genre guide", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
   items: [
     { name: "Legends & Lattes", author: "Travis Baldree" },
     { name: "Bookshops & Bonedust", author: "Travis Baldree" },
@@ -76,7 +77,12 @@ export default function Body() {
         A prickly academic documents the fae in a remote village and finds more
         than footnotes. <em>Emily Wilde&rsquo;s Encyclopaedia of Faeries</em>
         {" "}pairs cozy charm with a touch of folklore and slow-burn romance &mdash;
-        perfect for readers who like their comfort with a little bite.
+        perfect for readers who like their comfort with a little bite. If that
+        little bite of romance is the part you want more of, our{" "}
+        <Link href="/reading-room/romantasy-for-fantasy-readers">
+          romantasy for fantasy readers
+        </Link>{" "}
+        guide is the next stop.
       </p>
 
       <h2>Where to start</h2>
@@ -86,7 +92,12 @@ export default function Body() {
         and assume nothing. If you want a broader on-ramp to the genre, our guide
         to{" "}
         <Link href="/reading-room/fantasy-books-for-beginners">fantasy books for beginners</Link>
-        {" "}has more gentle starting points.
+        {" "}has more gentle starting points, and most of these cozy picks are
+        single volumes, so our{" "}
+        <Link href="/reading-room/best-standalone-fantasy-novels">
+          best standalone fantasy novels
+        </Link>{" "}
+        pair naturally with them.
       </p>
 
       <h2>Find your next cozy read</h2>
