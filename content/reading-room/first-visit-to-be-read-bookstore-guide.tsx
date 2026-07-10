@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Never been in before? Here's everything you need for a great first visit to To Be Read — where to park, how trading works, and how to leave with the perfect book.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Visit", "Milwaukie", "Local guide"],
-  readingMinutes: 3,
+  readingMinutes: 4,
 };
 
 export default function Body() {
@@ -30,11 +31,26 @@ export default function Body() {
 
       <h2>Where to find us &amp; when</h2>
       <p>
-        We&rsquo;re at <Link href="/visit">7931 SE King Rd, Unit 1</Link>, with free
-        parking right out front. Check our{" "}
+        We&rsquo;re at <Link href="/visit">7931 SE King Rd, Unit 1</Link>, just
+        off McLoughlin Boulevard (Highway 99E) and a couple of minutes from
+        downtown Milwaukie&rsquo;s Main Street, with free parking right out front
+        &mdash; no meters, no garage. We&rsquo;re open Monday through Saturday;
+        check our{" "}
         <Link href="/visit">current hours and directions</Link> before you head
-        over — it&rsquo;s a quick trip from Portland, Clackamas, Oak Grove, and
-        Lake Oswego.
+        over. It&rsquo;s a quick trip from{" "}
+        <Link href="/reading-room/bookstore-near-clackamas-town-center">
+          Clackamas
+        </Link>
+        ,{" "}
+        <Link href="/reading-room/used-books-near-oak-grove-gladstone-oregon">
+          Oak Grove and Gladstone
+        </Link>
+        , and{" "}
+        <Link href="/reading-room/used-books-near-lake-oswego-oregon">
+          Lake Oswego
+        </Link>
+        , and an easy ride on the MAX Orange Line if you&rsquo;d rather not
+        drive.
       </p>
 
       <h2>What you&rsquo;ll find inside</h2>
@@ -46,11 +62,15 @@ export default function Body() {
 
       <h2>Bringing books to trade?</h2>
       <p>
-        You can turn books you&rsquo;re done with into store credit. If
-        it&rsquo;s your first time trading, read{" "}
+        You can turn books you&rsquo;re done with into store credit &mdash; we
+        trade for credit rather than paying cash, which is what keeps our prices
+        low. Readable titles in good shape work best; there&rsquo;s no need to
+        call ahead for a normal box or two. If it&rsquo;s your first time
+        trading, read{" "}
         <Link href="/reading-room/how-book-trade-in-credit-works">how trade-in credit works</Link>{" "}
-        first so you know what we tend to look for — then browse while we go
-        through your stack.
+        and the{" "}
+        <Link href="/trade">trade page</Link> first so you know what we tend to
+        look for &mdash; then browse while we go through your stack.
       </p>
 
       <h2>Not sure what to get?</h2>

@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Canby readers: the nearest deep, browseable used bookstore worth the drive is a straight run up 99E to Milwaukie. Here's the route and what's waiting at To Be Read.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Visit", "Local guide"],
   readingMinutes: 3,

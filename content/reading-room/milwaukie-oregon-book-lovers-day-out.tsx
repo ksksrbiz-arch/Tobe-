@@ -11,6 +11,7 @@ export const meta: BlogMeta = {
   excerpt:
     "Just south of Portland, Milwaukie is a quietly perfect spot for a slow reader's day: used books, a riverside walk, a Sunday market, and an easy MAX ride home.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Visit", "Milwaukie", "Portland", "Local guide"],
   readingMinutes: 4,
