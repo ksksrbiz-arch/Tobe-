@@ -11,16 +11,17 @@ export const meta: BlogMeta = {
   excerpt:
     "Wondering if a bookstore will take your old books? Here's how buying and trading used books actually works, what we look for, and how to bring a box in.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Trade", "Local guide"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
   return (
     <>
       <QuickAnswer>
-        Yes — plenty of used bookstores take in books every day. At To Be Read we accept readable used books in trade for store credit (we are a trade-credit shop, not cash).
+        Yes &mdash; plenty of used bookstores take in books every day. At To Be Read we accept readable used books in trade for store credit (we&rsquo;re a trade-credit shop, not cash). Bring clean, in-demand copies during open hours, let staff look through the box, and take home whatever we can&rsquo;t use.
       </QuickAnswer>
       <p>
         Short answer: yes. Plenty of bookstores buy used books, and a good used
@@ -36,15 +37,21 @@ export default function Body() {
         an offer on the titles we can use. It&rsquo;s not an auction and it
         isn&rsquo;t instant cash for the whole box &mdash; we&rsquo;re choosing
         the copies that&rsquo;ll find a new reader on our shelves. Whatever we
-        pass on, you&rsquo;re welcome to take home or donate.
+        pass on, you&rsquo;re welcome to take home or donate. No appointment is
+        needed; just come by during open hours and give staff a few minutes to
+        work through the box.
       </p>
 
       <h2>What we look for</h2>
       <ul>
-        <li><strong>Condition.</strong> Clean copies with intact spines and covers. No water damage, mold, smoke smell, or heavy writing.</li>
-        <li><strong>Demand.</strong> Popular fiction, current series, classics, and evergreen nonfiction move fastest.</li>
+        <li><strong>Condition.</strong> Clean copies with intact spines and covers. No water damage, mold, smoke smell, or heavy writing. Hardcovers keep more value with their dust jackets.</li>
+        <li><strong>Demand.</strong> Popular fiction, current series, classics, cookbooks, and evergreen nonfiction move fastest.</li>
         <li><strong>Format.</strong> Trade paperbacks and hardcovers in good shape are easiest to take. Ex-library copies and beat-up mass-market paperbacks are a harder sell.</li>
       </ul>
+      <p>
+        Want the full list of yes-and-no categories before you pack? See{" "}
+        <Link href="/reading-room/what-books-can-you-sell-to-a-used-bookstore">what books you can sell to a used bookstore</Link>.
+      </p>
 
       <h2>Trade-in credit vs. cash</h2>
       <p>
@@ -54,6 +61,10 @@ export default function Body() {
         reader, credit is almost always the smarter choice; it stretches much
         further than a cash offer would. If you just need the space and
         won&rsquo;t be back, that&rsquo;s a fair reason to ask about cash instead.
+        We lay the two side by side in{" "}
+        <Link href="/reading-room/cash-for-books-vs-store-credit">cash for books vs. store credit</Link>,
+        and walk through the mechanics in{" "}
+        <Link href="/reading-room/how-trade-in-credit-works">how our trade-in credit works</Link>.
       </p>
 
       <h2>Why bring books to a used bookstore at all?</h2>
@@ -72,7 +83,9 @@ export default function Body() {
         guessing what a future customer will pay for it. That&rsquo;s why two
         copies of the same novel can get different responses on different days
         &mdash; if our shelf is already full of it, even a nice copy may come
-        back to you. None of it is a judgment of your taste.
+        back to you. None of it is a judgment of your taste. If you&rsquo;re
+        curious what your stack might come to, read{" "}
+        <Link href="/reading-room/how-much-are-used-books-worth">how much used books are worth</Link>.
       </p>
 
       <h2>How to bring your books in</h2>
@@ -86,9 +99,7 @@ export default function Body() {
 
       <h2>Ready to trade?</h2>
       <p>
-        Learn{" "}
-        <Link href="/reading-room/how-much-are-used-books-worth">how much used books are actually worth</Link>,
-        or if you&rsquo;re clearing out school books, see our guide to{" "}
+        If you&rsquo;re clearing out school books, see our guide to{" "}
         <Link href="/reading-room/sell-your-textbooks-portland">selling textbooks in Portland</Link>.
         When you&rsquo;re ready, check the full{" "}
         <Link href="/trade">trade-in details</Link> or just{" "}

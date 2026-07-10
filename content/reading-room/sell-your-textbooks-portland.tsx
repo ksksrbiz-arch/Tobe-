@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Trying to offload textbooks around Portland? Here's an honest guide to what used bookstores take, what they don't, and the alternatives worth trying.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Trade", "Local guide"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -39,7 +40,10 @@ export default function Body() {
         general-reader appeal &mdash; classic literature assigned in lit courses,
         well-kept art and photography books, foundational nonfiction, and durable
         reference works. If it reads like a book people pick up for pleasure, not
-        just a required course code, bring it in.
+        just a required course code, bring it in. Not sure where a title lands?
+        Our guide to{" "}
+        <Link href="/reading-room/what-books-can-you-sell-to-a-used-bookstore">what books you can sell to a used bookstore</Link>{" "}
+        covers the line between the two.
       </p>
 
       <h2>Alternatives worth trying first</h2>
@@ -47,7 +51,9 @@ export default function Body() {
         <li><strong>Campus and online buyback.</strong> Your school store and online textbook buyback programs pay the most for <em>current</em> editions, but only within their window. This is usually your best dollar return for a recent textbook.</li>
         <li><strong>Sell direct to the next student.</strong> Listing on a marketplace or a course-specific group often beats any buyback price, since you cut out the middleman.</li>
         <li><strong>Rental return.</strong> If you rented, return on time &mdash; it&rsquo;s the cheapest path of all.</li>
-        <li><strong>Donate.</strong> Older editions with no buyback value can still help; libraries, charity shops, and Little Free Libraries take many of them.</li>
+        <li><strong>Donate.</strong> Older editions with no buyback value can still help; libraries, charity shops, and Little Free Libraries take many of them. Our roundup of{" "}
+          <Link href="/reading-room/where-to-sell-or-donate-books-clackamas-county">where to sell or donate books in Clackamas County</Link>{" "}
+          lists nearby drop-offs.</li>
       </ul>
 
       <h2>Timing matters more than you&rsquo;d think</h2>
