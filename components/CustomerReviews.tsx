@@ -36,8 +36,8 @@ function StarRow({ rating }: { rating: number }) {
         <Star
           key={i}
           size={14}
-          fill={i < Math.round(rating) ? "#F1BB1A" : "transparent"}
-          style={{ color: "#F1BB1A" }}
+          fill={i < Math.round(rating) ? "var(--gold)" : "transparent"}
+          style={{ color: "var(--gold)" }}
         />
       ))}
     </div>
@@ -53,7 +53,7 @@ function SourceBadge({ source }: { source: ExternalReview["source"] }) {
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 text-xs" style={{ color: "#6B7280" }}>
+    <span className="inline-flex items-center gap-1 text-xs" style={{ color: "var(--muted)" }}>
       <span aria-hidden="true" className="font-bold" style={{ color: "#4285F4" }}>
         G
       </span>
@@ -68,7 +68,7 @@ function ReviewCard({ review }: { review: ExternalReview }) {
     <div
       className="relative flex h-full flex-col rounded-2xl border bg-white p-6"
       style={{
-        borderColor: "rgba(107,28,111,0.10)",
+        borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
         boxShadow: "var(--shadow-sm)",
       }}
     >
@@ -76,7 +76,7 @@ function ReviewCard({ review }: { review: ExternalReview }) {
         aria-hidden="true"
         size={32}
         className="absolute right-4 top-4 opacity-15"
-        style={{ color: "#F1BB1A" }}
+        style={{ color: "var(--gold)" }}
       />
       <StarRow rating={review.rating} />
       <p className="mb-5 mt-3 text-sm leading-relaxed line-clamp-6" style={{ color: "#374151" }}>
@@ -84,7 +84,7 @@ function ReviewCard({ review }: { review: ExternalReview }) {
       </p>
       <div
         className="mt-auto flex items-center gap-3 border-t pt-4"
-        style={{ borderColor: "rgba(107,28,111,0.08)" }}
+        style={{ borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)" }}
       >
         {review.photoUri ? (
           // next/image reserves the 36×36 avatar slot (no layout shift) and is
@@ -103,7 +103,7 @@ function ReviewCard({ review }: { review: ExternalReview }) {
           <div
             className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
             style={{
-              background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
+              background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)",
               fontFamily: "var(--font-serif)",
             }}
           >
@@ -111,12 +111,12 @@ function ReviewCard({ review }: { review: ExternalReview }) {
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold" style={{ color: "#6B1C6F" }}>
+          <p className="truncate text-sm font-semibold" style={{ color: "var(--purple)" }}>
             {review.author}
           </p>
           <div className="flex items-center gap-1.5">
             {review.relativeTime && (
-              <span className="text-xs" style={{ color: "#6B7280" }}>
+              <span className="text-xs" style={{ color: "var(--muted)" }}>
                 {review.relativeTime} ·
               </span>
             )}
@@ -168,7 +168,7 @@ export default function CustomerReviews() {
           <div
             key={i}
             className="h-48 animate-pulse rounded-2xl"
-            style={{ background: "rgba(107,28,111,0.06)" }}
+            style={{ background: "color-mix(in srgb, var(--purple) 6%, transparent)" }}
           />
         ))}
       </div>
@@ -188,11 +188,11 @@ export default function CustomerReviews() {
         {(rating != null || userRatingCount != null) && (
           <div className="flex items-center gap-2">
             <StarRow rating={rating ?? 5} />
-            <span className="text-sm font-bold" style={{ color: "#6B1C6F" }}>
+            <span className="text-sm font-bold" style={{ color: "var(--purple)" }}>
               {rating != null ? rating.toFixed(1) : "—"}
             </span>
             {userRatingCount != null && (
-              <span className="text-xs" style={{ color: "#6B7280" }}>
+              <span className="text-xs" style={{ color: "var(--muted)" }}>
                 · {userRatingCount} Google reviews
               </span>
             )}
@@ -204,7 +204,7 @@ export default function CustomerReviews() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider"
-            style={{ color: "#6B1C6F" }}
+            style={{ color: "var(--purple)" }}
           >
             Read reviews on Google <ExternalLink size={11} />
           </a>
@@ -221,14 +221,14 @@ export default function CustomerReviews() {
       </div>
 
       {cards.length === 0 ? (
-        <p className="text-center text-sm" style={{ color: "#6B7280" }}>
+        <p className="text-center text-sm" style={{ color: "var(--muted)" }}>
           Catch our latest reviews on{" "}
           <a
             href={googleMapsUri}
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold underline"
-            style={{ color: "#6B1C6F" }}
+            style={{ color: "var(--purple)" }}
           >
             Google
           </a>{" "}

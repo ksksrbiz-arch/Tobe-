@@ -16,14 +16,14 @@ export default function QuickAnswer({ children }: { children: React.ReactNode })
       aria-label="Quick answer"
       className="not-prose mb-8 rounded-2xl border p-5 sm:p-6"
       style={{
-        background: "linear-gradient(135deg, rgba(107,28,111,0.06) 0%, rgba(241,187,26,0.10) 100%)",
-        borderColor: "rgba(107,28,111,0.16)",
-        borderLeft: "4px solid #F1BB1A",
+        background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 6%, transparent) 0%, color-mix(in srgb, var(--gold) 10%, transparent) 100%)",
+        borderColor: "color-mix(in srgb, var(--purple) 16%, transparent)",
+        borderLeft: "4px solid var(--gold)",
       }}
     >
       <div
         className="mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider"
-        style={{ color: "#6B1C6F" }}
+        style={{ color: "var(--purple)" }}
       >
         <Sparkles size={13} aria-hidden="true" />
         Quick answer

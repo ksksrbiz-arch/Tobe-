@@ -41,18 +41,18 @@ export default function TradeChecklist() {
       <div
         className="rounded-3xl p-7"
         style={{
-          background: "linear-gradient(135deg, rgba(107,28,111,0.04) 0%, rgba(241,187,26,0.06) 100%)",
-          border: "1px solid rgba(107,28,111,0.10)",
-          boxShadow: "0 8px 30px rgba(107,28,111,0.06)",
+          background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 4%, transparent) 0%, color-mix(in srgb, var(--gold) 6%, transparent) 100%)",
+          border: "1px solid color-mix(in srgb, var(--purple) 10%, transparent)",
+          boxShadow: "0 8px 30px color-mix(in srgb, var(--purple) 6%, transparent)",
         }}
       >
         <h3
           className="mb-2 text-xl font-bold"
-          style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+          style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
         >
           Quick Trade Checklist
         </h3>
-        <p className="mb-5 text-sm" style={{ color: "#6B7280" }}>
+        <p className="mb-5 text-sm" style={{ color: "var(--muted)" }}>
           Tick anything that applies. <strong style={{ color: "#166534" }}>Green</strong> traits are
           perfect for trade; the <strong style={{ color: "#B42318" }}>red</strong> ones are things we
           can&apos;t take.
@@ -83,7 +83,7 @@ export default function TradeChecklist() {
                       ? "rgba(239,68,68,0.32)"
                       : greenOn
                         ? "rgba(34,197,94,0.45)"
-                        : "rgba(107,28,111,0.10)",
+                        : "color-mix(in srgb, var(--purple) 10%, transparent)",
                   background: redOn
                     ? "rgba(239,68,68,0.12)"
                     : redRest
@@ -108,7 +108,7 @@ export default function TradeChecklist() {
                       ? "#DC2626"
                       : greenOn
                         ? "#16A34A"
-                        : "rgba(107,28,111,0.18)",
+                        : "color-mix(in srgb, var(--purple) 18%, transparent)",
                     background: redOn
                       ? "#DC2626"
                       : greenOn
@@ -153,8 +153,8 @@ export default function TradeChecklist() {
             aria-live="polite"
             className="fade-in-up mt-5 flex items-center justify-center gap-2 rounded-xl p-4 text-center"
             style={{
-              background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
-              color: "#F1BB1A",
+              background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)",
+              color: "var(--gold)",
             }}
           >
             <Sparkles size={18} aria-hidden="true" />

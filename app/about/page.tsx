@@ -135,11 +135,11 @@ export default function AboutPage() {
             shop known for 45 years as the Clackamas Book Exchange, now under new ownership and
             becoming TBR. We&rsquo;ve kept what regulars love — deep, ever-rotating shelves and
             trade-in credit — and added a lighter, more welcoming space to wander. New here?{" "}
-            <Link href="/visit" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+            <Link href="/visit" style={{ color: "var(--purple)", fontWeight: 600, textDecoration: "underline" }}>
               Plan your first visit
             </Link>{" "}
             or{" "}
-            <Link href="/reading-room" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+            <Link href="/reading-room" style={{ color: "var(--purple)", fontWeight: 600, textDecoration: "underline" }}>
               browse the Reading Room
             </Link>
             .
@@ -154,14 +154,14 @@ export default function AboutPage() {
         className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
-            "radial-gradient(ellipse at 0% 0%, rgba(107,28,111,0.06) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(241,187,26,0.08) 0%, transparent 45%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+            "radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--purple) 6%, transparent) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, color-mix(in srgb, var(--gold) 8%, transparent) 0%, transparent 45%), linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
         }}
       >
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-14 text-center">
             <span
               className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
             >
               What guides us
             </span>
@@ -169,7 +169,7 @@ export default function AboutPage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
             >
@@ -183,19 +183,19 @@ export default function AboutPage() {
               <Reveal key={v.title} delay={i * 80}>
                 <article
                   className="h-full rounded-2xl border bg-white p-6 card-cozy transition-transform active:scale-[0.98]"
-                  style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "var(--shadow-sm)" }}
+                  style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)", boxShadow: "var(--shadow-sm)" }}
                 >
                   <div
                     className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl"
                     style={{
-                      background: "linear-gradient(135deg, rgba(107,28,111,0.10) 0%, rgba(241,187,26,0.18) 100%)",
+                      background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 10%, transparent) 0%, color-mix(in srgb, var(--gold) 18%, transparent) 100%)",
                     }}
                   >
-                    <v.icon size={22} style={{ color: "#6B1C6F" }} />
+                    <v.icon size={22} style={{ color: "var(--purple)" }} />
                   </div>
                   <h3
                     className="mb-2 text-lg font-bold"
-                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                   >
                     {v.title}
                   </h3>
@@ -212,13 +212,13 @@ export default function AboutPage() {
       {/* Gallery */}
       <section
         className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
-        style={{ background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)" }}
+        style={{ background: "linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)" }}
       >
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-12 text-center">
             <span
               className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               Sneak peek
             </span>
@@ -226,13 +226,13 @@ export default function AboutPage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
             >
               Walk the <span className="underline-accent">shelves</span> before you arrive
             </h2>
-            <p className="mx-auto mb-3 max-w-xl text-sm leading-6" style={{ color: "#6B7280" }}>
+            <p className="mx-auto mb-3 max-w-xl text-sm leading-6" style={{ color: "var(--muted)" }}>
               Nine rooms&apos; worth of finds — kids&apos; picture books, YA, adult fiction, Dr. Seuss corner, and more.
             </p>
             <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
@@ -255,7 +255,7 @@ export default function AboutPage() {
                 aria-hidden="true"
                 className="absolute inset-0"
                 style={{
-                  background: "linear-gradient(180deg, rgba(74,19,80,0) 40%, rgba(74,19,80,0.80) 100%)",
+                  background: "linear-gradient(180deg, color-mix(in srgb, var(--purple-dark) 0%, transparent) 40%, color-mix(in srgb, var(--purple-dark) 80%, transparent) 100%)",
                 }}
               />
               <div className="absolute bottom-4 left-4 right-4 text-white">
@@ -283,7 +283,7 @@ export default function AboutPage() {
                     aria-hidden="true"
                     className="absolute inset-0"
                     style={{
-                      background: "linear-gradient(180deg, rgba(74,19,80,0) 30%, rgba(74,19,80,0.82) 100%)",
+                      background: "linear-gradient(180deg, color-mix(in srgb, var(--purple-dark) 0%, transparent) 30%, color-mix(in srgb, var(--purple-dark) 82%, transparent) 100%)",
                     }}
                   />
                   <div className="absolute bottom-3 left-3 right-3 text-white">
@@ -317,7 +317,7 @@ export default function AboutPage() {
                     aria-hidden="true"
                     className="absolute inset-0"
                     style={{
-                      background: "linear-gradient(180deg, rgba(74,19,80,0) 30%, rgba(74,19,80,0.82) 100%)",
+                      background: "linear-gradient(180deg, color-mix(in srgb, var(--purple-dark) 0%, transparent) 30%, color-mix(in srgb, var(--purple-dark) 82%, transparent) 100%)",
                     }}
                   />
                   <div className="absolute bottom-3 left-3 right-3 text-white">
@@ -335,7 +335,7 @@ export default function AboutPage() {
         className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
-            "radial-gradient(ellipse at 80% 0%, rgba(241,187,26,0.10) 0%, transparent 50%), radial-gradient(ellipse at 20% 100%, rgba(107,28,111,0.07) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 60%, #F5EAFB 100%)",
+            "radial-gradient(ellipse at 80% 0%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 20% 100%, color-mix(in srgb, var(--purple) 7%, transparent) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, var(--paper) 60%, #F5EAFB 100%)",
         }}
       >
         <div className="mx-auto max-w-3xl">
@@ -343,16 +343,16 @@ export default function AboutPage() {
             <div
               className="relative rounded-3xl border p-8 sm:p-12"
               style={{
-                background: "linear-gradient(135deg, #FDF8F0 0%, #FFFEFB 100%)",
-                borderColor: "rgba(107,28,111,0.10)",
-                boxShadow: "0 18px 40px rgba(107,28,111,0.10)",
+                background: "linear-gradient(135deg, var(--paper) 0%, #FFFEFB 100%)",
+                borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
+                boxShadow: "0 18px 40px color-mix(in srgb, var(--purple) 10%, transparent)",
               }}
             >
               <Quote
                 aria-hidden="true"
                 size={48}
                 className="absolute -left-2 -top-2 opacity-15"
-                style={{ color: "#F1BB1A" }}
+                style={{ color: "var(--gold)" }}
               />
               <p
                 className="text-lg leading-relaxed sm:text-xl"
@@ -363,14 +363,14 @@ export default function AboutPage() {
                 }}
               >
                 When we took the keys in June 2024, the first thing customers told us was{" "}
-                <strong style={{ color: "#6B1C6F", fontStyle: "normal" }}>
+                <strong style={{ color: "var(--purple)", fontStyle: "normal" }}>
                   &ldquo;please don&apos;t change the soul of this place.&rdquo;
                 </strong>{" "}
                 We listened. We&apos;re refreshing the edges, but the heart — the slow Saturday
                 browses, the staff picks, the trade-ins that keep books circling the neighborhood —
                 that stays exactly the same.
               </p>
-              <p className="mt-6 text-sm font-semibold" style={{ color: "#6B1C6F" }}>
+              <p className="mt-6 text-sm font-semibold" style={{ color: "var(--purple)" }}>
                 — The owners, To Be Read
               </p>
             </div>

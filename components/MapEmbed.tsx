@@ -56,22 +56,22 @@ export default function MapEmbed({
           ? undefined
           : {
               background:
-                "radial-gradient(ellipse at 50% 35%, rgba(241,187,26,0.12), transparent 60%), linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
+                "radial-gradient(ellipse at 50% 35%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 60%), linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)",
             }
       }
     >
       <span
         className="flex h-14 w-14 items-center justify-center rounded-2xl shadow-md transition-transform group-hover:scale-110"
-        style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+        style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
       >
         <MapPin size={24} className="text-white" />
       </span>
-      <span className="px-4 text-center text-sm font-semibold" style={{ color: "#6B1C6F" }}>
+      <span className="px-4 text-center text-sm font-semibold" style={{ color: "var(--purple)" }}>
         {label}
       </span>
       <span
         className="rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors group-hover:brightness-95"
-        style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+        style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
       >
         Show interactive map
       </span>

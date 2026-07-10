@@ -50,7 +50,7 @@ export default function FloatingButtons() {
         tabIndex={showTop ? 0 : -1}
         className="touch-target flex h-11 w-11 items-center justify-center rounded-full text-white shadow-xl transition-all duration-300 active:scale-95"
         style={{
-          background: "linear-gradient(135deg, #6B1C6F 0%, #4A1350 100%)",
+          background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%)",
           opacity: showTop ? 1 : 0,
           transform: showTop ? "translateY(0) scale(1)" : "translateY(12px) scale(0.85)",
           pointerEvents: showTop ? "auto" : "none",

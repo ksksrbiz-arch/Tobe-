@@ -34,9 +34,9 @@ export default function SharePost({ url, title }: { url: string; title: string }
       aria-label="Share this article"
       className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all hover:scale-[1.03] active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
       style={{
-        borderColor: "rgba(107,28,111,0.18)",
-        color: "#6B1C6F",
-        background: "rgba(107,28,111,0.04)",
+        borderColor: "color-mix(in srgb, var(--purple) 18%, transparent)",
+        color: "var(--purple)",
+        background: "color-mix(in srgb, var(--purple) 4%, transparent)",
       }}
     >
       <Share2 size={13} aria-hidden="true" />

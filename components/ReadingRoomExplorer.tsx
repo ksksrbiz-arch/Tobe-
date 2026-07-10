@@ -69,7 +69,7 @@ export default function ReadingRoomExplorer({
           size={18}
           aria-hidden="true"
           className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2"
-          style={{ color: "#6B1C6F" }}
+          style={{ color: "var(--purple)" }}
         />
         <input
           id={searchId}
@@ -78,8 +78,8 @@ export default function ReadingRoomExplorer({
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search notes by title, topic, or keyword…"
           aria-label="Search the Reading Room by title, topic, or keyword"
-          className="w-full rounded-2xl border bg-white/80 py-3.5 pl-11 pr-11 text-sm font-medium shadow-sm transition-shadow focus:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6B1C6F]"
-          style={{ borderColor: "rgba(107,28,111,0.16)", color: "#374151" }}
+          className="w-full rounded-2xl border bg-white/80 py-3.5 pl-11 pr-11 text-sm font-medium shadow-sm transition-shadow focus:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--purple)]"
+          style={{ borderColor: "color-mix(in srgb, var(--purple) 16%, transparent)", color: "#374151" }}
           autoComplete="off"
         />
         {query !== "" && (
@@ -87,8 +87,8 @@ export default function ReadingRoomExplorer({
             type="button"
             onClick={() => setQuery("")}
             aria-label="Clear search"
-            className="touch-target absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center rounded-full p-1.5 transition-colors hover:bg-[rgba(107,28,111,0.08)]"
-            style={{ color: "#6B1C6F" }}
+            className="touch-target absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center rounded-full p-1.5 transition-colors hover:bg-[color-mix(in srgb, var(--purple) 8%, transparent)]"
+            style={{ color: "var(--purple)" }}
           >
             <X size={16} aria-hidden="true" />
           </button>
@@ -99,7 +99,7 @@ export default function ReadingRoomExplorer({
       <div className="mb-6 flex flex-wrap items-center gap-2">
         <span
           className="mr-1 text-xs font-bold uppercase tracking-wider"
-          style={{ color: "#6B1C6F" }}
+          style={{ color: "var(--purple)" }}
         >
           Filter by topic:
         </span>
@@ -114,9 +114,9 @@ export default function ReadingRoomExplorer({
               aria-label={`Filter by ${tag}`}
               className="rounded-full border px-3 py-1 text-xs font-semibold transition-all hover:scale-[1.03] active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100"
               style={{
-                borderColor: active ? "#6B1C6F" : "rgba(107,28,111,0.15)",
-                color: active ? "#FFFFFF" : "#6B1C6F",
-                background: active ? "#6B1C6F" : "rgba(107,28,111,0.04)",
+                borderColor: active ? "var(--purple)" : "color-mix(in srgb, var(--purple) 15%, transparent)",
+                color: active ? "#FFFFFF" : "var(--purple)",
+                background: active ? "var(--purple)" : "color-mix(in srgb, var(--purple) 4%, transparent)",
               }}
             >
               {tag}
@@ -127,15 +127,15 @@ export default function ReadingRoomExplorer({
 
       {/* Result count + clear */}
       <div className="mb-6 flex items-center justify-between gap-3">
-        <p role="status" aria-live="polite" className="text-sm" style={{ color: "#6B7280" }}>
+        <p role="status" aria-live="polite" className="text-sm" style={{ color: "var(--muted)" }}>
           {hasFilters ? (
             <>
-              Showing <strong style={{ color: "#4A1350" }}>{filtered.length}</strong> of{" "}
+              Showing <strong style={{ color: "var(--purple-dark)" }}>{filtered.length}</strong> of{" "}
               {posts.length} notes
             </>
           ) : (
             <>
-              <strong style={{ color: "#4A1350" }}>{posts.length}</strong> notes from the shop
+              <strong style={{ color: "var(--purple-dark)" }}>{posts.length}</strong> notes from the shop
             </>
           )}
         </p>
@@ -144,7 +144,7 @@ export default function ReadingRoomExplorer({
             type="button"
             onClick={clearAll}
             className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wide transition-opacity hover:opacity-70"
-            style={{ color: "#6B1C6F" }}
+            style={{ color: "var(--purple)" }}
           >
             <X size={13} aria-hidden="true" />
             Clear filters
@@ -159,14 +159,14 @@ export default function ReadingRoomExplorer({
               <Link
                 href={`/reading-room/${post.slug}`}
                 className="group flex h-full flex-col rounded-2xl border bg-white/70 p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-                style={{ borderColor: "rgba(107,28,111,0.10)" }}
+                style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
               >
                 <div className="mb-3 flex flex-wrap items-center gap-2">
                   {post.tags.map((tag) => (
                     <span
                       key={tag}
                       className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide"
-                      style={{ background: "rgba(241,187,26,0.16)", color: "#6B1C6F" }}
+                      style={{ background: "color-mix(in srgb, var(--gold) 16%, transparent)", color: "var(--purple)" }}
                     >
                       {tag}
                     </span>
@@ -174,12 +174,12 @@ export default function ReadingRoomExplorer({
                 </div>
                 <h2
                   className="mb-2 text-xl font-bold leading-snug"
-                  style={{ fontFamily: "var(--font-serif)", color: "#4A1350" }}
+                  style={{ fontFamily: "var(--font-serif)", color: "var(--purple-dark)" }}
                 >
                   {post.title}
                 </h2>
                 <p className="mb-4 flex-1 text-sm leading-6 text-[#4B5563]">{post.excerpt}</p>
-                <div className="flex items-center justify-between text-xs text-[#6B7280]">
+                <div className="flex items-center justify-between text-xs text-[var(--muted)]">
                   <span className="flex items-center gap-3">
                     <time dateTime={post.dateIso}>{post.dateLabel}</time>
                     <span className="inline-flex items-center gap-1">
@@ -189,7 +189,7 @@ export default function ReadingRoomExplorer({
                   </span>
                   <span
                     className="inline-flex items-center gap-1 font-semibold transition-transform group-hover:translate-x-0.5"
-                    style={{ color: "#6B1C6F" }}
+                    style={{ color: "var(--purple)" }}
                   >
                     Read
                     <ArrowRight size={14} aria-hidden="true" />
@@ -202,12 +202,12 @@ export default function ReadingRoomExplorer({
       ) : (
         <div
           className="rounded-2xl border border-dashed px-6 py-16 text-center"
-          style={{ borderColor: "rgba(107,28,111,0.20)", background: "rgba(255,255,255,0.5)" }}
+          style={{ borderColor: "color-mix(in srgb, var(--purple) 20%, transparent)", background: "rgba(255,255,255,0.5)" }}
         >
-          <p className="text-base font-semibold" style={{ color: "#4A1350" }}>
+          <p className="text-base font-semibold" style={{ color: "var(--purple-dark)" }}>
             No notes match your search.
           </p>
-          <p className="mx-auto mt-2 max-w-sm text-sm" style={{ color: "#6B7280" }}>
+          <p className="mx-auto mt-2 max-w-sm text-sm" style={{ color: "var(--muted)" }}>
             Try a different keyword or topic — or clear the filters to see everything.
           </p>
           <button

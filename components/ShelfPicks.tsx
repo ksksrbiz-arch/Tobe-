@@ -37,7 +37,7 @@ const PICKS: Pick[] = [
     tag: "Rainy-Sunday shelf",
     from: "#7a2a7f",
     to: "#4a1350",
-    foil: "#F5CC45",
+    foil: "var(--gold-light)",
   },
   {
     id: "thrill",
@@ -48,7 +48,7 @@ const PICKS: Pick[] = [
     tag: "Just-one-more-chapter shelf",
     from: "#8c1d2b",
     to: "#4a0f17",
-    foil: "#F1BB1A",
+    foil: "var(--gold)",
   },
   {
     id: "wonder",
@@ -59,7 +59,7 @@ const PICKS: Pick[] = [
     tag: "Far-away-places shelf",
     from: "#23386b",
     to: "#101d3a",
-    foil: "#F5CC45",
+    foil: "var(--gold-light)",
   },
   {
     id: "true",
@@ -70,7 +70,7 @@ const PICKS: Pick[] = [
     tag: "Tell-me-everything shelf",
     from: "#2f5d43",
     to: "#16301f",
-    foil: "#F1BB1A",
+    foil: "var(--gold)",
   },
   {
     id: "little",
@@ -92,7 +92,7 @@ const PICKS: Pick[] = [
     tag: "Take-your-time shelf",
     from: "#3a6a73",
     to: "#1b343a",
-    foil: "#F5CC45",
+    foil: "var(--gold-light)",
   },
 ];
 
@@ -126,7 +126,7 @@ export default function ShelfPicks() {
           scalar: 0.8,
           ticks: 90,
           origin,
-          colors: ["#F1BB1A", "#F5CC45", "#8B2E90", "#FCE8A6"],
+          colors: ["var(--gold)", "var(--gold-light)", "var(--purple-light)", "var(--gold-soft)"],
           disableForReducedMotion: true,
         });
       })
@@ -162,7 +162,7 @@ export default function ShelfPicks() {
         <Reveal className="mb-10 text-center">
           <span
             className="eyebrow-glow inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-            style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+            style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
           >
             Staff Shelf
           </span>
@@ -171,13 +171,13 @@ export default function ShelfPicks() {
             className="mt-4 font-bold"
             style={{
               fontFamily: "var(--font-serif)",
-              color: "#6B1C6F",
+              color: "var(--purple)",
               fontSize: "clamp(2rem, 5vw, 2.8rem)",
             }}
           >
             Pull a spine, find your <span className="underline-accent">vibe</span>
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-6" style={{ color: "#6B7280" }}>
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-6" style={{ color: "var(--muted)" }}>
             Not sure what you&apos;re in the mood for? Tap a book on the shelf and we&apos;ll point
             you toward the right corner of the shop.
           </p>
@@ -233,9 +233,9 @@ export default function ShelfPicks() {
                 style={{
                   background:
                     "linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(253,248,240,0.97) 100%)",
-                  borderColor: "rgba(107,28,111,0.10)",
+                  borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
                   boxShadow:
-                    "0 30px 70px rgba(107,28,111,0.14), 0 10px 24px rgba(241,187,26,0.08)",
+                    "0 30px 70px color-mix(in srgb, var(--purple) 14%, transparent), 0 10px 24px color-mix(in srgb, var(--gold) 8%, transparent)",
                 }}
               >
                 <span
@@ -243,7 +243,7 @@ export default function ShelfPicks() {
                   className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl"
                   style={{
                     background: `linear-gradient(165deg, ${active.from} 0%, ${active.to} 100%)`,
-                    boxShadow: "0 8px 20px rgba(107,28,111,0.22)",
+                    boxShadow: "0 8px 20px color-mix(in srgb, var(--purple) 22%, transparent)",
                   }}
                 >
                   <Sparkles size={22} style={{ color: active.foil }} className="mm-sparkle" />
@@ -251,13 +251,13 @@ export default function ShelfPicks() {
 
                 <span
                   className="text-[11px] font-bold uppercase tracking-[0.24em]"
-                  style={{ color: "#F1BB1A" }}
+                  style={{ color: "var(--gold)" }}
                 >
                   {active.tag}
                 </span>
                 <h3
                   className="mt-2 text-2xl font-bold"
-                  style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                  style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                   key={active.id /* re-trigger the ink-settle on each change */}
                 >
                   <span className="animate-ink-settle inline-block">{active.title}</span>
@@ -275,9 +275,9 @@ export default function ShelfPicks() {
                   <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
                 </button>
 
-                <p className="mt-4 text-xs" style={{ color: "#6B7280" }}>
+                <p className="mt-4 text-xs" style={{ color: "var(--muted)" }}>
                   Prefer to browse in person?{" "}
-                  <Link href="/visit" className="font-semibold underline" style={{ color: "#6B1C6F" }}>
+                  <Link href="/visit" className="font-semibold underline" style={{ color: "var(--purple)" }}>
                     Plan a visit
                   </Link>
                   .

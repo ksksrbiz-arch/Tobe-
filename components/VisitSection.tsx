@@ -76,7 +76,7 @@ export default function VisitSection() {
       className="relative overflow-hidden px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
       style={{
         background:
-          "radial-gradient(ellipse at 12% 8%, rgba(241,187,26,0.18) 0%, transparent 42%), radial-gradient(ellipse at 92% 18%, rgba(107,28,111,0.16) 0%, transparent 38%), radial-gradient(circle at 50% 110%, rgba(139,46,144,0.18) 0%, transparent 50%), linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 50%, #F8F2FF 100%)",
+          "radial-gradient(ellipse at 12% 8%, color-mix(in srgb, var(--gold) 18%, transparent) 0%, transparent 42%), radial-gradient(ellipse at 92% 18%, color-mix(in srgb, var(--purple) 16%, transparent) 0%, transparent 38%), radial-gradient(circle at 50% 110%, color-mix(in srgb, var(--purple-light) 18%, transparent) 0%, transparent 50%), linear-gradient(180deg, #FFFDF9 0%, var(--paper) 50%, #F8F2FF 100%)",
       }}
     >
       {/* Decorative paper-grain pattern overlay */}
@@ -85,7 +85,7 @@ export default function VisitSection() {
         className="pointer-events-none absolute inset-0 opacity-[0.35]"
         style={{
           backgroundImage:
-            "radial-gradient(rgba(107,28,111,0.06) 1px, transparent 1px), radial-gradient(rgba(241,187,26,0.05) 1px, transparent 1px)",
+            "radial-gradient(color-mix(in srgb, var(--purple) 6%, transparent) 1px, transparent 1px), radial-gradient(color-mix(in srgb, var(--gold) 5%, transparent) 1px, transparent 1px)",
           backgroundSize: "28px 28px, 36px 36px",
           backgroundPosition: "0 0, 14px 18px",
         }}
@@ -94,19 +94,19 @@ export default function VisitSection() {
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -left-24 top-32 h-72 w-72 rounded-full opacity-40 blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(241,187,26,0.45), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, color-mix(in srgb, var(--gold) 45%, transparent), transparent 70%)" }}
       />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-24 bottom-10 h-80 w-80 rounded-full opacity-40 blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(107,28,111,0.45), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, color-mix(in srgb, var(--purple) 45%, transparent), transparent 70%)" }}
       />
 
       <div className="relative mx-auto max-w-6xl">
         <Reveal className="mb-10 text-center sm:mb-14">
           <span
             className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-            style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+            style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
           >
             Visit Us
           </span>
@@ -114,7 +114,7 @@ export default function VisitSection() {
             className="mb-3 font-bold"
             style={{
               fontFamily: "var(--font-serif)",
-              color: "#6B1C6F",
+              color: "var(--purple)",
               fontSize: "clamp(1.85rem, 5vw, 3rem)",
               lineHeight: 1.1,
             }}
@@ -126,9 +126,9 @@ export default function VisitSection() {
           <div
             className="mx-auto mt-6 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium sm:text-sm"
             style={{
-              borderColor: status.open ? "rgba(34,197,94,0.30)" : "rgba(107,28,111,0.20)",
+              borderColor: status.open ? "rgba(34,197,94,0.30)" : "color-mix(in srgb, var(--purple) 20%, transparent)",
               background: status.open ? "rgba(34,197,94,0.10)" : "rgba(255,255,255,0.75)",
-              color: status.open ? "#15803d" : "#6B1C6F",
+              color: status.open ? "#15803d" : "var(--purple)",
               backdropFilter: "blur(8px)",
               WebkitBackdropFilter: "blur(8px)",
             }}
@@ -136,7 +136,7 @@ export default function VisitSection() {
             <span
               aria-hidden="true"
               className={`h-2 w-2 rounded-full ${status.open ? "animate-pulse-glow" : ""}`}
-              style={{ background: status.open ? "#22c55e" : "#6B1C6F" }}
+              style={{ background: status.open ? "#22c55e" : "var(--purple)" }}
             />
             {liveStatus && <span className="sr-only">{liveStatus.open ? "Open: " : "Closed: "}</span>}
             {status.label}
@@ -149,16 +149,16 @@ export default function VisitSection() {
             className="grid grid-cols-3 gap-2 rounded-2xl border p-2"
             style={{
               background: "rgba(255,255,255,0.78)",
-              borderColor: "rgba(107,28,111,0.10)",
+              borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
               backdropFilter: "blur(10px)",
               WebkitBackdropFilter: "blur(10px)",
-              boxShadow: "0 12px 30px rgba(107,28,111,0.08)",
+              boxShadow: "0 12px 30px color-mix(in srgb, var(--purple) 8%, transparent)",
             }}
           >
             <a
               href="tel:503-659-2559"
               className="flex flex-col items-center justify-center gap-1 rounded-xl px-2 py-3 text-xs font-semibold transition-all active:scale-95"
-              style={{ color: "#6B1C6F", background: "rgba(107,28,111,0.06)" }}
+              style={{ color: "var(--purple)", background: "color-mix(in srgb, var(--purple) 6%, transparent)" }}
             >
               <Phone size={18} />
               Call
@@ -168,7 +168,7 @@ export default function VisitSection() {
               target="_blank"
               rel="noopener noreferrer"
               className="flex flex-col items-center justify-center gap-1 rounded-xl px-2 py-3 text-xs font-semibold text-white transition-all active:scale-95"
-              style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+              style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
             >
               <Navigation size={18} />
               Directions
@@ -176,7 +176,7 @@ export default function VisitSection() {
             <button
               onClick={handleShare}
               className="flex flex-col items-center justify-center gap-1 rounded-xl px-2 py-3 text-xs font-semibold transition-all active:scale-95"
-              style={{ color: "#6B1C6F", background: "rgba(241,187,26,0.18)" }}
+              style={{ color: "var(--purple)", background: "color-mix(in srgb, var(--gold) 18%, transparent)" }}
             >
               <Copy size={18} />
               Share
@@ -192,15 +192,15 @@ export default function VisitSection() {
               <div
                 className="group rounded-2xl border p-4 transition-all hover:-translate-y-1 sm:p-5"
                 style={{
-                  background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
-                  borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+                  background: "linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
+                  borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
+                  boxShadow: "0 8px 22px color-mix(in srgb, var(--purple) 5%, transparent)",
                 }}
               >
                 <div className="mb-3 flex items-center gap-3">
                   <div
                     className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-110"
-                    style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                    style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
                   >
                     <MapPin size={18} className="text-white" />
                   </div>
@@ -215,7 +215,7 @@ export default function VisitSection() {
                 <button
                   onClick={handleCopyAddress}
                   className="mt-3 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider transition-all hover:underline active:scale-95"
-                  style={{ color: "#6B1C6F" }}
+                  style={{ color: "var(--purple)" }}
                 >
                   <Copy size={12} />
                   Copy address
@@ -227,15 +227,15 @@ export default function VisitSection() {
                 href="tel:503-659-2559"
                 className="group block rounded-2xl border p-4 transition-all hover:-translate-y-1 active:scale-[0.98] sm:p-5"
                 style={{
-                  background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
-                  borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+                  background: "linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
+                  borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
+                  boxShadow: "0 8px 22px color-mix(in srgb, var(--purple) 5%, transparent)",
                 }}
               >
                 <div className="mb-3 flex items-center gap-3">
                   <div
                     className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-110"
-                    style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                    style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
                   >
                     <Phone size={18} className="text-white" />
                   </div>
@@ -245,11 +245,11 @@ export default function VisitSection() {
                 </div>
                 <span
                   className="text-sm font-semibold leading-relaxed transition-colors group-hover:underline"
-                  style={{ color: "#6B1C6F" }}
+                  style={{ color: "var(--purple)" }}
                 >
                   503-659-2559
                 </span>
-                <p className="mt-1 text-xs sm:hidden" style={{ color: "#6B7280" }}>
+                <p className="mt-1 text-xs sm:hidden" style={{ color: "var(--muted)" }}>
                   Tap to call
                 </p>
               </a>
@@ -259,15 +259,15 @@ export default function VisitSection() {
                 href="mailto:TBR@tcpbusiness.com"
                 className="group block rounded-2xl border p-4 transition-all hover:-translate-y-1 active:scale-[0.98] sm:p-5"
                 style={{
-                  background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
-                  borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+                  background: "linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
+                  borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
+                  boxShadow: "0 8px 22px color-mix(in srgb, var(--purple) 5%, transparent)",
                 }}
               >
                 <div className="mb-3 flex items-center gap-3">
                   <div
                     className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-110"
-                    style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                    style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
                   >
                     <Mail size={18} className="text-white" />
                   </div>
@@ -277,7 +277,7 @@ export default function VisitSection() {
                 </div>
                 <span
                   className="block break-all text-sm font-semibold leading-relaxed transition-colors group-hover:underline"
-                  style={{ color: "#6B1C6F" }}
+                  style={{ color: "var(--purple)" }}
                 >
                   TBR@tcpbusiness.com
                 </span>
@@ -287,15 +287,15 @@ export default function VisitSection() {
               <div
                 className="group rounded-2xl border p-4 transition-all hover:-translate-y-1 sm:p-5"
                 style={{
-                  background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
-                  borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+                  background: "linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
+                  borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
+                  boxShadow: "0 8px 22px color-mix(in srgb, var(--purple) 5%, transparent)",
                 }}
               >
                 <div className="mb-3 flex items-center gap-3">
                   <div
                     className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-110"
-                    style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                    style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
                   >
                     <Clock size={18} className="text-white" />
                   </div>
@@ -307,7 +307,7 @@ export default function VisitSection() {
                   <p>
                     <strong>Mon – Sat</strong> · 10am – 5pm
                   </p>
-                  <p className="mt-1 text-xs italic" style={{ color: "#6B7280" }}>
+                  <p className="mt-1 text-xs italic" style={{ color: "var(--muted)" }}>
                     Closed Sundays. May open late if a chapter runs long!
                   </p>
                 </div>
@@ -318,14 +318,14 @@ export default function VisitSection() {
             <div
               className="mt-6 overflow-hidden rounded-2xl border"
               style={{
-                background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
-                borderColor: "rgba(107,28,111,0.10)",
-                boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+                background: "linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
+                borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
+                boxShadow: "0 8px 22px color-mix(in srgb, var(--purple) 5%, transparent)",
               }}
             >
               <div
                 className="px-5 py-3 text-xs font-bold uppercase tracking-wider"
-                style={{ background: "rgba(107,28,111,0.08)", color: "#6B1C6F" }}
+                style={{ background: "color-mix(in srgb, var(--purple) 8%, transparent)", color: "var(--purple)" }}
               >
                 Weekly Hours
               </div>
@@ -342,22 +342,22 @@ export default function VisitSection() {
                       className="flex flex-col items-center justify-center rounded-lg py-2"
                       style={{
                         background: isToday
-                          ? "rgba(241,187,26,0.18)"
+                          ? "color-mix(in srgb, var(--gold) 18%, transparent)"
                           : isClosed
-                            ? "rgba(107,28,111,0.04)"
-                            : "rgba(107,28,111,0.06)",
-                        border: isToday ? "1.5px solid #F1BB1A" : "1.5px solid transparent",
+                            ? "color-mix(in srgb, var(--purple) 4%, transparent)"
+                            : "color-mix(in srgb, var(--purple) 6%, transparent)",
+                        border: isToday ? "1.5px solid var(--gold)" : "1.5px solid transparent",
                       }}
                     >
                       <span
                         className="text-[10px] font-bold uppercase"
-                        style={{ color: isToday ? "#6B1C6F" : "#6B7280" }}
+                        style={{ color: isToday ? "var(--purple)" : "var(--muted)" }}
                       >
                         {d.short}
                       </span>
                       <span
                         className="mt-0.5 text-[9px] font-medium"
-                        style={{ color: isClosed ? "#9CA3AF" : isToday ? "#6B1C6F" : "#374151" }}
+                        style={{ color: isClosed ? "#9CA3AF" : isToday ? "var(--purple)" : "#374151" }}
                       >
                         {isClosed ? "—" : "10–5"}
                       </span>
@@ -368,14 +368,14 @@ export default function VisitSection() {
               {todayName && (
                 <p
                   className="border-t px-4 pb-3 pt-2 text-center text-[11px] font-medium sm:hidden"
-                  style={{ borderColor: "rgba(107,28,111,0.06)", color: "#6B7280" }}
+                  style={{ borderColor: "color-mix(in srgb, var(--purple) 6%, transparent)", color: "var(--muted)" }}
                 >
-                  Today is <strong style={{ color: "#6B1C6F" }}>{todayName}</strong>
+                  Today is <strong style={{ color: "var(--purple)" }}>{todayName}</strong>
                 </p>
               )}
 
               {/* Desktop: full row list */}
-              <div className="hidden divide-y sm:block" style={{ borderColor: "rgba(107,28,111,0.08)" }}>
+              <div className="hidden divide-y sm:block" style={{ borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)" }}>
                 {dayHours.map((d) => {
                   const idx = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(d.day);
                   const isToday = idx === todayIdx;
@@ -384,15 +384,15 @@ export default function VisitSection() {
                       key={d.day}
                       className="flex items-center justify-between px-5 py-2.5 text-sm"
                       style={{
-                        background: isToday ? "rgba(241,187,26,0.10)" : "transparent",
+                        background: isToday ? "color-mix(in srgb, var(--gold) 10%, transparent)" : "transparent",
                         color: "#374151",
                         fontWeight: isToday ? 700 : 500,
                       }}
                     >
-                      <span style={{ color: isToday ? "#6B1C6F" : "#374151" }}>
+                      <span style={{ color: isToday ? "var(--purple)" : "#374151" }}>
                         {d.day}
                         {isToday && (
-                          <span className="ml-2 text-[10px] uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
+                          <span className="ml-2 text-[10px] uppercase tracking-wider" style={{ color: "var(--gold)" }}>
                             • today
                           </span>
                         )}
@@ -411,7 +411,7 @@ export default function VisitSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-shine flex items-center justify-center gap-2 rounded-2xl px-5 py-4 text-sm font-semibold text-white shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]"
-                style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
               >
                 <Navigation size={16} />
                 Google Maps
@@ -421,7 +421,7 @@ export default function VisitSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 rounded-2xl border-2 px-5 py-4 text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
-                style={{ borderColor: "rgba(107,28,111,0.25)", color: "#6B1C6F", background: "rgba(255,255,255,0.7)" }}
+                style={{ borderColor: "color-mix(in srgb, var(--purple) 25%, transparent)", color: "var(--purple)", background: "rgba(255,255,255,0.7)" }}
               >
                 <ExternalLink size={16} />
                 Apple Maps
@@ -434,8 +434,8 @@ export default function VisitSection() {
             <div
               className="relative overflow-hidden rounded-3xl border shadow-xl"
               style={{
-                borderColor: "rgba(107,28,111,0.12)",
-                background: "linear-gradient(135deg, #FDF8F0 0%, #F8F2FF 100%)",
+                borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)",
+                background: "linear-gradient(135deg, var(--paper) 0%, #F8F2FF 100%)",
               }}
             >
               <div className="relative aspect-[4/5] w-full sm:aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px]">
@@ -455,7 +455,7 @@ export default function VisitSection() {
                   className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold shadow-lg transition-all hover:scale-105 active:scale-95"
                   style={{
                     background: "rgba(255,255,255,0.95)",
-                    color: "#6B1C6F",
+                    color: "var(--purple)",
                     backdropFilter: "blur(10px)",
                     WebkitBackdropFilter: "blur(10px)",
                   }}

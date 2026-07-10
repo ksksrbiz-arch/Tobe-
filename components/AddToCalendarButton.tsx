@@ -84,9 +84,9 @@ export default function AddToCalendarButton({
       onClick={handleClick}
       className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all hover:scale-[1.03] ${className}`}
       style={{
-        borderColor: "rgba(107,28,111,0.18)",
-        color: "#6B1C6F",
-        background: "rgba(107,28,111,0.04)",
+        borderColor: "color-mix(in srgb, var(--purple) 18%, transparent)",
+        color: "var(--purple)",
+        background: "color-mix(in srgb, var(--purple) 4%, transparent)",
       }}
     >
       <CalendarPlus size={13} aria-hidden="true" />

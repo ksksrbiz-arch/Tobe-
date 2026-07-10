@@ -98,7 +98,7 @@ export default function BookishQuote() {
       className="px-4 py-12 sm:py-20 sm:px-6 lg:px-8"
       style={{
         background:
-          "radial-gradient(circle at 15% 20%, rgba(241,187,26,0.10), transparent 40%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+          "radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 40%), linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
       }}
       aria-labelledby="bookish-quote-heading"
     >
@@ -109,21 +109,21 @@ export default function BookishQuote() {
         <figure
           className="relative overflow-hidden rounded-[28px] border bg-white px-7 py-12 text-center sm:px-14"
           style={{
-            borderColor: "rgba(107,28,111,0.10)",
-            boxShadow: "0 24px 60px rgba(107,28,111,0.10)",
+            borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
+            boxShadow: "0 24px 60px color-mix(in srgb, var(--purple) 10%, transparent)",
           }}
         >
           {/* faint paper grain / margin lines */}
           <span
             aria-hidden="true"
             className="pointer-events-none absolute inset-y-0 left-8 w-px"
-            style={{ background: "rgba(241,187,26,0.35)" }}
+            style={{ background: "color-mix(in srgb, var(--gold) 35%, transparent)" }}
           />
           <Quote
             aria-hidden="true"
             size={40}
             className="mx-auto mb-6"
-            style={{ color: "#F1BB1A" }}
+            style={{ color: "var(--gold)" }}
           />
           <div
             aria-live="polite"
@@ -137,14 +137,14 @@ export default function BookishQuote() {
               className="text-balance text-xl leading-relaxed sm:text-2xl"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#4A1350",
+                color: "var(--purple-dark)",
                 fontStyle: "italic",
               }}
             >
               “{quote.text}”
             </blockquote>
-            <figcaption className="mt-6 text-sm" style={{ color: "#6B7280" }}>
-              <span className="font-semibold" style={{ color: "#6B1C6F" }}>
+            <figcaption className="mt-6 text-sm" style={{ color: "var(--muted)" }}>
+              <span className="font-semibold" style={{ color: "var(--purple)" }}>
                 {quote.author}
               </span>
               <span aria-hidden="true"> · </span>
@@ -157,7 +157,7 @@ export default function BookishQuote() {
               type="button"
               onClick={nextQuote}
               className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all hover:scale-105"
-              style={{ background: "rgba(107,28,111,0.08)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--purple) 8%, transparent)", color: "var(--purple)" }}
             >
               <RefreshCw size={13} />
               Turn the page
@@ -166,7 +166,7 @@ export default function BookishQuote() {
               type="button"
               onClick={copyQuote}
               className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all hover:scale-105"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               <Copy size={13} />
               Copy quote

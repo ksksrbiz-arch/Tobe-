@@ -122,32 +122,32 @@ export default async function ReadingRoomPostPage({
         <div className="mx-auto max-w-2xl">
           {/* Visible breadcrumb trail — mirrors the BreadcrumbList JSON-LD above. */}
           <nav aria-label="Breadcrumb" className="mb-6">
-            <ol className="flex flex-wrap items-center gap-1.5 text-xs font-semibold text-[#6B7280]">
+            <ol className="flex flex-wrap items-center gap-1.5 text-xs font-semibold text-[var(--muted)]">
               <li>
                 <Link
                   href="/"
                   className="rounded transition-colors hover:underline"
-                  style={{ color: "#6B1C6F" }}
+                  style={{ color: "var(--purple)" }}
                 >
                   Home
                 </Link>
               </li>
-              <li aria-hidden="true" style={{ color: "rgba(107,28,111,0.45)" }}>
+              <li aria-hidden="true" style={{ color: "color-mix(in srgb, var(--purple) 45%, transparent)" }}>
                 ›
               </li>
               <li>
                 <Link
                   href="/reading-room"
                   className="rounded transition-colors hover:underline"
-                  style={{ color: "#6B1C6F" }}
+                  style={{ color: "var(--purple)" }}
                 >
                   The Reading Room
                 </Link>
               </li>
-              <li aria-hidden="true" style={{ color: "rgba(107,28,111,0.45)" }}>
+              <li aria-hidden="true" style={{ color: "color-mix(in srgb, var(--purple) 45%, transparent)" }}>
                 ›
               </li>
-              <li aria-current="page" style={{ color: "#4A1350" }}>
+              <li aria-current="page" style={{ color: "var(--purple-dark)" }}>
                 {post.title}
               </li>
             </ol>
@@ -156,7 +156,7 @@ export default async function ReadingRoomPostPage({
           <Link
             href="/reading-room"
             className="mb-8 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors"
-            style={{ color: "#6B1C6F" }}
+            style={{ color: "var(--purple)" }}
           >
             <ArrowLeft size={15} aria-hidden="true" />
             The Reading Room
@@ -169,7 +169,7 @@ export default async function ReadingRoomPostPage({
                   key={tag}
                   href={`/reading-room/tags/${tagToSlug(tag)}`}
                   className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide transition-colors hover:brightness-95"
-                  style={{ background: "rgba(241,187,26,0.16)", color: "#6B1C6F" }}
+                  style={{ background: "color-mix(in srgb, var(--gold) 16%, transparent)", color: "var(--purple)" }}
                 >
                   {tag}
                 </Link>
@@ -177,11 +177,11 @@ export default async function ReadingRoomPostPage({
             </div>
             <h1
               className="text-3xl font-bold leading-tight sm:text-4xl"
-              style={{ fontFamily: "var(--font-serif)", color: "#4A1350" }}
+              style={{ fontFamily: "var(--font-serif)", color: "var(--purple-dark)" }}
             >
               {post.title}
             </h1>
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-[#6B7280]">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-[var(--muted)]">
               <div className="flex items-center gap-3">
                 <time dateTime={post.date}>{formatPostDate(post.date)}</time>
                 <span className="inline-flex items-center gap-1">
@@ -200,10 +200,10 @@ export default async function ReadingRoomPostPage({
           </BlogProse>
 
           {related.length > 0 && (
-            <aside className="mt-16 border-t pt-10" style={{ borderColor: "rgba(107,28,111,0.12)" }}>
+            <aside className="mt-16 border-t pt-10" style={{ borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)" }}>
               <h2
                 className="mb-6 text-xl font-bold"
-                style={{ fontFamily: "var(--font-serif)", color: "#4A1350" }}
+                style={{ fontFamily: "var(--font-serif)", color: "var(--purple-dark)" }}
               >
                 Keep reading
               </h2>
@@ -213,11 +213,11 @@ export default async function ReadingRoomPostPage({
                     <Link
                       href={`/reading-room/${r.slug}`}
                       className="group flex h-full flex-col rounded-2xl border bg-white/70 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-                      style={{ borderColor: "rgba(107,28,111,0.10)" }}
+                      style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
                     >
                       <h3
                         className="mb-2 text-base font-bold leading-snug"
-                        style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                        style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                       >
                         {r.title}
                       </h3>

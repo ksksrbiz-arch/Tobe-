@@ -47,7 +47,7 @@ export default function TradeSection() {
       className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
-          "radial-gradient(circle at 90% 10%, rgba(241,187,26,0.10), transparent 40%), linear-gradient(180deg, #FDF8F0 0%, #F8F2E8 100%)",
+          "radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 40%), linear-gradient(180deg, var(--paper) 0%, #F8F2E8 100%)",
       }}
     >
       <div className="mx-auto max-w-5xl">
@@ -55,7 +55,7 @@ export default function TradeSection() {
         <Reveal className="mb-12 text-center">
           <span
             className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-            style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+            style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
           >
             Trade With Us
           </span>
@@ -63,14 +63,14 @@ export default function TradeSection() {
             className="mb-3 font-bold"
             style={{
               fontFamily: "var(--font-serif)",
-              color: "#6B1C6F",
+              color: "var(--purple)",
               fontSize: "clamp(2rem, 5vw, 3rem)",
             }}
           >
             Bring Your <span className="underline-accent">Books</span> In
           </h2>
           <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed" style={{ color: "#6B7280" }}>
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
             We run a friendly trade-credit shop — bring books in, take new ones home with credit toward the trade.
           </p>
         </Reveal>
@@ -80,13 +80,13 @@ export default function TradeSection() {
           <div
             className="mb-10 flex items-start gap-4 rounded-2xl border-2 p-5"
             style={{
-              background: "linear-gradient(135deg, rgba(107,28,111,0.05), rgba(241,187,26,0.05))",
-              borderColor: "#6B1C6F",
+              background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 5%, transparent), color-mix(in srgb, var(--gold) 5%, transparent))",
+              borderColor: "var(--purple)",
             }}
           >
-            <AlertTriangle size={26} aria-hidden="true" style={{ color: "#F1BB1A", flexShrink: 0, marginTop: 2 }} />
+            <AlertTriangle size={26} aria-hidden="true" style={{ color: "var(--gold)", flexShrink: 0, marginTop: 2 }} />
             <div>
-              <p className="text-lg font-bold" style={{ color: "#6B1C6F" }}>
+              <p className="text-lg font-bold" style={{ color: "var(--purple)" }}>
                 NO CASH GIVEN FOR BOOKS!
               </p>
               <p className="mt-1 text-sm leading-relaxed" style={{ color: "#374151" }}>
@@ -102,13 +102,13 @@ export default function TradeSection() {
             className="relative mb-10 overflow-hidden rounded-3xl border-2 p-8 shadow-xl"
             style={{
               background: "white",
-              borderColor: "#6B1C6F",
+              borderColor: "var(--purple)",
             }}
           >
             <div
               aria-hidden="true"
               className="absolute -right-20 -top-20 h-56 w-56 rounded-full opacity-15 blur-3xl"
-              style={{ background: "#F1BB1A" }}
+              style={{ background: "var(--gold)" }}
             />
 
             <div className="relative">
@@ -116,7 +116,7 @@ export default function TradeSection() {
                 <div
                   className="flex h-11 w-11 items-center justify-center rounded-xl"
                   style={{
-                    background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
+                    background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)",
                   }}
                 >
                   <Receipt size={20} aria-hidden="true" className="text-white" />
@@ -126,14 +126,14 @@ export default function TradeSection() {
                     className="font-bold"
                     style={{
                       fontFamily: "var(--font-serif)",
-                      color: "#6B1C6F",
+                      color: "var(--purple)",
                       fontSize: "clamp(1.3rem, 3vw, 1.7rem)",
                       letterSpacing: "0.01em",
                     }}
                   >
                     Book Exchange Policy
                   </h3>
-                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
+                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--gold)" }}>
                     Effective {TRADE_POLICY_EFFECTIVE_DATE}
                   </p>
                 </div>
@@ -142,13 +142,13 @@ export default function TradeSection() {
               <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
                 <div
                   className="rounded-2xl p-5"
-                  style={{ background: "rgba(107,28,111,0.05)" }}
+                  style={{ background: "color-mix(in srgb, var(--purple) 5%, transparent)" }}
                 >
                   <div
                     className="text-3xl font-bold"
                     style={{
                       fontFamily: "var(--font-serif)",
-                      color: "#6B1C6F",
+                      color: "var(--purple)",
                     }}
                   >
                     25%
@@ -162,13 +162,13 @@ export default function TradeSection() {
                 </div>
                 <div
                   className="rounded-2xl p-5"
-                  style={{ background: "rgba(241,187,26,0.10)" }}
+                  style={{ background: "color-mix(in srgb, var(--gold) 10%, transparent)" }}
                 >
                   <div
                     className="text-3xl font-bold"
                     style={{
                       fontFamily: "var(--font-serif)",
-                      color: "#6B1C6F",
+                      color: "var(--purple)",
                     }}
                   >
                     50%
@@ -184,11 +184,11 @@ export default function TradeSection() {
 
               <div className="mt-6">
                 <p className="mb-3 text-sm font-medium" style={{ color: "#374151" }}>
-                  <strong style={{ color: "#6B1C6F" }}>How it works at the register</strong> — for example:
+                  <strong style={{ color: "var(--purple)" }}>How it works at the register</strong> — for example:
                 </p>
                 <div
                   className="grid grid-cols-3 gap-3 rounded-2xl p-5"
-                  style={{ background: "#FDF8F0" }}
+                  style={{ background: "var(--paper)" }}
                 >
                   {exampleSplit.map((part, i) => (
                     <div
@@ -200,14 +200,14 @@ export default function TradeSection() {
                     >
                       <div
                         className="mb-1.5 text-[10px] uppercase tracking-wider"
-                        style={{ color: "#6B7280" }}
+                        style={{ color: "var(--muted)" }}
                       >
                         {part.label}
                       </div>
                       <div
                         className="text-3xl font-bold"
                         style={{
-                          color: i === 0 ? "#6B1C6F" : "#F1BB1A",
+                          color: i === 0 ? "var(--purple)" : "var(--gold)",
                           fontFamily: "var(--font-serif)",
                         }}
                       >
@@ -220,7 +220,7 @@ export default function TradeSection() {
 
               <div
                 className="mt-6 border-t pt-4 text-center text-sm italic"
-                style={{ color: "#6B7280", borderColor: "rgba(107,28,111,0.10)" }}
+                style={{ color: "var(--muted)", borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
               >
                 <p>Store credit does not expire.</p>
                 <p className="mt-2">{TRADE_POLICY_PRICING}</p>
@@ -243,7 +243,7 @@ export default function TradeSection() {
             >
               <h3
                 className="mb-5 flex items-center gap-2 text-lg font-bold"
-                style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
               >
                 <span
                   aria-hidden="true"
@@ -280,7 +280,7 @@ export default function TradeSection() {
             >
               <h3
                 className="mb-5 flex items-center gap-2 text-lg font-bold"
-                style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
               >
                 <span
                   aria-hidden="true"
@@ -308,13 +308,13 @@ export default function TradeSection() {
           <div
             className="mb-10 flex items-start gap-3 rounded-2xl border p-5"
             style={{
-              background: "rgba(241,187,26,0.07)",
-              borderColor: "rgba(107,28,111,0.12)",
+              background: "color-mix(in srgb, var(--gold) 7%, transparent)",
+              borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)",
             }}
           >
-            <Sparkles size={20} aria-hidden="true" style={{ color: "#F1BB1A", flexShrink: 0, marginTop: 2 }} />
+            <Sparkles size={20} aria-hidden="true" style={{ color: "var(--gold)", flexShrink: 0, marginTop: 2 }} />
             <p className="text-sm leading-relaxed" style={{ color: "#374151" }}>
-              <strong style={{ color: "#6B1C6F" }}>A friendly heads-up:</strong> Even when your
+              <strong style={{ color: "var(--purple)" }}>A friendly heads-up:</strong> Even when your
               books meet all of our trade requirements, there&apos;s a small chance we already have
               plenty of copies of a particular title. If we can&apos;t take a book today, please
               don&apos;t take it personally — our shelves change all the time, so you&apos;re always

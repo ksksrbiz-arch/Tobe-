@@ -52,7 +52,7 @@ export default function Footer() {
       className="relative overflow-hidden text-white"
       style={{
         background:
-          "radial-gradient(circle at 8% 20%, rgba(241,187,26,0.10), transparent 38%), radial-gradient(circle at 88% 0%, rgba(139,46,144,0.40), transparent 32%), linear-gradient(180deg, #4A1350 0%, #6B1C6F 60%, #2A0930 100%)",
+          "radial-gradient(circle at 8% 20%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 38%), radial-gradient(circle at 88% 0%, color-mix(in srgb, var(--purple-light) 40%, transparent), transparent 32%), linear-gradient(180deg, var(--purple-dark) 0%, var(--purple) 60%, var(--purple-deep) 100%)",
       }}
     >
       {/* decorative top wave */}
@@ -78,7 +78,7 @@ export default function Footer() {
               <div>
                 <div
                   className="text-lg font-bold"
-                  style={{ fontFamily: "var(--font-serif)", color: "#F1BB1A" }}
+                  style={{ fontFamily: "var(--font-serif)", color: "var(--gold)" }}
                 >
                   To Be Read
                 </div>
@@ -107,7 +107,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
+            <h3 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "var(--gold)" }}>
               Explore
             </h3>
             <ul className="space-y-2.5">
@@ -130,7 +130,7 @@ export default function Footer() {
                     <ArrowUpRight
                       size={12}
                       className="-translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
-                      style={{ color: "#F1BB1A" }}
+                      style={{ color: "var(--gold)" }}
                     />
                   </Link>
                 </li>
@@ -140,12 +140,12 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
+            <h3 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "var(--gold)" }}>
               Contact
             </h3>
             <ul className="space-y-3 text-sm opacity-85">
               <li className="flex items-start gap-2.5">
-                <MapPin size={16} className="mt-0.5 flex-shrink-0" style={{ color: "#F1BB1A" }} />
+                <MapPin size={16} className="mt-0.5 flex-shrink-0" style={{ color: "var(--gold)" }} />
                 <span className="leading-relaxed">
                   7931 SE King Rd, Unit 1
                   <br />
@@ -153,13 +153,13 @@ export default function Footer() {
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
-                <Phone size={16} style={{ color: "#F1BB1A" }} />
+                <Phone size={16} style={{ color: "var(--gold)" }} />
                 <a href="tel:503-659-2559" className="transition-colors hover:text-yellow-300">
                   503-659-2559
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <Mail size={16} style={{ color: "#F1BB1A" }} />
+                <Mail size={16} style={{ color: "var(--gold)" }} />
                 <a
                   href="mailto:TBR@tcpbusiness.com"
                   className="break-all transition-colors hover:text-yellow-300"
@@ -168,7 +168,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
-                <Clock size={16} className="mt-0.5 flex-shrink-0" style={{ color: "#F1BB1A" }} />
+                <Clock size={16} className="mt-0.5 flex-shrink-0" style={{ color: "var(--gold)" }} />
                 <span className="leading-relaxed">
                   Mon–Sat · 10am–5pm
                   <br />
@@ -180,7 +180,7 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h3 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "#F1BB1A" }}>
+            <h3 className="mb-5 text-sm font-bold uppercase tracking-wider" style={{ color: "var(--gold)" }}>
               Stay updated
             </h3>
             <p className="mb-4 text-sm leading-relaxed opacity-75">
@@ -194,7 +194,7 @@ export default function Footer() {
               <a
                 href="#newsletter"
                 className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-[1.03]"
-                style={{ background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)", color: "#1a1a1a" }}
+                style={{ background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)", color: "#1a1a1a" }}
               >
                 Subscribe above
                 <Send size={14} />
@@ -205,7 +205,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-[1.03]"
-                style={{ background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)", color: "#1a1a1a" }}
+                style={{ background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)", color: "#1a1a1a" }}
               >
                 Follow us
                 <ArrowUpRight size={14} />
@@ -249,7 +249,7 @@ export default function Footer() {
         >
           <p className="opacity-60">© 2026 To Be Read · Clackamas Book Exchange</p>
           <p className="text-xs opacity-60">
-            Made with <span style={{ color: "#F1BB1A" }}>♥</span> in Milwaukie, Oregon
+            Made with <span style={{ color: "var(--gold)" }}>♥</span> in Milwaukie, Oregon
           </p>
         </div>
       </div>

@@ -16,14 +16,14 @@ const LatestTikTok = dynamic(() => import("@/components/LatestTikTok"), {
       className="w-full max-w-[605px] animate-pulse rounded-[28px] border p-4 sm:p-5"
       style={{
         background: "white",
-        borderColor: "rgba(107,28,111,0.10)",
+        borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
         boxShadow: "var(--shadow-sm)",
       }}
     >
-      <div className="mb-3 h-7 w-32 rounded-full" style={{ background: "rgba(107,28,111,0.10)" }} />
+      <div className="mb-3 h-7 w-32 rounded-full" style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)" }} />
       <div
         className="h-[clamp(20rem,58vw,27rem)] rounded-2xl"
-        style={{ background: "linear-gradient(180deg, rgba(107,28,111,0.08), rgba(241,187,26,0.12))" }}
+        style={{ background: "linear-gradient(180deg, color-mix(in srgb, var(--purple) 8%, transparent), color-mix(in srgb, var(--gold) 12%, transparent))" }}
       />
     </div>
   ),
@@ -52,14 +52,14 @@ export default function ConnectPage() {
         className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
-            "radial-gradient(ellipse at 100% 0%, rgba(107,28,111,0.07) 0%, transparent 50%), radial-gradient(ellipse at 0% 100%, rgba(241,187,26,0.08) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+            "radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--purple) 7%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 0% 100%, color-mix(in srgb, var(--gold) 8%, transparent) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
         }}
       >
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-12 text-center">
             <span
               className="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
             >
               <Music2 size={12} />
               On TikTok
@@ -68,13 +68,13 @@ export default function ConnectPage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
             >
               @clackamas.<span className="underline-accent">book.ex</span>
             </h2>
-            <p className="text-sm" style={{ color: "#6B7280" }}>
+            <p className="text-sm" style={{ color: "var(--muted)" }}>
               Shelf tours, staff picks, and the occasional cat cameo.
             </p>
           </Reveal>
@@ -88,7 +88,7 @@ export default function ConnectPage() {
               rel="noopener noreferrer"
               aria-label="See all To Be Read videos on TikTok (opens in a new tab)"
               className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all hover:scale-105 active:scale-[0.98]"
-              style={{ background: "#6B1C6F", color: "white", boxShadow: "0 12px 30px rgba(107,28,111,0.25)" }}
+              style={{ background: "var(--purple)", color: "white", boxShadow: "0 12px 30px color-mix(in srgb, var(--purple) 25%, transparent)" }}
             >
               <Music2 size={14} aria-hidden="true" />
               See all videos on TikTok

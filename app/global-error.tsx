@@ -29,8 +29,8 @@ export default function GlobalError({
           fontFamily:
             "system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
           background:
-            "radial-gradient(circle at 20% 20%, rgba(241,187,26,0.16), transparent 38%), linear-gradient(135deg, #FDF8F0 0%, #F7F0FF 100%)",
-          color: "#1F1A2E",
+            "radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--gold) 16%, transparent), transparent 38%), linear-gradient(135deg, var(--paper) 0%, #F7F0FF 100%)",
+          color: "var(--ink)",
         }}
       >
         <div
@@ -39,10 +39,10 @@ export default function GlobalError({
             width: "100%",
             textAlign: "center",
             background: "rgba(255,255,255,0.9)",
-            border: "1px solid rgba(107,28,111,0.12)",
+            border: "1px solid color-mix(in srgb, var(--purple) 12%, transparent)",
             borderRadius: "24px",
             padding: "2.5rem 1.5rem",
-            boxShadow: "0 24px 60px rgba(107,28,111,0.18)",
+            boxShadow: "0 24px 60px color-mix(in srgb, var(--purple) 18%, transparent)",
           }}
         >
           <div aria-hidden="true" style={{ fontSize: "2.25rem", lineHeight: 1 }}>
@@ -52,13 +52,13 @@ export default function GlobalError({
             style={{
               margin: "1rem 0 0.5rem",
               fontSize: "1.6rem",
-              color: "#6B1C6F",
+              color: "var(--purple)",
               fontFamily: "Georgia, 'Times New Roman', serif",
             }}
           >
             Something went wrong
           </h1>
-          <p style={{ margin: "0 0 1.5rem", color: "#6B7280", lineHeight: 1.6 }}>
+          <p style={{ margin: "0 0 1.5rem", color: "var(--muted)", lineHeight: 1.6 }}>
             The page hit an unexpected snag. Please try again — the rest of the shop is still open.
           </p>
           <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", flexWrap: "wrap" }}>
@@ -73,7 +73,7 @@ export default function GlobalError({
                 fontSize: "0.9rem",
                 fontWeight: 600,
                 color: "#fff",
-                background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
+                background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)",
               }}
             >
               Try again
@@ -88,9 +88,9 @@ export default function GlobalError({
                 padding: "0.85rem 1.4rem",
                 fontSize: "0.9rem",
                 fontWeight: 600,
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 background: "rgba(255,255,255,0.9)",
-                border: "1px solid rgba(107,28,111,0.18)",
+                border: "1px solid color-mix(in srgb, var(--purple) 18%, transparent)",
                 textDecoration: "none",
               }}
             >
@@ -98,7 +98,7 @@ export default function GlobalError({
             </a>
           </div>
           {error?.digest && (
-            <p style={{ marginTop: "1.25rem", fontSize: "0.7rem", color: "#6B7280" }}>
+            <p style={{ marginTop: "1.25rem", fontSize: "0.7rem", color: "var(--muted)" }}>
               Reference: {error.digest}
             </p>
           )}

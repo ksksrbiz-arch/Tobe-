@@ -115,11 +115,11 @@ export default function TradePage() {
             <strong>store credit</strong> toward your next reads — no appointment needed. Make sure
             each book is clean and unmarked, bring a good stack, and come earlier in the day so we can
             sort through them while you browse. Want a rough idea of your credit first? Try the{" "}
-            <a href="#estimator" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+            <a href="#estimator" style={{ color: "var(--purple)", fontWeight: 600, textDecoration: "underline" }}>
               trade estimator
             </a>{" "}
             below, or just{" "}
-            <Link href="/visit" style={{ color: "#6B1C6F", fontWeight: 600, textDecoration: "underline" }}>
+            <Link href="/visit" style={{ color: "var(--purple)", fontWeight: 600, textDecoration: "underline" }}>
               plan a visit
             </Link>
             .
@@ -132,14 +132,14 @@ export default function TradePage() {
         className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
-            "radial-gradient(ellipse at 0% 0%, rgba(107,28,111,0.06) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(241,187,26,0.08) 0%, transparent 45%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+            "radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--purple) 6%, transparent) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, color-mix(in srgb, var(--gold) 8%, transparent) 0%, transparent 45%), linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
         }}
       >
         <div className="mx-auto max-w-6xl">
           <Reveal className="mb-12 text-center">
             <span
               className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
             >
               How it works
             </span>
@@ -147,7 +147,7 @@ export default function TradePage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
             >
@@ -162,7 +162,7 @@ export default function TradePage() {
                 <div
                   className="group relative h-full rounded-2xl border bg-white p-6 card-cozy"
                   style={{
-                    borderColor: "rgba(107,28,111,0.10)",
+                    borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
                     boxShadow: "var(--shadow-sm)",
                   }}
                 >
@@ -170,20 +170,20 @@ export default function TradePage() {
                     className="absolute right-5 top-5 text-3xl font-bold opacity-15 transition-opacity group-hover:opacity-30"
                     style={{
                       fontFamily: "var(--font-serif)",
-                      color: "#6B1C6F",
+                      color: "var(--purple)",
                     }}
                   >
                     0{i + 1}
                   </span>
                   <div
                     className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl"
-                    style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                    style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
                   >
                     <step.icon size={20} aria-hidden="true" className="text-white" />
                   </div>
                   <h3
                     className="mb-2 text-base font-bold"
-                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                   >
                     {step.title}
                   </h3>
@@ -205,14 +205,14 @@ export default function TradePage() {
         className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
-            "radial-gradient(circle at 90% 10%, rgba(241,187,26,0.10), transparent 40%), linear-gradient(180deg, white 0%, #FDF8F0 100%)",
+            "radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 40%), linear-gradient(180deg, white 0%, var(--paper) 100%)",
         }}
       >
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-10 text-center">
             <span
               className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               Instant estimate
             </span>
@@ -220,13 +220,13 @@ export default function TradePage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
             >
               How much credit will I <span className="underline-accent">earn?</span>
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sm leading-6" style={{ color: "#6B7280" }}>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-6" style={{ color: "var(--muted)" }}>
               Enter a list price or scan an ISBN to instantly see your estimated store credit — before you even walk in.
             </p>
             <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
@@ -240,14 +240,14 @@ export default function TradePage() {
         className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
         style={{
           background:
-            "radial-gradient(ellipse at 100% 0%, rgba(241,187,26,0.10) 0%, transparent 45%), radial-gradient(ellipse at 0% 100%, rgba(107,28,111,0.07) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 60%, #F5EAFB 100%)",
+            "radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 45%), radial-gradient(ellipse at 0% 100%, color-mix(in srgb, var(--purple) 7%, transparent) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, var(--paper) 60%, #F5EAFB 100%)",
         }}
       >
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-12 text-center">
             <span
               className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               Pro tips
             </span>
@@ -255,7 +255,7 @@ export default function TradePage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
             >
@@ -269,21 +269,21 @@ export default function TradePage() {
                 <div
                   className="flex h-full flex-col items-center rounded-2xl p-7 text-center transition-all hover:-translate-y-1"
                   style={{
-                    background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
+                    background: "linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)",
                     boxShadow: "var(--shadow-sm)",
                   }}
                 >
                   <div
                     className="mb-5 flex h-14 w-14 items-center justify-center rounded-full"
                     style={{
-                      background: "linear-gradient(135deg, rgba(107,28,111,0.10) 0%, rgba(241,187,26,0.18) 100%)",
+                      background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 10%, transparent) 0%, color-mix(in srgb, var(--gold) 18%, transparent) 100%)",
                     }}
                   >
-                    <tip.icon size={26} aria-hidden="true" style={{ color: "#6B1C6F" }} />
+                    <tip.icon size={26} aria-hidden="true" style={{ color: "var(--purple)" }} />
                   </div>
                   <h3
                     className="mb-3 text-lg font-bold"
-                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                   >
                     {tip.title}
                   </h3>
