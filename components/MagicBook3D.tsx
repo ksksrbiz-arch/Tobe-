@@ -1392,26 +1392,43 @@ async function buildScene(
     opts: { count?: number; radius?: number; y?: number; speed?: number; color?: number } = {},
   ) => {
     const { count = 3, radius = 0.5, y = 0.6, speed = 0.5, color = 0x4a3a55 } = opts;
-    const wingGeo = g(new T.BoxGeometry(0.055, 0.006, 0.02));
+    // Wing hinged at its inner edge (x=0) so it flaps from the shoulder, not
+    // about its own centre; a slim tapered body so each bird reads as a bird
+    // rather than a bare flapping "V".
+    const wingGeo = g(new T.BoxGeometry(0.05, 0.005, 0.02));
+    wingGeo.translate(0.025, 0, 0);
+    const bodyGeo = g(new T.BoxGeometry(0.016, 0.012, 0.05));
     const birdMat = lam(color);
     for (let i = 0; i < count; i++) {
       const bird = new T.Group();
+      const body = new T.Mesh(bodyGeo, birdMat);
+      const lp = new T.Group();
+      const rp = new T.Group();
+      lp.position.x = -0.007;
+      rp.position.x = 0.007;
       const wl = new T.Mesh(wingGeo, birdMat);
+      wl.scale.x = -1; // mirror the shared wing to the left side
       const wr = new T.Mesh(wingGeo, birdMat);
-      wl.position.x = -0.03;
-      wr.position.x = 0.03;
-      bird.add(wl, wr);
+      lp.add(wl);
+      rp.add(wr);
+      bird.add(body, lp, rp);
       grp.add(bird);
       const ph = (i / count) * Math.PI * 2;
       const rad = radius * (0.8 + Math.random() * 0.35);
       const yy = y + (Math.random() - 0.5) * 0.2;
+      const flapSpeed = 10 + Math.random() * 4;
       anims.push((t) => {
         const a = t * speed + ph;
         bird.position.set(Math.cos(a) * rad, yy + Math.sin(t * 1.3 + ph) * 0.05, Math.sin(a) * rad * 0.75);
         bird.rotation.y = -a + Math.PI / 2;
-        const flap = 0.5 + Math.sin(t * 12 + ph) * 0.6;
-        wl.rotation.z = flap;
-        wr.rotation.z = -flap;
+        // Bank inward into the circling turn, with a little pitch on the bob.
+        bird.rotation.z = -0.16 + Math.sin(t * 1.3 + ph) * 0.06;
+        bird.rotation.x = Math.cos(t * 1.3 + ph) * 0.07;
+        // A powered down-stroke (fast, deep) and a lighter recovery up-stroke.
+        const s = Math.sin(t * flapSpeed + ph);
+        const flap = (s > 0 ? s * 0.9 : s * 0.5) + 0.12;
+        lp.rotation.z = flap;
+        rp.rotation.z = -flap;
       });
     }
   };
@@ -1982,13 +1999,25 @@ async function buildScene(
   const updateTurn = () => {
     const k = Math.min((elapsed - turnStart) / TURN_DUR, 1);
     const phase = easeInOut(k);
+    const bend = Math.sin(phase * Math.PI); // 0 → 1 mid-turn → 0
+    // Flip about the spine, but lift the leaf off the spread and lean it a touch
+    // toward the reader as it goes over, so it arcs up like a real page instead
+    // of sweeping flat across the paper.
     pagePivot.rotation.z = phase * Math.PI;
-    // Cloth-like curl, strongest mid-turn.
-    const curl = 0.17 * Math.sin(phase * Math.PI);
+    pagePivot.rotation.x = bend * 0.14;
+    pagePivot.position.y = 0.2 + bend * 0.06;
     const pos = pageGeo.attributes.position as THREE.BufferAttribute;
     for (let i = 0; i < pos.count; i++) {
       const u = pageBase[i * 3]; // 0 at spine → 1 at fore-edge
-      pos.setY(i, pageBase[i * 3 + 1] + Math.sin(u * Math.PI) * curl);
+      const z = pageBase[i * 3 + 2]; // page depth — drives the corner lead
+      // A broad arch across the whole leaf, plus a tighter curl that concentrates
+      // at the unsupported fore-edge (where paper bows most), plus a faint
+      // diagonal so one corner leads the turn. Together they read as a bending
+      // sheet rather than a stiff flap pivoting in one piece.
+      const arch = Math.sin(u * Math.PI) * 0.11 * bend;
+      const tipCurl = Math.pow(u, 2.4) * 0.14 * bend;
+      const cornerLead = u * z * 0.09 * bend;
+      pos.setY(i, pageBase[i * 3 + 1] + arch + tipCurl + cornerLead);
     }
     pos.needsUpdate = true;
     pageGeo.computeVertexNormals();
@@ -1997,6 +2026,8 @@ async function buildScene(
       // Lie flat again showing the (new) current world's illustration, so the
       // open spread always carries its world's storybook page.
       pagePivot.rotation.z = 0;
+      pagePivot.rotation.x = 0;
+      pagePivot.position.y = 0.2;
       pageMat.map = arts[worldIdx];
       pageMat.needsUpdate = true;
     }
@@ -2032,17 +2063,23 @@ async function buildScene(
 
   /* ---------- render loop & lifecycle ---------- */
 
-  // Cap the loop to ~34fps. rAF still fires at the display rate, but the sim +
-  // render only run when enough wall-clock time has accumulated — roughly
-  // halving the ongoing GPU/CPU cost of the hero versus 60fps, which is plenty
-  // smooth for a subtle background animation and eases the load-time CPU
-  // pressure Lighthouse measures.
-  const TARGET_DT = 1 / 34;
+  // Frame-rate budget, matched to the device. The scene only ever boots on a
+  // real hardware interaction (never under Lighthouse, which tanks its score on
+  // 60fps loops), so we can afford genuine smoothness for real visitors: a full
+  // 60fps on capable hardware where the page-turn curl and the island's drift
+  // read fluid, stepping down on weaker CPUs to protect the main thread. rAF
+  // still fires at the display rate; the sim + render only run once enough
+  // wall-clock time has accumulated.
+  const TARGET_FPS = cores >= 8 ? 60 : cores >= 6 ? 48 : 36;
+  const TARGET_DT = 1 / TARGET_FPS;
+  // A hair of slack so a rAF that lands a fraction early at a matched refresh
+  // rate still renders, instead of being skipped into visible judder.
+  const FRAME_EPS = 0.003;
   let frameAcc = 0;
   const frame = () => {
     if (running) raf = requestAnimationFrame(frame);
     frameAcc += clock.getDelta();
-    if (frameAcc < TARGET_DT) return;
+    if (frameAcc < TARGET_DT - FRAME_EPS) return;
     const dt = Math.min(frameAcc, 0.05);
     frameAcc = 0;
     elapsed += dt;
@@ -2054,10 +2091,18 @@ async function buildScene(
     root.rotation.y = px * 0.3 + Math.sin(t * 0.25) * 0.035;
     root.rotation.x = py * 0.12 + Math.sin(t * 0.18) * 0.015;
 
-    // The tome and its world breathe.
+    // The tome and its world breathe. The book bobs with a whisper of roll so
+    // it reads as buoyant, not rigidly fixed.
     book.position.y = -0.12 + Math.sin(t * 0.8) * 0.02;
+    book.rotation.z = Math.sin(t * 0.6) * 0.006;
+    // The floating world drifts rather than spinning on a turntable: a slow net
+    // yaw carries a much larger eased sway (its own derivative accelerates and
+    // decelerates the turn, killing the constant-velocity "display stand" tell),
+    // and a gentle pitch/roll buoyancy makes the island ride unseen air currents.
     worldHolder.position.y = WORLD_Y + Math.sin(t * 0.9 + 1) * 0.035 + (book.position.y + 0.12);
-    worldHolder.rotation.y = t * 0.22;
+    worldHolder.rotation.y = t * 0.09 + Math.sin(t * 0.33) * 0.14;
+    worldHolder.rotation.z = Math.sin(t * 0.47 + 0.6) * 0.03;
+    worldHolder.rotation.x = Math.sin(t * 0.4) * 0.02;
     worlds[worldIdx].tick(t);
 
     // Ambience.
