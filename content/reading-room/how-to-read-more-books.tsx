@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "Reading more isn't about willpower — it's about friction. Here are the small, practical habits we've watched turn lapsed readers back into regulars.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Reading life", "Recommendations"],
-  readingMinutes: 4,
+  readingMinutes: 5,
 };
 
 export default function Body() {
@@ -36,7 +37,11 @@ export default function Body() {
         minutes before bed. A small, daily target beats a heroic, occasional one
         because it survives busy weeks. Most nights you&rsquo;ll read past ten
         pages anyway — but on the bad days, ten still counts, and the streak
-        stays alive.
+        stays alive. Put a number on it if you like: ten pages a day is roughly
+        eighteen average-length books a year, which quietly outpaces almost
+        everyone chasing a book a week and burning out by February. If even ten
+        feels heavy, halve it. A goal you always hit beats a goal you admire from
+        a distance.
       </p>
 
       <h2>Always carry a book</h2>
@@ -54,7 +59,12 @@ export default function Body() {
         turn dishes, commutes, and dog walks into reading time, and they&rsquo;re
         a lifeline for anyone whose eyes are tired by the end of the day. Pair a
         print book with its audio version and you can pick up the same story
-        whether your hands are free or not.
+        whether your hands are free or not. If you&rsquo;re new to audio, start
+        with a memoir read by its author or a propulsive thriller — voice-driven
+        and plotty books survive the distraction of doing the dishes far better
+        than a dense, allusive novel you&rsquo;d want to underline. Bump the speed
+        to 1.25x once the narrator&rsquo;s voice clicks, and the hours you
+        already spend commuting quietly become a book or two a month.
       </p>
 
       <h2>Give yourself permission to DNF</h2>

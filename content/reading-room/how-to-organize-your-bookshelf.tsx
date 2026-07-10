@@ -11,9 +11,10 @@ export const meta: BlogMeta = {
   excerpt:
     "By genre, by color, by author, or TBR vs read? Here's how the main bookshelf-organizing methods stack up — and how to keep your TBR from taking over.",
   date: "2026-06-21",
+  updated: "2026-07-10",
   author: "To Be Read",
   tags: ["Reading life", "Recommendations"],
-  readingMinutes: 5,
+  readingMinutes: 6,
 };
 
 export default function Body() {
@@ -54,6 +55,10 @@ export default function Body() {
         honest trade-off: it&rsquo;s lovely to look at and miserable to search.
         Unless you remember every cover, finding a specific title means scanning
         the whole wall. Great for display shelves; tough for working libraries.
+        If the look wins you over anyway, a workable compromise is to color-sort
+        one showpiece shelf at eye level and keep the rest of the wall organized
+        by something searchable. You get the focal point without losing your
+        whole collection to the rainbow.
       </p>
 
       <h2>TBR vs read</h2>
@@ -71,7 +76,13 @@ export default function Body() {
         genre sections, alphabetical within each, a small color-coordinated
         display shelf for show, and a dedicated TBR shelf at eye level. Pick the
         structure that fits how you actually reach for books, then let the rest be
-        pragmatic.
+        pragmatic. When you set it up, shelve the books you reach for most between
+        knee and shoulder height — the easy-to-grab zone — and save the top and
+        bottom shelves for reference books and seasonal reads you only pull a few
+        times a year. And do a full reshelve once, all at once, rather than
+        drifting into a system book by book; an afternoon of pulling everything
+        out and rebuilding is far less painful than a slow, half-finished sort
+        that never quite settles.
       </p>
 
       <h2>Keeping your TBR manageable</h2>
