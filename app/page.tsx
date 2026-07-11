@@ -327,19 +327,19 @@ export default function Home() {
       </section>
 
       {/* Stats strip */}
-      <section className="relative z-10 -mt-16 px-4 pb-10 sm:px-6 lg:px-8">
+      <section className="relative z-10 -mt-8 px-4 pb-10 sm:-mt-16 sm:px-6 lg:px-8">
         {/* Near-fold: children fade in via the CSS-only `.stagger` utility so
             the strip paints immediately rather than waiting on the <Reveal>
             JS island (which holds content at opacity:0 until hydration). */}
         <div
-          className="stagger mx-auto grid max-w-6xl gap-4 lg:grid-cols-[1.4fr_repeat(4,minmax(0,1fr))]"
+          className="stagger mx-auto grid max-w-6xl gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-[1.4fr_repeat(4,minmax(0,1fr))]"
         >
           <div
-            className="h-full rounded-[28px] border p-6"
+            className="h-full rounded-[28px] border p-6 sm:col-span-2 md:col-span-4 lg:col-span-1"
             style={{
               background: "rgba(255,255,255,0.93)",
               borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)",
-              boxShadow: "0 24px 60px color-mix(in srgb, var(--purple) 12%, transparent)",
+              boxShadow: "var(--shadow-lg)",
             }}
           >
             <span
@@ -354,7 +354,7 @@ export default function Home() {
             >
               More than a quick landing page.
             </h2>
-            <p className="mt-3 text-sm leading-6" style={{ color: "#4B5563" }}>
+            <p className="mt-3 text-sm leading-6" style={{ color: "var(--ink-soft)" }}>
               Browse the story, plan your visit, check the trade policy, and catch the latest social moments — without hopping around.
             </p>
           </div>
@@ -365,7 +365,7 @@ export default function Home() {
                 style={{
                   background: "rgba(255,255,255,0.93)",
                   borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)",
-                  boxShadow: "0 20px 45px color-mix(in srgb, var(--purple) 8%, transparent)",
+                  boxShadow: "var(--shadow-md)",
                 }}
               >
                 <div
@@ -432,12 +432,11 @@ export default function Home() {
                 <Tilt className="h-full rounded-[28px]" max={7} scale={1.02}>
                 <Link
                   href={card.href}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-7 text-left transition-all hover:shadow-2xl active:scale-[0.98]"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-7 text-left shadow-[var(--shadow-md)] transition-all hover:shadow-[var(--shadow-xl)] active:scale-[0.98]"
                   style={{
                     background:
                       "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(253,248,240,0.98) 100%)",
                     borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)",
-                    boxShadow: "0 18px 40px color-mix(in srgb, var(--purple) 8%, transparent)",
                   }}
                 >
                   <span
@@ -467,7 +466,7 @@ export default function Home() {
                   >
                     {card.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed" style={{ color: "#4B5563" }}>
+                  <p className="mt-2 text-sm leading-relaxed" style={{ color: "var(--ink-soft)" }}>
                     {card.tagline}
                   </p>
                   <span
@@ -521,7 +520,7 @@ export default function Home() {
             >
               Behind the <span className="underline-accent">shelves</span>.
             </h2>
-            <p className="mt-4 text-sm leading-7" style={{ color: "#4B5563" }}>
+            <p className="mt-4 text-sm leading-7" style={{ color: "var(--ink-soft)" }}>
               Fresh finds, weird treasures, and the occasional very good dog spotted near the children&apos;s section. Follow along for shelf tours, new arrivals, and the kind of bookish energy that makes you want to come in just to browse.
             </p>
             <div
@@ -541,10 +540,11 @@ export default function Home() {
                 href="https://tiktok.com/@clackamas.book.ex"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Watch @clackamas.book.ex shelf tours on TikTok — opens in a new tab"
                 className="btn-shine pressable mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold"
                 style={{ background: "var(--gold)", color: "#1A1A1A" }}
               >
-                Follow @clackamas.book.ex
+                Watch our shelf tours
               </a>
             </div>
           </Reveal>
