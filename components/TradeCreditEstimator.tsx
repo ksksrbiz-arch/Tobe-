@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Printer, Search, RefreshCw, Receipt, AlertCircle } from "lucide-react";
 import {
@@ -27,6 +27,200 @@ interface BookInfo {
   credit?: number;
 }
 
+// Tracks the user's reduced-motion preference reactively. Starts `false` so the
+// server and first client render agree (SSR can't read matchMedia); the effect
+// syncs the real value on mount and on change. When true, callers snap straight
+// to final state with no animation.
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+      return;
+    }
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onChange = () => setReduced(mq.matches);
+    // Defer the initial sync one frame so we don't setState in the effect body.
+    const id = requestAnimationFrame(onChange);
+    mq.addEventListener?.("change", onChange);
+    return () => {
+      cancelAnimationFrame(id);
+      mq.removeEventListener?.("change", onChange);
+    };
+  }, []);
+  return reduced;
+}
+
+// Eases a displayed number from 0 up to `target` over `duration` ms. Returns the
+// target unchanged when it's null/non-finite (nothing to count) or when the user
+// prefers reduced motion (snap, no animation). The rAF loop is cancelled on
+// unmount and whenever the target changes.
+function useCountUp(target: number | null, reduceMotion: boolean, duration = 550) {
+  const [value, setValue] = useState(0);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (target == null || !Number.isFinite(target)) return;
+    if (reduceMotion) {
+      // Snap to the final value (deferred a frame to avoid setState in the
+      // effect body). The render also reads `target` directly under reduced
+      // motion, so there's no visible count-up regardless.
+      rafRef.current = requestAnimationFrame(() => setValue(target));
+      return () => {
+        if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      };
+    }
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      // Ease-out cubic: fast then settle, matching the site's decelerate feel.
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(target * eased);
+      if (t < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        setValue(target);
+      }
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+    };
+  }, [target, reduceMotion, duration]);
+
+  return value;
+}
+
+// The printed-receipt result. Mounted fresh per estimate (keyed on `calcId`),
+// so its enter reveal replays every time. Fades/slides in on mount and counts
+// the credit figure up; both snap instantly under reduced motion.
+function ReceiptCard({
+  book,
+  credit,
+  reduceMotion,
+}: {
+  book: BookInfo;
+  credit: number;
+  reduceMotion: boolean;
+}) {
+  const displayCredit = useCountUp(credit, reduceMotion);
+  // Reduced motion starts already-shown (no reveal frame); otherwise starts
+  // hidden and the effect flips it to trigger the fade/slide-in transition.
+  const [shown, setShown] = useState(reduceMotion);
+
+  useEffect(() => {
+    if (reduceMotion) {
+      // Reveal immediately (deferred one frame to keep setState out of the
+      // effect body); the transition is disabled below, so it just appears.
+      const id = requestAnimationFrame(() => setShown(true));
+      return () => cancelAnimationFrame(id);
+    }
+    // Paint the hidden state once, then flip so the transition actually runs.
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => setShown(true));
+    });
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
+  }, [reduceMotion]);
+
+  return (
+    <div
+      className="mt-5 rounded-2xl border p-5"
+      style={{
+        fontFamily: "'Courier New', Courier, monospace",
+        background: "white",
+        borderColor: "color-mix(in srgb, var(--purple) 14%, transparent)",
+        boxShadow: "0 8px 28px color-mix(in srgb, var(--purple) 8%, transparent)",
+        opacity: reduceMotion || shown ? 1 : 0,
+        transform: reduceMotion || shown ? "translateY(0)" : "translateY(12px)",
+        transition: reduceMotion
+          ? undefined
+          : "opacity var(--dur-med) var(--ease-pop), transform var(--dur-med) var(--ease-pop)",
+      }}
+    >
+      {/* Receipt header */}
+      <div className="mb-3 border-b pb-3 text-center" style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)", borderStyle: "dashed" }}>
+        <p className="text-[10px] uppercase tracking-[0.28em]" style={{ color: "var(--muted)" }}>
+          To Be Read · Clackamas Book Exchange
+        </p>
+        <p className="text-[9px] uppercase tracking-widest" style={{ color: "var(--muted)" }}>
+          Trade Credit Estimate
+        </p>
+      </div>
+
+      {/* Book info */}
+      <div className="mb-4 flex items-start gap-3">
+        {/* Cover thumbnails load unoptimized straight from Google Books, so
+            warm that origin's DNS here (React hoists this into <head>). */}
+        <link rel="dns-prefetch" href="https://books.google.com" />
+        {book.coverUrl && (
+          <Image
+            src={book.coverUrl}
+            alt={book.title ? `Cover of ${book.title}` : "Book cover"}
+            width={44}
+            height={64}
+            unoptimized
+            className="h-16 w-11 rounded object-cover flex-shrink-0"
+            style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
+          />
+        )}
+        <div className="min-w-0">
+          <p className="truncate text-sm font-bold" style={{ color: "var(--ink)" }}>
+            {book.title}
+          </p>
+          {book.author && (
+            <p className="text-[11px]" style={{ color: "var(--muted)" }}>
+              {book.author}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Line items */}
+      <div className="space-y-2 text-xs">
+        <div className="flex justify-between">
+          <span style={{ color: "var(--muted)" }}>List price</span>
+          <span className="font-bold" style={{ color: "var(--ink)" }}>{fmt(book.listPrice)}</span>
+        </div>
+
+        <div
+          className="flex justify-between rounded-lg px-3 py-2.5 border-t mt-1 pt-3"
+          style={{
+            background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 6%, transparent), color-mix(in srgb, var(--gold) 8%, transparent))",
+            borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)",
+            borderStyle: "dashed",
+          }}
+        >
+          <span className="font-bold uppercase tracking-wider text-[11px]" style={{ color: "var(--purple)" }}>
+            Store credit (25%)
+          </span>
+          <span
+            className="font-bold text-sm tabular-nums"
+            style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
+            aria-label={fmt(credit)}
+          >
+            {fmt(reduceMotion ? credit : displayCredit)}
+          </span>
+        </div>
+
+        <p className="pt-1 text-[10px] leading-4" style={{ color: "var(--muted)" }}>
+          At the register: {TRADE_POLICY_REDEMPTION}
+        </p>
+      </div>
+
+      {/* Footer */}
+      <div
+        className="mt-4 border-t pt-3 text-center text-[9px] uppercase tracking-widest"
+        style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)", borderStyle: "dashed", color: "var(--muted)" }}
+      >
+        <Printer size={10} className="mb-1 inline-block" /> Estimate only · Actual credit subject to condition review
+      </div>
+    </div>
+  );
+}
+
 export default function TradeCreditEstimator() {
   const [mode, setMode] = useState<"price" | "isbn">("price");
   const [priceInput, setPriceInput] = useState("");
@@ -34,6 +228,9 @@ export default function TradeCreditEstimator() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [book, setBook] = useState<BookInfo | null>(null);
+  // Bumped on every successful estimate so the receipt remounts (via `key`) and
+  // replays its reveal + count-up even when the same book is estimated twice.
+  const [calcId, setCalcId] = useState(0);
 
   const reset = () => {
     setBook(null);
@@ -64,6 +261,7 @@ export default function TradeCreditEstimator() {
         source: "isbn",
         credit: data.credit,
       });
+      setCalcId((n) => n + 1);
     } catch {
       setError("Couldn't reach the estimator. Check your connection and try again.");
     } finally {
@@ -88,11 +286,14 @@ export default function TradeCreditEstimator() {
       listPrice: val,
       source: "manual",
     });
+    setCalcId((n) => n + 1);
   }, [priceInput]);
 
   const result = book
     ? { credit: book.credit ?? book.listPrice * 0.25 }
     : null;
+
+  const reduceMotion = usePrefersReducedMotion();
 
   return (
     <div
@@ -239,94 +440,15 @@ export default function TradeCreditEstimator() {
         </div>
       )}
 
-      {/* Receipt output */}
+      {/* Receipt output — keyed on `calcId` so each estimate remounts it and
+          replays the reveal + count-up. */}
       {result && book && (
-        <div
-          className="mt-5 rounded-2xl border p-5"
-          style={{
-            fontFamily: "'Courier New', Courier, monospace",
-            background: "white",
-            borderColor: "color-mix(in srgb, var(--purple) 14%, transparent)",
-            boxShadow: "0 8px 28px color-mix(in srgb, var(--purple) 8%, transparent)",
-          }}
-        >
-          {/* Receipt header */}
-          <div className="mb-3 border-b pb-3 text-center" style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)", borderStyle: "dashed" }}>
-            <p className="text-[10px] uppercase tracking-[0.28em]" style={{ color: "var(--muted)" }}>
-              To Be Read · Clackamas Book Exchange
-            </p>
-            <p className="text-[9px] uppercase tracking-widest" style={{ color: "var(--muted)" }}>
-              Trade Credit Estimate
-            </p>
-          </div>
-
-          {/* Book info */}
-          <div className="mb-4 flex items-start gap-3">
-            {/* Cover thumbnails load unoptimized straight from Google Books, so
-                warm that origin's DNS here (React hoists this into <head>). */}
-            <link rel="dns-prefetch" href="https://books.google.com" />
-            {book.coverUrl && (
-              <Image
-                src={book.coverUrl}
-                alt={book.title ? `Cover of ${book.title}` : "Book cover"}
-                width={44}
-                height={64}
-                unoptimized
-                className="h-16 w-11 rounded object-cover flex-shrink-0"
-                style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
-              />
-            )}
-            <div className="min-w-0">
-              <p className="truncate text-sm font-bold" style={{ color: "var(--ink)" }}>
-                {book.title}
-              </p>
-              {book.author && (
-                <p className="text-[11px]" style={{ color: "var(--muted)" }}>
-                  {book.author}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Line items */}
-          <div className="space-y-2 text-xs">
-            <div className="flex justify-between">
-              <span style={{ color: "var(--muted)" }}>List price</span>
-              <span className="font-bold" style={{ color: "var(--ink)" }}>{fmt(book.listPrice)}</span>
-            </div>
-
-            <div
-              className="flex justify-between rounded-lg px-3 py-2.5 border-t mt-1 pt-3"
-              style={{
-                background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 6%, transparent), color-mix(in srgb, var(--gold) 8%, transparent))",
-                borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)",
-                borderStyle: "dashed",
-              }}
-            >
-              <span className="font-bold uppercase tracking-wider text-[11px]" style={{ color: "var(--purple)" }}>
-                Store credit (25%)
-              </span>
-              <span
-                className="font-bold text-sm"
-                style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
-              >
-                {fmt(result.credit)}
-              </span>
-            </div>
-
-            <p className="pt-1 text-[10px] leading-4" style={{ color: "var(--muted)" }}>
-              At the register: {TRADE_POLICY_REDEMPTION}
-            </p>
-          </div>
-
-          {/* Footer */}
-          <div
-            className="mt-4 border-t pt-3 text-center text-[9px] uppercase tracking-widest"
-            style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)", borderStyle: "dashed", color: "var(--muted)" }}
-          >
-            <Printer size={10} className="mb-1 inline-block" /> Estimate only · Actual credit subject to condition review
-          </div>
-        </div>
+        <ReceiptCard
+          key={calcId}
+          book={book}
+          credit={result.credit}
+          reduceMotion={reduceMotion}
+        />
       )}
 
       {/* Disclaimer */}
