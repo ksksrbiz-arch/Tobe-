@@ -76,7 +76,31 @@ export default function Navbar() {
   useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsOpen(false);
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        return;
+      }
+      // Trap Tab within the open drawer so keyboard focus can't escape behind
+      // the overlay — cycle between the first and last focusable elements.
+      if (event.key !== "Tab") return;
+      const drawer = drawerNavRef.current;
+      if (!drawer) return;
+      const focusable = drawer.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+      if (event.shiftKey) {
+        if (active === first || !drawer.contains(active)) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else if (active === last || !drawer.contains(active)) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -125,21 +149,13 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Skip link for a11y */}
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ color: "var(--purple)", boxShadow: "0 6px 20px color-mix(in srgb, var(--purple) 18%, transparent)" }}
-      >
-        Skip to content
-      </a>
-
       <header
-        className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
-          scrolled ? "shadow-md" : ""
-        }`}
+        className="fixed left-0 right-0 top-0 z-50 transition-all duration-300"
         style={{
-          background: scrolled ? "rgba(255,253,249,0.92)" : "rgba(255,253,249,0.78)",
+          boxShadow: scrolled ? "var(--shadow-md)" : "none",
+          background: scrolled
+            ? "color-mix(in srgb, var(--background) 92%, transparent)"
+            : "color-mix(in srgb, var(--background) 78%, transparent)",
           backdropFilter: "saturate(140%) blur(8px)",
           WebkitBackdropFilter: "saturate(140%) blur(8px)",
           borderBottom: scrolled ? "1px solid color-mix(in srgb, var(--purple) 10%, transparent)" : "1px solid transparent",
@@ -186,7 +202,7 @@ export default function Navbar() {
                 <BookLogo
                   size={40}
                   showText={false}
-                  className="relative transition-transform duration-300 group-hover:rotate-[-4deg] group-hover:scale-110"
+                  className="relative [transition:transform_var(--dur-med)_var(--ease-pop)] group-hover:rotate-[-4deg] group-hover:scale-110"
                 />
               </span>
               <div className="hidden sm:block">
@@ -244,7 +260,7 @@ export default function Navbar() {
                     aria-current={isActive ? "page" : undefined}
                     className="nav-link relative rounded-lg px-3.5 py-2 text-sm font-medium"
                     style={{
-                      color: isActive ? "var(--purple)" : "#374151",
+                      color: isActive ? "var(--purple)" : "var(--ink-soft)",
                       fontWeight: isActive ? 700 : 500,
                     }}
                   >
@@ -273,9 +289,11 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={handleDirections}
-                className="touch-target btn-shine hidden items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 active:scale-95 hover:scale-[1.04] hover:shadow-lg md:flex"
+                className="touch-target btn-shine hidden items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-[var(--shadow-md)] transition-all active:scale-95 hover:scale-[1.04] hover:shadow-[var(--shadow-lg)] md:flex"
                 style={{
                   background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)",
+                  transitionDuration: "var(--dur-fast)",
+                  transitionTimingFunction: "var(--ease-out)",
                 }}
               >
                 <MapPin size={14} />
@@ -318,7 +336,7 @@ export default function Navbar() {
                 background: "var(--gold)",
                 boxShadow: "0 0 10px color-mix(in srgb, var(--gold) 85%, transparent)",
                 opacity: 0,
-                transition: "opacity 200ms ease-out",
+                transition: "opacity var(--dur-fast) var(--ease-out)",
               }}
             />
           </div>
@@ -344,7 +362,7 @@ export default function Navbar() {
           className={`absolute right-0 top-0 flex h-full w-[min(90vw,24rem)] touch-pan-y flex-col gap-1 overflow-y-auto overscroll-contain rounded-l-[32px] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] shadow-2xl transition-transform duration-300 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
-          style={{ background: "linear-gradient(180deg, #FFFDF9 0%, var(--paper) 100%)", paddingTop: "var(--mobile-menu-offset)" }}
+          style={{ background: "linear-gradient(180deg, var(--background) 0%, var(--paper) 100%)", paddingTop: "var(--mobile-menu-offset)" }}
           aria-label="Mobile navigation"
           onTouchStart={handleDrawerTouchStart}
           onTouchEnd={handleDrawerTouchEnd}
@@ -359,7 +377,7 @@ export default function Navbar() {
             <p className="text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: "var(--purple)" }}>
               Quick reminder
             </p>
-            <p className="mt-1 text-sm font-semibold" style={{ color: "#374151" }}>
+            <p className="mt-1 text-sm font-semibold" style={{ color: "var(--ink-soft)" }}>
               {tickerMessage}
             </p>
           </div>
@@ -393,7 +411,7 @@ export default function Navbar() {
                 aria-current={isActive ? "page" : undefined}
                 className="touch-target rounded-xl px-4 py-3.5 text-base font-medium transition-all active:scale-[0.99]"
                 style={{
-                  color: isActive ? "var(--purple)" : "#374151",
+                  color: isActive ? "var(--purple)" : "var(--ink-soft)",
                   background: isActive ? "color-mix(in srgb, var(--purple) 8%, transparent)" : "transparent",
                   fontWeight: isActive ? 700 : 500,
                   borderLeft: isActive ? "3px solid var(--gold)" : "3px solid transparent",
@@ -407,7 +425,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={handleDirections}
-            className="touch-target mt-4 flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold text-white shadow-md active:scale-[0.98]"
+            className="touch-target mt-4 flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold text-white shadow-[var(--shadow-md)] active:scale-[0.98]"
             style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
           >
             <MapPin size={16} />
