@@ -35,9 +35,9 @@ const aboutFaqs: Faq[] = [
 
 // Hero shot — spans the full first row
 const galleryHero = {
-  url: "/images/shelves/store-kids-room-overview.jpg",
-  caption: "The kids' room — floor to ceiling",
-  alt: "Wide view of the children's book room at To Be Read, showing wall-to-wall bookshelves, a kids' reading table, and colourful rugs",
+  url: "/images/shelves/shelf-01-childrens-chapter-books.jpg",
+  caption: "Children's chapter books, floor to ceiling",
+  alt: "Tall wall of shelves filled with children's chapter books, sorted by series and reading level",
 };
 
 // Supporting shots — 4-up grid beside / below the hero
@@ -233,17 +233,14 @@ export default function AboutPage() {
               Walk the <span className="underline-accent">shelves</span> before you arrive
             </h2>
             <p className="mx-auto mb-3 max-w-xl text-sm leading-6" style={{ color: "var(--muted)" }}>
-              Nine rooms&apos; worth of finds — kids&apos; picture books, YA, adult fiction, Dr. Seuss corner, and more.
+              A big children&apos;s section — picture books, chapter books, YA, a Dr. Seuss corner — plus adult fiction up front, and more.
             </p>
             <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
           </Reveal>
 
           {/* Row 1 — hero (full width) */}
           <Reveal>
-            <div
-              className="group relative mb-3 overflow-hidden rounded-2xl shadow-md sm:mb-4"
-              style={{ height: "340px" }}
-            >
+            <div className="group relative mb-3 aspect-[3/2] overflow-hidden rounded-2xl shadow-md sm:mb-4 sm:aspect-[16/7]">
               <Image
                 src={galleryHero.url}
                 alt={galleryHero.alt}
@@ -268,10 +265,7 @@ export default function AboutPage() {
           <div className="mb-3 grid grid-cols-2 gap-3 sm:mb-4 sm:gap-4 lg:grid-cols-4">
             {gallerySupporting.map((item, i) => (
               <Reveal key={item.caption} delay={i * 60}>
-                <div
-                  className="group relative overflow-hidden rounded-2xl shadow-md"
-                  style={{ height: "180px" }}
-                >
+                <div className="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-md">
                   <Image
                     src={item.url}
                     alt={item.alt}
@@ -302,10 +296,7 @@ export default function AboutPage() {
                 delay={i * 60}
                 className={item.wide ? "col-span-2 md:col-span-1" : ""}
               >
-                <div
-                  className="group relative h-full overflow-hidden rounded-2xl shadow-md"
-                  style={{ minHeight: "200px" }}
-                >
+                <div className="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-md">
                   <Image
                     src={item.url}
                     alt={item.alt}
