@@ -97,7 +97,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Visit us on ${s.name}`}
-                  className="footer-social flex h-9 w-9 items-center justify-center rounded-lg transition-all hover:scale-110 active:scale-95"
+                  className="footer-social touch-target flex items-center justify-center rounded-lg transition-all ease-[var(--ease-pop)] hover:scale-110 active:scale-95"
                 >
                   <s.icon />
                 </a>
@@ -126,7 +126,7 @@ export default function Footer() {
                     href={item.href}
                     className="group inline-flex items-center gap-1.5 text-sm opacity-75 transition-all hover:opacity-100"
                   >
-                    <span className="transition-colors group-hover:text-yellow-300">{item.label}</span>
+                    <span className="transition-colors ease-[var(--ease-pop)] group-hover:text-[var(--gold-light)]">{item.label}</span>
                     <ArrowUpRight
                       size={12}
                       className="-translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
@@ -154,7 +154,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone size={16} style={{ color: "var(--gold)" }} />
-                <a href="tel:503-659-2559" className="transition-colors hover:text-yellow-300">
+                <a href="tel:503-659-2559" className="transition-colors ease-[var(--ease-pop)] hover:text-[var(--gold-light)]">
                   503-659-2559
                 </a>
               </li>
@@ -162,7 +162,7 @@ export default function Footer() {
                 <Mail size={16} style={{ color: "var(--gold)" }} />
                 <a
                   href="mailto:TBR@tcpbusiness.com"
-                  className="break-all transition-colors hover:text-yellow-300"
+                  className="break-all transition-colors ease-[var(--ease-pop)] hover:text-[var(--gold-light)]"
                 >
                   TBR@tcpbusiness.com
                 </a>
@@ -172,7 +172,7 @@ export default function Footer() {
                 <span className="leading-relaxed">
                   Mon–Sat · 10am–5pm
                   <br />
-                  <em className="text-xs opacity-65">*may open late for a chapter!</em>
+                  <em className="text-xs opacity-80">*may open late for a chapter!</em>
                 </span>
               </li>
             </ul>
@@ -193,8 +193,8 @@ export default function Footer() {
             {EMAIL_ENABLED ? (
               <a
                 href="#newsletter"
-                className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-[1.03]"
-                style={{ background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)", color: "#1a1a1a" }}
+                className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all ease-[var(--ease-pop)] hover:scale-[1.03]"
+                style={{ background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)", color: "var(--ink)" }}
               >
                 Subscribe above
                 <Send size={14} />
@@ -204,15 +204,15 @@ export default function Footer() {
                 href="https://instagram.com/toberead_clackamas"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:scale-[1.03]"
-                style={{ background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)", color: "#1a1a1a" }}
+                className="btn-shine inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all ease-[var(--ease-pop)] hover:scale-[1.03]"
+                style={{ background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)", color: "var(--ink)" }}
               >
                 Follow us
                 <ArrowUpRight size={14} />
               </a>
             )}
             {EMAIL_ENABLED && (
-              <p className="mt-3 text-[11px] opacity-55">No spam. Unsubscribe anytime.</p>
+              <p className="mt-3 text-[11px] opacity-80">No spam. Unsubscribe anytime.</p>
             )}
           </div>
         </div>
@@ -232,14 +232,14 @@ export default function Footer() {
             <Link
               key={item.href}
               href={item.href}
-              className="opacity-70 transition-opacity hover:opacity-100 hover:text-yellow-300"
+              className="opacity-70 transition-opacity ease-[var(--ease-pop)] hover:opacity-100 hover:text-[var(--gold-light)]"
             >
               {item.label}
             </Link>
           ))}
           <CookieSettingsButton
             variant="link"
-            className="cursor-pointer opacity-70 transition-opacity hover:opacity-100 hover:text-yellow-300"
+            className="cursor-pointer opacity-70 transition-opacity ease-[var(--ease-pop)] hover:opacity-100 hover:text-[var(--gold-light)]"
           />
         </nav>
 
@@ -247,8 +247,8 @@ export default function Footer() {
         <div
           className="mt-6 flex flex-col items-center justify-between gap-3 text-sm sm:flex-row"
         >
-          <p className="opacity-60">© 2026 To Be Read · Clackamas Book Exchange</p>
-          <p className="text-xs opacity-60">
+          <p className="opacity-80">© 2026 To Be Read · Clackamas Book Exchange</p>
+          <p className="text-xs opacity-80">
             Made with <span style={{ color: "var(--gold)" }}>♥</span> in Milwaukie, Oregon
           </p>
         </div>
