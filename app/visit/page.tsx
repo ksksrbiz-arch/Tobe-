@@ -12,7 +12,7 @@ import Reveal from "@/components/Reveal";
 import FAQSection, { type Faq } from "@/components/FAQSection";
 import OpenStatusBadge from "@/components/OpenStatusBadge";
 import DirectionsButton from "@/components/DirectionsButton";
-import { Car, Bus, Bike, ParkingCircle, Coffee, MapPin, Phone } from "lucide-react";
+import { Car, Bus, Bike, ParkingCircle, Coffee, Utensils, Footprints, Navigation, Clock, Phone } from "lucide-react";
 
 // Location FAQ — captures local "near me", hours, parking, and transit queries,
 // and emits FAQPage structured data via <FAQSection>. Grounded entirely in the
@@ -72,9 +72,9 @@ const gettingHere = [
 ];
 
 const nearbyTreats = [
-  { title: "Coffee", text: "Local cafés a few blocks away — fuel before browsing." },
-  { title: "Lunch", text: "Plenty of bites along King Rd for after your stack lands." },
-  { title: "Walks", text: "The Trolley Trail is right around the corner for a leisurely stroll." },
+  { icon: Coffee, title: "Coffee", text: "Local cafés a few blocks away — fuel before browsing." },
+  { icon: Utensils, title: "Lunch", text: "Plenty of bites along King Rd for after your stack lands." },
+  { icon: Footprints, title: "Walks", text: "The Trolley Trail is right around the corner for a leisurely stroll." },
 ];
 
 export default function VisitPage() {
@@ -269,12 +269,18 @@ export default function VisitPage() {
             {nearbyTreats.map((spot, i) => (
               <Reveal key={spot.title} delay={i * 80}>
                 <div
-                  className="rounded-2xl p-6 text-center"
+                  className="group h-full rounded-2xl border bg-white p-6 text-center card-cozy"
                   style={{
-                    background: "linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)",
-                    border: "1px solid color-mix(in srgb, var(--purple) 8%, transparent)",
+                    borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
+                    boxShadow: "var(--shadow-sm)",
                   }}
                 >
+                  <div
+                    className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl transition-transform group-hover:scale-110 group-hover:rotate-[-6deg]"
+                    style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
+                  >
+                    <spot.icon size={20} className="text-white" />
+                  </div>
                   <h3
                     className="mb-2 text-base font-bold"
                     style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
@@ -299,18 +305,22 @@ export default function VisitPage() {
               }}
             >
               <div className="flex items-center justify-center gap-3 sm:justify-start">
-                <MapPin size={22} style={{ color: "var(--gold)" }} className="flex-shrink-0" />
+                <Clock size={22} style={{ color: "var(--gold)" }} className="flex-shrink-0" />
                 <div className="text-left">
-                  <address className="text-sm font-semibold not-italic leading-snug">7931 SE King Rd, Unit 1, Portland, OR 97222</address>
-                  <p className="text-xs opacity-80">Open Mon–Sat · 10am – 5pm</p>
+                  <p className="text-sm font-semibold leading-snug">Come browse — we&apos;ll keep the light on</p>
+                  <p className="text-xs opacity-80">Open Mon–Sat · 10am – 5pm · free parking out front</p>
                 </div>
               </div>
               <a
-                href="tel:503-659-2559"
+                href="https://www.google.com/maps/dir/?api=1&destination=7931%20SE%20King%20Rd%20Unit%201%20Portland%20OR%2097222"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Get driving directions to To Be Read (opens in a new tab)"
                 className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-[0.98] sm:w-auto"
                 style={{ background: "var(--gold)", color: "#1a1a1a" }}
               >
-                Call 503-659-2559
+                <Navigation size={16} />
+                Get directions
               </a>
             </div>
           </Reveal>
