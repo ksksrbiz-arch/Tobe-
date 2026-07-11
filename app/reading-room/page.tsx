@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Rss } from "lucide-react";
+import { Library, Rss } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
@@ -63,19 +63,20 @@ export default function ReadingRoomPage() {
         style={{ background: "var(--background)" }}
       >
         <div className="mx-auto max-w-5xl">
-          {/* Utility row: collections + RSS */}
-          <div className="mb-6 flex flex-wrap items-center gap-3">
+          {/* Utility row: collections (primary content mode) + RSS (secondary) */}
+          <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-3">
             <Link
               href="/reading-room/collections"
-              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition-all hover:scale-[1.03]"
-              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold shadow-sm transition-[transform,box-shadow] duration-[var(--dur-fast)] ease-[var(--ease-pop)] hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              style={{ background: "color-mix(in srgb, var(--gold) 24%, transparent)", color: "var(--purple-dark)" }}
             >
+              <Library size={16} aria-hidden="true" />
               Browse collections
             </Link>
             <a
               href="/reading-room/feed.xml"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold transition-colors hover:opacity-80"
-              style={{ color: "var(--purple)" }}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold transition-opacity duration-[var(--dur-fast)] hover:opacity-70"
+              style={{ color: "var(--muted)" }}
             >
               <Rss size={13} aria-hidden="true" />
               RSS
@@ -92,22 +93,18 @@ export default function ReadingRoomPage() {
             style={{ borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)" }}
           >
             <h2
-              className="mb-4 text-xs font-bold uppercase tracking-[0.18em]"
-              style={{ color: "var(--purple)" }}
+              className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em]"
+              style={{ color: "var(--muted)" }}
             >
               All topics
             </h2>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-x-3 gap-y-1.5">
               {tags.map((tag) => (
                 <Link
                   key={tag}
                   href={`/reading-room/tags/${tagToSlug(tag)}`}
-                  className="rounded-full border px-3 py-1 text-xs font-semibold transition-all hover:scale-[1.03]"
-                  style={{
-                    borderColor: "color-mix(in srgb, var(--purple) 15%, transparent)",
-                    color: "var(--purple)",
-                    background: "color-mix(in srgb, var(--purple) 4%, transparent)",
-                  }}
+                  className="rounded-full px-1 text-[11px] font-medium underline-offset-2 transition-colors duration-[var(--dur-fast)] hover:underline"
+                  style={{ color: "var(--ink-muted)" }}
                 >
                   {tag}
                 </Link>
