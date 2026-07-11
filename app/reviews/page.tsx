@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import Reveal from "@/components/Reveal";
 import JsonLd from "@/components/JsonLd";
-import ReviewForm from "@/components/ReviewForm";
+import ReviewForm, { ReviewsGrid } from "@/components/ReviewForm";
 import { SITE_URL, breadcrumbList } from "@/lib/seo";
 import { getApprovedReviews, getApprovedReviewAggregate } from "@/lib/reviews";
 import type { Review } from "@/lib/db";
@@ -194,13 +194,16 @@ export default async function ReviewsPage() {
           </Reveal>
 
           {reviews.length > 0 && (
-            <div className="mb-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ReviewsGrid
+              className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+              initialCount={9}
+            >
               {reviews.map((r, i) => (
                 <Reveal key={r.id} delay={(i % 3) * 80}>
                   <ReviewCard review={r} />
                 </Reveal>
               ))}
-            </div>
+            </ReviewsGrid>
           )}
 
           {/* Submission form */}
