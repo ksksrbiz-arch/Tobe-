@@ -156,16 +156,51 @@ export default function EventsPage() {
 
           {events.length === 0 ? (
             <Reveal>
-              <p
-                className="rounded-2xl border bg-white p-8 text-center text-sm"
+              <div
+                className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-14 text-center"
                 style={{
-                  borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
-                  color: "#4B5563",
+                  borderColor: "color-mix(in srgb, var(--purple) 15%, transparent)",
+                  background: "color-mix(in srgb, var(--paper) 60%, transparent)",
                 }}
               >
-                No events are on the calendar right now — check back soon, or
-                follow us on social for the latest.
-              </p>
+                <Calendar
+                  size={34}
+                  aria-hidden="true"
+                  style={{ color: "color-mix(in srgb, var(--purple) 30%, transparent)" }}
+                />
+                <p
+                  className="mt-3 text-base font-bold"
+                  style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
+                >
+                  No events on the calendar right now
+                </p>
+                <p
+                  className="mx-auto mt-1 max-w-sm text-sm leading-relaxed"
+                  style={{ color: "var(--muted)" }}
+                >
+                  New gatherings are added often — follow along or stop by, and
+                  you&apos;ll be the first to know when something&apos;s on.
+                </p>
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    href="/connect"
+                    className="btn-shine inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-[0.98]"
+                    style={{ background: "var(--purple)", color: "white" }}
+                  >
+                    Follow us
+                  </Link>
+                  <Link
+                    href="/visit"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border px-5 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-[0.98]"
+                    style={{
+                      borderColor: "color-mix(in srgb, var(--purple) 25%, transparent)",
+                      color: "var(--purple)",
+                    }}
+                  >
+                    Plan a visit
+                  </Link>
+                </div>
+              </div>
             </Reveal>
           ) : (
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
