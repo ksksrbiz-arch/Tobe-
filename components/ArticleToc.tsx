@@ -41,6 +41,7 @@ export default function ArticleToc({
   const [items, setItems] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState<string>("");
   const [open, setOpen] = useState(true);
+  const [progress, setProgress] = useState(0);
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -90,10 +91,64 @@ export default function ArticleToc({
     };
   }, [targetId]);
 
-  if (items.length < 2) return null;
+  // Reading-progress rail: track how far the reader has scrolled through the
+  // article body. rAF-throttled + passive listener so it stays off the main
+  // scroll path and never janks. The bar simply mirrors scroll position, so it
+  // carries no independent animation to gate for reduced-motion users.
+  useEffect(() => {
+    const container = document.getElementById(targetId);
+    if (!container) return;
+
+    let frame: number | null = null;
+    const compute = () => {
+      frame = null;
+      const start = container.offsetTop;
+      const span = container.offsetHeight - window.innerHeight;
+      if (span <= 0) {
+        // Body fits within the viewport — there is nothing to scroll through, so
+        // leave the rail empty rather than showing a misleading "fully read" bar.
+        setProgress(0);
+        return;
+      }
+      const ratio = (window.scrollY - start) / span;
+      setProgress(Math.min(1, Math.max(0, ratio)));
+    };
+    const onScroll = () => {
+      if (frame === null) frame = requestAnimationFrame(compute);
+    };
+
+    compute();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      if (frame !== null) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [targetId]);
+
+  const progressRail = (
+    <div
+      aria-hidden="true"
+      className="fixed inset-x-0 top-0 z-[60] h-[3px]"
+      style={{ background: "color-mix(in srgb, var(--purple) 8%, transparent)" }}
+    >
+      <div
+        className="h-full origin-left"
+        style={{
+          transform: `scaleX(${progress})`,
+          background: "linear-gradient(90deg, var(--gold) 0%, var(--purple) 100%)",
+        }}
+      />
+    </div>
+  );
+
+  if (items.length < 2) return progressRail;
 
   return (
-    <nav
+    <>
+      {progressRail}
+      <nav
       aria-label="Table of contents"
       className="mb-10 rounded-2xl border p-4 sm:p-5"
       style={{
@@ -148,6 +203,7 @@ export default function ArticleToc({
           })}
         </ol>
       )}
-    </nav>
+      </nav>
+    </>
   );
 }

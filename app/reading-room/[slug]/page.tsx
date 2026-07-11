@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Clock } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
@@ -221,9 +221,25 @@ export default async function ReadingRoomPostPage({
                       >
                         {r.title}
                       </h3>
-                      <p className="line-clamp-3 text-sm leading-6 text-[#4B5563]">
+                      <p className="mb-4 line-clamp-3 flex-1 text-sm leading-6 text-[#4B5563]">
                         {r.excerpt}
                       </p>
+                      <div className="flex items-center justify-between text-xs text-[var(--muted)]">
+                        <span className="flex items-center gap-3">
+                          <time dateTime={r.date}>{formatPostDate(r.date)}</time>
+                          <span className="inline-flex items-center gap-1">
+                            <Clock size={12} aria-hidden="true" />
+                            {r.readingMinutes} min read
+                          </span>
+                        </span>
+                        <span
+                          className="inline-flex items-center gap-1 font-semibold transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                          style={{ color: "var(--purple)" }}
+                        >
+                          Read
+                          <ArrowRight size={14} aria-hidden="true" />
+                        </span>
+                      </div>
                     </Link>
                   </li>
                 ))}
