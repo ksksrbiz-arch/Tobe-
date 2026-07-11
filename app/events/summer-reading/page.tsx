@@ -318,7 +318,7 @@ export default function SummerReadingPage() {
                     <CheckCircle2
                       size={18}
                       className="mt-0.5 flex-shrink-0"
-                      style={{ color: "#1F7A7A" }}
+                      style={{ color: "var(--purple)" }}
                     />
                     {item}
                   </li>
