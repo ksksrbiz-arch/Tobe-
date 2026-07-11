@@ -57,6 +57,11 @@ function WishlistComingSoon() {
   );
 }
 
+// The last two pills describe the email-alert + magic-link flow. That flow is
+// paused while EMAIL_ENABLED is false (see lib/flags.ts and WishlistComingSoon
+// above), so we reword them to "coming soon"-consistent copy in that state to
+// avoid promising something the very next block says is unavailable. When the
+// flag is on, the live copy returns.
 const features = [
   {
     icon: BookMarked,
@@ -68,16 +73,28 @@ const features = [
     title: "Automatic matching",
     body: "Every trade processed at the desk is checked against all active wishlists in seconds.",
   },
-  {
-    icon: Bell,
-    title: "Instant email alert",
-    body: "The moment a match lands on our shelf, you get an email — so you can grab it before anyone else.",
-  },
-  {
-    icon: Mail,
-    title: "No password required",
-    body: "Sign in with a magic link sent to your email. Simple, secure, and one less password to remember.",
-  },
+  EMAIL_ENABLED
+    ? {
+        icon: Bell,
+        title: "Instant email alert",
+        body: "The moment a match lands on our shelf, you get an email — so you can grab it before anyone else.",
+      }
+    : {
+        icon: Bell,
+        title: "Email alerts, coming soon",
+        body: "We're rebuilding alerts so we can email you the moment a match lands on our shelf. Back shortly.",
+      },
+  EMAIL_ENABLED
+    ? {
+        icon: Mail,
+        title: "No password required",
+        body: "Sign in with a magic link sent to your email. Simple, secure, and one less password to remember.",
+      }
+    : {
+        icon: Mail,
+        title: "Passwordless sign-in, coming soon",
+        body: "Magic-link sign-in returns alongside alerts — no password to remember when it does.",
+      },
 ];
 
 export default function WishlistPage() {
