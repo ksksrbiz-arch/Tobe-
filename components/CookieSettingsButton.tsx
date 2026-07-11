@@ -46,7 +46,7 @@ export default function CookieSettingsButton({
       style={
         className
           ? undefined
-          : { background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }
+          : { background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }
       }
     >
       {label}

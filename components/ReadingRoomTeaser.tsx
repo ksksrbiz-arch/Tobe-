@@ -17,14 +17,14 @@ export default function ReadingRoomTeaser() {
   return (
     <section
       className="px-4 py-14 sm:px-6 sm:py-20 lg:px-8"
-      style={{ background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)" }}
+      style={{ background: "linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)" }}
     >
       <div className="mx-auto max-w-6xl">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <span
               className="mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
             >
               <BookOpen size={12} />
               The Reading Room
@@ -33,7 +33,7 @@ export default function ReadingRoomTeaser() {
               className="font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(2rem, 5vw, 2.8rem)",
               }}
             >
@@ -43,7 +43,7 @@ export default function ReadingRoomTeaser() {
           <Link
             href="/reading-room"
             className="inline-flex items-center gap-1.5 text-sm font-semibold transition-transform hover:translate-x-0.5"
-            style={{ color: "#6B1C6F" }}
+            style={{ color: "var(--purple)" }}
           >
             All posts
             <ArrowRight size={15} aria-hidden="true" />
@@ -56,14 +56,14 @@ export default function ReadingRoomTeaser() {
               <Link
                 href={`/reading-room/${post.slug}`}
                 className="group flex h-full flex-col rounded-2xl border bg-white/70 p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-                style={{ borderColor: "rgba(107,28,111,0.10)" }}
+                style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
               >
                 <div className="mb-3 flex flex-wrap items-center gap-2">
                   {post.tags.slice(0, 2).map((tag) => (
                     <span
                       key={tag}
                       className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide"
-                      style={{ background: "rgba(241,187,26,0.16)", color: "#6B1C6F" }}
+                      style={{ background: "color-mix(in srgb, var(--gold) 16%, transparent)", color: "var(--purple)" }}
                     >
                       {tag}
                     </span>
@@ -71,14 +71,14 @@ export default function ReadingRoomTeaser() {
                 </div>
                 <h3
                   className="mb-2 text-lg font-bold leading-snug"
-                  style={{ fontFamily: "var(--font-serif)", color: "#4A1350" }}
+                  style={{ fontFamily: "var(--font-serif)", color: "var(--purple-dark)" }}
                 >
                   {post.title}
                 </h3>
                 <p className="mb-4 flex-1 text-sm leading-6 text-[#4B5563]">
                   {post.excerpt}
                 </p>
-                <div className="flex items-center justify-between text-xs text-[#6B7280]">
+                <div className="flex items-center justify-between text-xs text-[var(--muted)]">
                   <span className="inline-flex items-center gap-1">
                     <Clock size={12} aria-hidden="true" />
                     {post.readingMinutes} min read

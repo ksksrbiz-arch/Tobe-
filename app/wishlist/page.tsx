@@ -20,19 +20,19 @@ function WishlistComingSoon() {
       className="rounded-[28px] border-2 p-8 text-center shadow-xl"
       style={{
         background: "linear-gradient(180deg, rgba(253,248,240,0.98) 0%, rgba(255,255,255,0.98) 100%)",
-        borderColor: "rgba(107,28,111,0.14)",
-        boxShadow: "0 20px 60px rgba(107,28,111,0.10)",
+        borderColor: "color-mix(in srgb, var(--purple) 14%, transparent)",
+        boxShadow: "0 20px 60px color-mix(in srgb, var(--purple) 10%, transparent)",
       }}
     >
       <div
         className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl"
-        style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+        style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
       >
         <BookMarked size={24} className="text-white" />
       </div>
       <h3
         className="mb-2 text-2xl font-bold"
-        style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+        style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
       >
         Hunting lists are coming soon
       </h3>
@@ -48,7 +48,7 @@ function WishlistComingSoon() {
         <Link
           href="/visit"
           className="pressable inline-flex items-center justify-center rounded-2xl border-2 px-6 py-3 text-sm font-semibold"
-          style={{ borderColor: "rgba(107,28,111,0.20)", color: "#6B1C6F" }}
+          style={{ borderColor: "color-mix(in srgb, var(--purple) 20%, transparent)", color: "var(--purple)" }}
         >
           Plan a visit
         </Link>
@@ -97,7 +97,7 @@ export default function WishlistPage() {
         className="px-4 py-16 sm:px-6 lg:px-8"
         style={{
           background:
-            "radial-gradient(ellipse at 100% 0%, rgba(107,28,111,0.07) 0%, transparent 50%), radial-gradient(ellipse at 0% 100%, rgba(241,187,26,0.08) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
+            "radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--purple) 7%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 0% 100%, color-mix(in srgb, var(--gold) 8%, transparent) 0%, transparent 50%), linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
         }}
       >
         <div className="mx-auto max-w-5xl">
@@ -107,19 +107,19 @@ export default function WishlistPage() {
                 <div
                   className="flex flex-col items-center rounded-2xl p-6 text-center transition-all hover:-translate-y-1"
                   style={{
-                    background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
+                    background: "linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)",
                     boxShadow: "var(--shadow-sm)",
                   }}
                 >
                   <div
                     className="mb-4 flex h-12 w-12 items-center justify-center rounded-full"
-                    style={{ background: "linear-gradient(135deg, rgba(107,28,111,0.10), rgba(241,187,26,0.15))" }}
+                    style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 10%, transparent), color-mix(in srgb, var(--gold) 15%, transparent))" }}
                   >
-                    <f.icon size={22} style={{ color: "#6B1C6F" }} />
+                    <f.icon size={22} style={{ color: "var(--purple)" }} />
                   </div>
                   <h3
                     className="mb-2 text-base font-bold"
-                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                   >
                     {f.title}
                   </h3>
@@ -139,14 +139,14 @@ export default function WishlistPage() {
         className="px-4 py-16 sm:px-6 lg:px-8"
         style={{
           background:
-            "radial-gradient(circle at 80% 20%, rgba(241,187,26,0.08), transparent 40%), linear-gradient(180deg, #FDF8F0 0%, #FFFDF9 100%)",
+            "radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--gold) 8%, transparent), transparent 40%), linear-gradient(180deg, var(--paper) 0%, #FFFDF9 100%)",
         }}
       >
         <div className="mx-auto max-w-2xl">
           <Reveal className="mb-8 text-center">
             <span
               className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
             >
               Your list
             </span>
@@ -154,7 +154,7 @@ export default function WishlistPage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4vw, 2.4rem)",
               }}
             >

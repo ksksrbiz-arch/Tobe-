@@ -42,7 +42,7 @@ export default function ClosureBanner() {
     <div
       role="status"
       className="relative z-10 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 px-4 py-3 text-center text-sm font-semibold leading-snug text-white sm:text-base"
-      style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #4A1350 100%)" }}
+      style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%)" }}
     >
       <CalendarOff size={17} className="shrink-0" aria-hidden="true" />
       <span>

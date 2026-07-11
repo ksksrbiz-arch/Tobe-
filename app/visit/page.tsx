@@ -102,9 +102,9 @@ export default function VisitPage() {
           <div
             className="flex flex-col items-center gap-4 rounded-2xl border p-5 text-center sm:flex-row sm:justify-between sm:gap-6 sm:p-6 sm:text-left"
             style={{
-              background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)",
-              borderColor: "rgba(107,28,111,0.10)",
-              boxShadow: "0 8px 22px rgba(107,28,111,0.05)",
+              background: "linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)",
+              borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
+              boxShadow: "0 8px 22px color-mix(in srgb, var(--purple) 5%, transparent)",
             }}
           >
             <div className="flex flex-col items-center gap-2 sm:items-start">
@@ -118,7 +118,7 @@ export default function VisitPage() {
               <a
                 href="tel:503-659-2559"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 px-6 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-[0.98] sm:w-auto"
-                style={{ borderColor: "rgba(107,28,111,0.25)", color: "#6B1C6F", background: "rgba(255,255,255,0.7)" }}
+                style={{ borderColor: "color-mix(in srgb, var(--purple) 25%, transparent)", color: "var(--purple)", background: "rgba(255,255,255,0.7)" }}
               >
                 <Phone size={16} />
                 Call 503-659-2559
@@ -139,7 +139,7 @@ export default function VisitPage() {
           <Reveal className="mb-10 text-center">
             <span
               className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               From our neighbors
             </span>
@@ -147,7 +147,7 @@ export default function VisitPage() {
               className="font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.8rem, 4.5vw, 2.6rem)",
               }}
             >
@@ -159,7 +159,7 @@ export default function VisitPage() {
             <Link
               href="/reviews"
               className="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white transition-all hover:scale-105 active:scale-[0.98]"
-              style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+              style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
             >
               Read &amp; leave a review
             </Link>
@@ -172,14 +172,14 @@ export default function VisitPage() {
         className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
         style={{
           background:
-            "radial-gradient(ellipse at 80% 0%, rgba(241,187,26,0.10) 0%, transparent 45%), linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
+            "radial-gradient(ellipse at 80% 0%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 45%), linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)",
         }}
       >
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-12 text-center">
             <span
               className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
             >
               Getting Here
             </span>
@@ -187,7 +187,7 @@ export default function VisitPage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               }}
             >
@@ -201,19 +201,19 @@ export default function VisitPage() {
                 <div
                   className="group h-full rounded-2xl border bg-white p-6 card-cozy"
                   style={{
-                    borderColor: "rgba(107,28,111,0.10)",
+                    borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
                     boxShadow: "var(--shadow-sm)",
                   }}
                 >
                   <div
                     className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl transition-transform group-hover:scale-110 group-hover:rotate-[-6deg]"
-                    style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                    style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
                   >
                     <card.icon size={20} className="text-white" />
                   </div>
                   <h3
                     className="mb-3 text-lg font-bold"
-                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                   >
                     {card.title}
                   </h3>
@@ -224,7 +224,7 @@ export default function VisitPage() {
                         className="flex items-start gap-2 text-sm"
                         style={{ color: "#374151" }}
                       >
-                        <span style={{ color: "#F1BB1A", fontWeight: 700, marginTop: "1px" }}>•</span>
+                        <span style={{ color: "var(--gold)", fontWeight: 700, marginTop: "1px" }}>•</span>
                         {d}
                       </li>
                     ))}
@@ -241,14 +241,14 @@ export default function VisitPage() {
         className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
         style={{
           background:
-            "radial-gradient(ellipse at 12% 100%, rgba(107,28,111,0.08) 0%, transparent 45%), white",
+            "radial-gradient(ellipse at 12% 100%, color-mix(in srgb, var(--purple) 8%, transparent) 0%, transparent 45%), white",
         }}
       >
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-10 text-center">
             <span
               className="mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               <Coffee size={12} />
               Make a day of it
@@ -257,7 +257,7 @@ export default function VisitPage() {
               className="mb-2 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.7rem, 3.5vw, 2.2rem)",
               }}
             >
@@ -271,13 +271,13 @@ export default function VisitPage() {
                 <div
                   className="rounded-2xl p-6 text-center"
                   style={{
-                    background: "linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
-                    border: "1px solid rgba(107,28,111,0.08)",
+                    background: "linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)",
+                    border: "1px solid color-mix(in srgb, var(--purple) 8%, transparent)",
                   }}
                 >
                   <h3
                     className="mb-2 text-base font-bold"
-                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                   >
                     {spot.title}
                   </h3>
@@ -293,13 +293,13 @@ export default function VisitPage() {
             <div
               className="mt-10 flex flex-col items-stretch gap-4 rounded-2xl p-5 text-center sm:mt-12 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-6 sm:text-left"
               style={{
-                background: "linear-gradient(135deg, #6B1C6F 0%, #4A1350 100%)",
+                background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%)",
                 color: "white",
-                boxShadow: "0 18px 40px rgba(107,28,111,0.20)",
+                boxShadow: "0 18px 40px color-mix(in srgb, var(--purple) 20%, transparent)",
               }}
             >
               <div className="flex items-center justify-center gap-3 sm:justify-start">
-                <MapPin size={22} style={{ color: "#F1BB1A" }} className="flex-shrink-0" />
+                <MapPin size={22} style={{ color: "var(--gold)" }} className="flex-shrink-0" />
                 <div className="text-left">
                   <address className="text-sm font-semibold not-italic leading-snug">7931 SE King Rd, Unit 1, Portland, OR 97222</address>
                   <p className="text-xs opacity-80">Open Mon–Sat · 10am – 5pm</p>
@@ -308,7 +308,7 @@ export default function VisitPage() {
               <a
                 href="tel:503-659-2559"
                 className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-[0.98] sm:w-auto"
-                style={{ background: "#F1BB1A", color: "#1a1a1a" }}
+                style={{ background: "var(--gold)", color: "#1a1a1a" }}
               >
                 Call 503-659-2559
               </a>

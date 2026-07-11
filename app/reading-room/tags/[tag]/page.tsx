@@ -109,7 +109,7 @@ export default async function TagPage({
           <Link
             href="/reading-room"
             className="mb-8 inline-flex items-center gap-1.5 text-sm font-semibold"
-            style={{ color: "#6B1C6F" }}
+            style={{ color: "var(--purple)" }}
           >
             <ArrowLeft size={15} aria-hidden="true" />
             All posts
@@ -122,18 +122,18 @@ export default async function TagPage({
                   <Link
                     href={`/reading-room/${post.slug}`}
                     className="group flex h-full flex-col rounded-2xl border bg-white/70 p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-                    style={{ borderColor: "rgba(107,28,111,0.10)" }}
+                    style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
                   >
                     <h2
                       className="mb-2 text-xl font-bold leading-snug"
-                      style={{ fontFamily: "var(--font-serif)", color: "#4A1350" }}
+                      style={{ fontFamily: "var(--font-serif)", color: "var(--purple-dark)" }}
                     >
                       {post.title}
                     </h2>
                     <p className="mb-4 flex-1 text-sm leading-6 text-[#4B5563]">
                       {post.excerpt}
                     </p>
-                    <div className="flex items-center justify-between text-xs text-[#6B7280]">
+                    <div className="flex items-center justify-between text-xs text-[var(--muted)]">
                       <span className="flex items-center gap-3">
                         <time dateTime={post.date}>{formatPostDate(post.date)}</time>
                         <span className="inline-flex items-center gap-1">
@@ -143,7 +143,7 @@ export default async function TagPage({
                       </span>
                       <span
                         className="inline-flex items-center gap-1 font-semibold transition-transform group-hover:translate-x-0.5"
-                        style={{ color: "#6B1C6F" }}
+                        style={{ color: "var(--purple)" }}
                       >
                         Read
                         <ArrowRight size={14} aria-hidden="true" />

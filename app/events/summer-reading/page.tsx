@@ -145,14 +145,14 @@ export default function SummerReadingPage() {
         className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
         style={{
           background:
-            "radial-gradient(circle at 80% 20%, rgba(241,187,26,0.12), transparent 38%), linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
+            "radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 38%), linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)",
         }}
       >
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-10 text-center">
             <span
               className="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               <Sparkles size={12} />
               {isActive ? "On now" : "Coming soon"} · {dateLabel}
@@ -161,7 +161,7 @@ export default function SummerReadingPage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4.5vw, 2.8rem)",
               }}
             >
@@ -245,13 +245,13 @@ export default function SummerReadingPage() {
               className="mb-2 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.6rem, 4vw, 2.2rem)",
               }}
             >
               How to <span className="underline-accent">join</span>
             </h2>
-            <p className="mx-auto max-w-xl text-sm" style={{ color: "#6B7280" }}>
+            <p className="mx-auto max-w-xl text-sm" style={{ color: "var(--muted)" }}>
               It&apos;s casual and free — here&apos;s all there is to it.
             </p>
           </Reveal>
@@ -261,23 +261,23 @@ export default function SummerReadingPage() {
                 <li
                   className="card-cozy flex h-full flex-col rounded-2xl border bg-white p-6"
                   style={{
-                    borderColor: "rgba(107,28,111,0.10)",
+                    borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
                     boxShadow: "var(--shadow-sm)",
                   }}
                 >
                   <div
                     className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl"
-                    style={{ background: "rgba(107,28,111,0.08)", color: "#6B1C6F" }}
+                    style={{ background: "color-mix(in srgb, var(--purple) 8%, transparent)", color: "var(--purple)" }}
                   >
                     <step.icon size={20} />
                   </div>
                   <h3
                     className="mb-1 flex items-center gap-2 text-lg font-bold"
-                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                   >
                     <span
                       className="text-sm font-bold"
-                      style={{ color: "#F1BB1A" }}
+                      style={{ color: "var(--gold)" }}
                     >
                       {i + 1}.
                     </span>
@@ -296,9 +296,9 @@ export default function SummerReadingPage() {
             <div
               className="mt-10 rounded-2xl border p-6 sm:p-7"
               style={{
-                borderColor: "rgba(107,28,111,0.10)",
+                borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
                 background:
-                  "linear-gradient(135deg, rgba(107,28,111,0.05) 0%, rgba(241,187,26,0.08) 100%)",
+                  "linear-gradient(135deg, color-mix(in srgb, var(--purple) 5%, transparent) 0%, color-mix(in srgb, var(--gold) 8%, transparent) 100%)",
               }}
             >
               <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -332,13 +332,13 @@ export default function SummerReadingPage() {
             <div
               className="mt-12 flex flex-col items-stretch gap-4 rounded-2xl p-6 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left"
               style={{
-                background: "linear-gradient(135deg, #6B1C6F 0%, #4A1350 100%)",
+                background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%)",
                 color: "white",
-                boxShadow: "0 18px 40px rgba(107,28,111,0.20)",
+                boxShadow: "0 18px 40px color-mix(in srgb, var(--purple) 20%, transparent)",
               }}
             >
               <div className="flex items-center justify-center gap-3 sm:justify-start">
-                <MapPin size={22} style={{ color: "#F1BB1A" }} className="flex-shrink-0" />
+                <MapPin size={22} style={{ color: "var(--gold)" }} className="flex-shrink-0" />
                 <div className="text-left">
                   <p className="text-sm font-semibold leading-snug">
                     7931 SE King Rd, Unit 1, Portland, OR 97222
@@ -352,7 +352,7 @@ export default function SummerReadingPage() {
                 <Link
                   href="/visit"
                   className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-[0.98] sm:w-auto"
-                  style={{ background: "#F1BB1A", color: "#1a1a1a" }}
+                  style={{ background: "var(--gold)", color: "#1a1a1a" }}
                 >
                   Plan your visit
                 </Link>
@@ -369,7 +369,7 @@ export default function SummerReadingPage() {
           {/* Decorative star row, echoing the flyer */}
           <div aria-hidden="true" className="mt-10 flex justify-center gap-2 opacity-70">
             {[20, 26, 20].map((s, i) => (
-              <Star key={i} size={s} style={{ color: "#F1BB1A", fill: "#F1BB1A" }} />
+              <Star key={i} size={s} style={{ color: "var(--gold)", fill: "var(--gold)" }} />
             ))}
           </div>
         </div>

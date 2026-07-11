@@ -28,14 +28,14 @@ export default function NotFound() {
         className="viewport-min-height relative flex items-center justify-center overflow-hidden px-4 pb-16 pt-[calc(var(--header-offset,_6.75rem)+2rem)]"
         style={{
           background:
-            "radial-gradient(circle at 15% 20%, rgba(241,187,26,0.16), transparent 34%), radial-gradient(circle at 85% 18%, rgba(107,28,111,0.16), transparent 32%), linear-gradient(135deg, #FDF8F0 0%, #FFF7EC 38%, #F7F0FF 100%)",
+            "radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--gold) 16%, transparent), transparent 34%), radial-gradient(circle at 85% 18%, color-mix(in srgb, var(--purple) 16%, transparent), transparent 32%), linear-gradient(135deg, var(--paper) 0%, #FFF7EC 38%, #F7F0FF 100%)",
         }}
       >
         <div
           className="card-cozy relative z-10 mx-auto w-full max-w-2xl rounded-[32px] border px-6 py-12 text-center backdrop-blur-md sm:px-10 sm:py-14"
           style={{
             background: "rgba(255,255,255,0.78)",
-            borderColor: "rgba(107,28,111,0.10)",
+            borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
             boxShadow: "var(--shadow-xl)",
           }}
         >
@@ -47,7 +47,7 @@ export default function NotFound() {
 
           <p
             className="mb-2 text-[11px] font-semibold uppercase tracking-[0.3em]"
-            style={{ color: "#6B1C6F" }}
+            style={{ color: "var(--purple)" }}
           >
             Error 404
           </p>
@@ -55,7 +55,7 @@ export default function NotFound() {
             className="display-shadow mb-3 font-bold"
             style={{
               fontFamily: "var(--font-serif)",
-              color: "#6B1C6F",
+              color: "var(--purple)",
               fontSize: "clamp(2rem, 7vw, 3.4rem)",
               lineHeight: 1.05,
             }}
@@ -67,7 +67,7 @@ export default function NotFound() {
           </h1>
           <p
             className="mx-auto mb-8 max-w-md text-balance"
-            style={{ color: "#6B7280", fontSize: "clamp(0.98rem, 2vw, 1.08rem)", lineHeight: 1.7 }}
+            style={{ color: "var(--muted)", fontSize: "clamp(0.98rem, 2vw, 1.08rem)", lineHeight: 1.7 }}
           >
             We couldn&apos;t find the page you were looking for — but there&apos;s plenty more to
             browse. Here&apos;s where to head next.
@@ -83,11 +83,11 @@ export default function NotFound() {
                 }`}
                 style={
                   i === 0
-                    ? { background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)", boxShadow: "var(--shadow-md)" }
+                    ? { background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)", boxShadow: "var(--shadow-md)" }
                     : {
                         background: "rgba(255,255,255,0.8)",
-                        color: "#6B1C6F",
-                        border: "1px solid rgba(107,28,111,0.14)",
+                        color: "var(--purple)",
+                        border: "1px solid color-mix(in srgb, var(--purple) 14%, transparent)",
                       }
                 }
               >

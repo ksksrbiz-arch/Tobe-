@@ -128,8 +128,8 @@ export default function CookieConsent() {
       <div
         className="mx-auto max-w-3xl rounded-2xl border p-5 shadow-2xl sm:p-6"
         style={{
-          background: "linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%)",
-          borderColor: "rgba(107,28,111,0.18)",
+          background: "linear-gradient(180deg, #FFFDF9 0%, var(--paper) 100%)",
+          borderColor: "color-mix(in srgb, var(--purple) 18%, transparent)",
           boxShadow: "var(--shadow-xl)",
         }}
       >
@@ -137,7 +137,7 @@ export default function CookieConsent() {
           <span
             aria-hidden="true"
             className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full"
-            style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+            style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
           >
             <Cookie size={20} />
           </span>
@@ -145,7 +145,7 @@ export default function CookieConsent() {
             <h2
               id="cookie-consent-title"
               className="text-base font-bold"
-              style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+              style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
             >
               We value your privacy
             </h2>
@@ -176,8 +176,8 @@ export default function CookieConsent() {
                 onClick={() => decide("denied")}
                 className="touch-target order-2 inline-flex items-center justify-center rounded-xl border px-5 py-2.5 text-sm font-semibold transition-all hover:bg-black/[0.03] sm:order-1"
                 style={{
-                  borderColor: "rgba(107,28,111,0.30)",
-                  color: "#6B1C6F",
+                  borderColor: "color-mix(in srgb, var(--purple) 30%, transparent)",
+                  color: "var(--purple)",
                 }}
               >
                 Decline optional

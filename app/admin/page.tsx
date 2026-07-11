@@ -111,7 +111,7 @@ export default function AdminPage() {
   if (status === "loading") {
     return (
       <main className="flex min-h-screen items-center justify-center" style={{ background: "var(--background)" }}>
-        <RefreshCw size={28} className="animate-spin" style={{ color: "#6B1C6F" }} />
+        <RefreshCw size={28} className="animate-spin" style={{ color: "var(--purple)" }} />
       </main>
     );
   }
@@ -121,21 +121,21 @@ export default function AdminPage() {
       <main className="flex min-h-screen items-center justify-center px-4" style={{ background: "var(--background)" }}>
         <div
           className="w-full max-w-sm rounded-[28px] border-2 p-8 text-center shadow-xl"
-          style={{ borderColor: "rgba(107,28,111,0.20)", background: "white" }}
+          style={{ borderColor: "color-mix(in srgb, var(--purple) 20%, transparent)", background: "white" }}
         >
           <div
             className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full"
-            style={{ background: "rgba(107,28,111,0.10)" }}
+            style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
           >
-            <LogIn size={26} style={{ color: "#6B1C6F" }} />
+            <LogIn size={26} style={{ color: "var(--purple)" }} />
           </div>
           <h1
             className="mb-1 text-xl font-bold"
-            style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+            style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
           >
             Staff Sign In
           </h1>
-          <p className="mb-5 text-sm" style={{ color: "#6B7280" }}>Trade desk · TBR internal tool</p>
+          <p className="mb-5 text-sm" style={{ color: "var(--muted)" }}>Trade desk · TBR internal tool</p>
           {signinSent ? (
             <p className="text-sm" style={{ color: "#374151" }}>
               Magic link sent to <strong>{email}</strong>. Click it to sign in.
@@ -150,13 +150,13 @@ export default function AdminPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && sendMagicLink()}
                 className="mb-3 w-full rounded-xl border px-4 py-3 text-sm outline-none"
-                style={{ borderColor: "rgba(107,28,111,0.20)", color: "#1F1A2E" }}
+                style={{ borderColor: "color-mix(in srgb, var(--purple) 20%, transparent)", color: "var(--ink)" }}
               />
               {authError && <p className="mb-2 text-xs" style={{ color: "#B91C1C" }}>{authError}</p>}
               <button
                 onClick={sendMagicLink}
                 className="w-full rounded-xl py-3 text-sm font-semibold text-white"
-                style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
               >
                 Send magic link
               </button>
@@ -178,18 +178,18 @@ export default function AdminPage() {
           <div>
             <h1
               className="font-bold"
-              style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F", fontSize: "1.8rem" }}
+              style={{ fontFamily: "var(--font-serif)", color: "var(--purple)", fontSize: "1.8rem" }}
             >
               Trade Desk Scanner
             </h1>
-            <p className="mt-0.5 text-sm" style={{ color: "#6B7280" }}>
+            <p className="mt-0.5 text-sm" style={{ color: "var(--muted)" }}>
               Scan ISBNs to publish books to the live &quot;Just Shelved&quot; feed
             </p>
           </div>
           <button
             onClick={() => signOut()}
             className="flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium"
-            style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
+            style={{ borderColor: "color-mix(in srgb, var(--purple) 18%, transparent)", color: "var(--purple)" }}
           >
             <LogOut size={12} />
             Sign out
@@ -199,13 +199,13 @@ export default function AdminPage() {
         <div
           className="mb-6 rounded-[24px] border-2 p-6"
           style={{
-            background: "linear-gradient(135deg, rgba(107,28,111,0.04), rgba(241,187,26,0.04))",
-            borderColor: "#6B1C6F",
+            background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 4%, transparent), color-mix(in srgb, var(--gold) 4%, transparent))",
+            borderColor: "var(--purple)",
           }}
         >
           <div className="mb-3 flex items-center gap-2">
-            <ScanLine size={18} style={{ color: "#6B1C6F" }} />
-            <span className="text-sm font-bold" style={{ color: "#6B1C6F" }}>Scan or type ISBN</span>
+            <ScanLine size={18} style={{ color: "var(--purple)" }} />
+            <span className="text-sm font-bold" style={{ color: "var(--purple)" }}>Scan or type ISBN</span>
           </div>
           <div className="flex gap-2">
             <input
@@ -219,26 +219,26 @@ export default function AdminPage() {
               autoFocus
               maxLength={17}
               className="flex-1 rounded-xl border px-4 py-3 text-sm font-mono outline-none focus:ring-2"
-              style={{ borderColor: "rgba(107,28,111,0.25)", color: "#1F1A2E", background: "white" }}
+              style={{ borderColor: "color-mix(in srgb, var(--purple) 25%, transparent)", color: "var(--ink)", background: "white" }}
             />
             <button
               onClick={handleSubmit}
               disabled={processing}
               className="flex items-center gap-1.5 rounded-xl px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
-              style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+              style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
             >
               {processing ? <RefreshCw size={14} className="animate-spin" /> : <Plus size={14} />}
               Add
             </button>
           </div>
-          <p className="mt-2 text-[11px]" style={{ color: "#6B7280" }}>
+          <p className="mt-2 text-[11px]" style={{ color: "var(--muted)" }}>
             Press Enter or scan with a barcode reader. Each scan instantly publishes to the live feed.
           </p>
         </div>
 
         {queue.length > 0 && (
           <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#6B1C6F" }}>
+            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--purple)" }}>
               Session log
             </p>
             {queue.map((entry) => (
@@ -247,7 +247,7 @@ export default function AdminPage() {
                 className="flex items-center gap-3 rounded-2xl border p-4"
                 style={{
                   background: entry.status === "saved" ? "rgba(34,197,94,0.05)" : entry.status === "error" ? "rgba(239,68,68,0.05)" : "white",
-                  borderColor: entry.status === "saved" ? "rgba(34,197,94,0.30)" : entry.status === "error" ? "rgba(239,68,68,0.30)" : "rgba(107,28,111,0.10)",
+                  borderColor: entry.status === "saved" ? "rgba(34,197,94,0.30)" : entry.status === "error" ? "rgba(239,68,68,0.30)" : "color-mix(in srgb, var(--purple) 10%, transparent)",
                 }}
               >
                 {entry.cover_url ? (
@@ -260,15 +260,15 @@ export default function AdminPage() {
                     className="h-14 w-10 flex-shrink-0 rounded object-cover"
                   />
                 ) : (
-                  <div className="h-14 w-10 flex-shrink-0 animate-pulse rounded" style={{ background: "rgba(107,28,111,0.08)" }} />
+                  <div className="h-14 w-10 flex-shrink-0 animate-pulse rounded" style={{ background: "color-mix(in srgb, var(--purple) 8%, transparent)" }} />
                 )}
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-bold" style={{ color: "#1F1A2E" }}>{entry.title || entry.isbn}</p>
-                  {entry.author && <p className="text-xs" style={{ color: "#6B7280" }}>{entry.author}</p>}
+                  <p className="truncate text-sm font-bold" style={{ color: "var(--ink)" }}>{entry.title || entry.isbn}</p>
+                  {entry.author && <p className="text-xs" style={{ color: "var(--muted)" }}>{entry.author}</p>}
                   {entry.errorMsg && <p className="text-xs" style={{ color: "#B91C1C" }}>{entry.errorMsg}</p>}
                 </div>
                 <div className="flex-shrink-0">
-                  {entry.status === "pending" && <RefreshCw size={16} className="animate-spin" style={{ color: "#6B7280" }} />}
+                  {entry.status === "pending" && <RefreshCw size={16} className="animate-spin" style={{ color: "var(--muted)" }} />}
                   {entry.status === "saved" && <Check size={18} style={{ color: "#22c55e" }} />}
                   {entry.status === "error" && <span className="text-xs font-bold" style={{ color: "#ef4444" }}>Error</span>}
                 </div>

@@ -9,9 +9,9 @@ const shopCards = [
   {
     icon: ShoppingBag,
     name: "PangoBooks",
-    color: "#6B1C6F",
-    bgGradient: "linear-gradient(135deg, rgba(107,28,111,0.10) 0%, rgba(139,46,144,0.06) 100%)",
-    accent: "#8B2E90",
+    color: "var(--purple)",
+    bgGradient: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 10%, transparent) 0%, color-mix(in srgb, var(--purple-light) 6%, transparent) 100%)",
+    accent: "var(--purple-light)",
     description:
       "Browse our curated online selection on PangoBooks. Find that special title you've been searching for, delivered right to your door.",
     cta: "Browse PangoBooks",
@@ -34,8 +34,8 @@ const shopCards = [
     icon: Store,
     name: "In-Store Experience",
     color: "#b45309",
-    bgGradient: "linear-gradient(135deg, rgba(180,83,9,0.10) 0%, rgba(241,187,26,0.10) 100%)",
-    accent: "#F1BB1A",
+    bgGradient: "linear-gradient(135deg, rgba(180,83,9,0.10) 0%, color-mix(in srgb, var(--gold) 10%, transparent) 100%)",
+    accent: "var(--gold)",
     description:
       "Nothing beats wandering our shelves in person. Come browse thousands of titles, smell that wonderful old-book smell, and chat with fellow book lovers.",
     cta: "Get Directions",
@@ -49,13 +49,13 @@ export default function ShopSection() {
     <section
       id="shop"
       className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
-      style={{ background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)" }}
+      style={{ background: "linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)" }}
     >
       <div className="mx-auto max-w-6xl">
         <Reveal className="mb-14 text-center">
           <span
             className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-            style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+            style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
           >
             Shop Online
           </span>
@@ -63,13 +63,13 @@ export default function ShopSection() {
             className="mb-3 font-bold"
             style={{
               fontFamily: "var(--font-serif)",
-              color: "#6B1C6F",
+              color: "var(--purple)",
               fontSize: "clamp(2rem, 5vw, 3rem)",
             }}
           >
             Shop Our <span className="underline-accent">Collection</span>
           </h2>
-          <p className="mx-auto max-w-xl text-sm leading-relaxed" style={{ color: "#6B7280" }}>
+          <p className="mx-auto max-w-xl text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
             Whether you prefer scrolling from the couch or wandering between shelves, we&apos;ve got you covered.
           </p>
           <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
@@ -86,8 +86,8 @@ export default function ShopSection() {
                 aria-label={`${card.cta} — ${card.name} (opens in a new tab)`}
                 className="group relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-all duration-300 hover:shadow-2xl active:scale-[0.98]"
                 style={{
-                  borderColor: "rgba(107,28,111,0.10)",
-                  boxShadow: "0 12px 30px rgba(107,28,111,0.08)",
+                  borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
+                  boxShadow: "0 12px 30px color-mix(in srgb, var(--purple) 8%, transparent)",
                 }}
               >
                 {/* Header */}

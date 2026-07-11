@@ -122,14 +122,14 @@ export default function EventsPage() {
         className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
         style={{
           background:
-            "radial-gradient(circle at 80% 20%, rgba(107,28,111,0.08), transparent 38%), linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
+            "radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--purple) 8%, transparent), transparent 38%), linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)",
         }}
       >
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-12 text-center">
             <span
               className="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               <Calendar size={12} />
               On the calendar
@@ -138,7 +138,7 @@ export default function EventsPage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4.5vw, 2.8rem)",
               }}
             >
@@ -146,7 +146,7 @@ export default function EventsPage() {
             </h2>
             <p
               className="mx-auto max-w-xl text-sm leading-relaxed"
-              style={{ color: "#6B7280" }}
+              style={{ color: "var(--muted)" }}
             >
               Drop in to read, browse fresh staff picks, or join our free
               Summer Reading Programs. No tickets, no fuss.
@@ -159,7 +159,7 @@ export default function EventsPage() {
               <p
                 className="rounded-2xl border bg-white p-8 text-center text-sm"
                 style={{
-                  borderColor: "rgba(107,28,111,0.10)",
+                  borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
                   color: "#4B5563",
                 }}
               >
@@ -174,18 +174,18 @@ export default function EventsPage() {
                   <article
                     className="group relative h-full overflow-hidden rounded-2xl border bg-white p-6 card-cozy"
                     style={{
-                      borderColor: "rgba(107,28,111,0.10)",
+                      borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
                       boxShadow: "var(--shadow-sm)",
                     }}
                   >
                     <div
                       aria-hidden="true"
                       className="absolute inset-x-0 top-0 h-1 transition-all group-hover:h-1.5"
-                      style={{ background: "#6B1C6F" }}
+                      style={{ background: "var(--purple)" }}
                     />
                     <p
                       className="mb-1 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest"
-                      style={{ color: "#8B2E90" }}
+                      style={{ color: "var(--purple-light)" }}
                     >
                       <Calendar size={12} />
                       {ev.recurrence}
@@ -194,7 +194,7 @@ export default function EventsPage() {
                       className="mb-2 text-xl font-bold leading-tight"
                       style={{
                         fontFamily: "var(--font-serif)",
-                        color: "#6B1C6F",
+                        color: "var(--purple)",
                       }}
                     >
                       {ev.title}
@@ -204,11 +204,11 @@ export default function EventsPage() {
                       style={{ color: "#374151" }}
                     >
                       <span className="flex items-center gap-2">
-                        <Calendar size={14} style={{ color: "#F1BB1A" }} />
+                        <Calendar size={14} style={{ color: "var(--gold)" }} />
                         {formatDate(ev.startDate)}
                       </span>
                       <span className="flex items-center gap-2">
-                        <Clock size={14} style={{ color: "#F1BB1A" }} />
+                        <Clock size={14} style={{ color: "var(--gold)" }} />
                         {formatTimeRange(ev.startDate, ev.endDate)}
                       </span>
                     </div>
@@ -240,15 +240,15 @@ export default function EventsPage() {
             <div
               className="mt-12 flex flex-col items-stretch gap-4 rounded-2xl p-6 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left"
               style={{
-                background: "linear-gradient(135deg, #6B1C6F 0%, #4A1350 100%)",
+                background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%)",
                 color: "white",
-                boxShadow: "0 18px 40px rgba(107,28,111,0.20)",
+                boxShadow: "0 18px 40px color-mix(in srgb, var(--purple) 20%, transparent)",
               }}
             >
               <div className="flex items-center justify-center gap-3 sm:justify-start">
                 <MapPin
                   size={22}
-                  style={{ color: "#F1BB1A" }}
+                  style={{ color: "var(--gold)" }}
                   className="flex-shrink-0"
                 />
                 <div className="text-left">
@@ -264,7 +264,7 @@ export default function EventsPage() {
                 <Link
                   href="/visit"
                   className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-[0.98] sm:w-auto"
-                  style={{ background: "#F1BB1A", color: "#1a1a1a" }}
+                  style={{ background: "var(--gold)", color: "#1a1a1a" }}
                 >
                   Plan your visit
                 </Link>

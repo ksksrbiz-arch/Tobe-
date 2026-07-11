@@ -103,7 +103,7 @@ export default function SummerReadingBanner({
         <div className="text-center">
           <span
             className="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider shadow-sm"
-            style={{ background: "rgba(255,255,255,0.9)", color: "#6B1C6F" }}
+            style={{ background: "rgba(255,255,255,0.9)", color: "var(--purple)" }}
           >
             <Sparkles size={12} />
             New · {season}
@@ -203,7 +203,7 @@ export default function SummerReadingBanner({
           <Link
             href="/events/summer-reading"
             className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold shadow-md transition-transform hover:scale-105 active:scale-[0.98] sm:w-auto"
-            style={{ background: "#6B1C6F", color: "#FFFFFF" }}
+            style={{ background: "var(--purple)", color: "#FFFFFF" }}
           >
             See event details
             <ArrowRight size={16} />
@@ -211,7 +211,7 @@ export default function SummerReadingBanner({
           <Link
             href="/visit"
             className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/70 bg-white/85 px-6 py-3 text-sm font-bold transition-transform hover:scale-105 active:scale-[0.98] sm:w-auto"
-            style={{ color: "#6B1C6F" }}
+            style={{ color: "var(--purple)" }}
           >
             <MapPin size={16} />
             Plan your visit

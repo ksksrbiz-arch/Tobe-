@@ -22,8 +22,8 @@ export default function OpenStatus({ className = "" }: { className?: string }) {
     <span
       className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${className}`}
       style={{
-        background: status && open ? "rgba(34,197,94,0.14)" : "rgba(107,28,111,0.06)",
-        color: status && open ? "#15803d" : "#6B1C6F",
+        background: status && open ? "rgba(34,197,94,0.14)" : "color-mix(in srgb, var(--purple) 6%, transparent)",
+        color: status && open ? "#15803d" : "var(--purple)",
       }}
       aria-live="polite"
     >

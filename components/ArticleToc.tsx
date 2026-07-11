@@ -97,7 +97,7 @@ export default function ArticleToc({
       aria-label="Table of contents"
       className="mb-10 rounded-2xl border p-4 sm:p-5"
       style={{
-        borderColor: "rgba(107,28,111,0.12)",
+        borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)",
         background: "linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(253,248,240,0.85) 100%)",
       }}
     >
@@ -109,7 +109,7 @@ export default function ArticleToc({
       >
         <span
           className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em]"
-          style={{ color: "#6B1C6F" }}
+          style={{ color: "var(--purple)" }}
         >
           <List size={15} aria-hidden="true" />
           {label}
@@ -118,7 +118,7 @@ export default function ArticleToc({
           size={18}
           aria-hidden="true"
           className="transition-transform duration-300"
-          style={{ color: "#6B1C6F", transform: open ? "rotate(180deg)" : "none" }}
+          style={{ color: "var(--purple)", transform: open ? "rotate(180deg)" : "none" }}
         />
       </button>
 
@@ -131,14 +131,14 @@ export default function ArticleToc({
                 <a
                   href={`#${item.id}`}
                   aria-current={active ? "location" : undefined}
-                  className="block rounded-lg border-l-2 py-1 pl-3 pr-2 text-sm transition-colors hover:bg-[rgba(107,28,111,0.06)] hover:text-[#4A1350] focus-visible:bg-[rgba(107,28,111,0.06)]"
+                  className="block rounded-lg border-l-2 py-1 pl-3 pr-2 text-sm transition-colors hover:bg-[color-mix(in srgb, var(--purple) 6%, transparent)] hover:text-[var(--purple-dark)] focus-visible:bg-[color-mix(in srgb, var(--purple) 6%, transparent)]"
                   style={{
-                    borderColor: active ? "#F1BB1A" : "transparent",
-                    color: active ? "#4A1350" : "#6B7280",
+                    borderColor: active ? "var(--gold)" : "transparent",
+                    color: active ? "var(--purple-dark)" : "var(--muted)",
                     fontWeight: active ? 700 : 500,
                     // Only set background inline for the active item; leaving it
                     // unset lets the hover/focus Tailwind classes apply to the rest.
-                    ...(active ? { background: "rgba(241,187,26,0.10)" } : {}),
+                    ...(active ? { background: "color-mix(in srgb, var(--gold) 10%, transparent)" } : {}),
                   }}
                 >
                   {item.text}

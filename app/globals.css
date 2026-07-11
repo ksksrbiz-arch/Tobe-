@@ -219,6 +219,18 @@ summary:focus-visible,
   outline-offset: 3px;
 }
 
+/* Brand-tint the Tailwind focus ring. Elements using `focus:ring-*` utilities
+   (the estimator, wishlist, review and newsletter inputs) otherwise paint
+   Tailwind's default blue ring on mouse :focus, clashing with the purple
+   :focus-visible outline keyboard users get. Point --tw-ring-color at the brand
+   purple so both paths read as one system. */
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  --tw-ring-color: color-mix(in srgb, var(--purple) 38%, transparent);
+}
+
 /* Form placeholder contrast — the default browser placeholder is too light to
    meet WCAG AA against the cream paper background. --ink-muted (#5C5868) clears
    the 4.5:1 AA threshold on the site's light surfaces. */

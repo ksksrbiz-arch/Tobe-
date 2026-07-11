@@ -68,14 +68,14 @@ export default function ReadingRoomPage() {
             <Link
               href="/reading-room/collections"
               className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition-all hover:scale-[1.03]"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               Browse collections
             </Link>
             <a
               href="/reading-room/feed.xml"
               className="inline-flex items-center gap-1.5 text-xs font-semibold transition-colors hover:opacity-80"
-              style={{ color: "#6B1C6F" }}
+              style={{ color: "var(--purple)" }}
             >
               <Rss size={13} aria-hidden="true" />
               RSS
@@ -89,11 +89,11 @@ export default function ReadingRoomPage() {
           <nav
             aria-label="All topics"
             className="mt-16 border-t pt-8"
-            style={{ borderColor: "rgba(107,28,111,0.12)" }}
+            style={{ borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)" }}
           >
             <h2
               className="mb-4 text-xs font-bold uppercase tracking-[0.18em]"
-              style={{ color: "#6B1C6F" }}
+              style={{ color: "var(--purple)" }}
             >
               All topics
             </h2>
@@ -104,9 +104,9 @@ export default function ReadingRoomPage() {
                   href={`/reading-room/tags/${tagToSlug(tag)}`}
                   className="rounded-full border px-3 py-1 text-xs font-semibold transition-all hover:scale-[1.03]"
                   style={{
-                    borderColor: "rgba(107,28,111,0.15)",
-                    color: "#6B1C6F",
-                    background: "rgba(107,28,111,0.04)",
+                    borderColor: "color-mix(in srgb, var(--purple) 15%, transparent)",
+                    color: "var(--purple)",
+                    background: "color-mix(in srgb, var(--purple) 4%, transparent)",
                   }}
                 >
                   {tag}

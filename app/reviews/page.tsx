@@ -31,8 +31,8 @@ function StarRow({ rating, size = 16 }: { rating: number; size?: number }) {
         <Star
           key={i}
           size={size}
-          fill={i < Math.round(rating) ? "#F1BB1A" : "transparent"}
-          style={{ color: "#F1BB1A" }}
+          fill={i < Math.round(rating) ? "var(--gold)" : "transparent"}
+          style={{ color: "var(--gold)" }}
         />
       ))}
     </div>
@@ -44,17 +44,17 @@ function ReviewCard({ review }: { review: Review }) {
   return (
     <article
       className="relative flex h-full flex-col rounded-2xl border bg-white p-6"
-      style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "var(--shadow-sm)" }}
+      style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)", boxShadow: "var(--shadow-sm)" }}
     >
       <Quote
         aria-hidden="true"
         size={32}
         className="absolute right-4 top-4 opacity-15"
-        style={{ color: "#F1BB1A" }}
+        style={{ color: "var(--gold)" }}
       />
       <StarRow rating={review.rating} />
       {review.title && (
-        <h3 className="mb-1 mt-3 text-base font-bold" style={{ color: "#6B1C6F" }}>
+        <h3 className="mb-1 mt-3 text-base font-bold" style={{ color: "var(--purple)" }}>
           {review.title}
         </h3>
       )}
@@ -66,22 +66,22 @@ function ReviewCard({ review }: { review: Review }) {
       </p>
       <div
         className="mt-auto flex items-center gap-3 border-t pt-4"
-        style={{ borderColor: "rgba(107,28,111,0.08)" }}
+        style={{ borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)" }}
       >
         <div
           className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
           style={{
-            background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
+            background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)",
             fontFamily: "var(--font-serif)",
           }}
         >
           {initial}
         </div>
         <div className="min-w-0">
-          <p className="truncate text-sm font-semibold" style={{ color: "#6B1C6F" }}>
+          <p className="truncate text-sm font-semibold" style={{ color: "var(--purple)" }}>
             {review.author_name}
           </p>
-          <p className="text-xs" style={{ color: "#6B7280" }}>
+          <p className="text-xs" style={{ color: "var(--muted)" }}>
             {formatDate(review.created_at)}
           </p>
         </div>
@@ -147,14 +147,14 @@ export default async function ReviewsPage() {
         className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
         style={{
           background:
-            "radial-gradient(circle at 80% 20%, rgba(107,28,111,0.08), transparent 38%), linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
+            "radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--purple) 8%, transparent), transparent 38%), linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)",
         }}
       >
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-12 text-center">
             <span
               className="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               <Star size={12} />
               From our readers
@@ -163,7 +163,7 @@ export default async function ReviewsPage() {
               className="mb-3 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4.5vw, 2.8rem)",
               }}
             >
@@ -174,10 +174,10 @@ export default async function ReviewsPage() {
               <div className="mt-4 flex flex-col items-center justify-center gap-2">
                 <div className="flex items-center gap-2">
                   <StarRow rating={average} size={18} />
-                  <span className="text-base font-bold" style={{ color: "#6B1C6F" }}>
+                  <span className="text-base font-bold" style={{ color: "var(--purple)" }}>
                     {average.toFixed(1)}
                   </span>
-                  <span className="text-sm" style={{ color: "#6B7280" }}>
+                  <span className="text-sm" style={{ color: "var(--muted)" }}>
                     · {count} {count === 1 ? "review" : "reviews"}
                   </span>
                 </div>
@@ -185,7 +185,7 @@ export default async function ReviewsPage() {
             ) : (
               <p
                 className="mx-auto max-w-xl text-sm leading-relaxed"
-                style={{ color: "#6B7280" }}
+                style={{ color: "var(--muted)" }}
               >
                 Be the first to leave a review — we&apos;d love to hear about your visit.
               </p>
@@ -215,13 +215,13 @@ export default async function ReviewsPage() {
             <div
               className="mt-12 flex flex-col items-stretch gap-4 rounded-2xl p-6 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left"
               style={{
-                background: "linear-gradient(135deg, #6B1C6F 0%, #4A1350 100%)",
+                background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%)",
                 color: "white",
-                boxShadow: "0 18px 40px rgba(107,28,111,0.20)",
+                boxShadow: "0 18px 40px color-mix(in srgb, var(--purple) 20%, transparent)",
               }}
             >
               <div className="flex items-center justify-center gap-3 sm:justify-start">
-                <MapPin size={22} style={{ color: "#F1BB1A" }} className="flex-shrink-0" />
+                <MapPin size={22} style={{ color: "var(--gold)" }} className="flex-shrink-0" />
                 <div className="text-left">
                   <p className="text-sm font-semibold leading-snug">
                     7931 SE King Rd, Unit 1, Portland, OR 97222
@@ -232,7 +232,7 @@ export default async function ReviewsPage() {
               <Link
                 href="/visit"
                 className="btn-shine inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all hover:scale-105 active:scale-[0.98] sm:w-auto"
-                style={{ background: "#F1BB1A", color: "#1a1a1a" }}
+                style={{ background: "var(--gold)", color: "#1a1a1a" }}
               >
                 Plan your visit
               </Link>

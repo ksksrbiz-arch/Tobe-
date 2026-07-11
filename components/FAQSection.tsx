@@ -114,7 +114,7 @@ export default function FAQSection({
   return (
     <section
       className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
-      style={{ background: "linear-gradient(180deg, #FFFEFB 0%, #FDF8F0 100%)" }}
+      style={{ background: "linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)" }}
       id={id}
     >
       <JsonLd data={faqJsonLd} />
@@ -122,7 +122,7 @@ export default function FAQSection({
         <Reveal className="mb-12 text-center">
           <span
             className="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-            style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+            style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
           >
             <HelpCircle size={12} />
             {eyebrow}
@@ -131,13 +131,13 @@ export default function FAQSection({
             className="mb-3 font-bold"
             style={{
               fontFamily: "var(--font-serif)",
-              color: "#6B1C6F",
+              color: "var(--purple)",
               fontSize: "clamp(2rem, 5vw, 3rem)",
             }}
           >
             {titleLead} <span className="underline-accent">{titleAccent}</span>
           </h2>
-          <p className="mx-auto max-w-xl text-sm" style={{ color: "#6B7280" }}>
+          <p className="mx-auto max-w-xl text-sm" style={{ color: "var(--muted)" }}>
             {intro}
           </p>
         </Reveal>
@@ -145,12 +145,12 @@ export default function FAQSection({
         <FaqAccordion faqs={faqs} />
 
         <Reveal>
-          <p className="mt-8 text-center text-sm" style={{ color: "#6B7280" }}>
+          <p className="mt-8 text-center text-sm" style={{ color: "var(--muted)" }}>
             Still curious?{" "}
             <a
               href="mailto:TBR@tcpbusiness.com"
               className="font-semibold underline decoration-2 underline-offset-4"
-              style={{ color: "#6B1C6F", textDecorationColor: "#F1BB1A" }}
+              style={{ color: "var(--purple)", textDecorationColor: "var(--gold)" }}
             >
               Send us an email
             </a>{" "}

@@ -11,14 +11,14 @@ import { Stage, Sprite, useSprite, useTime, Easing, clamp } from "./TBRLoopEngin
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
-const PURPLE = "#6B1C6F";
-const PURPLE_LIGHT = "#8B2E90";
-const PURPLE_DARK = "#4A1350";
-const GOLD = "#F1BB1A";
-const GOLD_LIGHT = "#F5CC45";
+const PURPLE = "var(--purple)";
+const PURPLE_LIGHT = "var(--purple-light)";
+const PURPLE_DARK = "var(--purple-dark)";
+const GOLD = "var(--gold)";
+const GOLD_LIGHT = "var(--gold-light)";
 const PAPER = "#FFFDF9";
-const PAPER_2 = "#FDF8F0";
-const INK = "#1F1A2E";
+const PAPER_2 = "var(--paper)";
+const INK = "var(--ink)";
 const INK_SOFT = "#4B5563";
 
 const SERIF = "var(--font-serif)";
@@ -33,9 +33,9 @@ function PaperBackground({ vignette = true }: { vignette?: boolean }) {
         position: "absolute",
         inset: 0,
         background: `
-          radial-gradient(ellipse at 0% 0%, rgba(241,187,26,0.10) 0%, transparent 45%),
-          radial-gradient(ellipse at 100% 100%, rgba(107,28,111,0.10) 0%, transparent 50%),
-          linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%)
+          radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 45%),
+          radial-gradient(ellipse at 100% 100%, color-mix(in srgb, var(--purple) 10%, transparent) 0%, transparent 50%),
+          linear-gradient(180deg, #FFFDF9 0%, var(--paper) 100%)
         `,
       }}
     >
@@ -61,7 +61,7 @@ function PaperBackground({ vignette = true }: { vignette?: boolean }) {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse at center, transparent 55%, rgba(74,19,80,0.10) 100%)",
+              "radial-gradient(ellipse at center, transparent 55%, color-mix(in srgb, var(--purple-dark) 10%, transparent) 100%)",
           }}
         />
       )}
@@ -250,7 +250,7 @@ function Eyebrow({
         letterSpacing: "0.30em",
         textTransform: "uppercase",
         color: PURPLE,
-        background: "rgba(241,187,26,0.20)",
+        background: "color-mix(in srgb, var(--gold) 20%, transparent)",
         padding: "8px 18px",
         borderRadius: 999,
         whiteSpace: "nowrap",
@@ -339,7 +339,7 @@ function BottomPill({
         background: `linear-gradient(135deg, ${PURPLE}, ${PURPLE_LIGHT})`,
         padding: "14px 32px",
         borderRadius: 999,
-        boxShadow: "0 20px 40px rgba(107,28,111,0.30)",
+        boxShadow: "0 20px 40px color-mix(in srgb, var(--purple) 30%, transparent)",
       }}
     >
       {children}
@@ -556,7 +556,7 @@ function BookCard({
         background: dark ? PURPLE : PAPER,
         border: `3px solid ${dark ? GOLD : PURPLE}`,
         borderRadius: 6,
-        boxShadow: "0 24px 60px rgba(107,28,111,0.25)",
+        boxShadow: "0 24px 60px color-mix(in srgb, var(--purple) 25%, transparent)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -749,7 +749,7 @@ function OpenBook({ localTime }: { localTime: number }) {
           height: 380,
           background: PAPER,
           borderRadius: "8px 0 0 8px",
-          boxShadow: `0 30px 60px rgba(107,28,111,0.25), inset -8px 0 16px rgba(107,28,111,0.06)`,
+          boxShadow: `0 30px 60px color-mix(in srgb, var(--purple) 25%, transparent), inset -8px 0 16px color-mix(in srgb, var(--purple) 6%, transparent)`,
           border: `1px solid ${PURPLE}22`,
           display: "flex",
           flexDirection: "column",
@@ -783,7 +783,7 @@ function OpenBook({ localTime }: { localTime: number }) {
           height: 380,
           background: PAPER,
           borderRadius: "0 8px 8px 0",
-          boxShadow: `0 30px 60px rgba(107,28,111,0.25), inset 8px 0 16px rgba(107,28,111,0.06)`,
+          boxShadow: `0 30px 60px color-mix(in srgb, var(--purple) 25%, transparent), inset 8px 0 16px color-mix(in srgb, var(--purple) 6%, transparent)`,
           border: `1px solid ${PURPLE}22`,
           display: "flex",
           flexDirection: "column",
@@ -1127,7 +1127,7 @@ function Scene5() {
           WebkitBackdropFilter: "blur(14px) saturate(160%)",
           borderRadius: 40,
           border: `1px solid ${PURPLE}22`,
-          boxShadow: "0 36px 90px rgba(107,28,111,0.22), 0 8px 20px rgba(241,187,26,0.10)",
+          boxShadow: "0 36px 90px color-mix(in srgb, var(--purple) 22%, transparent), 0 8px 20px color-mix(in srgb, var(--gold) 10%, transparent)",
           padding: "70px 80px",
           display: "flex",
           flexDirection: "column",
@@ -1233,7 +1233,7 @@ function Scene5() {
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
                 color: PURPLE,
-                background: "rgba(241,187,26,0.20)",
+                background: "color-mix(in srgb, var(--gold) 20%, transparent)",
                 padding: "10px 22px",
                 borderRadius: 999,
                 whiteSpace: "nowrap",

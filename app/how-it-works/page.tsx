@@ -177,7 +177,7 @@ export default function HowItWorksPage() {
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(180deg, transparent 50%, rgba(42,9,48,0.55) 100%)",
+                    "linear-gradient(180deg, transparent 50%, color-mix(in srgb, var(--purple-deep) 55%, transparent) 100%)",
                 }}
               />
               <div className="absolute bottom-5 left-5 right-5 text-white">
@@ -201,7 +201,7 @@ export default function HowItWorksPage() {
         className="px-4 py-12 sm:py-20 sm:px-6 md:py-28"
         style={{
           background:
-            "radial-gradient(ellipse at 0% 0%, rgba(241,187,26,0.10) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(107,28,111,0.10) 0%, transparent 50%), linear-gradient(180deg, #FDF8F0 0%, #F5EFE0 100%)",
+            "radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, color-mix(in srgb, var(--purple) 10%, transparent) 0%, transparent 50%), linear-gradient(180deg, var(--paper) 0%, var(--paper-dark) 100%)",
         }}
       >
         <div className="mx-auto max-w-6xl">
@@ -251,7 +251,7 @@ export default function HowItWorksPage() {
                   className="group flex h-full flex-col rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1"
                   style={{
                     background: "rgba(255,255,255,0.92)",
-                    border: "1px solid rgba(107,28,111,0.10)",
+                    border: "1px solid color-mix(in srgb, var(--purple) 10%, transparent)",
                     boxShadow: "var(--shadow-md)",
                   }}
                 >
@@ -333,7 +333,7 @@ export default function HowItWorksPage() {
                 className="h-full rounded-3xl p-8"
                 style={{
                   background: "rgba(255,255,255,0.92)",
-                  border: "1px solid rgba(107,28,111,0.10)",
+                  border: "1px solid color-mix(in srgb, var(--purple) 10%, transparent)",
                   borderLeft: "6px solid var(--gold)",
                   boxShadow: "var(--shadow-md)",
                 }}
@@ -368,15 +368,15 @@ export default function HowItWorksPage() {
                 className="h-full rounded-3xl p-8"
                 style={{
                   background: "rgba(255,255,255,0.92)",
-                  border: "1px solid rgba(107,28,111,0.10)",
-                  borderLeft: "6px solid rgba(107,28,111,0.4)",
+                  border: "1px solid color-mix(in srgb, var(--purple) 10%, transparent)",
+                  borderLeft: "6px solid color-mix(in srgb, var(--purple) 40%, transparent)",
                   boxShadow: "var(--shadow-md)",
                 }}
               >
                 <div className="flex items-center gap-3">
                   <span
                     className="flex h-12 w-12 items-center justify-center rounded-full"
-                    style={{ background: "rgba(107,28,111,0.12)", color: "var(--purple)" }}
+                    style={{ background: "color-mix(in srgb, var(--purple) 12%, transparent)", color: "var(--purple)" }}
                   >
                     <Minus size={24} strokeWidth={3} />
                   </span>
@@ -412,7 +412,7 @@ export default function HowItWorksPage() {
         className="px-4 py-12 sm:py-20 sm:px-6 md:py-28"
         style={{
           background:
-            "radial-gradient(ellipse at 0% 0%, rgba(241,187,26,0.10) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(107,28,111,0.10) 0%, transparent 50%), linear-gradient(180deg, #FDF8F0 0%, #F5EFE0 100%)",
+            "radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, color-mix(in srgb, var(--purple) 10%, transparent) 0%, transparent 50%), linear-gradient(180deg, var(--paper) 0%, var(--paper-dark) 100%)",
         }}
       >
         <div className="mx-auto max-w-6xl">
@@ -459,13 +459,13 @@ export default function HowItWorksPage() {
                 className="overflow-hidden rounded-3xl"
                 style={{
                   background: "rgba(255,255,255,0.92)",
-                  border: "1px solid rgba(107,28,111,0.10)",
+                  border: "1px solid color-mix(in srgb, var(--purple) 10%, transparent)",
                   boxShadow: "var(--shadow-md)",
                 }}
               >
                 <div
                   className="px-8 pt-8"
-                  style={{ borderBottom: "1px solid rgba(107,28,111,0.10)", paddingBottom: "1rem" }}
+                  style={{ borderBottom: "1px solid color-mix(in srgb, var(--purple) 10%, transparent)", paddingBottom: "1rem" }}
                 >
                   <div
                     className="text-xs font-bold uppercase tracking-[0.22em]"
@@ -488,7 +488,7 @@ export default function HowItWorksPage() {
                 />
                 <div
                   className="flex items-center justify-between gap-4 px-8 py-7"
-                  style={{ background: "rgba(241,187,26,0.10)" }}
+                  style={{ background: "color-mix(in srgb, var(--gold) 10%, transparent)" }}
                 >
                   <div>
                     <div
@@ -556,7 +556,7 @@ export default function HowItWorksPage() {
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(180deg, transparent 55%, rgba(42,9,48,0.55) 100%)",
+                    "linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--purple-deep) 55%, transparent) 100%)",
                 }}
               />
             </div>
@@ -610,7 +610,7 @@ export default function HowItWorksPage() {
             <div
               className="mt-8 rounded-2xl px-6 py-5"
               style={{
-                background: "rgba(241,187,26,0.18)",
+                background: "color-mix(in srgb, var(--gold) 18%, transparent)",
                 borderLeft: "4px solid var(--gold)",
               }}
             >
@@ -632,7 +632,7 @@ export default function HowItWorksPage() {
         className="px-4 py-12 sm:py-20 sm:px-6 md:py-28"
         style={{
           background:
-            "radial-gradient(ellipse at 0% 0%, rgba(241,187,26,0.10) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(107,28,111,0.10) 0%, transparent 50%), linear-gradient(180deg, #FDF8F0 0%, #F5EFE0 100%)",
+            "radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, color-mix(in srgb, var(--purple) 10%, transparent) 0%, transparent 50%), linear-gradient(180deg, var(--paper) 0%, var(--paper-dark) 100%)",
         }}
       >
         <div className="mx-auto max-w-5xl">
@@ -672,7 +672,7 @@ export default function HowItWorksPage() {
               className="mt-10 overflow-hidden rounded-3xl"
               style={{
                 background: "rgba(255,255,255,0.92)",
-                border: "1px solid rgba(107,28,111,0.10)",
+                border: "1px solid color-mix(in srgb, var(--purple) 10%, transparent)",
                 boxShadow: "var(--shadow-md)",
               }}
             >
@@ -683,7 +683,7 @@ export default function HowItWorksPage() {
                     className="grid gap-3 px-8 py-6 md:grid-cols-[38%_1fr] md:gap-8"
                     style={
                       idx < fineprint.length - 1
-                        ? { borderBottom: "1px solid rgba(107,28,111,0.10)" }
+                        ? { borderBottom: "1px solid color-mix(in srgb, var(--purple) 10%, transparent)" }
                         : undefined
                     }
                   >
@@ -707,7 +707,7 @@ export default function HowItWorksPage() {
         className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 md:py-32"
         style={{
           background:
-            "radial-gradient(ellipse at 80% 20%, rgba(241,187,26,0.18) 0%, transparent 55%), radial-gradient(ellipse at 10% 90%, rgba(139,46,144,0.55) 0%, transparent 50%), linear-gradient(135deg, #4A1350 0%, #2A0930 100%)",
+            "radial-gradient(ellipse at 80% 20%, color-mix(in srgb, var(--gold) 18%, transparent) 0%, transparent 55%), radial-gradient(ellipse at 10% 90%, color-mix(in srgb, var(--purple-light) 55%, transparent) 0%, transparent 50%), linear-gradient(135deg, var(--purple-dark) 0%, var(--purple-deep) 100%)",
           color: "#FFFDF9",
         }}
       >
@@ -715,7 +715,7 @@ export default function HowItWorksPage() {
           <Reveal>
             <span
               className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.30em]"
-              style={{ background: "rgba(241,187,26,0.18)", color: "var(--gold)" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--gold)" }}
             >
               <span
                 className="inline-block h-2 w-2 rounded-full"
@@ -731,7 +731,7 @@ export default function HowItWorksPage() {
               <em
                 style={{
                   background:
-                    "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 50%, #FCE8A6 100%)",
+                    "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold-soft) 100%)",
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
                   color: "transparent",
@@ -883,7 +883,7 @@ function Divider() {
       style={{
         width: 1,
         height: 56,
-        background: "rgba(107,28,111,0.20)",
+        background: "color-mix(in srgb, var(--purple) 20%, transparent)",
       }}
     />
   );
@@ -894,7 +894,7 @@ function Hairline() {
     <div
       style={{
         height: 1,
-        background: "linear-gradient(90deg, rgba(107,28,111,0.20), transparent)",
+        background: "linear-gradient(90deg, color-mix(in srgb, var(--purple) 20%, transparent), transparent)",
       }}
     />
   );
@@ -914,7 +914,7 @@ function CreditRow({
   return (
     <div
       className="flex items-center justify-between gap-4 px-8 py-7"
-      style={{ borderBottom: "1px solid rgba(107,28,111,0.10)" }}
+      style={{ borderBottom: "1px solid color-mix(in srgb, var(--purple) 10%, transparent)" }}
     >
       <div>
         <div

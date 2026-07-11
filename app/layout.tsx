@@ -122,7 +122,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#FFFDF9" },
-    { media: "(prefers-color-scheme: dark)", color: "#4A1350" },
+    { media: "(prefers-color-scheme: dark)", color: "var(--purple-dark)" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -290,7 +290,7 @@ export default function RootLayout({
         <DeferredGTM gtmId="GTM-WC2RGMNS" />
         <a
           href="#main"
-          className="sr-only z-[200] rounded-br-xl bg-[#6B1C6F] px-4 py-3 text-sm font-semibold text-white shadow-lg focus:not-sr-only focus:fixed focus:left-0 focus:top-0"
+          className="sr-only z-[200] rounded-br-xl bg-[var(--purple)] px-4 py-3 text-sm font-semibold text-white shadow-lg focus:not-sr-only focus:fixed focus:left-0 focus:top-0"
         >
           Skip to content
         </a>

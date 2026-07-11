@@ -11,21 +11,21 @@ const events = [
     when: "Every Saturday",
     title: "Staff Picks Saturday",
     desc: "Stop in for a fresh stack of staff favorites from the week. We always have a story to go with the recommendation.",
-    accent: "#6B1C6F",
+    accent: "var(--purple)",
   },
   {
     icon: Coffee,
     when: "Last Friday Monthly",
     title: "Cozy Reading Hour",
     desc: "Bring your current read, grab a comfy spot, and join other readers for an hour of quiet companionship.",
-    accent: "#F1BB1A",
+    accent: "var(--gold)",
   },
   {
     icon: Sparkles,
     when: "Spring 2026",
     title: "TBR Launch Party",
     desc: "Celebrate our official rebrand to To Be Read with treats, trivia, and giveaways. Save the date!",
-    accent: "#F5CC45",
+    accent: "var(--gold-light)",
   },
 ];
 
@@ -35,7 +35,7 @@ export default function EventsSection() {
       className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
-          "radial-gradient(circle at 80% 20%, rgba(107,28,111,0.08), transparent 38%), linear-gradient(180deg, #FDF8F0 0%, #FFFEFB 100%)",
+          "radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--purple) 8%, transparent), transparent 38%), linear-gradient(180deg, var(--paper) 0%, #FFFEFB 100%)",
       }}
       id="events"
     >
@@ -43,7 +43,7 @@ export default function EventsSection() {
         <Reveal className="mb-14 text-center">
           <span
             className="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-            style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+            style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
           >
             <Calendar size={12} />
             On the calendar
@@ -52,13 +52,13 @@ export default function EventsSection() {
             className="mb-3 font-bold"
             style={{
               fontFamily: "var(--font-serif)",
-              color: "#6B1C6F",
+              color: "var(--purple)",
               fontSize: "clamp(2rem, 5vw, 3rem)",
             }}
           >
             Events &amp; <span className="underline-accent">happenings</span>
           </h2>
-          <p className="mx-auto max-w-xl text-sm leading-relaxed" style={{ color: "#6B7280" }}>
+          <p className="mx-auto max-w-xl text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
             We host small, cozy moments throughout the year — here&apos;s what&apos;s on right now.
           </p>
           <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
@@ -70,7 +70,7 @@ export default function EventsSection() {
               <article
                 className="group relative h-full overflow-hidden rounded-2xl border bg-white p-6 card-cozy"
                 style={{
-                  borderColor: "rgba(107,28,111,0.10)",
+                  borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
                   boxShadow: "var(--shadow-sm)",
                 }}
               >
@@ -93,7 +93,7 @@ export default function EventsSection() {
                 </p>
                 <h3
                   className="mb-2 text-lg font-bold leading-tight"
-                  style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                  style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                 >
                   {ev.title}
                 </h3>

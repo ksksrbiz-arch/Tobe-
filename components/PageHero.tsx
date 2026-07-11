@@ -33,7 +33,7 @@ export default function PageHero({
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at 30% 20%, #8B2E90 0%, #6B1C6F 35%, #4A1350 70%, #2A0930 100%)",
+            "radial-gradient(ellipse at 30% 20%, var(--purple-light) 0%, var(--purple) 35%, var(--purple-dark) 70%, var(--purple-deep) 100%)",
         }}
       />
 
@@ -65,7 +65,7 @@ export default function PageHero({
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(135deg, rgba(42,9,48,0.95) 0%, rgba(74,19,80,0.92) 35%, rgba(107,28,111,0.88) 70%, rgba(139,46,144,0.88) 100%)",
+            "linear-gradient(135deg, color-mix(in srgb, var(--purple-deep) 95%, transparent) 0%, color-mix(in srgb, var(--purple-dark) 92%, transparent) 35%, color-mix(in srgb, var(--purple) 88%, transparent) 70%, color-mix(in srgb, var(--purple-light) 88%, transparent) 100%)",
         }}
       />
 
@@ -75,7 +75,7 @@ export default function PageHero({
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at 80% 110%, rgba(241,187,26,0.18) 0%, transparent 55%), radial-gradient(ellipse at 0% 0%, rgba(241,187,26,0.10) 0%, transparent 50%)",
+            "radial-gradient(ellipse at 80% 110%, color-mix(in srgb, var(--gold) 18%, transparent) 0%, transparent 55%), radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 50%)",
         }}
       />
 
@@ -96,12 +96,12 @@ export default function PageHero({
       <div
         aria-hidden="true"
         className="animate-float-slow absolute -left-10 top-10 h-56 w-56 rounded-full opacity-25 blur-3xl"
-        style={{ background: "#F1BB1A" }}
+        style={{ background: "var(--gold)" }}
       />
       <div
         aria-hidden="true"
         className="animate-float absolute -right-10 bottom-10 h-72 w-72 rounded-full opacity-20 blur-3xl"
-        style={{ background: "#8B2E90" }}
+        style={{ background: "var(--purple-light)" }}
       />
 
       {/* Content */}
@@ -109,9 +109,9 @@ export default function PageHero({
         {badge && (
           <span
             className="eyebrow-glow fade-in-up mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] shadow-md"
-            style={{ background: "#F1BB1A", color: "#1a1a1a" }}
+            style={{ background: "var(--gold)", color: "#1a1a1a" }}
           >
-            <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#6B1C6F" }} />
+            <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--purple)" }} />
             {badge}
           </span>
         )}

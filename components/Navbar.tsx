@@ -129,7 +129,7 @@ export default function Navbar() {
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ color: "#6B1C6F", boxShadow: "0 6px 20px rgba(107,28,111,0.18)" }}
+        style={{ color: "var(--purple)", boxShadow: "0 6px 20px color-mix(in srgb, var(--purple) 18%, transparent)" }}
       >
         Skip to content
       </a>
@@ -142,7 +142,7 @@ export default function Navbar() {
           background: scrolled ? "rgba(255,253,249,0.92)" : "rgba(255,253,249,0.78)",
           backdropFilter: "saturate(140%) blur(8px)",
           WebkitBackdropFilter: "saturate(140%) blur(8px)",
-          borderBottom: scrolled ? "1px solid rgba(107,28,111,0.10)" : "1px solid transparent",
+          borderBottom: scrolled ? "1px solid color-mix(in srgb, var(--purple) 10%, transparent)" : "1px solid transparent",
           // iOS notch awareness: pad the fixed header by the top safe-area inset
           // so the ticker/header isn't clipped under the status bar / notch.
           paddingTop: "env(safe-area-inset-top, 0px)",
@@ -151,8 +151,8 @@ export default function Navbar() {
         <div
           className="overflow-hidden border-b"
           style={{
-            background: "linear-gradient(90deg, #4A1350 0%, #6B1C6F 45%, #8B2E90 100%)",
-            borderColor: "rgba(241,187,26,0.20)",
+            background: "linear-gradient(90deg, var(--purple-dark) 0%, var(--purple) 45%, var(--purple-light) 100%)",
+            borderColor: "color-mix(in srgb, var(--gold) 20%, transparent)",
           }}
         >
           <span className="sr-only">{tickerMessage}</span>
@@ -162,7 +162,7 @@ export default function Navbar() {
           >
             {tickerItems.map((_, index) => (
               <span key={index} className="flex items-center gap-8 whitespace-nowrap">
-                <span style={{ color: "#F1BB1A" }}>Store update</span>
+                <span style={{ color: "var(--gold)" }}>Store update</span>
                 <span>{tickerMessage}</span>
               </span>
             ))}
@@ -179,7 +179,7 @@ export default function Navbar() {
                   className="pointer-events-none absolute inset-0 -m-1.5 rounded-full opacity-70"
                   style={{
                     background:
-                      "radial-gradient(circle, rgba(241,187,26,0.45) 0%, rgba(241,187,26,0.10) 50%, transparent 75%)",
+                      "radial-gradient(circle, color-mix(in srgb, var(--gold) 45%, transparent) 0%, color-mix(in srgb, var(--gold) 10%, transparent) 50%, transparent 75%)",
                     animation: "candleGlow 5s ease-in-out infinite",
                   }}
                 />
@@ -193,7 +193,7 @@ export default function Navbar() {
                 <div
                   style={{
                     fontFamily: "var(--font-serif)",
-                    color: "#6B1C6F",
+                    color: "var(--purple)",
                     fontWeight: 700,
                     fontSize: "1.05rem",
                     lineHeight: 1.1,
@@ -203,7 +203,7 @@ export default function Navbar() {
                 </div>
                 <div
                   style={{
-                    color: "#6B1C6F",
+                    color: "var(--purple)",
                     fontSize: "0.6rem",
                     opacity: 0.65,
                     letterSpacing: "0.16em",
@@ -228,9 +228,9 @@ export default function Navbar() {
                       rel="noopener noreferrer"
                       className="relative rounded-lg px-3.5 py-2 text-sm font-bold transition-all hover:scale-105"
                       style={{
-                        background: "linear-gradient(135deg, rgba(241,187,26,0.14) 0%, rgba(107,28,111,0.10) 100%)",
-                        color: "#6B1C6F",
-                        border: "1px solid rgba(241,187,26,0.25)",
+                        background: "linear-gradient(135deg, color-mix(in srgb, var(--gold) 14%, transparent) 0%, color-mix(in srgb, var(--purple) 10%, transparent) 100%)",
+                        color: "var(--purple)",
+                        border: "1px solid color-mix(in srgb, var(--gold) 25%, transparent)",
                       }}
                     >
                       {link.label}
@@ -244,7 +244,7 @@ export default function Navbar() {
                     aria-current={isActive ? "page" : undefined}
                     className="nav-link relative rounded-lg px-3.5 py-2 text-sm font-medium"
                     style={{
-                      color: isActive ? "#6B1C6F" : "#374151",
+                      color: isActive ? "var(--purple)" : "#374151",
                       fontWeight: isActive ? 700 : 500,
                     }}
                   >
@@ -252,7 +252,7 @@ export default function Navbar() {
                     <span
                       className="nav-underline pointer-events-none absolute bottom-0 left-1/2 h-[3px] -translate-x-1/2 rounded-full"
                       style={{
-                        background: "linear-gradient(90deg, #F1BB1A, #F5CC45)",
+                        background: "linear-gradient(90deg, var(--gold), var(--gold-light))",
                       }}
                     />
                   </Link>
@@ -265,7 +265,7 @@ export default function Navbar() {
               <a
                 href="tel:503-659-2559"
                 className="touch-target inline-flex h-11 w-11 items-center justify-center rounded-full border transition-all active:scale-95 lg:hover:scale-110"
-                style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F", background: "rgba(255,255,255,0.72)" }}
+                style={{ borderColor: "color-mix(in srgb, var(--purple) 18%, transparent)", color: "var(--purple)", background: "rgba(255,255,255,0.72)" }}
               >
                 <Phone size={15} />
                 <span className="sr-only">Call the store</span>
@@ -275,7 +275,7 @@ export default function Navbar() {
                 onClick={handleDirections}
                 className="touch-target btn-shine hidden items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 active:scale-95 hover:scale-[1.04] hover:shadow-lg md:flex"
                 style={{
-                  background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)",
+                  background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)",
                 }}
               >
                 <MapPin size={14} />
@@ -287,7 +287,7 @@ export default function Navbar() {
                 type="button"
                 ref={menuToggleRef}
                 className="touch-target rounded-lg p-2 transition-colors active:scale-95 md:hidden"
-                style={{ color: "#6B1C6F", background: isOpen ? "rgba(107,28,111,0.08)" : "transparent" }}
+                style={{ color: "var(--purple)", background: isOpen ? "color-mix(in srgb, var(--purple) 8%, transparent)" : "transparent" }}
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label={isOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isOpen}
@@ -300,14 +300,14 @@ export default function Navbar() {
         </div>
 
         {/* Scroll Progress */}
-        <div className="absolute bottom-0 left-0 right-0 h-[2px]" style={{ background: "rgba(107,28,111,0.06)" }}>
+        <div className="absolute bottom-0 left-0 right-0 h-[2px]" style={{ background: "color-mix(in srgb, var(--purple) 6%, transparent)" }}>
           <div
             ref={progressFillRef}
             className="relative h-full transition-[width] duration-150 ease-out"
             style={{
               width: "0%",
-              background: "linear-gradient(90deg, #6B1C6F 0%, #F1BB1A 100%)",
-              boxShadow: "0 0 12px rgba(241,187,26,0.55)",
+              background: "linear-gradient(90deg, var(--purple) 0%, var(--gold) 100%)",
+              boxShadow: "0 0 12px color-mix(in srgb, var(--gold) 55%, transparent)",
             }}
             aria-hidden="true"
           >
@@ -315,8 +315,8 @@ export default function Navbar() {
               ref={progressDotRef}
               className="absolute right-0 top-1/2 h-2 w-2 -translate-y-1/2 translate-x-1/2 rounded-full"
               style={{
-                background: "#F1BB1A",
-                boxShadow: "0 0 10px rgba(241,187,26,0.85)",
+                background: "var(--gold)",
+                boxShadow: "0 0 10px color-mix(in srgb, var(--gold) 85%, transparent)",
                 opacity: 0,
                 transition: "opacity 200ms ease-out",
               }}
@@ -336,7 +336,7 @@ export default function Navbar() {
       >
         <div
           className="absolute inset-0"
-          style={{ background: "rgba(31,26,46,0.45)" }}
+          style={{ background: "color-mix(in srgb, var(--ink) 45%, transparent)" }}
           onClick={() => setIsOpen(false)}
         />
         <nav
@@ -344,7 +344,7 @@ export default function Navbar() {
           className={`absolute right-0 top-0 flex h-full w-[min(90vw,24rem)] touch-pan-y flex-col gap-1 overflow-y-auto overscroll-contain rounded-l-[32px] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] shadow-2xl transition-transform duration-300 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
-          style={{ background: "linear-gradient(180deg, #FFFDF9 0%, #FDF8F0 100%)", paddingTop: "var(--mobile-menu-offset)" }}
+          style={{ background: "linear-gradient(180deg, #FFFDF9 0%, var(--paper) 100%)", paddingTop: "var(--mobile-menu-offset)" }}
           aria-label="Mobile navigation"
           onTouchStart={handleDrawerTouchStart}
           onTouchEnd={handleDrawerTouchEnd}
@@ -352,11 +352,11 @@ export default function Navbar() {
           <div
             className="mb-3 rounded-2xl border px-4 py-3"
             style={{
-              borderColor: "rgba(107,28,111,0.10)",
+              borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
               background: "rgba(255,255,255,0.72)",
             }}
           >
-            <p className="text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: "#6B1C6F" }}>
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: "var(--purple)" }}>
               Quick reminder
             </p>
             <p className="mt-1 text-sm font-semibold" style={{ color: "#374151" }}>
@@ -375,9 +375,9 @@ export default function Navbar() {
                   onClick={() => setIsOpen(false)}
                   className="touch-target rounded-xl px-4 py-3.5 text-base font-bold transition-all active:scale-[0.99]"
                   style={{
-                    color: "#6B1C6F",
-                    background: "linear-gradient(135deg, rgba(241,187,26,0.12) 0%, rgba(107,28,111,0.08) 100%)",
-                    border: "1px solid rgba(241,187,26,0.22)",
+                    color: "var(--purple)",
+                    background: "linear-gradient(135deg, color-mix(in srgb, var(--gold) 12%, transparent) 0%, color-mix(in srgb, var(--purple) 8%, transparent) 100%)",
+                    border: "1px solid color-mix(in srgb, var(--gold) 22%, transparent)",
                     animation: isOpen ? `fadeInUp 0.45s ${i * 60}ms both` : undefined,
                   }}
                 >
@@ -393,10 +393,10 @@ export default function Navbar() {
                 aria-current={isActive ? "page" : undefined}
                 className="touch-target rounded-xl px-4 py-3.5 text-base font-medium transition-all active:scale-[0.99]"
                 style={{
-                  color: isActive ? "#6B1C6F" : "#374151",
-                  background: isActive ? "rgba(107,28,111,0.08)" : "transparent",
+                  color: isActive ? "var(--purple)" : "#374151",
+                  background: isActive ? "color-mix(in srgb, var(--purple) 8%, transparent)" : "transparent",
                   fontWeight: isActive ? 700 : 500,
-                  borderLeft: isActive ? "3px solid #F1BB1A" : "3px solid transparent",
+                  borderLeft: isActive ? "3px solid var(--gold)" : "3px solid transparent",
                   animation: isOpen ? `fadeInUp 0.45s ${i * 60}ms both` : undefined,
                 }}
               >
@@ -408,7 +408,7 @@ export default function Navbar() {
             type="button"
             onClick={handleDirections}
             className="touch-target mt-4 flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold text-white shadow-md active:scale-[0.98]"
-            style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+            style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
           >
             <MapPin size={16} />
             Get Directions
@@ -416,12 +416,12 @@ export default function Navbar() {
           <a
             href="tel:503-659-2559"
             className="touch-target mt-2 flex items-center justify-center gap-2 rounded-xl border-2 px-4 py-3 text-sm font-semibold active:scale-[0.98]"
-            style={{ borderColor: "#F1BB1A", color: "#6B1C6F" }}
+            style={{ borderColor: "var(--gold)", color: "var(--purple)" }}
           >
             <Phone size={15} />
             503-659-2559
           </a>
-          <p className="mt-6 px-2 text-center text-xs" style={{ color: "#6B7280" }}>
+          <p className="mt-6 px-2 text-center text-xs" style={{ color: "var(--muted)" }}>
             7931 SE King Rd, Unit 1, Portland, OR
             <br />
             Mon–Sat · 10am – 5pm

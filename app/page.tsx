@@ -39,21 +39,21 @@ function SectionSkeleton({
     <section
       id={id}
       className="px-4 py-16 sm:px-6 lg:px-8"
-      style={{ background: muted ? "#FDF8F0" : "rgba(255,255,255,0.82)" }}
+      style={{ background: muted ? "var(--paper)" : "rgba(255,255,255,0.82)" }}
     >
       <div className="mx-auto max-w-6xl animate-pulse">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <div
             className="mx-auto mb-4 h-7 w-28 rounded-full"
-            style={{ background: "rgba(107,28,111,0.12)" }}
+            style={{ background: "color-mix(in srgb, var(--purple) 12%, transparent)" }}
           />
           <div
             className="mx-auto h-10 w-full max-w-md rounded-2xl"
-            style={{ background: "rgba(107,28,111,0.08)" }}
+            style={{ background: "color-mix(in srgb, var(--purple) 8%, transparent)" }}
           />
           <div
             className="mx-auto mt-4 h-1 w-16 rounded-full"
-            style={{ background: "rgba(241,187,26,0.6)" }}
+            style={{ background: "color-mix(in srgb, var(--gold) 60%, transparent)" }}
           />
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -63,17 +63,17 @@ function SectionSkeleton({
               className="rounded-[28px] border p-6"
               style={{
                 background: "rgba(255,255,255,0.92)",
-                borderColor: "rgba(107,28,111,0.08)",
-                boxShadow: "0 20px 40px rgba(107,28,111,0.06)",
+                borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)",
+                boxShadow: "0 20px 40px color-mix(in srgb, var(--purple) 6%, transparent)",
               }}
             >
               <div
                 className="mb-5 h-12 w-12 rounded-2xl"
-                style={{ background: "rgba(107,28,111,0.08)" }}
+                style={{ background: "color-mix(in srgb, var(--purple) 8%, transparent)" }}
               />
               <div
                 className="mb-3 h-5 rounded-full"
-                style={{ background: "rgba(107,28,111,0.1)" }}
+                style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
               />
               <div className="space-y-2">
                 <div className="h-3 rounded-full" style={{ background: "rgba(31,41,55,0.08)" }} />
@@ -83,7 +83,7 @@ function SectionSkeleton({
             </div>
           ))}
         </div>
-        <p className="mt-6 text-center text-sm" style={{ color: "#6B7280" }}>
+        <p className="mt-6 text-center text-sm" style={{ color: "var(--muted)" }}>
           {eyebrow} · {title}
         </p>
       </div>
@@ -97,14 +97,14 @@ function TikTokSkeleton() {
       className="w-full max-w-[605px] animate-pulse rounded-[32px] border p-4 sm:p-5"
       style={{
         background: "rgba(255,255,255,0.9)",
-        borderColor: "rgba(107,28,111,0.08)",
-        boxShadow: "0 24px 55px rgba(107,28,111,0.08)",
+        borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)",
+        boxShadow: "0 24px 55px color-mix(in srgb, var(--purple) 8%, transparent)",
       }}
     >
-      <div className="mb-4 h-8 w-32 rounded-full" style={{ background: "rgba(107,28,111,0.1)" }} />
+      <div className="mb-4 h-8 w-32 rounded-full" style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)" }} />
       <div
         className="h-[clamp(20rem,58vw,27rem)] rounded-[24px]"
-        style={{ background: "linear-gradient(180deg, rgba(107,28,111,0.08), rgba(241,187,26,0.12))" }}
+        style={{ background: "linear-gradient(180deg, color-mix(in srgb, var(--purple) 8%, transparent), color-mix(in srgb, var(--gold) 12%, transparent))" }}
       />
     </div>
   );
@@ -173,7 +173,7 @@ const BookishQuote = dynamic(() => import("@/components/BookishQuote"), {
     <div className="px-4 py-12 sm:py-20">
       <div
         className="mx-auto h-56 max-w-3xl animate-pulse rounded-[28px]"
-        style={{ background: "rgba(107,28,111,0.06)" }}
+        style={{ background: "color-mix(in srgb, var(--purple) 6%, transparent)" }}
       />
     </div>
   ),
@@ -184,7 +184,7 @@ const NewsletterCTA = dynamic(() => import("@/components/NewsletterCTA"), {
     <div className="px-4 py-12 sm:py-20">
       <div
         className="mx-auto h-48 max-w-4xl animate-pulse rounded-[36px]"
-        style={{ background: "rgba(107,28,111,0.10)" }}
+        style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
       />
     </div>
   ),
@@ -246,7 +246,7 @@ export default function Home() {
       className="min-h-screen overflow-x-hidden animate-page-enter"
       style={{
         background:
-          "radial-gradient(circle at top left, rgba(241,187,26,0.10), transparent 28%), radial-gradient(circle at top right, rgba(107,28,111,0.10), transparent 24%), linear-gradient(180deg, #FDF8F0 0%, #FFFDF9 35%, #F8F2FF 100%)",
+          "radial-gradient(circle at top left, color-mix(in srgb, var(--gold) 10%, transparent), transparent 28%), radial-gradient(circle at top right, color-mix(in srgb, var(--purple) 10%, transparent), transparent 24%), linear-gradient(180deg, var(--paper) 0%, #FFFDF9 35%, #F8F2FF 100%)",
       }}
     >
       <Navbar />
@@ -282,7 +282,7 @@ export default function Home() {
           <div className="mb-10 text-center">
             <span
               className="inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               Swap · Read · Repeat
             </span>
@@ -290,13 +290,13 @@ export default function Home() {
               className="mt-4 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(2rem, 5vw, 2.8rem)",
               }}
             >
               The TBR Loop
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sm leading-6" style={{ color: "#6B7280" }}>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-6" style={{ color: "var(--muted)" }}>
               Bring a book, earn credit, pick something new. That&apos;s the loop — and it never gets old.
             </p>
             <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
@@ -308,8 +308,8 @@ export default function Home() {
             style={{
               maxWidth: 520,
               aspectRatio: "1 / 1",
-              boxShadow: "0 36px 90px rgba(107,28,111,0.18), 0 8px 20px rgba(241,187,26,0.10)",
-              border: "1px solid rgba(107,28,111,0.10)",
+              boxShadow: "0 36px 90px color-mix(in srgb, var(--purple) 18%, transparent), 0 8px 20px color-mix(in srgb, var(--gold) 10%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--purple) 10%, transparent)",
             }}
           >
             <TBRLoopEmbed />
@@ -338,19 +338,19 @@ export default function Home() {
             className="h-full rounded-[28px] border p-6"
             style={{
               background: "rgba(255,255,255,0.93)",
-              borderColor: "rgba(107,28,111,0.08)",
-              boxShadow: "0 24px 60px rgba(107,28,111,0.12)",
+              borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)",
+              boxShadow: "0 24px 60px color-mix(in srgb, var(--purple) 12%, transparent)",
             }}
           >
             <span
               className="inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em]"
-              style={{ background: "rgba(107,28,111,0.08)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--purple) 8%, transparent)", color: "var(--purple)" }}
             >
               A warmer welcome
             </span>
             <h2
               className="mt-4 text-2xl font-bold"
-              style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+              style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
             >
               More than a quick landing page.
             </h2>
@@ -364,23 +364,23 @@ export default function Home() {
                 className="flex h-full flex-col justify-between rounded-[28px] border p-5 transition-shadow"
                 style={{
                   background: "rgba(255,255,255,0.93)",
-                  borderColor: "rgba(107,28,111,0.08)",
-                  boxShadow: "0 20px 45px rgba(107,28,111,0.08)",
+                  borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)",
+                  boxShadow: "0 20px 45px color-mix(in srgb, var(--purple) 8%, transparent)",
                 }}
               >
                 <div
                   className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl"
-                  style={{ background: "rgba(107,28,111,0.08)" }}
+                  style={{ background: "color-mix(in srgb, var(--purple) 8%, transparent)" }}
                 >
-                  <stat.icon size={20} style={{ color: "#6B1C6F" }} />
+                  <stat.icon size={20} style={{ color: "var(--purple)" }} />
                 </div>
                 <div
                   className="text-lg font-bold"
-                  style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                  style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                 >
                   {stat.label}
                 </div>
-                <div className="mt-1 text-sm" style={{ color: "#6B7280" }}>
+                <div className="mt-1 text-sm" style={{ color: "var(--muted)" }}>
                   {stat.sub}
                 </div>
               </div>
@@ -405,7 +405,7 @@ export default function Home() {
           <Reveal className="mb-12 text-center">
             <span
               className="inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
             >
               Explore
             </span>
@@ -413,14 +413,14 @@ export default function Home() {
               className="mt-4 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(2rem, 5vw, 2.8rem)",
               }}
             >
               Take the scenic route through{" "}
               <span className="underline-accent">TBR</span>
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "#6B7280" }}>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "var(--muted)" }}>
               Start with the chapter that matters most right now, then keep scrolling for the full experience.
             </p>
             <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
@@ -436,34 +436,34 @@ export default function Home() {
                   style={{
                     background:
                       "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(253,248,240,0.98) 100%)",
-                    borderColor: "rgba(107,28,111,0.08)",
-                    boxShadow: "0 18px 40px rgba(107,28,111,0.08)",
+                    borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)",
+                    boxShadow: "0 18px 40px color-mix(in srgb, var(--purple) 8%, transparent)",
                   }}
                 >
                   <span
                     aria-hidden="true"
                     className="absolute right-0 top-0 h-24 w-24 -translate-y-12 translate-x-12 rounded-full opacity-0 transition-all duration-500 group-hover:translate-x-6 group-hover:-translate-y-6 group-hover:opacity-30"
-                    style={{ background: "#F1BB1A" }}
+                    style={{ background: "var(--gold)" }}
                   />
                   <div className="flex items-start justify-between gap-4">
                     <div
                       className="flex h-14 w-14 items-center justify-center rounded-2xl transition-all group-hover:rotate-[-6deg] group-hover:scale-110"
                       style={{
-                        background: "linear-gradient(135deg, rgba(107,28,111,0.10) 0%, rgba(241,187,26,0.10) 100%)",
+                        background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 10%, transparent) 0%, color-mix(in srgb, var(--gold) 10%, transparent) 100%)",
                       }}
                     >
-                      <card.icon size={26} style={{ color: "#6B1C6F" }} />
+                      <card.icon size={26} style={{ color: "var(--purple)" }} />
                     </div>
                     <span
                       className="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em]"
-                      style={{ background: "rgba(241,187,26,0.20)", color: "#6B1C6F" }}
+                      style={{ background: "color-mix(in srgb, var(--gold) 20%, transparent)", color: "var(--purple)" }}
                     >
                       Quick path
                     </span>
                   </div>
                   <h3
                     className="mt-6 text-xl font-bold"
-                    style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+                    style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
                   >
                     {card.title}
                   </h3>
@@ -472,7 +472,7 @@ export default function Home() {
                   </p>
                   <span
                     className="mt-auto inline-flex items-center gap-1.5 pt-6 text-xs font-bold uppercase tracking-wider transition-all group-hover:gap-2.5"
-                    style={{ color: "#F1BB1A" }}
+                    style={{ color: "var(--gold)" }}
                   >
                     Jump in
                     <ArrowRight size={13} className="icon-nudge" />
@@ -507,7 +507,7 @@ export default function Home() {
           <Reveal>
             <span
               className="inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-              style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+              style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
             >
               TikTok spotlight
             </span>
@@ -515,7 +515,7 @@ export default function Home() {
               className="mt-4 font-bold"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: "#6B1C6F",
+                color: "var(--purple)",
                 fontSize: "clamp(1.9rem, 4vw, 2.7rem)",
               }}
             >
@@ -527,9 +527,9 @@ export default function Home() {
             <div
               className="mt-6 rounded-[28px] border p-5"
               style={{
-                background: "linear-gradient(135deg, rgba(107,28,111,0.97), rgba(74,19,80,0.97))",
-                borderColor: "rgba(107,28,111,0.12)",
-                boxShadow: "0 24px 60px rgba(107,28,111,0.20)",
+                background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 97%, transparent), color-mix(in srgb, var(--purple-dark) 97%, transparent))",
+                borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)",
+                boxShadow: "0 24px 60px color-mix(in srgb, var(--purple) 20%, transparent)",
               }}
             >
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-white/65">Now playing</p>
@@ -542,7 +542,7 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-shine pressable mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold"
-                style={{ background: "#F1BB1A", color: "#1A1A1A" }}
+                style={{ background: "var(--gold)", color: "#1A1A1A" }}
               >
                 Follow @clackamas.book.ex
               </a>

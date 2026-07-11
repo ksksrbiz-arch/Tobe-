@@ -128,8 +128,8 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
       className="group flex gap-4 rounded-2xl border p-5 card-cozy"
       style={{
         background: "linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(253,248,240,0.98) 100%)",
-        borderColor: "rgba(107,28,111,0.10)",
-        boxShadow: "0 8px 24px rgba(107,28,111,0.06)",
+        borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)",
+        boxShadow: "0 8px 24px color-mix(in srgb, var(--purple) 6%, transparent)",
         animation: "fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both",
       }}
     >
@@ -148,9 +148,9 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
       ) : (
         <div
           className="flex h-24 w-16 flex-shrink-0 items-center justify-center rounded-lg"
-          style={{ background: "linear-gradient(135deg, rgba(107,28,111,0.10), rgba(241,187,26,0.12))" }}
+          style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--purple) 10%, transparent), color-mix(in srgb, var(--gold) 12%, transparent))" }}
         >
-          <BookOpen size={22} style={{ color: "rgba(107,28,111,0.40)" }} />
+          <BookOpen size={22} style={{ color: "color-mix(in srgb, var(--purple) 40%, transparent)" }} />
         </div>
       )}
 
@@ -158,7 +158,7 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
         <div className="flex items-start gap-2">
           <p
             className="flex-1 font-bold leading-tight"
-            style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F", fontSize: "1rem" }}
+            style={{ fontFamily: "var(--font-serif)", color: "var(--purple)", fontSize: "1rem" }}
           >
             {rec.title}
           </p>
@@ -171,13 +171,13 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
             </span>
           )}
         </div>
-        <p className="mt-0.5 text-xs font-medium" style={{ color: "#6B7280" }}>
+        <p className="mt-0.5 text-xs font-medium" style={{ color: "var(--muted)" }}>
           {rec.author}
         </p>
         {rec.reason && (
           <p
             className="mt-1.5 rounded-lg px-2.5 py-1.5 text-xs italic leading-relaxed"
-            style={{ background: "rgba(241,187,26,0.10)", color: "#374151" }}
+            style={{ background: "color-mix(in srgb, var(--gold) 10%, transparent)", color: "#374151" }}
           >
             &ldquo;{rec.reason}&rdquo;
           </p>
@@ -194,7 +194,7 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider transition-all hover:gap-1.5"
-              style={{ color: "#F1BB1A" }}
+              style={{ color: "var(--gold)" }}
             >
               Search PangoBooks <ArrowRight size={10} />
             </a>
@@ -205,7 +205,7 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-[11px] font-semibold transition-all hover:gap-1.5"
-              style={{ color: "#6B7280" }}
+              style={{ color: "var(--muted)" }}
             >
               More on {rec.source_name ?? "the web"} <ArrowRight size={10} />
             </a>
@@ -219,9 +219,9 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
             aria-pressed={saved}
             className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all hover:scale-[1.03]"
             style={{
-              borderColor: saved ? "#6B1C6F" : "rgba(107,28,111,0.18)",
-              color: saved ? "#FFFFFF" : "#6B1C6F",
-              background: saved ? "#6B1C6F" : "rgba(107,28,111,0.04)",
+              borderColor: saved ? "var(--purple)" : "color-mix(in srgb, var(--purple) 18%, transparent)",
+              color: saved ? "#FFFFFF" : "var(--purple)",
+              background: saved ? "var(--purple)" : "color-mix(in srgb, var(--purple) 4%, transparent)",
             }}
           >
             {saved ? (
@@ -236,9 +236,9 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
             onClick={() => trackRestock({ title: rec.title, author: rec.author })}
             className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all hover:scale-[1.03]"
             style={{
-              borderColor: "rgba(241,187,26,0.40)",
-              color: "#6B1C6F",
-              background: "rgba(241,187,26,0.12)",
+              borderColor: "color-mix(in srgb, var(--gold) 40%, transparent)",
+              color: "var(--purple)",
+              background: "color-mix(in srgb, var(--gold) 12%, transparent)",
             }}
           >
             <BellRing size={12} aria-hidden="true" />
@@ -360,26 +360,26 @@ export default function NextReadMatchmaker() {
       className="relative rounded-[28px] border-2 p-7 shadow-xl"
       style={{
         background: "linear-gradient(180deg, rgba(253,248,240,0.98) 0%, rgba(255,255,255,0.98) 100%)",
-        borderColor: "rgba(107,28,111,0.14)",
-        boxShadow: "0 20px 60px rgba(107,28,111,0.10)",
+        borderColor: "color-mix(in srgb, var(--purple) 14%, transparent)",
+        boxShadow: "0 20px 60px color-mix(in srgb, var(--purple) 10%, transparent)",
       }}
     >
       {/* Header */}
       <div className="mb-6 flex items-center gap-3">
         <div
           className="flex h-11 w-11 items-center justify-center rounded-xl animate-pulse-glow"
-          style={{ background: "linear-gradient(135deg, #F1BB1A 0%, #F5CC45 100%)" }}
+          style={{ background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%)" }}
         >
           <Sparkles size={20} className="mm-sparkle" style={{ color: "#1a1a1a" }} />
         </div>
         <div>
           <h3
             className="font-bold"
-            style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F", fontSize: "1.15rem" }}
+            style={{ fontFamily: "var(--font-serif)", color: "var(--purple)", fontSize: "1.15rem" }}
           >
             Next Read Matchmaker
           </h3>
-          <p className="text-xs" style={{ color: "#6B7280" }}>
+          <p className="text-xs" style={{ color: "var(--muted)" }}>
             Tell us what you loved and we&apos;ll find your next obsession
           </p>
         </div>
@@ -393,11 +393,11 @@ export default function NextReadMatchmaker() {
             onClick={() => setShowSaved((s) => !s)}
             aria-expanded={showSaved}
             className="flex w-full items-center justify-between gap-3 rounded-xl border px-4 py-2.5 text-left transition-colors"
-            style={{ borderColor: "rgba(107,28,111,0.14)", background: "rgba(107,28,111,0.04)" }}
+            style={{ borderColor: "color-mix(in srgb, var(--purple) 14%, transparent)", background: "color-mix(in srgb, var(--purple) 4%, transparent)" }}
           >
             <span
               className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider"
-              style={{ color: "#6B1C6F" }}
+              style={{ color: "var(--purple)" }}
             >
               <BookmarkCheck size={14} aria-hidden="true" />
               Saved picks ({savedCount})
@@ -406,13 +406,13 @@ export default function NextReadMatchmaker() {
               size={16}
               aria-hidden="true"
               className="transition-transform duration-300"
-              style={{ color: "#6B1C6F", transform: showSaved ? "rotate(180deg)" : "none" }}
+              style={{ color: "var(--purple)", transform: showSaved ? "rotate(180deg)" : "none" }}
             />
           </button>
           {showSaved && (
             <div
               className="mt-2 rounded-xl border p-3"
-              style={{ borderColor: "rgba(107,28,111,0.10)", background: "rgba(255,255,255,0.7)" }}
+              style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)", background: "rgba(255,255,255,0.7)" }}
             >
               <ul className="space-y-2">
                 {savedItems.map((p) => (
@@ -422,10 +422,10 @@ export default function NextReadMatchmaker() {
                     style={{ background: "rgba(253,248,240,0.7)" }}
                   >
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold" style={{ color: "#4A1350" }}>
+                      <p className="truncate text-sm font-semibold" style={{ color: "var(--purple-dark)" }}>
                         {p.title}
                       </p>
-                      <p className="truncate text-xs" style={{ color: "#6B7280" }}>
+                      <p className="truncate text-xs" style={{ color: "var(--muted)" }}>
                         {p.author}
                       </p>
                     </div>
@@ -434,8 +434,8 @@ export default function NextReadMatchmaker() {
                         type="button"
                         onClick={() => trackRestock({ title: p.title, author: p.author })}
                         aria-label={`Track restock for ${p.title}`}
-                        className="touch-target rounded-lg p-1.5 transition-colors hover:bg-[rgba(241,187,26,0.16)]"
-                        style={{ color: "#6B1C6F" }}
+                        className="touch-target rounded-lg p-1.5 transition-colors hover:bg-[color-mix(in srgb, var(--gold) 16%, transparent)]"
+                        style={{ color: "var(--purple)" }}
                       >
                         <BellRing size={14} aria-hidden="true" />
                       </button>
@@ -444,7 +444,7 @@ export default function NextReadMatchmaker() {
                         onClick={() => removeSaved(p.title, p.author)}
                         aria-label={`Remove ${p.title} from saved picks`}
                         className="touch-target rounded-lg p-1.5 transition-colors hover:bg-[rgba(239,68,68,0.10)]"
-                        style={{ color: "#6B7280" }}
+                        style={{ color: "var(--muted)" }}
                       >
                         <Trash2 size={14} aria-hidden="true" />
                       </button>
@@ -454,13 +454,13 @@ export default function NextReadMatchmaker() {
               </ul>
               <div
                 className="mt-3 flex items-center justify-end gap-4 border-t pt-3"
-                style={{ borderColor: "rgba(107,28,111,0.08)" }}
+                style={{ borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)" }}
               >
                 <button
                   type="button"
                   onClick={copySavedList}
                   className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider transition-opacity hover:opacity-70"
-                  style={{ color: "#6B1C6F" }}
+                  style={{ color: "var(--purple)" }}
                 >
                   <Copy size={12} aria-hidden="true" /> Copy list
                 </button>
@@ -497,8 +497,8 @@ export default function NextReadMatchmaker() {
           rows={3}
           className="w-full resize-none rounded-xl border px-4 py-3 text-sm leading-relaxed outline-none transition-all focus:ring-2"
           style={{
-            borderColor: "rgba(107,28,111,0.18)",
-            color: "#1F1A2E",
+            borderColor: "color-mix(in srgb, var(--purple) 18%, transparent)",
+            color: "var(--ink)",
             background: "white",
           }}
         />
@@ -506,7 +506,7 @@ export default function NextReadMatchmaker() {
           onClick={submit}
           disabled={loading || !query.trim()}
           className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.04] disabled:opacity-50"
-          style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+          style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
         >
           {loading ? <RefreshCw size={12} className="animate-spin" /> : <Send size={12} />}
           {loading ? (
@@ -533,9 +533,9 @@ export default function NextReadMatchmaker() {
               onClick={() => setQuery(p)}
               className="mm-chip rounded-full border px-3 py-1 text-[11px] font-medium transition-all hover:-translate-y-0.5 hover:scale-[1.03] hover:shadow-md"
               style={{
-                borderColor: "rgba(107,28,111,0.15)",
-                color: "#6B1C6F",
-                background: "rgba(107,28,111,0.04)",
+                borderColor: "color-mix(in srgb, var(--purple) 15%, transparent)",
+                color: "var(--purple)",
+                background: "color-mix(in srgb, var(--purple) 4%, transparent)",
                 animation: "fadeInUp 0.5s cubic-bezier(0.22,1,0.36,1) both",
                 animationDelay: `${120 + i * 70}ms`,
               }}
@@ -557,7 +557,7 @@ export default function NextReadMatchmaker() {
       {results.length > 0 && (
         <div className="mt-6">
           <div className="mb-4 flex items-center justify-between gap-3">
-            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "#6B1C6F" }}>
+            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--purple)" }}>
               Your personalised picks
             </p>
             <button
@@ -565,9 +565,9 @@ export default function NextReadMatchmaker() {
               onClick={sharePicks}
               className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all hover:scale-[1.03]"
               style={{
-                borderColor: "rgba(107,28,111,0.18)",
-                color: "#6B1C6F",
-                background: "rgba(107,28,111,0.04)",
+                borderColor: "color-mix(in srgb, var(--purple) 18%, transparent)",
+                color: "var(--purple)",
+                background: "color-mix(in srgb, var(--purple) 4%, transparent)",
               }}
             >
               <Share2 size={12} aria-hidden="true" />
@@ -585,7 +585,7 @@ export default function NextReadMatchmaker() {
       )}
 
       {hasSearched && !loading && results.length === 0 && !error && (
-        <p className="mt-6 text-center text-sm" style={{ color: "#6B7280" }}>
+        <p className="mt-6 text-center text-sm" style={{ color: "var(--muted)" }}>
           No recommendations came back — try rephrasing your prompt.
         </p>
       )}
@@ -602,7 +602,7 @@ export function NextReadSection() {
       className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
-          "radial-gradient(circle at 80% 20%, rgba(107,28,111,0.08), transparent 40%), linear-gradient(180deg, rgba(255,255,255,0.50) 0%, rgba(253,248,240,0.90) 100%)",
+          "radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--purple) 8%, transparent), transparent 40%), linear-gradient(180deg, rgba(255,255,255,0.50) 0%, rgba(253,248,240,0.90) 100%)",
       }}
     >
       <DustMotes />
@@ -610,7 +610,7 @@ export function NextReadSection() {
         <div className="mb-10 text-center">
           <span
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider animate-pulse-glow"
-            style={{ background: "rgba(107,28,111,0.10)", color: "#6B1C6F" }}
+            style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
           >
             <Sparkles size={12} className="mm-sparkle" />
             AI Matchmaker
@@ -619,13 +619,13 @@ export function NextReadSection() {
             className="mt-4 font-bold"
             style={{
               fontFamily: "var(--font-serif)",
-              color: "#6B1C6F",
+              color: "var(--purple)",
               fontSize: "clamp(2rem, 5vw, 2.8rem)",
             }}
           >
             Find your <span className="underline-accent">next read</span>
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "#6B7280" }}>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6" style={{ color: "var(--muted)" }}>
             Describe what you just finished or the vibe you&apos;re chasing — our AI checks our live
             shelf and grounds every pick with DuckDuckGo to find real titles waiting for you.
           </p>

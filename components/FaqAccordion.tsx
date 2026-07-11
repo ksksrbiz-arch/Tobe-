@@ -18,7 +18,7 @@ export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
     <Reveal>
       <div
         className="overflow-hidden rounded-2xl border bg-white shadow-md"
-        style={{ borderColor: "rgba(107,28,111,0.10)" }}
+        style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
       >
         {faqs.map((faq, i) => {
           const open = openIdx === i;
@@ -28,7 +28,7 @@ export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
             <div
               key={faq.q}
               className="border-b last:border-b-0"
-              style={{ borderColor: "rgba(107,28,111,0.08)" }}
+              style={{ borderColor: "color-mix(in srgb, var(--purple) 8%, transparent)" }}
             >
               <button
                 type="button"
@@ -36,11 +36,11 @@ export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
                 onClick={() => setOpenIdx(open ? null : i)}
                 aria-expanded={open}
                 aria-controls={panelId}
-                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-[#FDF8F0]"
+                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-[var(--paper)]"
               >
                 <span
                   className="text-sm font-semibold sm:text-base"
-                  style={{ color: open ? "#6B1C6F" : "#1a1a1a" }}
+                  style={{ color: open ? "var(--purple)" : "#1a1a1a" }}
                 >
                   {faq.q}
                 </span>
@@ -48,8 +48,8 @@ export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
                   aria-hidden="true"
                   className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full transition-all"
                   style={{
-                    background: open ? "#6B1C6F" : "rgba(107,28,111,0.08)",
-                    color: open ? "white" : "#6B1C6F",
+                    background: open ? "var(--purple)" : "color-mix(in srgb, var(--purple) 8%, transparent)",
+                    color: open ? "white" : "var(--purple)",
                     transform: open ? "rotate(180deg)" : "rotate(0deg)",
                   }}
                 >

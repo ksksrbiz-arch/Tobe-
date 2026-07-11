@@ -55,7 +55,7 @@ export default function DustMotes() {
             top: mote.top,
             width: `${mote.size}px`,
             height: `${mote.size}px`,
-            background: mote.isGold ? "#F1BB1A" : "#8B2E90",
+            background: mote.isGold ? "var(--gold)" : "var(--purple-light)",
             opacity: mote.opacity,
             animationDuration: `${mote.duration}s`,
             animationDelay: `${mote.delay}s`,

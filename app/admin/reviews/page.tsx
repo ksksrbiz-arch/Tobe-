@@ -31,8 +31,8 @@ function Stars({ rating }: { rating: number }) {
         <Star
           key={i}
           size={14}
-          fill={i < rating ? "#F1BB1A" : "transparent"}
-          style={{ color: "#F1BB1A" }}
+          fill={i < rating ? "var(--gold)" : "transparent"}
+          style={{ color: "var(--gold)" }}
         />
       ))}
     </div>
@@ -128,7 +128,7 @@ export default function AdminReviewsPage() {
   if (status === "loading") {
     return (
       <main className="flex min-h-screen items-center justify-center" style={{ background: "var(--background)" }}>
-        <RefreshCw size={28} className="animate-spin" style={{ color: "#6B1C6F" }} />
+        <RefreshCw size={28} className="animate-spin" style={{ color: "var(--purple)" }} />
       </main>
     );
   }
@@ -138,18 +138,18 @@ export default function AdminReviewsPage() {
       <main className="flex min-h-screen items-center justify-center px-4" style={{ background: "var(--background)" }}>
         <div
           className="w-full max-w-sm rounded-[28px] border-2 p-8 text-center shadow-xl"
-          style={{ borderColor: "rgba(107,28,111,0.20)", background: "white" }}
+          style={{ borderColor: "color-mix(in srgb, var(--purple) 20%, transparent)", background: "white" }}
         >
           <div
             className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full"
-            style={{ background: "rgba(107,28,111,0.10)" }}
+            style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
           >
-            <LogIn size={26} style={{ color: "#6B1C6F" }} />
+            <LogIn size={26} style={{ color: "var(--purple)" }} />
           </div>
-          <h1 className="mb-1 text-xl font-bold" style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}>
+          <h1 className="mb-1 text-xl font-bold" style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}>
             Staff Sign In
           </h1>
-          <p className="mb-5 text-sm" style={{ color: "#6B7280" }}>
+          <p className="mb-5 text-sm" style={{ color: "var(--muted)" }}>
             Review moderation · TBR internal tool
           </p>
           {signinSent ? (
@@ -166,13 +166,13 @@ export default function AdminReviewsPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && sendMagicLink()}
                 className="mb-3 w-full rounded-xl border px-4 py-3 text-sm outline-none"
-                style={{ borderColor: "rgba(107,28,111,0.20)", color: "#1F1A2E" }}
+                style={{ borderColor: "color-mix(in srgb, var(--purple) 20%, transparent)", color: "var(--ink)" }}
               />
               {authError && <p className="mb-2 text-xs" style={{ color: "#B91C1C" }}>{authError}</p>}
               <button
                 onClick={sendMagicLink}
                 className="w-full rounded-xl py-3 text-sm font-semibold text-white"
-                style={{ background: "linear-gradient(135deg, #6B1C6F 0%, #8B2E90 100%)" }}
+                style={{ background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%)" }}
               >
                 Send magic link
               </button>
@@ -190,12 +190,12 @@ export default function AdminReviewsPage() {
       <div className="mx-auto max-w-2xl">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="font-bold" style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F", fontSize: "1.8rem" }}>
+            <h1 className="font-bold" style={{ fontFamily: "var(--font-serif)", color: "var(--purple)", fontSize: "1.8rem" }}>
               Review Moderation
             </h1>
-            <p className="mt-0.5 text-sm" style={{ color: "#6B7280" }}>
+            <p className="mt-0.5 text-sm" style={{ color: "var(--muted)" }}>
               Approve reviews to publish them to{" "}
-              <Link href="/reviews" className="underline" style={{ color: "#6B1C6F" }}>
+              <Link href="/reviews" className="underline" style={{ color: "var(--purple)" }}>
                 /reviews
               </Link>
             </p>
@@ -203,7 +203,7 @@ export default function AdminReviewsPage() {
           <button
             onClick={() => signOut()}
             className="flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium"
-            style={{ borderColor: "rgba(107,28,111,0.18)", color: "#6B1C6F" }}
+            style={{ borderColor: "color-mix(in srgb, var(--purple) 18%, transparent)", color: "var(--purple)" }}
           >
             <LogOut size={12} />
             Sign out
@@ -218,8 +218,8 @@ export default function AdminReviewsPage() {
               className="rounded-full px-4 py-1.5 text-xs font-semibold transition-colors"
               style={
                 filter === f.key
-                  ? { background: "#6B1C6F", color: "white" }
-                  : { background: "rgba(107,28,111,0.08)", color: "#6B1C6F" }
+                  ? { background: "var(--purple)", color: "white" }
+                  : { background: "color-mix(in srgb, var(--purple) 8%, transparent)", color: "var(--purple)" }
               }
             >
               {f.label}
@@ -228,7 +228,7 @@ export default function AdminReviewsPage() {
           <button
             onClick={() => void load()}
             className="ml-auto flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium"
-            style={{ background: "rgba(107,28,111,0.08)", color: "#6B1C6F" }}
+            style={{ background: "color-mix(in srgb, var(--purple) 8%, transparent)", color: "var(--purple)" }}
           >
             <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
             Refresh
@@ -243,12 +243,12 @@ export default function AdminReviewsPage() {
 
         {loading && reviews.length === 0 ? (
           <div className="flex justify-center py-12">
-            <RefreshCw size={24} className="animate-spin" style={{ color: "#6B1C6F" }} />
+            <RefreshCw size={24} className="animate-spin" style={{ color: "var(--purple)" }} />
           </div>
         ) : reviews.length === 0 ? (
-          <div className="flex flex-col items-center gap-2 rounded-2xl border bg-white py-16 text-center" style={{ borderColor: "rgba(107,28,111,0.10)" }}>
-            <Inbox size={28} style={{ color: "#6B7280" }} />
-            <p className="text-sm" style={{ color: "#6B7280" }}>
+          <div className="flex flex-col items-center gap-2 rounded-2xl border bg-white py-16 text-center" style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)" }}>
+            <Inbox size={28} style={{ color: "var(--muted)" }} />
+            <p className="text-sm" style={{ color: "var(--muted)" }}>
               No {filter === "all" ? "" : filter} reviews.
             </p>
           </div>
@@ -258,13 +258,13 @@ export default function AdminReviewsPage() {
               <div
                 key={r.id}
                 className="rounded-2xl border bg-white p-5"
-                style={{ borderColor: "rgba(107,28,111,0.12)" }}
+                style={{ borderColor: "color-mix(in srgb, var(--purple) 12%, transparent)" }}
               >
                 <div className="mb-2 flex items-start justify-between gap-3">
                   <div>
                     <Stars rating={r.rating} />
                     {r.title && (
-                      <p className="mt-1 text-sm font-bold" style={{ color: "#6B1C6F" }}>
+                      <p className="mt-1 text-sm font-bold" style={{ color: "var(--purple)" }}>
                         {r.title}
                       </p>
                     )}
@@ -277,7 +277,7 @@ export default function AdminReviewsPage() {
                           ? "rgba(34,197,94,0.12)"
                           : r.status === "rejected"
                             ? "rgba(239,68,68,0.10)"
-                            : "rgba(241,187,26,0.18)",
+                            : "color-mix(in srgb, var(--gold) 18%, transparent)",
                       color:
                         r.status === "approved"
                           ? "#16a34a"
@@ -293,7 +293,7 @@ export default function AdminReviewsPage() {
                   {r.body}
                 </p>
                 <div className="flex items-center justify-between gap-2">
-                  <p className="text-xs" style={{ color: "#6B7280" }}>
+                  <p className="text-xs" style={{ color: "var(--muted)" }}>
                     {r.author_name} · {new Date(r.created_at).toLocaleDateString()}
                   </p>
                   <div className="flex gap-2">
