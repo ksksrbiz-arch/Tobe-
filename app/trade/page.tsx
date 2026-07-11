@@ -37,7 +37,7 @@ const tradeTips = [
     icon: BookCopy,
     title: "Bring Multiples",
     description:
-      "Bring what you can comfortably review with us at the counter.",
+      "There's no limit and no appointment needed — bring a bag or box of titles and we'll sort through them with you at the counter while you browse.",
   },
   {
     icon: Sunrise,
