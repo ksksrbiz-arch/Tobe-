@@ -38,8 +38,11 @@ export default function PageHero({
       />
 
       {/* Background image — heavily desaturated and softened so faces/people read
-          as texture, not portraits. Rendered via next/image with `priority` so
-          it's optimized (AVIF/WebP, sized) and preloaded for a faster LCP. */}
+          as texture, not portraits. Rendered via next/image so it's optimized
+          (AVIF/WebP, sized). Deliberately NOT `priority`: it's decorative
+          (alt=""), obscured under two opaque gradients at opacity 0.55 with
+          mix-blend overlay, so the real LCP is the <h1>. Preloading this
+          full-bleed image would only compete with the headline. */}
       <div
         aria-hidden="true"
         className="absolute inset-0"
@@ -49,7 +52,6 @@ export default function PageHero({
           src={imageUrl}
           alt=""
           fill
-          priority
           sizes="100vw"
           className="object-cover"
           style={{
@@ -109,7 +111,7 @@ export default function PageHero({
         {badge && (
           <span
             className="eyebrow-glow fade-in-up mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] shadow-md"
-            style={{ background: "var(--gold)", color: "#1a1a1a" }}
+            style={{ background: "var(--gold)", color: "var(--ink)" }}
           >
             <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--purple)" }} />
             {badge}
@@ -160,7 +162,11 @@ export default function PageHero({
       {scrollTargetId && (
         <a
           href={`#${scrollTargetId}`}
-          className="touch-target animate-float absolute bottom-12 left-1/2 z-10 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur transition-all hover:scale-110 hover:bg-white/30 sm:bottom-16"
+          className="touch-target animate-float absolute bottom-12 left-1/2 z-10 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur hover:scale-110 hover:bg-white/30 sm:bottom-16"
+          style={{
+            transition:
+              "transform var(--dur-fast) var(--ease-pop), background-color var(--dur-fast) ease",
+          }}
           aria-label="Scroll to content"
         >
           <ChevronDown size={20} />
