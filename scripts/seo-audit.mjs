@@ -49,10 +49,28 @@ const htmlFiles = allFiles.filter((f) => f.endsWith(".html"));
 let pagesChecked = 0;
 let jsonLdBlocks = 0;
 let pagesMissingCanonical = 0;
+let pagesMissingDescription = 0;
+
+// Next.js internal boundary pages (_global-error, _not-found) intentionally
+// carry no marketing metadata and are non-indexable — exempt them.
+const isSystemPage = (file) => /(^|\/)(_global-error|_not-found|_error|404|500)\.html$/.test(file);
 
 for (const file of htmlFiles) {
   const html = readFileSync(file, "utf8");
   pagesChecked++;
+
+  // Every real page must carry a non-empty <title> (hard fail) and a meta
+  // description (warn) — the baseline for a page Google will index and rank.
+  if (!isSystemPage(file)) {
+    const title = html.match(/<title>([^<]*)<\/title>/);
+    if (!title || !title[1].trim()) {
+      err(`${file}: missing or empty <title>`);
+    }
+    if (!/<meta name="description" content="[^"]+"/.test(html)) {
+      pagesMissingDescription++;
+      warn(`${file}: missing meta description`);
+    }
+  }
 
   // Validate every JSON-LD block parses.
   const blocks = [
@@ -113,6 +131,7 @@ for (const { path, must } of bodyChecks) {
 // Recap (also useful in the Actions step summary).
 console.log("\n=== SEO audit (built output) ===");
 console.log(`Pages checked:        ${pagesChecked}`);
+console.log(`Pages w/o description: ${pagesMissingDescription}`);
 console.log(`JSON-LD blocks valid: ${jsonLdBlocks - 0}`);
 console.log(`Route bodies OK:      ${notes.length}/${bodyChecks.length}`);
 console.log(`Warnings:             ${warnings}`);

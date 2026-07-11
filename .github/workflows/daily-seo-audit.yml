@@ -39,6 +39,9 @@ jobs:
       - name: Validate built SEO output (JSON-LD, canonicals, feeds, llms.txt)
         run: node scripts/seo-audit.mjs
 
+      - name: Validate internal links & sitemap integrity
+        run: node scripts/link-audit.mjs
+
       - name: Validate sitemap generation
         run: |
           echo "=== Validating sitemap.ts ==="
