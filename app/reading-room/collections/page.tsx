@@ -45,7 +45,7 @@ export default function CollectionsIndexPage() {
         badge="The Reading Room"
         title="Collections"
         subtitle="Themed collections that group our reading guides and notes by topic."
-        imageUrl="/images/shelves/store-front-adult-fiction.jpg"
+        imageUrl="/images/shelves/store-kids-room-overview.jpg"
         scrollTargetId="collections"
       />
 
@@ -79,7 +79,10 @@ export default function CollectionsIndexPage() {
                     >
                       {collection.title}
                     </h2>
-                    <p className="mb-4 flex-1 text-sm leading-6 text-[#4B5563]">
+                    <p
+                      className="mb-4 flex-1 text-sm leading-6"
+                      style={{ color: "var(--ink-soft)" }}
+                    >
                       {collection.description}
                     </p>
                     <div className="flex items-center justify-between text-xs text-[var(--muted)]">

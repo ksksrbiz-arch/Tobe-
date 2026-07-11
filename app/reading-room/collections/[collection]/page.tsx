@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Clock } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
@@ -95,7 +95,7 @@ export default async function CollectionPage({
         badge="The Reading Room"
         title={collection.title}
         subtitle={collection.description}
-        imageUrl="/images/shelves/store-front-adult-fiction.jpg"
+        imageUrl="/images/shelves/shelf-04-chapter-book-wall.jpg"
         scrollTargetId="posts"
       />
 
@@ -114,45 +114,84 @@ export default async function CollectionPage({
             All posts
           </Link>
 
-          <ul className="grid gap-6 md:grid-cols-2">
-            {posts.map((post, i) => (
-              <li key={post.slug}>
-                <Reveal delay={i * 70}>
-                  <Link
-                    href={`/reading-room/${post.slug}`}
-                    className="group flex h-full flex-col rounded-2xl border bg-white/70 p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-                    style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
-                  >
-                    <h2
-                      className="mb-2 text-xl font-bold leading-snug"
-                      style={{ fontFamily: "var(--font-serif)", color: "var(--purple-dark)" }}
+          {posts.length === 0 ? (
+            <Reveal>
+              <div
+                className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-16 text-center"
+                style={{ borderColor: "color-mix(in srgb, var(--purple) 15%, transparent)" }}
+              >
+                <BookOpen
+                  size={36}
+                  style={{ color: "color-mix(in srgb, var(--purple) 30%, transparent)" }}
+                  aria-hidden="true"
+                />
+                <p
+                  className="mt-4 text-lg font-bold"
+                  style={{ fontFamily: "var(--font-serif)", color: "var(--purple-dark)" }}
+                >
+                  This collection is still being curated
+                </p>
+                <p
+                  className="mt-1 max-w-sm text-sm leading-6"
+                  style={{ color: "var(--ink-soft)" }}
+                >
+                  We haven&apos;t added any posts to “{collection.title}” yet. Browse
+                  the other collections while we pull this one together.
+                </p>
+                <Link
+                  href="/reading-room/collections"
+                  className="mt-6 inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
+                  style={{ background: "var(--purple)" }}
+                >
+                  Browse all collections
+                  <ArrowRight size={15} aria-hidden="true" />
+                </Link>
+              </div>
+            </Reveal>
+          ) : (
+            <ul className="grid gap-6 md:grid-cols-2">
+              {posts.map((post, i) => (
+                <li key={post.slug}>
+                  <Reveal delay={i * 70}>
+                    <Link
+                      href={`/reading-room/${post.slug}`}
+                      className="group flex h-full flex-col rounded-2xl border bg-white/70 p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                      style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
                     >
-                      {post.title}
-                    </h2>
-                    <p className="mb-4 flex-1 text-sm leading-6 text-[#4B5563]">
-                      {post.excerpt}
-                    </p>
-                    <div className="flex items-center justify-between text-xs text-[var(--muted)]">
-                      <span className="flex items-center gap-3">
-                        <time dateTime={post.date}>{formatPostDate(post.date)}</time>
-                        <span className="inline-flex items-center gap-1">
-                          <Clock size={12} aria-hidden="true" />
-                          {post.readingMinutes} min read
-                        </span>
-                      </span>
-                      <span
-                        className="inline-flex items-center gap-1 font-semibold transition-transform group-hover:translate-x-0.5"
-                        style={{ color: "var(--purple)" }}
+                      <h2
+                        className="mb-2 text-xl font-bold leading-snug"
+                        style={{ fontFamily: "var(--font-serif)", color: "var(--purple-dark)" }}
                       >
-                        Read
-                        <ArrowRight size={14} aria-hidden="true" />
-                      </span>
-                    </div>
-                  </Link>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
+                        {post.title}
+                      </h2>
+                      <p
+                        className="mb-4 flex-1 text-sm leading-6"
+                        style={{ color: "var(--ink-soft)" }}
+                      >
+                        {post.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between text-xs text-[var(--muted)]">
+                        <span className="flex items-center gap-3">
+                          <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+                          <span className="inline-flex items-center gap-1">
+                            <Clock size={12} aria-hidden="true" />
+                            {post.readingMinutes} min read
+                          </span>
+                        </span>
+                        <span
+                          className="inline-flex items-center gap-1 font-semibold transition-transform group-hover:translate-x-0.5"
+                          style={{ color: "var(--purple)" }}
+                        >
+                          Read
+                          <ArrowRight size={14} aria-hidden="true" />
+                        </span>
+                      </div>
+                    </Link>
+                  </Reveal>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
 
