@@ -7,7 +7,9 @@
  */
 
 import React from "react";
-import { Stage, Sprite, useSprite, useTime, Easing, clamp } from "./TBRLoopEngine";
+import { createPortal } from "react-dom";
+import Link from "next/link";
+import { Stage, Sprite, useSprite, useTime, useTimeline, Easing, clamp } from "./TBRLoopEngine";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
@@ -1307,6 +1309,125 @@ function TBRVideo() {
   );
 }
 
+// ─── Accessibility overlay controls ──────────────────────────────────────────
+
+/** Representative frame (inside Scene 5 — "Visit Us") shown as the static poster
+ *  for reduced-motion visitors: the brand, tagline, address, hours and URL are
+ *  all fully revealed by this point in the timeline. */
+const REDUCED_MOTION_FRAME = 23;
+
+function usePrefersReducedMotion() {
+  // ssr:false guarantees a client-only first render, so reading matchMedia in
+  // the initializer is safe and avoids a set-state-in-effect on mount.
+  const [reduced, setReduced] = React.useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  React.useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onChange = () => setReduced(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return reduced;
+}
+
+/**
+ * Visible, keyboard-accessible overlay for the full-screen loop: a play/pause
+ * toggle and a "back to site" exit link. Rendered as a child of <Stage> so it
+ * can drive the timeline via useTimeline, but portalled to document.body so the
+ * controls escape the canvas's scale() transform and sit at true viewport size.
+ */
+function LoopControls() {
+  const { playing, setPlaying, setTime } = useTimeline();
+  const reduced = usePrefersReducedMotion();
+
+  // For reduced-motion visitors, hold the loop on a representative static frame
+  // instead of autoplaying (or resuming a persisted playhead). Runs after the
+  // engine's own mount microtask (rAF fires after microtasks) so this wins.
+  React.useEffect(() => {
+    if (!reduced) return;
+    const id = requestAnimationFrame(() => {
+      setPlaying(false);
+      setTime(REDUCED_MOTION_FRAME);
+    });
+    return () => cancelAnimationFrame(id);
+  }, [reduced, setPlaying, setTime]);
+
+  if (typeof document === "undefined") return null;
+
+  const controlStyle: React.CSSProperties = {
+    minWidth: 44,
+    minHeight: 44,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    padding: "10px 18px",
+    fontFamily: "var(--font-sans)",
+    fontSize: 15,
+    fontWeight: 600,
+    letterSpacing: "0.01em",
+    color: "var(--purple-dark)",
+    background: "var(--paper)",
+    border: "1px solid color-mix(in srgb, var(--purple) 22%, transparent)",
+    borderRadius: 999,
+    boxShadow: "var(--shadow-md)",
+    cursor: "pointer",
+    textDecoration: "none",
+    pointerEvents: "auto",
+    touchAction: "manipulation",
+  };
+
+  return createPortal(
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: 12,
+        padding: "max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 16px max(16px, env(safe-area-inset-left))",
+        pointerEvents: "none",
+        zIndex: 2147483000,
+      }}
+    >
+      <Link href="/" style={controlStyle}>
+        <span aria-hidden="true" style={{ fontSize: 18, lineHeight: 1 }}>
+          ‹
+        </span>
+        Back to site
+      </Link>
+      <button
+        type="button"
+        onClick={() => setPlaying((p) => !p)}
+        aria-label={playing ? "Pause animation" : "Play animation"}
+        aria-pressed={playing}
+        style={controlStyle}
+      >
+        <span aria-hidden="true" style={{ display: "inline-flex" }}>
+          {playing ? (
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="3" y="2" width="3" height="10" fill="currentColor" />
+              <rect x="8" y="2" width="3" height="10" fill="currentColor" />
+            </svg>
+          ) : (
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 2l9 5-9 5V2z" fill="currentColor" />
+            </svg>
+          )}
+        </span>
+        {playing ? "Pause" : "Play"}
+      </button>
+    </div>,
+    document.body,
+  );
+}
+
 // ─── Public components ────────────────────────────────────────────────────────
 
 /** Full-page version (used by /loop route). */
@@ -1315,6 +1436,7 @@ export default function TBRLoop() {
     <div style={{ position: "absolute", inset: 0 }}>
       <Stage width={1080} height={1080} duration={26} background="#FFFDF9" persistKey="tbr-loop">
         <TBRVideo />
+        <LoopControls />
       </Stage>
     </div>
   );
