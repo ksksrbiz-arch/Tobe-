@@ -3,6 +3,7 @@
 import React, { useId, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Clock, Search, X } from "lucide-react";
+import Reveal from "@/components/Reveal";
 
 export interface ExplorerPost {
   slug: string;
@@ -79,7 +80,7 @@ export default function ReadingRoomExplorer({
           placeholder="Search notes by title, topic, or keyword…"
           aria-label="Search the Reading Room by title, topic, or keyword"
           className="w-full rounded-2xl border bg-white/80 py-3.5 pl-11 pr-11 text-sm font-medium shadow-sm transition-shadow focus:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--purple)]"
-          style={{ borderColor: "color-mix(in srgb, var(--purple) 16%, transparent)", color: "#374151" }}
+          style={{ borderColor: "color-mix(in srgb, var(--purple) 16%, transparent)", color: "var(--ink)" }}
           autoComplete="off"
         />
         {query !== "" && (
@@ -154,13 +155,14 @@ export default function ReadingRoomExplorer({
 
       {filtered.length > 0 ? (
         <ul className="grid gap-6 md:grid-cols-2">
-          {filtered.map((post) => (
+          {filtered.map((post, i) => (
             <li key={post.slug}>
-              <Link
-                href={`/reading-room/${post.slug}`}
-                className="group flex h-full flex-col rounded-2xl border bg-white/70 p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-                style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
-              >
+              <Reveal delay={i * 70} className="h-full">
+                <Link
+                  href={`/reading-room/${post.slug}`}
+                  className="group flex h-full flex-col rounded-2xl border bg-white/70 p-6 shadow-sm transition-[transform,box-shadow] duration-[var(--dur-med)] ease-[var(--ease-pop)] hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                  style={{ borderColor: "color-mix(in srgb, var(--purple) 10%, transparent)" }}
+                >
                 <div className="mb-3 flex flex-wrap items-center gap-2">
                   {post.tags.map((tag) => (
                     <span
@@ -178,7 +180,7 @@ export default function ReadingRoomExplorer({
                 >
                   {post.title}
                 </h2>
-                <p className="mb-4 flex-1 text-sm leading-6 text-[#4B5563]">{post.excerpt}</p>
+                <p className="mb-4 flex-1 text-sm leading-6 text-[var(--ink-soft)]">{post.excerpt}</p>
                 <div className="flex items-center justify-between text-xs text-[var(--muted)]">
                   <span className="flex items-center gap-3">
                     <time dateTime={post.dateIso}>{post.dateLabel}</time>
@@ -195,7 +197,8 @@ export default function ReadingRoomExplorer({
                     <ArrowRight size={14} aria-hidden="true" />
                   </span>
                 </div>
-              </Link>
+                </Link>
+              </Reveal>
             </li>
           ))}
         </ul>
