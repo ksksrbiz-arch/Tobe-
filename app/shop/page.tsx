@@ -89,7 +89,7 @@ function FeaturedCard({ book }: { book: FeaturedBook }) {
         )}
         <span
           className="absolute right-2 top-2 rounded-full px-2 py-0.5 text-xs font-bold text-white shadow-sm backdrop-blur-sm"
-          style={{ background: "color-mix(in srgb, var(--ink) 62%, transparent)" }}
+          style={{ background: "color-mix(in srgb, var(--ink) 90%, transparent)" }}
         >
           {book.price}
         </span>
@@ -97,7 +97,7 @@ function FeaturedCard({ book }: { book: FeaturedBook }) {
       <div className="flex flex-1 flex-col p-4">
         <span
           className="w-fit rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
-          style={{ background: book.accentFrom + "18", color: book.accentFrom }}
+          style={{ background: `color-mix(in srgb, ${book.accentFrom} 12%, transparent)`, color: "var(--ink)" }}
         >
           {book.genre}
         </span>
@@ -199,11 +199,10 @@ export default function ShopPage() {
               {genreChips.map((g) => (
                 <span
                   key={g}
-                  className="rounded-full border px-4 py-2 text-sm font-medium"
+                  className="rounded-full px-3 py-1.5 text-sm font-medium"
                   style={{
-                    background: "white",
-                    borderColor: "color-mix(in srgb, var(--purple) 14%, transparent)",
-                    color: "var(--purple)",
+                    background: "color-mix(in srgb, var(--purple) 7%, transparent)",
+                    color: "var(--ink-soft)",
                   }}
                 >
                   {g}
