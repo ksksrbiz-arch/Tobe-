@@ -122,7 +122,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#FFFDF9" },
-    { media: "(prefers-color-scheme: dark)", color: "var(--purple-dark)" },
+    // Literal hex required: CSS custom properties do not resolve inside
+    // <meta name="theme-color">, so this must match --purple-dark (#4A1350).
+    { media: "(prefers-color-scheme: dark)", color: "#4A1350" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -248,7 +250,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
+    <html lang="en" dir="ltr" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
       <head>
         {/* Consent Mode v2 defaults — MUST be the first thing in <head> so the
             denied-by-default signals are set before GTM (and any tags it loads)
