@@ -45,6 +45,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Validate SEO output (JSON-LD, titles, descriptions, feeds)
+        run: node scripts/seo-audit.mjs
+
+      - name: Validate internal links & sitemap integrity
+        run: node scripts/link-audit.mjs
+
   schema:
     name: Database schema check
     runs-on: ubuntu-latest
