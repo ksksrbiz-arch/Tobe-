@@ -40,17 +40,19 @@ export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
               >
                 <span
                   className="text-sm font-semibold sm:text-base"
-                  style={{ color: open ? "var(--purple)" : "#1a1a1a" }}
+                  style={{ color: open ? "var(--purple)" : "var(--ink)" }}
                 >
                   {faq.q}
                 </span>
                 <span
                   aria-hidden="true"
-                  className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full transition-all"
+                  className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full"
                   style={{
                     background: open ? "var(--purple)" : "color-mix(in srgb, var(--purple) 8%, transparent)",
                     color: open ? "white" : "var(--purple)",
                     transform: open ? "rotate(180deg)" : "rotate(0deg)",
+                    transition:
+                      "transform var(--dur-med) var(--ease-out), background var(--dur-med) var(--ease-out), color var(--dur-med) var(--ease-out)",
                   }}
                 >
                   <ChevronDown size={14} />
@@ -60,15 +62,17 @@ export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
                 id={panelId}
                 role="region"
                 aria-labelledby={triggerId}
-                className="grid transition-all duration-300"
+                inert={!open}
+                className="grid"
                 style={{
                   gridTemplateRows: open ? "1fr" : "0fr",
+                  transition: "grid-template-rows var(--dur-med) var(--ease-out)",
                 }}
               >
                 <div className="overflow-hidden">
                   <p
                     className="px-5 pb-5 text-sm leading-relaxed"
-                    style={{ color: "#4B5563" }}
+                    style={{ color: "var(--ink-soft)" }}
                   >
                     {faq.a}
                   </p>

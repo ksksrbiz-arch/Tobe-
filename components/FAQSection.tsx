@@ -114,7 +114,7 @@ export default function FAQSection({
   return (
     <section
       className="px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
-      style={{ background: "linear-gradient(180deg, #FFFEFB 0%, var(--paper) 100%)" }}
+      style={{ background: "linear-gradient(180deg, var(--background) 0%, var(--paper) 100%)" }}
       id={id}
     >
       <JsonLd data={faqJsonLd} />
@@ -124,7 +124,7 @@ export default function FAQSection({
             className="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
             style={{ background: "color-mix(in srgb, var(--purple) 10%, transparent)", color: "var(--purple)" }}
           >
-            <HelpCircle size={12} />
+            <HelpCircle size={12} aria-hidden="true" />
             {eyebrow}
           </span>
           <h2
