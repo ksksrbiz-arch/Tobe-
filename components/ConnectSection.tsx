@@ -81,14 +81,14 @@ export default function ConnectSection() {
       className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
       style={{
         background:
-          "radial-gradient(circle at 12% 90%, rgba(241,187,26,0.08), transparent 35%), linear-gradient(180deg, #FDF8F0 0%, #F8F2E8 100%)",
+          "radial-gradient(circle at 12% 90%, color-mix(in srgb, var(--gold) 8%, transparent), transparent 35%), linear-gradient(180deg, var(--paper) 0%, var(--paper-dark) 100%)",
       }}
     >
       <div className="relative mx-auto max-w-5xl">
-        <Reveal className="mb-14 text-center">
+        <Reveal className="mb-12 text-center">
           <span
             className="mb-4 inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
-            style={{ background: "rgba(241,187,26,0.18)", color: "#6B1C6F" }}
+            style={{ background: "color-mix(in srgb, var(--gold) 18%, transparent)", color: "var(--purple)" }}
           >
             Connect
           </span>
@@ -96,26 +96,40 @@ export default function ConnectSection() {
             className="mb-3 font-bold"
             style={{
               fontFamily: "var(--font-serif)",
-              color: "#6B1C6F",
+              color: "var(--purple)",
               fontSize: "clamp(2rem, 5vw, 3rem)",
             }}
           >
             Join Our <span className="underline-accent">Community</span>
           </h2>
           <div className="mx-auto accent-bar h-1 w-16 rounded-full" />
+          <p
+            className="mx-auto mt-6 max-w-xl text-base leading-relaxed"
+            style={{ color: "var(--ink-soft)" }}
+          >
+            Follow us wherever you already scroll — new arrivals, staff picks,
+            store events, and behind-the-shelves moments, all in one place.
+          </p>
         </Reveal>
 
         {/* Socials */}
-        <div className="mb-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="mb-16 flex flex-wrap justify-center gap-5">
           {socials.map((s, i) => (
-            <Reveal key={s.name} delay={i * 80}>
+            <Reveal
+              key={s.name}
+              delay={i * 80}
+              className="w-full min-w-0 sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.834rem)]"
+            >
               <a
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Follow To Be Read on ${s.name} (${s.handle}) — opens in a new tab`}
-                className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border bg-white p-5 card-cozy transition-transform active:scale-[0.98]"
-                style={{ borderColor: "rgba(107,28,111,0.10)", boxShadow: "var(--shadow-sm)" }}
+                className="group relative flex h-full items-center gap-4 overflow-hidden rounded-2xl border bg-white p-5 card-cozy transition-transform active:scale-[0.98]"
+                style={{
+                  borderColor: "var(--line)",
+                  boxShadow: "var(--shadow-sm)",
+                }}
               >
                 <div
                   aria-hidden="true"
@@ -123,24 +137,24 @@ export default function ConnectSection() {
                   style={{ background: s.gradient }}
                 />
                 <div
-                  className="relative z-10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl text-white transition-transform group-hover:scale-110"
+                  className="relative z-10 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl text-white shadow-sm transition-transform group-hover:scale-110"
                   style={{ background: s.gradient }}
                 >
                   <s.icon />
                 </div>
-                <div className="relative z-10">
-                  <p className="font-semibold text-sm transition-colors group-hover:text-white" style={{ color: "#1a1a1a" }}>
+                <div className="relative z-10 min-w-0">
+                  <p className="truncate font-semibold text-base transition-colors group-hover:text-white" style={{ color: "var(--ink)" }}>
                     {s.name}
                   </p>
-                  <p className="mt-0.5 text-xs transition-colors group-hover:text-white/85" style={{ color: "#6B7280" }}>
+                  <p className="mt-0.5 truncate text-xs transition-colors group-hover:text-white/85" style={{ color: "var(--muted)" }}>
                     {s.handle}
                   </p>
                 </div>
                 <ExternalLink
-                  size={15}
+                  size={16}
                   aria-hidden="true"
-                  className="relative z-10 ml-auto opacity-50 transition-all group-hover:translate-x-0.5 group-hover:opacity-100"
-                  style={{ color: "#6B1C6F" }}
+                  className="relative z-10 ml-auto flex-shrink-0 opacity-50 transition-all group-hover:translate-x-0.5 group-hover:opacity-100"
+                  style={{ color: "var(--purple)" }}
                 />
               </a>
             </Reveal>
@@ -152,14 +166,14 @@ export default function ConnectSection() {
           <div
             className="relative mb-16 overflow-hidden rounded-3xl p-8 text-center"
             style={{
-              background: "linear-gradient(135deg, #6B1C6F 0%, #4A1350 100%)",
-              boxShadow: "0 24px 60px rgba(107,28,111,0.25)",
+              background: "linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%)",
+              boxShadow: "0 24px 60px color-mix(in srgb, var(--purple) 25%, transparent)",
             }}
           >
             <div
               aria-hidden="true"
               className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-30 blur-3xl"
-              style={{ background: "#F1BB1A" }}
+              style={{ background: "var(--gold)" }}
             />
             <div className="relative">
               <div className="mb-3 flex items-center justify-center gap-1">
@@ -167,8 +181,8 @@ export default function ConnectSection() {
                   <Star
                     key={i}
                     size={22}
-                    fill="#F1BB1A"
-                    style={{ color: "#F1BB1A", filter: "drop-shadow(0 4px 12px rgba(241,187,26,0.45))" }}
+                    fill="currentColor"
+                    style={{ color: "var(--gold)", filter: "drop-shadow(0 4px 12px color-mix(in srgb, var(--gold) 45%, transparent))" }}
                   />
                 ))}
               </div>
@@ -187,7 +201,7 @@ export default function ConnectSection() {
                 rel="noopener noreferrer"
                 aria-label="Leave a Google review for To Be Read (opens in a new tab)"
                 className="btn-shine inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold shadow-lg transition-all hover:scale-105 active:scale-[0.98]"
-                style={{ background: "#F1BB1A", color: "#1a1a1a" }}
+                style={{ background: "var(--gold)", color: "var(--ink)" }}
               >
                 Leave a Google Review
                 <ExternalLink size={14} aria-hidden="true" />
@@ -200,7 +214,7 @@ export default function ConnectSection() {
         <Reveal>
           <h3
             className="mb-8 text-center text-2xl font-bold sm:text-3xl"
-            style={{ fontFamily: "var(--font-serif)", color: "#6B1C6F" }}
+            style={{ fontFamily: "var(--font-serif)", color: "var(--purple)" }}
           >
             What Readers <span className="underline-accent">Say</span> on Google
           </h3>
