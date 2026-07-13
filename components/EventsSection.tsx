@@ -1,35 +1,47 @@
 // Server Component: purely presentational, so it renders to HTML with no
 // hydration of its own — only its <Reveal> children are client islands.
+//
+// The cards are derived from lib/events.ts — the single source of truth the
+// /events page and Event structured data also use — so the homepage can never
+// drift from the real cadence (which is exactly what used to happen when this
+// list was hand-maintained). Each distinct recurring happening shows once with
+// its canonical recurrence label and description.
 import React from "react";
 import Link from "next/link";
 import { Calendar, Sparkles, Coffee, BookHeart, ArrowRight } from "lucide-react";
 import Reveal from "./Reveal";
+import { getUpcomingEvents } from "@/lib/events";
 
-const events = [
-  {
-    icon: BookHeart,
-    when: "Every Saturday",
-    title: "Staff Picks Saturday",
-    desc: "Stop in for a fresh stack of staff favorites from the week. We always have a story to go with the recommendation.",
-    accent: "var(--purple)",
-  },
-  {
-    icon: Coffee,
-    when: "Last Friday Monthly",
-    title: "Cozy Reading Hour",
-    desc: "Bring your current read, grab a comfy spot, and join other readers for an hour of quiet companionship.",
-    accent: "var(--gold)",
-  },
-  {
-    icon: Sparkles,
-    when: "Spring 2026",
-    title: "TBR Launch Party",
-    desc: "Celebrate our official rebrand to To Be Read with treats, trivia, and giveaways. Save the date!",
-    accent: "var(--gold-light)",
-  },
-];
+// Per-recurring-event presentation (icon + brand accent), keyed by slug. New
+// rules fall back to a sensible default so nothing breaks if lib/events.ts
+// gains an event before this map is updated.
+const EVENT_DISPLAY: Record<string, { icon: typeof BookHeart; accent: string }> = {
+  "staff-picks-saturday": { icon: BookHeart, accent: "var(--purple)" },
+  "cozy-reading-hour": { icon: Coffee, accent: "var(--gold)" },
+};
+const DEFAULT_DISPLAY = { icon: Sparkles, accent: "var(--gold-light)" };
 
 export default function EventsSection() {
+  // Collapse the expanded occurrences down to the distinct recurring events,
+  // preserving the order of their next occurrence.
+  const seen = new Set<string>();
+  const events = getUpcomingEvents(12)
+    .filter((ev) => {
+      if (seen.has(ev.slug)) return false;
+      seen.add(ev.slug);
+      return true;
+    })
+    .map((ev) => {
+      const display = EVENT_DISPLAY[ev.slug] ?? DEFAULT_DISPLAY;
+      return {
+        icon: display.icon,
+        accent: display.accent,
+        when: ev.recurrence,
+        title: ev.title,
+        desc: ev.description,
+      };
+    });
+
   return (
     <section
       className="relative overflow-hidden px-4 py-14 sm:py-24 sm:px-6 lg:px-8"
@@ -39,7 +51,7 @@ export default function EventsSection() {
       }}
       id="events"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-4xl">
         <Reveal className="mb-14 text-center">
           <span
             className="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
@@ -64,7 +76,7 @@ export default function EventsSection() {
           <div className="mx-auto mt-4 accent-bar h-1 w-16 rounded-full" />
         </Reveal>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {events.map((ev, i) => (
             <Reveal key={ev.title} delay={i * 80}>
               <article
