@@ -247,7 +247,7 @@ export default function Footer() {
         <div
           className="mt-6 flex flex-col items-center justify-between gap-3 text-sm sm:flex-row"
         >
-          <p className="opacity-80">© 2026 To Be Read · Clackamas Book Exchange</p>
+          <p className="opacity-80">© {new Date().getFullYear()} To Be Read · Clackamas Book Exchange</p>
           <p className="text-xs opacity-80">
             Made with <span style={{ color: "var(--gold)" }}>♥</span> in Milwaukie, Oregon
           </p>

@@ -29,7 +29,7 @@ export interface StoreClosure {
  * it up automatically — each entry expires itself the day after, so there's
  * nothing to remove later.
  */
-const CLOSURES: StoreClosure[] = [{ date: "2026-07-08" }];
+const CLOSURES: StoreClosure[] = [];
 
 function formatDuration(mins: number): string {
   if (mins < 60) return `${mins}m`;
