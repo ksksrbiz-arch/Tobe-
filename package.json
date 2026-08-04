@@ -21,12 +21,12 @@
     "prelint": "node scripts/generate-blog-registry.mjs"
   },
   "dependencies": {
-    "@auth/core": "^0.41.2",
+    "@auth/core": "^0.41.3",
     "@neondatabase/serverless": "^1.1.0",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.14.0",
-    "next": "16.2.6",
-    "next-auth": "^5.0.0-beta.31",
+    "next": "16.3.0",
+    "next-auth": "^5.0.0-beta.32",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "resend": "^6.12.3",
