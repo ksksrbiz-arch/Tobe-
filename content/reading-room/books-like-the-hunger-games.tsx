@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "books-like-the-hunger-games",
-  title: "Books Like The Hunger Games: 6 Dystopian YA Survival Reads",
+  title: "6 Books Like The Hunger Games — Picked by a Milwaukie, OR Bookshop",
   description:
     "Finished The Hunger Games and craving more high-stakes survival stories? Six dystopian and YA read-alikes, from Divergent to Red Rising, to read next.",
   excerpt:

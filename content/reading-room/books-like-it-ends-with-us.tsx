@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "books-like-it-ends-with-us",
-  title: "Books Like It Ends With Us: 6 Emotional Romance Reads to Try",
+  title: "6 Books Like It Ends With Us — Picked by a Portland-Area Bookshop",
   description:
     "Loved It Ends With Us by Colleen Hoover? Six emotional contemporary romance read-alikes full of heartbreak, second chances, and swoon to pick up next.",
   excerpt:

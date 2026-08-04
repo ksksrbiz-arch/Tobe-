@@ -5,7 +5,7 @@ import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "books-like-the-silent-patient",
-  title: "Books Like The Silent Patient: 6 Twisty Thrillers to Read Next",
+  title: "6 Books Like The Silent Patient — Staff Picks from Our Milwaukie Shop",
   description:
     "Loved The Silent Patient? Six psychological thrillers with unreliable narrators and gut-punch twists to read next — staff picks from our Milwaukie shop.",
   excerpt:

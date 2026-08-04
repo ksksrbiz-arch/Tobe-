@@ -5,7 +5,7 @@ import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "books-like-the-priory-of-the-orange-tree",
-  title: "5 Books Like The Priory of the Orange Tree to Read Next",
+  title: "5 Books Like The Priory of the Orange Tree — Oregon Bookshop Picks",
   description:
     "Loved The Priory of the Orange Tree? Five epic, feminist fantasy reads with dragons, queens, and intricate worlds to pick up next, with a note on each pick.",
   excerpt:

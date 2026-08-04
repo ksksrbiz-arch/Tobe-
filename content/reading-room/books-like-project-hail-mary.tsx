@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "books-like-project-hail-mary",
-  title: "7 books like Project Hail Mary for your next sci-fi fix",
+  title: "7 Books Like Project Hail Mary — Staff Picks from an Oregon Bookshop",
   description:
     "Loved Project Hail Mary? Here are seven science fiction novels — clever problem-solving, big ideas, and real heart — to read next, with a note on each.",
   excerpt:

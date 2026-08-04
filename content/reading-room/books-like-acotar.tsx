@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "books-like-a-court-of-thorns-and-roses",
-  title: "8 books like A Court of Thorns and Roses (ACOTAR)",
+  title: "8 Books Like ACOTAR — Picked by a Milwaukie, OR Bookshop",
   description:
     "Finished ACOTAR and need more fae, romance, and high stakes? Eight romantasy books like A Court of Thorns and Roses to read next, with a note on each.",
   excerpt:

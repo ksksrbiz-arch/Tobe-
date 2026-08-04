@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "books-like-the-midnight-library",
-  title: "Books Like The Midnight Library: 6 Uplifting Reads to Try Next",
+  title: "6 Books Like The Midnight Library — Picked by Our Milwaukie, OR Staff",
   description:
     "Loved The Midnight Library? Six warm, philosophical, book-club-ready novels about second chances and the lives we might have lived — picked by our staff.",
   excerpt:

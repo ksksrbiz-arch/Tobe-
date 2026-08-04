@@ -5,7 +5,7 @@ import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "books-like-the-secret-history",
-  title: "8 books like The Secret History for your next dark-academia binge",
+  title: "8 Books Like The Secret History — Picked by a Milwaukie, OR Bookshop",
   description:
     "Loved The Secret History? Here are eight dark-academia novels — secret societies, obsessive friendships, and beautiful dread — to read next, with a note on each.",
   excerpt:

@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "books-like-a-game-of-thrones",
-  title: "Books Like A Game of Thrones: 5 Epic Fantasy Reads to Try",
+  title: "5 Books Like Game of Thrones — Staff Picks from an Oregon Used Bookshop",
   description:
     "Waiting on Winds of Winter? Five epic and grimdark fantasy read-alikes, from The Name of the Wind to The First Law, for any A Game of Thrones reader.",
   excerpt:

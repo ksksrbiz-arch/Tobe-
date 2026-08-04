@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "books-like-fourth-wing",
-  title: "8 books like Fourth Wing for your next romantasy binge",
+  title: "8 Books Like Fourth Wing — Picked by a Milwaukie, OR Bookshop",
   description:
     "Finished Fourth Wing and need more? Eight romantasy books with the same dragons, danger, and slow-burn romance — to read next, with a note on each.",
   excerpt:

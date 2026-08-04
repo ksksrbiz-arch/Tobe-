@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "best-short-story-collections",
-  title: "Best short story collections to read for any kind of reader",
+  title: "5 Best Short Story Collections for Any Reader — Milwaukie, OR Bookshop Picks",
   description:
     "Short stories perfect for busy readers and big appetites alike. Five great collections — from Interpreter of Maladies to Nine Stories — with a line on each.",
   excerpt:

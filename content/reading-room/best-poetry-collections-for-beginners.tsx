@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "best-poetry-collections-for-beginners",
-  title: "Best poetry collections for beginners: an approachable start",
+  title: "5 Best Poetry Collections for Beginners — Curated by a Portland-Area Bookseller",
   description:
     "New to poetry? Five welcoming collections — from Mary Oliver's Devotions to Billy Collins — that make a wonderful, unintimidating place to begin.",
   excerpt:

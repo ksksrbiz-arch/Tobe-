@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "books-like-dune",
-  title: "7 books like Dune for epic sci-fi and fantasy fans",
+  title: "7 Books Like Dune — Staff Picks from an Oregon Used Bookshop",
   description:
     "Loved Dune? Here are seven sweeping, world-building epics — political intrigue, strange worlds, and big ideas — to read next, with a note on each.",
   excerpt:

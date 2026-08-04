@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "books-like-circe",
-  title: "5 Books Like Circe by Madeline Miller to Read Next, Ranked",
+  title: "5 Books Like Circe — Ranked by a Portland-Area Bookseller",
   description:
     "Loved Circe? Five luminous mythology retellings that give silenced women of legend their voice, with a note on what makes each one worth reading next.",
   excerpt:

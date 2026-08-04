@@ -5,7 +5,7 @@ import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "books-like-where-the-crawdads-sing",
-  title: "7 books like Where the Crawdads Sing for your next book club",
+  title: "7 Books Like Where the Crawdads Sing — Picked by an Oregon Bookshop",
   description:
     "Loved Where the Crawdads Sing? Here are seven atmospheric, character-driven novels — nature, secrets, and a slow-burn mystery — that make great book-club picks.",
   excerpt:

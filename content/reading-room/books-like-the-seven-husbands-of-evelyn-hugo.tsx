@@ -5,7 +5,7 @@ import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "books-like-the-seven-husbands-of-evelyn-hugo",
-  title: "Books Like The Seven Husbands of Evelyn Hugo: 6 to Read Next",
+  title: "6 Books Like The Seven Husbands of Evelyn Hugo — Portland-Area Bookshop Picks",
   description:
     "Loved The Seven Husbands of Evelyn Hugo? Six glamorous, character-driven novels — old Hollywood, ambition, and big secrets — to pick up next, from our shelves.",
   excerpt:

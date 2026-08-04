@@ -5,7 +5,7 @@ import type { BlogMeta } from "@/lib/blog";
 
 export const meta: BlogMeta = {
   slug: "books-like-the-love-hypothesis",
-  title: "5 Books Like The Love Hypothesis to Read After You Finish",
+  title: "5 Books Like The Love Hypothesis — Picked by a Portland-Area Bookshop",
   description:
     "Loved The Love Hypothesis? Here are five STEMinist rom-coms and slow-burn fake-dating romances like Ali Hazelwood's hit, with a note on why each one works.",
   excerpt:

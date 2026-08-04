@@ -5,7 +5,7 @@ import QuickAnswer from "@/components/QuickAnswer";
 
 export const meta: BlogMeta = {
   slug: "american-classic-novels",
-  title: "American classic novels: 9 essential reads and where to start",
+  title: "9 American Classic Novels to Start With — Picked by a Milwaukie, OR Bookshop",
   description:
     "Nine essential American classic novels — from Gatsby to Beloved — with a note on each and a suggestion for where to start if you're new to them.",
   excerpt:
