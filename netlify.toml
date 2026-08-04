@@ -13,6 +13,13 @@
   # Firebase API keys are safe to expose publicly; they are meant for client-side use
   # and are restricted via Firebase Security Rules, not secrecy.
   SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES = "AIzaSyAT3s-0lTS1EIYN92aLLbGJbzHgeDTylR0"
+  # Netlify's secrets scanner flags GROQ_API_KEY's literal value inside
+  # .netlify/.next/cache/turbopack/**. That's Next.js's internal build cache
+  # (an .sst file), never served to visitors — GROQ_API_KEY is read only in
+  # lib/server/groq.ts, a server-only module with no NEXT_PUBLIC_ prefix, so
+  # it never reaches the client bundle. Omitting the cache path (not the key
+  # itself) keeps scanning active for any real leak into actual output.
+  SECRETS_SCAN_OMIT_PATHS = ".netlify/.next/cache/**"
 
 # GSC data shows Google indexing http://tobereadshop.com/ and
 # https://tobereadshop.com/ as two separate pages (264 clicks @ pos 6.19 vs
