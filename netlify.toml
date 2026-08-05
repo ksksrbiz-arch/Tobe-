@@ -20,28 +20,3 @@
   # it never reaches the client bundle. Omitting the cache path (not the key
   # itself) keeps scanning active for any real leak into actual output.
   SECRETS_SCAN_OMIT_PATHS = ".netlify/.next/cache/**"
-
-# GSC data shows Google indexing http://tobereadshop.com/ and
-# https://tobereadshop.com/ as two separate pages (264 clicks @ pos 6.19 vs
-# 26 clicks @ pos 21.16), splitting ranking authority. app/layout.tsx's
-# SITE_URL / canonical tags are already correctly set to https, so the app
-# code isn't the problem — Netlify was never told to force the redirect at
-# the edge. This does that explicitly, independent of the dashboard
-# "Force HTTPS" toggle.
-[[redirects]]
-  from = "http://tobereadshop.com/*"
-  to = "https://tobereadshop.com/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "http://www.tobereadshop.com/*"
-  to = "https://tobereadshop.com/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://www.tobereadshop.com/*"
-  to = "https://tobereadshop.com/:splat"
-  status = 301
-  force = true
