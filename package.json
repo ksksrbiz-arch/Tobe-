@@ -7,7 +7,7 @@
     "dev": "next dev",
     "prebuild": "node scripts/generate-blog-registry.mjs",
     "build": "next build",
-    "postbuild": "node scripts/indexnow.mjs",
+    "postbuild": "node scripts/seo-audit.mjs && node scripts/indexnow.mjs",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
