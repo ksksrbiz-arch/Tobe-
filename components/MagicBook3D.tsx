@@ -2608,7 +2608,10 @@ async function buildScene(
 
   /* ---------- animation state ---------- */
 
-  const clock = new T.Clock();
+  // THREE.Clock is deprecated (r183+) in favor of Timer, which requires an
+  // explicit update(timestamp) once per step rather than computing delta as a
+  // side effect of getDelta().
+  const clock = new T.Timer();
   let elapsed = 0;
   let raf = 0;
   let running = false;
@@ -2773,8 +2776,9 @@ async function buildScene(
   // rate still renders, instead of being skipped into visible judder.
   const FRAME_EPS = 0.003;
   let frameAcc = 0;
-  const frame = () => {
+  const frame = (timestamp?: number) => {
     if (running) raf = requestAnimationFrame(frame);
+    clock.update(timestamp);
     frameAcc += clock.getDelta();
     if (frameAcc < TARGET_DT - FRAME_EPS) return;
     const dt = Math.min(frameAcc, 0.05);
@@ -2859,7 +2863,7 @@ async function buildScene(
     if (want === running) return;
     running = want;
     if (running) {
-      clock.getDelta(); // swallow the pause so dt stays sane
+      clock.update(); // swallow the pause so dt stays sane on the next frame's update()
       raf = requestAnimationFrame(frame);
     } else {
       cancelAnimationFrame(raf);
