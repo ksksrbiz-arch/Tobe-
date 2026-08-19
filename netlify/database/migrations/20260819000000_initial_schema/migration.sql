@@ -1,9 +1,8 @@
--- Schema for the Netlify Database (Postgres) product.
--- Canonical copy: also applied by the CI "Database schema check" job and
--- referenced by db/seed-arrivals.ts. The live database is actually migrated
--- by netlify/database/migrations/20260819000000_initial_schema/migration.sql,
--- which Netlify applies automatically on deploy — keep both in sync by hand.
--- For manual/local use: `psql $DATABASE_URL -f db/schema.sql`.
+-- Initial schema for the Netlify Database (Postgres) product.
+-- Kept in sync with db/schema.sql by hand — that file is the canonical copy
+-- (also applied by the CI "Database schema check" job and referenced by
+-- db/seed-arrivals.ts); this one is what Netlify actually runs against the
+-- live database branch on every deploy. Update both together.
 -- Idempotent — safe to re-run.
 
 -- ─── NextAuth tables (created by @auth/core/adapters/postgres on first run too,
