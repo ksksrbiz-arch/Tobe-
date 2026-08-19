@@ -79,8 +79,7 @@ See `.env.example` for the full annotated list. The important ones:
 
 | Variable                  | Required | Purpose                                          |
 | ------------------------- | -------- | ------------------------------------------------ |
-| `NETLIFY_DATABASE_URL`    | yes\*    | Neon connection string (auto-set on Netlify).    |
-| `DATABASE_URL`            | —        | Local-dev fallback when not on Netlify.          |
+| `DATABASE_URL`            | yes\*    | Postgres connection string, for local dev / non-Netlify Postgres. |
 | `AUTH_SECRET`             | yes      | NextAuth signing secret (`openssl rand -base64 32`). |
 | `RESEND_API_KEY`          | yes      | Magic-link + notification email delivery.        |
 | `RESEND_FROM_EMAIL`       | yes      | Verified sender identity.                        |
@@ -90,9 +89,11 @@ See `.env.example` for the full annotated list. The important ones:
 | `GOOGLE_BOOKS_API_KEY`    | no       | Lifts the unauthenticated Google Books rate limit. |
 | `GOOGLE_PLACES_*`         | no       | Live Google reviews on `/connect` and `/visit`.  |
 
-\* Either `NETLIFY_DATABASE_URL` or `DATABASE_URL` must be set for any
-database-backed route to work. Routes fail gracefully (not at build time) when
-the database is unavailable.
+\* On Netlify, the database connection is resolved automatically at runtime by
+the Netlify Database product (`@netlify/database`'s `getConnectionString()`) —
+nothing to set. `DATABASE_URL` is only needed for local dev without
+`netlify dev`, or to point at any other Postgres instance. Database-backed
+routes fail gracefully (not at build time) when no connection is available.
 
 ## Scripts
 
@@ -111,10 +112,13 @@ mirrors the **CI** workflow exactly.
 ## Database
 
 The schema lives in [`db/schema.sql`](db/schema.sql) and is **idempotent** —
-safe to re-run. Apply it once against the Neon instance:
+safe to re-run. On Netlify it's applied automatically on every deploy from
+[`netlify/database/migrations/`](netlify/database/migrations/) (kept in sync
+with `db/schema.sql` by hand — see the header comment in either file). For
+local dev or any other Postgres, apply it manually:
 
 ```bash
-psql "$NETLIFY_DATABASE_URL" -f db/schema.sql
+psql "$DATABASE_URL" -f db/schema.sql
 ```
 
 Tables: NextAuth auth tables (`users`, `accounts`, `sessions`,

@@ -1,8 +1,11 @@
 /**
  * Seeder for the "Fresh arrivals at the trade desk" feed.
  *
- * Usage:
- *   NETLIFY_DATABASE_URL=postgres://... npx tsx db/seed-arrivals.ts
+ * Usage (against the live Netlify Database — injects NETLIFY_DB_URL):
+ *   netlify dev:exec -- npx tsx db/seed-arrivals.ts
+ *
+ * Or against any other Postgres:
+ *   DATABASE_URL=postgres://... npx tsx db/seed-arrivals.ts
  *
  * Inserts the curated arrivals from `lib/seedArrivals.ts` — the same list the
  * site renders as its always-on fallback — into the `recent_arrivals` table, so
@@ -12,14 +15,21 @@
  * Idempotent: existing ISBNs are skipped, so re-running only inserts new titles.
  */
 import { neon } from "@neondatabase/serverless";
+import { getConnectionString } from "@netlify/database";
 import { seedArrivals } from "../lib/seedArrivals";
 
 async function main() {
-  const connectionString =
-    process.env.NETLIFY_DATABASE_URL ?? process.env.DATABASE_URL ?? "";
+  let connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    try {
+      connectionString = getConnectionString();
+    } catch {
+      // Neither available — fall through to the error below.
+    }
+  }
   if (!connectionString) {
     console.error(
-      "NETLIFY_DATABASE_URL (or DATABASE_URL) must be set in the environment.",
+      "No database connection available. Run via `netlify dev:exec`, or set DATABASE_URL.",
     );
     process.exit(1);
   }
