@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Resend from "next-auth/providers/resend";
 import type { Adapter, AdapterAccount, AdapterSession, AdapterUser, VerificationToken } from "@auth/core/adapters";
 import { sql } from "@/lib/db";
+import { sendVerificationRequest } from "@/lib/verificationEmail";
 import { randomUUID } from "crypto";
 
 // Hand-rolled Postgres adapter for @neondatabase/serverless. Mirrors the
@@ -174,6 +175,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Resend({
       from: process.env.RESEND_FROM_EMAIL,
       apiKey: process.env.RESEND_API_KEY,
+      // Branded HTML email (purple/gold, matches the rest of the site's
+      // mail) instead of Auth.js's plain default template.
+      sendVerificationRequest,
     }),
   ],
   pages: { signIn: "/auth/signin" },

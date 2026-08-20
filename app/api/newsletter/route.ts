@@ -103,6 +103,19 @@ export async function POST(req: NextRequest) {
 
   const resend = new Resend(apiKey);
 
+  // Add to the Resend audience so this subscriber can actually receive future
+  // newsletter broadcasts, not just this one confirmation email. Best-effort:
+  // an audience failure (e.g. already subscribed) must never block the
+  // welcome email below or fail the signup for the visitor.
+  const audienceId = process.env.RESEND_NEWSLETTER_AUDIENCE_ID;
+  if (audienceId) {
+    try {
+      await resend.contacts.create({ email, segments: [{ id: audienceId }], unsubscribed: false });
+    } catch (err) {
+      console.error("[newsletter] Resend audience add failed:", err);
+    }
+  }
+
   try {
     // 1. Confirmation to the subscriber
     await resend.emails.send({

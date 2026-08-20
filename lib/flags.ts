@@ -1,18 +1,17 @@
 /**
  * Feature flags.
  *
- * `EMAIL_ENABLED` — master switch for every user-facing email surface. It's
- * OFF while we move off Resend to a new email provider (TBD by Jess). When off:
- *   - the homepage newsletter section shows a "follow us on social" CTA instead
- *     of a signup form,
- *   - the wishlist page shows a "coming soon" notice instead of the magic-link
- *     sign-in,
- *   - the /api/newsletter endpoint short-circuits (never calls Resend).
+ * `EMAIL_ENABLED` — master switch for every user-facing email surface:
+ *   - the homepage newsletter section shows a signup form (vs. a "follow us on
+ *     social" CTA),
+ *   - the wishlist page shows the magic-link sign-in + hunting list (vs. a
+ *     "coming soon" notice),
+ *   - the /api/newsletter endpoint actually calls Resend.
  *
- * Flip this to `true` (and wire up the new provider's env vars) to restore
- * everything — no other code changes required.
+ * Restored now that Resend (RESEND_API_KEY, RESEND_FROM_EMAIL, and the
+ * tobereadshop.com sending domain) is configured in production.
  *
- * Typed as `boolean` (not the literal `false`) so consumers keep both branches
+ * Typed as `boolean` (not the literal `true`) so consumers keep both branches
  * live for the type-checker / linter.
  */
-export const EMAIL_ENABLED = false as boolean;
+export const EMAIL_ENABLED = true as boolean;
