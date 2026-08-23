@@ -203,11 +203,12 @@ export default function HeroSection() {
       >
         {/* Eyebrow */}
         <div
-          className="fade-in-up mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em]"
+          className="fade-in-up eyebrow-glow mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em]"
           style={{
-            borderColor: "rgba(107,28,111,0.14)",
+            borderColor: "rgba(107,28,111,0.16)",
             color: "#6B1C6F",
-            background: "rgba(255,255,255,0.78)",
+            background: "linear-gradient(135deg, rgba(255,255,255,0.9), rgba(247,240,255,0.7))",
+            boxShadow: "0 2px 10px rgba(107,28,111,0.08)",
           }}
         >
           <span className="h-1.5 w-1.5 rounded-full animate-pulse-glow" style={{ background: "#F1BB1A" }} />
@@ -304,20 +305,21 @@ export default function HeroSection() {
                 <svg
                   key={pos}
                   className={`hero-portal__corner hero-portal__corner--${pos}`}
-                  width="26"
-                  height="26"
-                  viewBox="0 0 26 26"
+                  width="30"
+                  height="30"
+                  viewBox="0 0 30 30"
                   fill="none"
                   aria-hidden="true"
                 >
                   <path
-                    d="M1 25 L1 9 Q1 1 9 1 L25 1"
+                    d="M1 29 L1 10 Q1 1 10 1 L29 1"
                     stroke="#F1BB1A"
-                    strokeWidth="1.4"
+                    strokeWidth="1.5"
                     strokeLinecap="round"
                   />
-                  <path d="M6 20 Q6 6 20 6" stroke="rgba(107,28,111,0.45)" strokeWidth="1" strokeLinecap="round" />
-                  <circle cx="6" cy="20" r="1.5" fill="#F1BB1A" />
+                  <path d="M7 23 Q7 7 23 7" stroke="rgba(107,28,111,0.5)" strokeWidth="1.1" strokeLinecap="round" />
+                  <circle cx="7" cy="23" r="1.7" fill="#F1BB1A" />
+                  <circle cx="1" cy="1" r="1.3" fill="rgba(107,28,111,0.4)" />
                 </svg>
               ))}
             </div>
@@ -325,9 +327,11 @@ export default function HeroSection() {
             {/* Gilt wax-seal medallion. Its wiggle + rotating gleam only kick in
                 once decor is ready, keeping the load path still. */}
             <span className={`hero-portal__seal${decorReady ? " hero-portal__seal--live animate-wiggle" : ""}`}>
-              <span className="hero-portal__seal-inner">
-                Est.
-                <strong>1981</strong>
+              <span className="hero-portal__seal-face">
+                <span className="hero-portal__seal-inner">
+                  Est.
+                  <strong>1981</strong>
+                </span>
               </span>
             </span>
           </div>
@@ -335,20 +339,38 @@ export default function HeroSection() {
 
         {/* Title */}
         <h1
-          className="animate-ink-settle display-shadow mb-3 font-bold"
+          className="animate-ink-settle display-shadow mb-2 font-bold"
           style={{
             fontFamily: "var(--font-serif)",
             color: "#6B1C6F",
             fontSize: "clamp(3rem, 9vw, 6rem)",
             lineHeight: 1.02,
-            letterSpacing: "-0.03em",
+            letterSpacing: "-0.025em",
           }}
         >
           To Be{" "}
-          <span className="text-gradient" style={{ fontStyle: "italic", paddingRight: "0.06em" }}>
+          <span
+            className="text-gradient"
+            style={{
+              fontStyle: "italic",
+              paddingRight: "0.06em",
+              textShadow: "0 6px 26px rgba(241,187,26,0.28)",
+            }}
+          >
             Read
           </span>
         </h1>
+
+        {/* Hairline flourish under the title, echoing the portal's gilt
+            corners so the wordmark feels bound into the same design system. */}
+        <div
+          className="fade-in-up mx-auto mb-4 flex items-center justify-center gap-3"
+          style={{ animationDelay: "160ms" }}
+        >
+          <span className="h-px w-10" style={{ background: "linear-gradient(90deg, transparent, rgba(241,187,26,0.6))" }} />
+          <Star aria-hidden="true" size={11} fill="#F1BB1A" style={{ color: "#F1BB1A" }} />
+          <span className="h-px w-10" style={{ background: "linear-gradient(90deg, rgba(241,187,26,0.6), transparent)" }} />
+        </div>
 
         <p
           className="fade-in-up mb-6"
@@ -356,6 +378,7 @@ export default function HeroSection() {
             color: "#4B5563",
             fontSize: "clamp(1.05rem, 2.5vw, 1.3rem)",
             fontWeight: 500,
+            letterSpacing: "0.01em",
             animationDelay: "260ms",
           }}
         >
