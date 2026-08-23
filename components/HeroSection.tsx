@@ -327,9 +327,11 @@ export default function HeroSection() {
             {/* Gilt wax-seal medallion. Its wiggle + rotating gleam only kick in
                 once decor is ready, keeping the load path still. */}
             <span className={`hero-portal__seal${decorReady ? " hero-portal__seal--live animate-wiggle" : ""}`}>
-              <span className="hero-portal__seal-inner">
-                Est.
-                <strong>1981</strong>
+              <span className="hero-portal__seal-face">
+                <span className="hero-portal__seal-inner">
+                  Est.
+                  <strong>1981</strong>
+                </span>
               </span>
             </span>
           </div>
