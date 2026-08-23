@@ -20,7 +20,7 @@ function magicLinkHtml(url: string, host: string) {
   return `<!doctype html>
 <html><body style="font-family:Georgia,serif;color:#1F1A2E;background:#FDF8F0;padding:24px;">
   <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;padding:32px;border:1px solid rgba(107,28,111,0.10);">
-    <p style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#F1BB1A;margin:0 0 8px;font-weight:bold;">To Be Read · Staff sign-in</p>
+    <p style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#F1BB1A;margin:0 0 8px;font-weight:bold;">To Be Read · Sign-in</p>
     <h1 style="font-family:'Playfair Display',Georgia,serif;color:#6B1C6F;font-size:26px;margin:0 0 16px;">Sign in to ${safeHost}</h1>
     <p style="font-size:15px;line-height:1.7;color:#374151;">Click below to sign in. This link is valid for the next 24 hours and can only be used once.</p>
     <p style="margin:28px 0;">
