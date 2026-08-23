@@ -2630,6 +2630,10 @@ async function buildScene(
   let turnStart = 0;
   const TURN_DUR = 1.8;
   let nextTurnAt = 4.2;
+  // A landed page keeps a hair of springback rather than snapping dead flat —
+  // real paper overshoots and damps out, it doesn't stop on a dime.
+  let settleStart = -1;
+  const SETTLE_DUR = 0.45;
 
   const fireBurst = () => {
     burstAt = elapsed;
@@ -2726,11 +2730,22 @@ async function buildScene(
       // Lie flat again showing the (new) current world's illustration, so the
       // open spread always carries its world's storybook page.
       pagePivot.rotation.z = 0;
-      pagePivot.rotation.x = 0;
       pagePivot.position.y = 0.2;
       pageMat.map = arts[worldIdx];
       pageMat.needsUpdate = true;
+      settleStart = elapsed;
     }
+  };
+
+  const updateSettle = () => {
+    const st = elapsed - settleStart;
+    if (st >= SETTLE_DUR) {
+      pagePivot.rotation.x = 0;
+      settleStart = -1;
+      return;
+    }
+    // Decaying oscillation: a quick damped bounce that dies out over SETTLE_DUR.
+    pagePivot.rotation.x = Math.sin(st * 26) * 0.045 * Math.exp(-st * 9);
   };
 
   /* ---------- input ---------- */
@@ -2812,9 +2827,16 @@ async function buildScene(
     (halo.material as THREE.SpriteMaterial).color.copy(accent).lerp(WHITE, 0.35);
     (ray.material as THREE.MeshBasicMaterial).color.copy(accent).lerp(WHITE, 0.5);
     ray.rotation.y = t * 0.4;
-    (ray.material as THREE.MeshBasicMaterial).opacity = 0.02 + Math.sin(t * 1.7) * 0.006;
-    gutterLight.intensity = 0.9 + Math.sin(t * 2.1) * 0.2;
-    (halo.material as THREE.SpriteMaterial).opacity = 0.13 + Math.sin(t * 1.3) * 0.03;
+    // Real candlelight never settles into one clean period — it's a fast,
+    // slightly chaotic dance layered over a slower breathing base. A single
+    // sine reads as an obviously looping "pulse"; summing three incommensurate
+    // frequencies (weights normalized to ±1) gets a cheap, convincing flicker
+    // without pulling in a real noise function.
+    const candleFlicker =
+      Math.sin(t * 2.1) * 0.5 + Math.sin(t * 5.3 + 1.7) * 0.3 + Math.sin(t * 11.7 + 3.1) * 0.2;
+    (ray.material as THREE.MeshBasicMaterial).opacity = 0.02 + candleFlicker * 0.007;
+    gutterLight.intensity = 0.9 + candleFlicker * 0.22;
+    (halo.material as THREE.SpriteMaterial).opacity = 0.13 + candleFlicker * 0.035;
     for (const tk of twinkles) (tk.s.material as THREE.SpriteMaterial).opacity = 0.35 + (Math.sin(t * tk.w + tk.p) + 1) * 0.3;
     for (let i = 0; i < EMBERS; i++) {
       const sa = emberSeed[i * 2];
@@ -2854,7 +2876,10 @@ async function buildScene(
 
     // Choreography.
     if (turning) updateTurn();
-    else if (t >= nextTurnAt && !document.hidden) startTurn();
+    else {
+      if (settleStart >= 0) updateSettle();
+      if (t >= nextTurnAt && !document.hidden) startTurn();
+    }
 
     renderFrame();
   };
