@@ -10,16 +10,26 @@ import { usePathname } from "next/navigation";
 export default function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [stage, setStage] = useState<"in" | "out">("in");
-  const [reduceMotion, setReduceMotion] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
+  // Always start false, matching what the server renders (no `window` at SSR
+  // time) — reading matchMedia in the initializer made the client's very
+  // first render diverge from the SSR HTML whenever the OS actually has
+  // reduced-motion on, which React flags as a hydration mismatch. The real
+  // value is read on mount instead, one effect below.
+  const [reduceMotion, setReduceMotion] = useState(false);
   const firstRender = useRef(true);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // Deferred to the next task (matching the route-change effect below) so
+    // React's set-state-in-effect rule doesn't flag a synchronous cascading
+    // render from setting state directly inside the effect body.
+    const initId = window.setTimeout(() => setReduceMotion(media.matches), 0);
     const onChange = () => setReduceMotion(media.matches);
     media.addEventListener("change", onChange);
-    return () => media.removeEventListener("change", onChange);
+    return () => {
+      window.clearTimeout(initId);
+      media.removeEventListener("change", onChange);
+    };
   }, []);
 
   useEffect(() => {
