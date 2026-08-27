@@ -318,15 +318,27 @@ button:focus {
   100% { background-position: 1000px 0; }
 }
 
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 0 0 rgba(241, 187, 26, 0.55); }
-  60% { box-shadow: 0 0 0 10px rgba(241, 187, 26, 0.08); }
-  100% { box-shadow: 0 0 0 14px rgba(241, 187, 26, 0); }
+/* pulseGlow used to animate box-shadow directly — correct-looking, but
+   box-shadow can never run on the compositor thread, so it forced a main-
+   thread repaint every frame on every element using it (Lighthouse's
+   non-composited-animations audit; this one utility alone accounted for
+   most of a large Total Blocking Time / main-thread-work regression sitewide,
+   since it's applied on ~10 elements across the homepage). pulseRing gets the
+   same "notification ping" read from opacity + transform alone, both of
+   which the browser can animate purely on the compositor. */
+@keyframes pulseRing {
+  0% { opacity: 0.55; transform: scale(0.82); }
+  70% { opacity: 0; transform: scale(1.5); }
+  100% { opacity: 0; transform: scale(1.5); }
 }
 
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+/* gradientShift animated background-position, which — like box-shadow — is
+   paint-only and can't be handed to the compositor. gradientSlide gets the
+   same slow-drifting gradient by translating an oversized gradient layer
+   instead (see .mm-glow below), which is a plain compositor transform. */
+@keyframes gradientSlide {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-33.333%); }
 }
 
 @keyframes borderSpin {
@@ -445,7 +457,26 @@ button:focus {
 .fade-in { animation: fadeIn 0.7s ease-out forwards; }
 .animate-float { animation: float 6s ease-in-out infinite; }
 .animate-float-slow { animation: floatSlow 9s ease-in-out infinite; }
-.animate-pulse-glow { animation: pulseGlow 2.4s ease-in-out infinite; }
+/* Compositor-only "notification ping": a ::after ring scales out + fades,
+   leaving the element itself untouched. .btn-primary already owns ::after
+   for its own hover sweep, so that combo gets the ring on ::before instead
+   — see the .btn-primary override below. Elements with their own
+   overflow:hidden (the two CTA buttons) clip the ring to their rounded
+   shape, which reads as a contained pulse rather than an escaping halo;
+   everywhere else (dots, badges, icon tiles) it escapes freely, matching
+   the original box-shadow look. */
+.animate-pulse-glow { position: relative; }
+.animate-pulse-glow:not(.btn-primary)::after,
+.animate-pulse-glow.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  border: 2px solid rgba(241, 187, 26, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  animation: pulseRing 2.4s ease-out infinite;
+}
 .animate-wiggle { animation: wiggle 2.4s ease-in-out infinite; }
 .animate-candle { animation: candleGlow 3.6s ease-in-out infinite; }
 .animate-twinkle { animation: twinkle 2.4s ease-in-out infinite; }
@@ -901,19 +932,14 @@ button:focus {
   }
 }
 
+/* Used to animate box-shadow intensity directly — non-composited, forced a
+   repaint every frame for every firefly on screen. The glow itself is now a
+   static box-shadow (set inline where the firefly is rendered, sized to the
+   old mid-flicker peak) and this just breathes its opacity instead, which is
+   compositor-only and reads as the same soft flicker. */
 @keyframes fireflyPulse {
-  0%, 100% {
-    box-shadow:
-      0 0 4px rgba(241, 187, 26, 0.9),
-      0 0 12px rgba(241, 187, 26, 0.6),
-      0 0 22px rgba(241, 187, 26, 0.35);
-  }
-  50% {
-    box-shadow:
-      0 0 8px rgba(255, 220, 110, 1),
-      0 0 22px rgba(241, 187, 26, 0.85),
-      0 0 36px rgba(241, 187, 26, 0.55);
-  }
+  0%, 100% { opacity: 0.62; }
+  50% { opacity: 1; }
 }
 
 @keyframes starTwinkle {
@@ -968,16 +994,31 @@ button:focus {
 .animate-ribbon-sway { animation: ribbonSway 6s ease-in-out infinite; }
 
 /* ───── Next Read Matchmaker accents ───── */
-/* Slow-shifting gradient halo behind the matchmaker card. */
+/* Slow-shifting gradient halo behind the matchmaker card. The gradient lives
+   on an oversized ::before (300% width) that's translated back and forth —
+   compositor-only — instead of animating background-position on .mm-glow
+   itself directly, which forced a main-thread repaint every frame. .mm-glow's
+   caller already supplies `absolute` (Tailwind) for positioning — that's left
+   alone here (an unlayered `position: relative` would unconditionally win
+   over Tailwind's layered utility per CSS cascade-layer rules, however it's
+   ordered, and un-position the element). Only overflow needs adding, to clip
+   the sliding layer. */
 .mm-glow {
+  overflow: hidden;
+}
+.mm-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 300%;
   background: linear-gradient(
     120deg,
     rgba(241, 187, 26, 0.55),
     rgba(139, 46, 144, 0.55),
     rgba(241, 187, 26, 0.55)
   );
-  background-size: 200% 200%;
-  animation: gradientShift 7s ease infinite;
+  background-size: 33.333% 100%;
+  animation: gradientSlide 7s ease infinite;
 }
 /* Twinkling sparkle icon used in the matchmaker header + loading state. */
 .mm-sparkle {
@@ -985,7 +1026,7 @@ button:focus {
   transform-origin: center;
 }
 @media (prefers-reduced-motion: reduce) {
-  .mm-glow,
+  .mm-glow::before,
   .mm-sparkle {
     animation: none;
   }
