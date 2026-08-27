@@ -116,6 +116,10 @@ export default function CozyAmbience() {
               height: size,
               background:
                 "radial-gradient(circle, rgba(255,235,150,1) 0%, rgba(241,187,26,0.85) 45%, rgba(241,187,26,0) 75%)",
+              // Static glow (was the mid-flicker peak of an animated box-shadow,
+              // which forced a repaint every frame). fireflyPulse now only
+              // breathes opacity, so this box-shadow never needs to repaint.
+              boxShadow: "0 0 8px rgba(255,220,110,1), 0 0 22px rgba(241,187,26,0.85), 0 0 36px rgba(241,187,26,0.55)",
               animation: `fireflyDrift ${dur}s ease-in-out ${delay}s infinite, fireflyPulse ${2 + (i % 3) * 0.6}s ease-in-out infinite`,
             }}
           />
