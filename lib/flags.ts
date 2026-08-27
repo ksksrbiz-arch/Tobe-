@@ -4,8 +4,6 @@
  * `EMAIL_ENABLED` — master switch for every user-facing email surface:
  *   - the homepage newsletter section shows a signup form (vs. a "follow us on
  *     social" CTA),
- *   - the wishlist page shows the magic-link sign-in + hunting list (vs. a
- *     "coming soon" notice),
  *   - the /api/newsletter endpoint actually calls Resend.
  *
  * Restored now that Resend (RESEND_API_KEY, RESEND_FROM_EMAIL, and the

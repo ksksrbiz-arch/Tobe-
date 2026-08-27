@@ -88,8 +88,8 @@ export default function TermsOfServicePage() {
         <p>
           You may use the Site only if you can form a binding contract with us and
           are not barred from doing so under applicable law. Features that involve
-          submitting information (such as the newsletter, wishlists, and reviews)
-          are intended for users 13 and older; users under the age of majority
+          submitting information (such as the newsletter and reviews) are
+          intended for users 13 and older; users under the age of majority
           must use the Site under the supervision of a parent or legal guardian
           who agrees to these Terms. You are responsible for all activity that
           occurs through your use of the Site.

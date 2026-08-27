@@ -97,7 +97,7 @@ export default function CookiePolicyPage() {
             <tr>
               <td>Session / sign-in</td>
               <td>To Be Read (first party)</td>
-              <td>Keeps you signed in to your wishlist when you use the magic-link login.</td>
+              <td>Keeps you signed in when you use the magic-link login.</td>
               <td>Session / up to 30 days</td>
             </tr>
           </tbody>

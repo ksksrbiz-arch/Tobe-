@@ -80,12 +80,6 @@ export default function PrivacyPolicyPage() {
             subscription.
           </li>
           <li>
-            <strong>Accounts &amp; wishlists.</strong> If you create a wishlist,
-            we use a passwordless &ldquo;magic link&rdquo; sign-in, which collects
-            your email address. We store the books you save and send you an email
-            if a title on your wishlist arrives in the shop.
-          </li>
-          <li>
             <strong>Reviews.</strong> If you submit a review, we collect the name
             you provide, your star rating, and your review text. The name and
             review you submit are displayed publicly on the Site once approved.
@@ -130,8 +124,8 @@ export default function PrivacyPolicyPage() {
 
         <h2>3. How we use your information</h2>
         <ul>
-          <li>To operate the Site and provide features you request (wishlists, reviews, the trade-credit estimator, and the reading recommendation tool).</li>
-          <li>To send you the newsletter and wishlist notifications you signed up for.</li>
+          <li>To operate the Site and provide features you request (reviews, the trade-credit estimator, and the reading recommendation tool).</li>
+          <li>To send you the newsletter you signed up for.</li>
           <li>To respond to your questions and provide customer service.</li>
           <li>To understand, in aggregate, how the Site is used so we can improve it.</li>
           <li>To protect the Site against spam, fraud, and abuse.</li>
@@ -144,7 +138,7 @@ export default function PrivacyPolicyPage() {
           on the following legal bases under the GDPR / UK GDPR:
         </p>
         <ul>
-          <li><strong>Consent</strong> — for the newsletter, wishlist notifications, and optional analytics cookies. You can withdraw consent at any time.</li>
+          <li><strong>Consent</strong> — for the newsletter and optional analytics cookies. You can withdraw consent at any time.</li>
           <li><strong>Legitimate interests</strong> — for running and securing the Site and understanding aggregate usage, balanced against your rights.</li>
           <li><strong>Legal obligation</strong> — where we must retain or disclose information to comply with the law.</li>
         </ul>
@@ -158,7 +152,7 @@ export default function PrivacyPolicyPage() {
         </p>
         <ul>
           <li><strong>Netlify</strong> — website hosting.</li>
-          <li><strong>Neon</strong> — managed database that stores wishlists, accounts, and reviews.</li>
+          <li><strong>Neon</strong> — managed database that stores accounts and reviews.</li>
           <li><strong>Resend</strong> — sends our transactional and newsletter emails.</li>
           <li><strong>Plausible</strong> — cookieless, aggregate analytics.</li>
           <li><strong>Google</strong> — Tag Manager (consent-gated), plus Maps, Books, and Places used to show our location, look up book details, and display reviews.</li>
@@ -182,8 +176,8 @@ export default function PrivacyPolicyPage() {
         <h2>7. How long we keep your information</h2>
         <p>
           We keep personal information only as long as needed for the purposes
-          above. Newsletter and wishlist data is kept until you unsubscribe or
-          ask us to delete it. Reviews are kept while published. Aggregate
+          above. Newsletter data is kept until you unsubscribe or ask us to
+          delete it. Reviews are kept while published. Aggregate
           analytics data contains no personal information. We delete or anonymize
           data when it is no longer needed.
         </p>

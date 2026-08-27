@@ -220,7 +220,7 @@ summary:focus-visible,
 }
 
 /* Brand-tint the Tailwind focus ring. Elements using `focus:ring-*` utilities
-   (the estimator, wishlist, review and newsletter inputs) otherwise paint
+   (the estimator, review and newsletter inputs) otherwise paint
    Tailwind's default blue ring on mouse :focus, clashing with the purple
    :focus-visible outline keyboard users get. Point --tw-ring-color at the brand
    purple so both paths read as one system. */

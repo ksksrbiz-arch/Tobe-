@@ -2,9 +2,9 @@ import { Resend } from "resend";
 import { STORE_NAME, STORE_ADDRESS_TEXT, STORE_PHONE } from "@/lib/store";
 
 // Auth.js's built-in Resend provider ships a plain, unbranded template. This
-// mirrors the visual style already used for the newsletter and wishlist-match
-// emails (app/api/newsletter/route.ts, lib/email.ts) so every email a
-// customer gets from the site looks like it came from the same place.
+// mirrors the visual style already used for the newsletter email
+// (app/api/newsletter/route.ts) so every email a customer gets from the site
+// looks like it came from the same place.
 
 function escapeHtml(text: string) {
   return text

@@ -269,7 +269,6 @@ const TBR_FOOTER_LINKS = [
   { label: "Trade Books", href: `${TBR_BASE_URL}/trade` },
   { label: "How It Works", href: `${TBR_BASE_URL}/how-it-works` },
   { label: "Shop Online", href: `${TBR_BASE_URL}/shop` },
-  { label: "Wishlist", href: `${TBR_BASE_URL}/wishlist` },
   { label: "TBR Loop", href: `${TBR_BASE_URL}/loop` },
   { label: "Connect", href: `${TBR_BASE_URL}/connect` },
 ] as const;

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth, isAdminEmail } from "@/lib/auth";
 import { sql } from "@/lib/db";
-import { notifyWishlistMatches } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -93,12 +92,5 @@ export async function POST(request: Request) {
     RETURNING id, isbn, title, author, cover_url, list_price, added_at
   `) as Array<{ id: string; isbn: string; title: string; author: string; cover_url: string; list_price: number; added_at: string }>;
 
-  const notification = await notifyWishlistMatches({
-    isbn,
-    title: book.title,
-    author: book.author,
-    cover_url: book.cover_url,
-  });
-
-  return NextResponse.json({ arrival: inserted[0], book, notification });
+  return NextResponse.json({ arrival: inserted[0], book });
 }
