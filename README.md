@@ -20,8 +20,8 @@ deployed on Netlify.
 A real small-business website carrying real traffic — not a demo. It pairs a
 fast, accessible storefront with the kind of growth tooling a neighborhood shop
 actually needs: an AI book matchmaker, a self-publishing SEO content engine,
-trade-in credit estimation, wishlist alerts, and live customer reviews — all
-behind hardened API routes and an automated CI/audit pipeline.
+trade-in credit estimation, and live customer reviews — all behind hardened
+API routes and an automated CI/audit pipeline.
 
 ## Highlights
 
@@ -33,8 +33,6 @@ behind hardened API routes and an automated CI/audit pipeline.
   grounded with live DuckDuckGo results so suggestions stay current and real.
 - **🔁 Trade-in credit estimator** — shoppers get an instant store-credit
   estimate for the books they want to bring in.
-- **⭐ Wishlist hunt + alerts** — passwordless (magic-link) accounts let readers
-  save titles and get emailed when a match lands on the shelves.
 - **🗣️ Live reviews** — first-party reviews plus a Google Places feed, with an
   admin moderation queue.
 - **🔎 Local SEO, done properly** — JSON-LD structured data (`LocalBusiness`,
@@ -56,7 +54,7 @@ behind hardened API routes and an automated CI/audit pipeline.
 | Animation      | Framer Motion                                                 |
 | Database       | Neon Postgres (provisioned via **Netlify DB**)                |
 | Auth           | Auth.js / NextAuth v5 (magic-link email)                      |
-| Email          | Resend (magic links + wishlist hunt notifications)            |
+| Email          | Resend (magic links + newsletter)                              |
 | AI             | Groq (LLM) + DuckDuckGo grounding (Next Read Matchmaker)      |
 | Hosting        | Netlify (`@netlify/plugin-nextjs`)                            |
 
@@ -122,9 +120,8 @@ psql "$DATABASE_URL" -f db/schema.sql
 ```
 
 Tables: NextAuth auth tables (`users`, `accounts`, `sessions`,
-`verification_tokens`), plus the application tables `recent_arrivals` and
-`wishlists`. Hot query paths are indexed (`recent_arrivals_added_at_idx`, a
-partial index for pending wishlist notifications, etc.).
+`verification_tokens`), plus the application table `recent_arrivals`. Hot
+query paths are indexed (`recent_arrivals_added_at_idx`, etc.).
 
 ## Project layout
 

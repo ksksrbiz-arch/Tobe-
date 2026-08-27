@@ -11,7 +11,7 @@
  */
 
 // ── Database / core entities ─────────────────────────────────────────────────
-export type { RecentArrival, WishlistItem, ReviewStatus, Review } from "./db";
+export type { RecentArrival, ReviewStatus, Review } from "./db";
 
 // ── First-party reviews ──────────────────────────────────────────────────────
 export type { ReviewAggregate, NewReview } from "./reviews";

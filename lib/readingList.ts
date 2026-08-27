@@ -2,8 +2,7 @@
  * A tiny, dependency-free "reading list" persisted in localStorage.
  *
  * It lets a visitor save AI Matchmaker picks (which carry only title + author,
- * no ISBN) and revisit them later, with no sign-in required — distinct from the
- * ISBN-keyed database wishlist that powers the inventory "hunt" emails.
+ * no ISBN) and revisit them later, with no sign-in required.
  *
  * An in-memory cache backs every read so the value handed to React's
  * useSyncExternalStore stays referentially stable until something actually

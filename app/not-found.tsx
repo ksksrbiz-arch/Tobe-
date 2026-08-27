@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookOpen, Home, MapPin, Repeat, Heart } from "lucide-react";
+import { BookOpen, Home, MapPin, Repeat } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BookLogo from "@/components/BookLogo";
@@ -17,7 +17,6 @@ const links = [
   { href: "/shop", label: "Shop", icon: BookOpen },
   { href: "/visit", label: "Visit", icon: MapPin },
   { href: "/trade", label: "Trade", icon: Repeat },
-  { href: "/wishlist", label: "Wishlist", icon: Heart },
 ];
 
 export default function NotFound() {

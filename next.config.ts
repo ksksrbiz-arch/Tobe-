@@ -93,7 +93,7 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "via.placeholder.com",
       },
-      // Unsplash — decorative PageHero backgrounds on /connect and /wishlist
+      // Unsplash — decorative PageHero backgrounds on /connect
       {
         protocol: "https",
         hostname: "images.unsplash.com",

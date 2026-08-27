@@ -158,14 +158,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   // Auth.js v5 only auto-trusts the request host on Vercel. This app is
   // deployed on Netlify, so without `trustHost` every /api/auth/* request
   // fails with `UntrustedHost` ("There was a problem with the server
-  // configuration"), which silently breaks sign-in and the whole wishlist.
+  // configuration"), which silently breaks sign-in.
   trustHost: true,
   session: { strategy: "database" },
   callbacks: {
     // Auth.js's default session callback strips the user down to
-    // { name, email, image }. The wishlist API authorizes rows by
-    // session.user.id, so without this callback every signed-in request
-    // 401s and the whole wishlist feature is dead.
+    // { name, email, image }. Admin routes authorize by session.user.id,
+    // so without this callback every signed-in request 401s.
     session({ session, user }) {
       session.user.id = user.id;
       return session;

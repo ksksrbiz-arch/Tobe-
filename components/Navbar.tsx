@@ -15,7 +15,6 @@ const navLinks: Array<{ label: string; href: string; external?: boolean }> = [
   { label: "How it works", href: "/how-it-works" },
   { label: "Shop", href: "/shop" },
   { label: "Reading Room", href: "/reading-room" },
-  { label: "Wishlist", href: "/wishlist" },
   { label: "Connect", href: "/connect" },
   { label: "TBR Loop", href: "/loop" },
 ];

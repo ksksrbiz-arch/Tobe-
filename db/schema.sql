@@ -74,21 +74,7 @@ ALTER TABLE recent_arrivals ADD COLUMN IF NOT EXISTS notes TEXT NOT NULL DEFAULT
 CREATE INDEX IF NOT EXISTS recent_arrivals_added_at_idx ON recent_arrivals (added_at DESC);
 CREATE INDEX IF NOT EXISTS recent_arrivals_isbn_idx ON recent_arrivals (isbn);
 
-CREATE TABLE IF NOT EXISTS wishlists (
-  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id     TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  isbn        TEXT NOT NULL,
-  title       TEXT NOT NULL,
-  author      TEXT NOT NULL DEFAULT '',
-  cover_url   TEXT NOT NULL DEFAULT '',
-  list_price  NUMERIC(10,2),
-  notified    BOOLEAN NOT NULL DEFAULT FALSE,
-  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  UNIQUE (user_id, isbn)
-);
-
-CREATE INDEX IF NOT EXISTS wishlists_isbn_pending_idx
-  ON wishlists (isbn) WHERE notified = FALSE;
+DROP TABLE IF EXISTS wishlists;
 
 -- Customer reviews submitted on the site (first-party). Reviews land as
 -- 'pending' and only surface publicly once a staff member approves them in the

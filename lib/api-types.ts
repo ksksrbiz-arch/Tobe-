@@ -158,36 +158,6 @@ export type TikTokLatestResponse =
   | { configured: false }
   | { configured: true; videos: TikTokVideo[]; error?: "feed-unavailable" | "feed-error" };
 
-// ── /api/book-search ─────────────────────────────────────────────────────────
-
-/**
- * Raw Google Books volume shape used by the book-search route.
- * Includes industryIdentifiers for ISBN resolution.
- */
-export interface GoogleVolume {
-  volumeInfo?: {
-    title?: string;
-    authors?: string[];
-    industryIdentifiers?: Array<{ type?: string; identifier?: string }>;
-    imageLinks?: { thumbnail?: string; smallThumbnail?: string };
-  };
-  saleInfo?: { listPrice?: { amount?: number } };
-}
-
-/** A resolved book with a confirmed ISBN, returned by GET /api/book-search. */
-export interface ResolvedBook {
-  isbn: string;
-  title: string;
-  author: string;
-  cover_url: string;
-  list_price: number | null;
-}
-
-/** Successful response body for GET /api/book-search. */
-export interface BookSearchResponse {
-  book: ResolvedBook;
-}
-
 // ── /api/newsletter ──────────────────────────────────────────────────────────
 
 /** Request body for POST /api/newsletter. */

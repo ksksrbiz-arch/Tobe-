@@ -44,18 +44,6 @@ export interface RecentArrival {
   added_at: string;
 }
 
-export interface WishlistItem {
-  id: string;
-  user_id: string;
-  isbn: string;
-  title: string;
-  author: string;
-  cover_url: string;
-  list_price: number | null;
-  notified: boolean;
-  created_at: string;
-}
-
 export type ReviewStatus = "pending" | "approved" | "rejected";
 
 export interface Review {

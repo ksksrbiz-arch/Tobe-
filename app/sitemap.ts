@@ -16,8 +16,7 @@ function newestPostDate(posts: BlogPost[]): Date | undefined {
 }
 
 // Public, indexable routes. Admin and API routes are intentionally excluded
-// (see robots.ts), as are user-utility surfaces like /wishlist that hold no
-// SEO value on their own.
+// (see robots.ts).
 const routes: Array<{
   path: string;
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];

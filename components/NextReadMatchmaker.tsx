@@ -11,7 +11,6 @@ import {
   Share2,
   Bookmark,
   BookmarkCheck,
-  BellRing,
   Trash2,
   Copy,
   ChevronDown,
@@ -19,61 +18,6 @@ import {
 import { toast } from "sonner";
 import DustMotes from "@/components/DustMotes";
 import { useReadingList } from "@/hooks/useReadingList";
-
-/**
- * Resolve a pick to an ISBN (via /api/book-search) and add it to the
- * sign-in-gated database wishlist so it joins the inventory "hunt" emails.
- * Falls back to a helpful nudge when the visitor isn't signed in or no edition
- * with an ISBN can be found.
- */
-async function trackRestock(pick: { title: string; author: string }) {
-  const id = toast.loading(`Looking up “${pick.title}”…`);
-  const toWishlist = () => {
-    window.location.href = "/wishlist";
-  };
-  try {
-    const params = new URLSearchParams({ title: pick.title, author: pick.author });
-    const res = await fetch(`/api/book-search?${params.toString()}`);
-    if (res.status === 404) {
-      toast.error("Couldn't find an exact edition.", {
-        id,
-        description: "Add it by ISBN on the Wishlist page to track restocks.",
-        action: { label: "Wishlist", onClick: toWishlist },
-      });
-      return;
-    }
-    if (!res.ok) {
-      toast.error("Book lookup failed. Try again in a moment.", { id });
-      return;
-    }
-    const { book } = (await res.json()) as {
-      book: { isbn: string; title: string; author: string; cover_url: string; list_price: number | null };
-    };
-    const save = await fetch("/api/wishlist", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(book),
-    });
-    if (save.status === 401) {
-      toast.message("Sign in to track restocks", {
-        id,
-        description: "Your wishlist watches for incoming copies and emails you.",
-        action: { label: "Go to Wishlist", onClick: toWishlist },
-      });
-      return;
-    }
-    if (!save.ok) {
-      toast.error("Couldn't add to your wishlist. Try again.", { id });
-      return;
-    }
-    toast.success(`Now tracking “${book.title}”`, {
-      id,
-      description: "We'll watch for a copy and email you when one lands.",
-    });
-  } catch {
-    toast.error("Something went wrong. Try again.", { id });
-  }
-}
 
 // Query param used to make a set of picks shareable: /?match=<prompt>#next-read
 // Anyone who opens the link re-runs the same prompt, turning a good
@@ -230,19 +174,6 @@ function RecommendationCard({ rec }: { rec: BookRecommendation }) {
               <Bookmark size={12} aria-hidden="true" />
             )}
             {saved ? "Saved" : "Save"}
-          </button>
-          <button
-            type="button"
-            onClick={() => trackRestock({ title: rec.title, author: rec.author })}
-            className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all hover:scale-[1.03]"
-            style={{
-              borderColor: "color-mix(in srgb, var(--gold) 40%, transparent)",
-              color: "var(--purple)",
-              background: "color-mix(in srgb, var(--gold) 12%, transparent)",
-            }}
-          >
-            <BellRing size={12} aria-hidden="true" />
-            Track restock
           </button>
         </div>
       </div>
@@ -430,15 +361,6 @@ export default function NextReadMatchmaker() {
                       </p>
                     </div>
                     <div className="flex flex-shrink-0 items-center gap-1">
-                      <button
-                        type="button"
-                        onClick={() => trackRestock({ title: p.title, author: p.author })}
-                        aria-label={`Track restock for ${p.title}`}
-                        className="touch-target rounded-lg p-1.5 transition-colors hover:bg-[color-mix(in srgb, var(--gold) 16%, transparent)]"
-                        style={{ color: "var(--purple)" }}
-                      >
-                        <BellRing size={14} aria-hidden="true" />
-                      </button>
                       <button
                         type="button"
                         onClick={() => removeSaved(p.title, p.author)}
