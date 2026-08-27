@@ -80,6 +80,11 @@ export default function PrivacyPolicyPage() {
             subscription.
           </li>
           <li>
+            <strong>Accounts.</strong> Some areas of the Site use a passwordless
+            &ldquo;magic link&rdquo; sign-in, which collects your email address
+            and creates an account record.
+          </li>
+          <li>
             <strong>Reviews.</strong> If you submit a review, we collect the name
             you provide, your star rating, and your review text. The name and
             review you submit are displayed publicly on the Site once approved.
@@ -124,7 +129,7 @@ export default function PrivacyPolicyPage() {
 
         <h2>3. How we use your information</h2>
         <ul>
-          <li>To operate the Site and provide features you request (reviews, the trade-credit estimator, and the reading recommendation tool).</li>
+          <li>To operate the Site and provide features you request (accounts, reviews, the trade-credit estimator, and the reading recommendation tool).</li>
           <li>To send you the newsletter you signed up for.</li>
           <li>To respond to your questions and provide customer service.</li>
           <li>To understand, in aggregate, how the Site is used so we can improve it.</li>
@@ -139,6 +144,7 @@ export default function PrivacyPolicyPage() {
         </p>
         <ul>
           <li><strong>Consent</strong> — for the newsletter and optional analytics cookies. You can withdraw consent at any time.</li>
+          <li><strong>Contract / your request</strong> — for creating and maintaining an account when you request a magic-link sign-in.</li>
           <li><strong>Legitimate interests</strong> — for running and securing the Site and understanding aggregate usage, balanced against your rights.</li>
           <li><strong>Legal obligation</strong> — where we must retain or disclose information to comply with the law.</li>
         </ul>
@@ -177,7 +183,8 @@ export default function PrivacyPolicyPage() {
         <p>
           We keep personal information only as long as needed for the purposes
           above. Newsletter data is kept until you unsubscribe or ask us to
-          delete it. Reviews are kept while published. Aggregate
+          delete it. Account data is kept until you ask us to delete it.
+          Reviews are kept while published. Aggregate
           analytics data contains no personal information. We delete or anonymize
           data when it is no longer needed.
         </p>
