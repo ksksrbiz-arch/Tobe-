@@ -997,11 +997,13 @@ button:focus {
 /* Slow-shifting gradient halo behind the matchmaker card. The gradient lives
    on an oversized ::before (300% width) that's translated back and forth —
    compositor-only — instead of animating background-position on .mm-glow
-   itself directly, which forced a main-thread repaint every frame. .mm-glow
-   keeps its own position/blur/opacity/radius (set inline by its caller) and
-   just clips the sliding layer. */
+   itself directly, which forced a main-thread repaint every frame. .mm-glow's
+   caller already supplies `absolute` (Tailwind) for positioning — that's left
+   alone here (an unlayered `position: relative` would unconditionally win
+   over Tailwind's layered utility per CSS cascade-layer rules, however it's
+   ordered, and un-position the element). Only overflow needs adding, to clip
+   the sliding layer. */
 .mm-glow {
-  position: relative;
   overflow: hidden;
 }
 .mm-glow::before {
