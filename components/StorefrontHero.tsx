@@ -10,6 +10,13 @@
  * the shop actually sets out on the sidewalk. Glass stays the dominant surface,
  * with the dark board-and-batten fascia a thin band above it, as in the photos.
  *
+ * Lit as golden hour rather than midday: a plum-to-amber sky, dark reflective
+ * glass, and the shop's own interior light as the brightest thing in frame,
+ * spilling out onto the walk. That reads warmer and more inviting than a
+ * daylight elevation, and puts the illustration on the site's own purple/gold
+ * palette instead of fighting it with cool blue. Depth comes from the soffit
+ * overhang shadow across the top of the glass and the recessed entry bay.
+ *
  * This replaces the WebGL MagicBook3D scene that used to fill the hero window:
  * no three.js boot, no canvas, so it paints instantly and identically for every
  * visitor (Lighthouse included) instead of only after hydration.
@@ -38,48 +45,56 @@ export default function StorefrontHero({ className = "" }: { className?: string 
       viewBox="0 0 400 336"
       className={`storefront-hero ${className}`}
       role="img"
-      aria-label="Illustration of the To Be Read storefront at 7931 — the Clackamas Book Exchange building, with wide glass windows glowing warm over a red brick base, a hanging oval shop sign, and carts of books out on the sidewalk"
+      aria-label="Illustration of the To Be Read storefront at 7931 — the Clackamas Book Exchange building at golden hour, its wide windows glowing warm over a red brick base and spilling light onto the sidewalk, with a hanging oval shop sign and carts of books out front"
     >
       <defs>
         {/* ---------- sky, sun, foliage ---------- */}
+        {/* Golden hour: deep plum overhead falling to amber at the roofline, so
+            the sky carries the site's own purple→gold palette instead of the
+            cool daylight blue it used to fight with. */}
         <linearGradient id="sf-sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#6FA9CF" />
-          <stop offset="55%" stopColor="#A6CDE3" />
-          <stop offset="100%" stopColor="#E4EFF1" />
+          <stop offset="0%" stopColor="#4A2A5E" />
+          <stop offset="35%" stopColor="#9A5A72" />
+          <stop offset="68%" stopColor="#E08A5E" />
+          <stop offset="100%" stopColor="#F7C169" />
         </linearGradient>
         <radialGradient id="sf-sunglow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#FFF8E2" stopOpacity="0.95" />
-          <stop offset="45%" stopColor="#FCE8A6" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#FCE8A6" stopOpacity="0" />
+          <stop offset="0%" stopColor="#FFF1C4" stopOpacity="0.95" />
+          <stop offset="40%" stopColor="#FFC46A" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#FF9E4A" stopOpacity="0" />
         </radialGradient>
+        {/* Foliage reads as dusk silhouette, warm-rimmed by the low sun. */}
         <linearGradient id="sf-canopy" x1="0" y1="0" x2="0.4" y2="1">
-          <stop offset="0%" stopColor="#5C8B4F" />
-          <stop offset="100%" stopColor="#33573A" />
+          <stop offset="0%" stopColor="#4A5F45" />
+          <stop offset="100%" stopColor="#22331F" />
         </linearGradient>
         <linearGradient id="sf-canopy2" x1="0" y1="0" x2="0.4" y2="1">
-          <stop offset="0%" stopColor="#6E9A57" />
-          <stop offset="100%" stopColor="#3D6440" />
+          <stop offset="0%" stopColor="#5C6E48" />
+          <stop offset="100%" stopColor="#2A3A26" />
         </linearGradient>
 
         {/* ---------- building shell ---------- */}
+        {/* Dark siding, but warm-tinted — it's catching sunset, not daylight. */}
         <linearGradient id="sf-fascia" x1="0" y1="0" x2="0.15" y2="1">
-          <stop offset="0%" stopColor="#343843" />
-          <stop offset="60%" stopColor="#252932" />
-          <stop offset="100%" stopColor="#1B1E26" />
+          <stop offset="0%" stopColor="#3E3242" />
+          <stop offset="60%" stopColor="#2A2130" />
+          <stop offset="100%" stopColor="#1C1622" />
         </linearGradient>
         <linearGradient id="sf-coping" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#4A505E" />
-          <stop offset="100%" stopColor="#2A2E38" />
+          <stop offset="0%" stopColor="#6A5566" />
+          <stop offset="100%" stopColor="#2E2434" />
         </linearGradient>
+        {/* Beam and mullions are lit from below by the windows, so they glow
+            warm rather than sitting flat white. */}
         <linearGradient id="sf-beam" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FFFDF9" />
-          <stop offset="70%" stopColor="#EDE4D5" />
-          <stop offset="100%" stopColor="#CFC3B1" />
+          <stop offset="0%" stopColor="#D8C8BC" />
+          <stop offset="70%" stopColor="#F0DCC0" />
+          <stop offset="100%" stopColor="#FFE9C0" />
         </linearGradient>
         <linearGradient id="sf-mullion" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#FFFDF9" />
-          <stop offset="55%" stopColor="#EFE7DA" />
-          <stop offset="100%" stopColor="#C7BCAB" />
+          <stop offset="0%" stopColor="#FFEFD4" />
+          <stop offset="55%" stopColor="#E8D5BC" />
+          <stop offset="100%" stopColor="#B8A492" />
         </linearGradient>
         <linearGradient id="sf-signface" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#FFFDF9" />
@@ -88,25 +103,41 @@ export default function StorefrontHero({ className = "" }: { className?: string 
         </linearGradient>
 
         {/* ---------- glass ---------- */}
+        {/* At dusk the glass itself goes dark — it's reflecting a dim sky, not a
+            bright one. That darkness is what lets the warm interior read as a
+            genuine light source rather than a tint. */}
         <linearGradient id="sf-glass" x1="0.1" y1="0" x2="0.5" y2="1">
-          <stop offset="0%" stopColor="#9FC2D6" />
-          <stop offset="35%" stopColor="#7BA1BB" />
-          <stop offset="72%" stopColor="#4E718C" />
-          <stop offset="100%" stopColor="#3B5A73" />
+          <stop offset="0%" stopColor="#4A3A55" />
+          <stop offset="35%" stopColor="#3A2E46" />
+          <stop offset="72%" stopColor="#2A2136" />
+          <stop offset="100%" stopColor="#1F182A" />
         </linearGradient>
+        {/* The shop's own light, pouring out. Much stronger than the daytime
+            version — this is now the brightest thing in the frame. */}
         <linearGradient id="sf-interior" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#F1BB1A" stopOpacity="0.06" />
-          <stop offset="45%" stopColor="#F1BB1A" stopOpacity="0.30" />
-          <stop offset="100%" stopColor="#FCE8A6" stopOpacity="0.55" />
+          <stop offset="0%" stopColor="#FFD98A" stopOpacity="0.55" />
+          <stop offset="45%" stopColor="#FFC864" stopOpacity="0.82" />
+          <stop offset="100%" stopColor="#FFB347" stopOpacity="0.95" />
         </linearGradient>
         <linearGradient id="sf-ceiling" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FFF6DC" stopOpacity="0.85" />
-          <stop offset="100%" stopColor="#FFF6DC" stopOpacity="0" />
+          <stop offset="0%" stopColor="#FFF4D2" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="#FFF4D2" stopOpacity="0" />
         </linearGradient>
+        {/* Sky reflection on the glass is now a warm amber smear, not white. */}
         <linearGradient id="sf-reflect" x1="0" y1="0" x2="0.3" y2="1">
-          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.34" />
-          <stop offset="60%" stopColor="#FFFFFF" stopOpacity="0.06" />
-          <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+          <stop offset="0%" stopColor="#FFCE86" stopOpacity="0.30" />
+          <stop offset="60%" stopColor="#E89A6A" stopOpacity="0.07" />
+          <stop offset="100%" stopColor="#E89A6A" stopOpacity="0" />
+        </linearGradient>
+        {/* Warm light pooling on the sidewalk under each window bay. */}
+        <linearGradient id="sf-spill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#FFC66A" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#FFC66A" stopOpacity="0" />
+        </linearGradient>
+        {/* Shadow cast by the soffit overhang onto the facade below it. */}
+        <linearGradient id="sf-overhang" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#1A1020" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#1A1020" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="sf-sheenband" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0" />
@@ -120,21 +151,22 @@ export default function StorefrontHero({ className = "" }: { className?: string 
           <stop offset="60%" stopColor="#40607A" />
           <stop offset="100%" stopColor="#2C4459" />
         </linearGradient>
+        {/* Brick catches the low warm light up top, falls into dusk below. */}
         <linearGradient id="sf-brick" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#B06453" />
-          <stop offset="100%" stopColor="#7E4234" />
+          <stop offset="0%" stopColor="#A85C48" />
+          <stop offset="100%" stopColor="#5E2E26" />
         </linearGradient>
         <linearGradient id="sf-walk" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#CFC9BE" />
-          <stop offset="100%" stopColor="#B0AAA0" />
+          <stop offset="0%" stopColor="#8A7F7A" />
+          <stop offset="100%" stopColor="#5F5757" />
         </linearGradient>
         <linearGradient id="sf-asphalt" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#5B5D63" />
-          <stop offset="100%" stopColor="#43454B" />
+          <stop offset="0%" stopColor="#3A3540" />
+          <stop offset="100%" stopColor="#252230" />
         </linearGradient>
         <radialGradient id="sf-vignette" cx="50%" cy="46%" r="72%">
-          <stop offset="60%" stopColor="#3A0F40" stopOpacity="0" />
-          <stop offset="100%" stopColor="#3A0F40" stopOpacity="0.34" />
+          <stop offset="55%" stopColor="#2A0A30" stopOpacity="0" />
+          <stop offset="100%" stopColor="#2A0A30" stopOpacity="0.46" />
         </radialGradient>
 
         <clipPath id="sf-frame-clip">
@@ -269,7 +301,7 @@ export default function StorefrontHero({ className = "" }: { className?: string 
         ))}
 
         {/* ══════════ storefront glass — the dominant surface ══════════ */}
-        <rect x="0" y="128" width="400" height="152" fill="#22262F" />
+        <rect x="0" y="128" width="400" height="152" fill="#1A1524" />
 
         {/* ---------- LEFT BAY ---------- */}
         <g clipPath="url(#sf-bay-left)">
@@ -422,15 +454,17 @@ export default function StorefrontHero({ className = "" }: { className?: string 
         <g transform="translate(256,146)">
           <g className="storefront-oval-sign">
             <rect x="-24" y="-2" width="48" height="4" rx="2" fill="#B9AE9A" />
-            <ellipse cx="0" cy="47" rx="46" ry="41" fill="#0E1118" opacity="0.28" transform="translate(2,3)" />
-            <ellipse cx="0" cy="47" rx="46" ry="41" fill="url(#sf-signface)" stroke="#6B1C6F" strokeWidth="2" />
-            <ellipse cx="0" cy="47" rx="41" ry="36" fill="none" stroke="#F1BB1A" strokeWidth="1" opacity="0.8" />
+            {/* Wide oval, matching the real sign's proportions — a near-circle
+                can't fit "BOOK EXCHANGE" across its narrow lower third. */}
+            <ellipse cx="0" cy="47" rx="62" ry="40" fill="#0E1118" opacity="0.28" transform="translate(2,3)" />
+            <ellipse cx="0" cy="47" rx="62" ry="40" fill="url(#sf-signface)" stroke="#6B1C6F" strokeWidth="2" />
+            <ellipse cx="0" cy="47" rx="56" ry="34.5" fill="none" stroke="#F1BB1A" strokeWidth="1" opacity="0.8" />
             <text
               x="0"
-              y="26"
+              y="27"
               textAnchor="middle"
               fontFamily="var(--font-serif)"
-              fontSize="12"
+              fontSize="12.5"
               fontWeight="700"
               fill="#6B1C6F"
               letterSpacing="0.4"
@@ -439,21 +473,24 @@ export default function StorefrontHero({ className = "" }: { className?: string 
             </text>
             {/* book stack */}
             <g>
-              <rect x="-19" y="34" width="38" height="6" rx="1.4" fill="#8B2E90" />
-              <rect x="-16" y="41" width="33" height="6" rx="1.4" fill="#F1BB1A" />
-              <rect x="-18" y="48" width="35" height="6" rx="1.4" fill="#C4703A" />
-              <rect x="-13" y="55" width="27" height="5" rx="1.4" fill="#3E6B45" />
+              <rect x="-17" y="34" width="34" height="5.4" rx="1.3" fill="#8B2E90" />
+              <rect x="-14.5" y="40" width="29" height="5.4" rx="1.3" fill="#F1BB1A" />
+              <rect x="-16" y="46" width="32" height="5.4" rx="1.3" fill="#C4703A" />
+              <rect x="-11.5" y="52" width="24" height="4.6" rx="1.3" fill="#3E6B45" />
             </g>
-            <rect x="-38" y="63" width="76" height="1" fill="#C7BCAB" />
+            {/* Sized to the ellipse's actual half-width at this height (the
+                oval narrows fast toward the bottom), so neither the rule nor
+                the wordmark crosses the gold inner ring. */}
+            <rect x="-34" y="59" width="68" height="1" fill="#C7BCAB" />
             <text
               x="0"
-              y="76"
+              y="71"
               textAnchor="middle"
               fontFamily="var(--font-serif)"
-              fontSize="10.5"
+              fontSize="9.4"
               fontWeight="700"
               fill="#6B1C6F"
-              letterSpacing="0.3"
+              letterSpacing="0.2"
             >
               BOOK EXCHANGE
             </text>
@@ -474,6 +511,11 @@ export default function StorefrontHero({ className = "" }: { className?: string 
         {/* sill */}
         <rect x="0" y="272" width="118" height="7" fill="url(#sf-mullion)" />
         <rect x="176" y="272" width="220" height="7" fill="url(#sf-mullion)" />
+
+        {/* Overhang shadow — the soffit above physically shades the top of the
+            glass. Sells the building as having depth rather than being a flat
+            elevation drawing. */}
+        <rect x="0" y="131" width="400" height="26" fill="url(#sf-overhang)" />
 
         {/* ══════════ brick wainscot ══════════ */}
         <rect x="0" y="279" width="400" height="30" fill="url(#sf-brick)" />
@@ -543,16 +585,26 @@ export default function StorefrontHero({ className = "" }: { className?: string 
 
         {/* ══════════ sidewalk + parking lot ══════════ */}
         <rect x="0" y="309" width="400" height="16" fill="url(#sf-walk)" />
-        <rect x="0" y="309" width="400" height="1.5" fill="#E4DED2" opacity="0.7" />
-        <rect x="0" y="322" width="400" height="3" fill="#8E8578" opacity="0.6" />
+        <rect x="0" y="309" width="400" height="1.5" fill="#C9BBA8" opacity="0.6" />
+        <rect x="0" y="322" width="400" height="3" fill="#4A4348" opacity="0.6" />
         <rect x="0" y="325" width="400" height="11" fill="url(#sf-asphalt)" />
-        <rect x="46" y="325" width="26" height="11" fill="#E8E3D6" opacity="0.45" transform="skewX(-8)" />
-        <rect x="256" y="325" width="26" height="11" fill="#E8E3D6" opacity="0.45" transform="skewX(-8)" />
+        <rect x="46" y="325" width="26" height="11" fill="#C8C0C4" opacity="0.28" transform="skewX(-8)" />
+        <rect x="256" y="325" width="26" height="11" fill="#C8C0C4" opacity="0.28" transform="skewX(-8)" />
+
+        {/* Light spilling out of each bay onto the walk — the golden-hour tell,
+            and what makes the shop read as open and lit from within. Angled
+            outward from each window, fading as it reaches the lot. */}
+        <g className="storefront-spill">
+          <path d="M6 309 L118 309 L138 336 L-14 336 Z" fill="url(#sf-spill)" />
+          <path d="M180 309 L394 309 L414 336 L160 336 Z" fill="url(#sf-spill)" />
+          {/* narrower, brighter wedge from the doorway */}
+          <path d="M124 309 L172 309 L186 336 L110 336 Z" fill="#FFD489" opacity="0.22" />
+        </g>
 
         {/* contact shadows along the walk */}
-        <ellipse cx="60" cy="311" rx="42" ry="4" fill="#2B0B30" opacity="0.18" />
-        <ellipse cx="212" cy="311" rx="34" ry="4" fill="#2B0B30" opacity="0.16" />
-        <ellipse cx="336" cy="311" rx="48" ry="4.5" fill="#2B0B30" opacity="0.18" />
+        <ellipse cx="60" cy="311" rx="42" ry="4" fill="#180620" opacity="0.3" />
+        <ellipse cx="212" cy="311" rx="34" ry="4" fill="#180620" opacity="0.28" />
+        <ellipse cx="336" cy="311" rx="48" ry="4.5" fill="#180620" opacity="0.3" />
 
         {/* ══════════ sidewalk book carts + crates ══════════ */}
         {/* left cart */}
