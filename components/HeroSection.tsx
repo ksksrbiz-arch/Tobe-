@@ -1,20 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import { ArrowRight, ShoppingBag, Sparkles, Star } from "lucide-react";
-import BookLogo from "./BookLogo";
 import DustMotes from "./DustMotes";
 import OpenStatus from "./OpenStatus";
+import StorefrontHero from "./StorefrontHero";
 import { getMotionSafeScrollBehavior } from "@/lib/motion";
-
-// The enchanted tome is a WebGL scene (three.js) and purely decorative. Load
-// it client-only (no SSR) so the three.js chunk stays out of the initial
-// HTML and the hero headline (LCP) isn't competing with it during parse +
-// hydration. A lightweight <BookLogo /> holds the exact same slot until it
-// mounts (and remains as the permanent fallback when WebGL is unavailable),
-// so there is no layout shift.
-const MagicBook3D = dynamic(() => import("./MagicBook3D"), { ssr: false });
 
 export default function HeroSection() {
   // Defer mounting of decorative, animation-heavy layers until after the
@@ -24,12 +15,6 @@ export default function HeroSection() {
   // ambient animation (blurred floats, twinkling stars, dust motes) and add
   // continuous compositing work that is wasted for those users.
   const [decorReady, setDecorReady] = useState(false);
-  // The hero book comes alive even under reduced motion — it just runs a
-  // calmer, slower variant there (see the prefers-reduced-motion rules in
-  // globals.css). The heavy ambient decor (blurred floats, dust motes) stays
-  // gated behind reduced motion. Both are deferred past first paint so the LCP
-  // headline is never blocked.
-  const [bookLive, setBookLive] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined") return;
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
@@ -38,8 +23,8 @@ export default function HeroSection() {
       cancelIdleCallback?: (handle: number) => void;
     };
 
-    // The cheap ambient decor (blurred floats, dust motes, twinkles) can come
-    // in at idle — it's just CSS compositing.
+    // The ambient decor (blurred floats, dust motes, twinkles) can come in at
+    // idle — it's just CSS compositing.
     let idleHandle = -1;
     let idleTimer = -1;
     const startDecor = () => {
@@ -51,30 +36,9 @@ export default function HeroSection() {
       idleTimer = window.setTimeout(startDecor, 200);
     }
 
-    // The WebGL tome is the expensive part (three.js chunk + WebGL boot +
-    // scene build). Defer it until the visitor actually engages — the first
-    // scroll, pointer move, tap, or key — so a cold page load never pays for
-    // it up front. That keeps the LCP path lean for real visitors AND for
-    // lab audits (Lighthouse never interacts, so it never loads the scene).
-    // A short grace timer still brings the book to life for anyone who lands
-    // and simply reads without touching anything.
-    let woke = false;
-    const events = ["pointerdown", "pointermove", "touchstart", "keydown", "wheel", "scroll"] as const;
-    const wake = () => {
-      if (woke) return;
-      woke = true;
-      window.clearTimeout(graceTimer);
-      for (const e of events) window.removeEventListener(e, wake);
-      setBookLive(true);
-    };
-    const graceTimer = window.setTimeout(wake, 2600);
-    for (const e of events) window.addEventListener(e, wake, { passive: true });
-
     return () => {
       if (idleHandle !== -1 && typeof w.cancelIdleCallback === "function") w.cancelIdleCallback(idleHandle);
       if (idleTimer !== -1) window.clearTimeout(idleTimer);
-      window.clearTimeout(graceTimer);
-      for (const e of events) window.removeEventListener(e, wake);
     };
   }, []);
 
@@ -215,12 +179,13 @@ export default function HeroSection() {
           Neighborhood bookstore · Milwaukie, OR
         </div>
 
-        {/* Logo — the enchanted tome staged inside a gilt "portal" window: a
-            passe-partout frame, a twilight sky with drifting aurora + starfield,
-            a warm candle-glow spotlight and a reflective pedestal grounding the
-            floating world. The frame wraps BOTH the WebGL scene and its static
-            <BookLogo /> fallback, so the always-on first-paint state is staged
-            just as richly as the live 3D one. */}
+        {/* Logo — a hand-built illustration of the actual shop (matched against
+            real photos: dark board-and-batten siding, the "Clackamas Book
+            Exchange" oval window sign, red brick, book carts out front),
+            staged inside the same gilt "portal" frame. Pure inline SVG + CSS,
+            so — unlike the old WebGL scene — it renders immediately and
+            identically for every visitor (Lighthouse included) instead of
+            only booting after interaction. */}
         <div className="fade-in-up mb-6 flex justify-center" style={{ animationDelay: "100ms" }}>
           <div className="hero-portal">
             {/* Breathing gold/plum aura pooled behind the whole frame. Deferred
@@ -230,73 +195,11 @@ export default function HeroSection() {
 
             <div className={`hero-portal__frame${decorReady ? " hero-portal__frame--live" : ""}`}>
               <div className="hero-portal__window">
-                {/* Layered twilight backdrop (palette-matched to the scene's own
-                    sky so the WebGL canvas's feathered edges blend in). The base
-                    sky is a static gradient — cheap enough to paint immediately;
-                    the animated aurora/starfield/sheen below wait for idle. */}
-                <div className="hero-portal__sky" aria-hidden="true" />
-                {decorReady && <div className="hero-portal__aurora" aria-hidden="true" />}
-
-                {/* Twinkling starfield scattered across the window. */}
-                {decorReady && (
-                <div className="hero-portal__stars" aria-hidden="true">
-                  {[
-                    { x: "12%", y: "16%", s: 3, d: "0s", c: "#FCE8A6" },
-                    { x: "26%", y: "70%", s: 2, d: "1.2s", c: "#ffffff" },
-                    { x: "42%", y: "12%", s: 2.5, d: "2.1s", c: "#F1BB1A" },
-                    { x: "58%", y: "22%", s: 2, d: "0.6s", c: "#ffffff" },
-                    { x: "74%", y: "14%", s: 3, d: "1.7s", c: "#FCE8A6" },
-                    { x: "86%", y: "40%", s: 2, d: "2.6s", c: "#ffffff" },
-                    { x: "80%", y: "72%", s: 2.5, d: "0.9s", c: "#F1BB1A" },
-                    { x: "16%", y: "44%", s: 2, d: "3.1s", c: "#ffffff" },
-                    { x: "50%", y: "82%", s: 2, d: "1.9s", c: "#FCE8A6" },
-                    { x: "34%", y: "34%", s: 1.6, d: "2.4s", c: "#ffffff" },
-                    { x: "66%", y: "60%", s: 1.6, d: "0.4s", c: "#ffffff" },
-                    { x: "90%", y: "22%", s: 1.6, d: "1.4s", c: "#ffffff" },
-                  ].map((st, i) => (
-                    <span
-                      key={i}
-                      className="hero-portal__star animate-star-twinkle"
-                      style={{
-                        left: st.x,
-                        top: st.y,
-                        width: st.s,
-                        height: st.s,
-                        background: st.c,
-                        boxShadow: `0 0 6px ${st.c}`,
-                        animationDelay: st.d,
-                      }}
-                    />
-                  ))}
-                </div>
-                )}
-
-                {/* Warm shaft of candlelight rising up the centre — a static
-                    glow that lights the tome from first paint; it only gains its
-                    slow pulse once the frame goes "live" (post-idle). */}
-                <div className="hero-portal__shaft" aria-hidden="true" />
-
-                {/* Fixed-size slot keeps the placeholder and the book the same
-                    footprint, so swapping them in causes no layout shift. */}
-                <div className="hero-portal__stage">
-                  <div className="hero-portal__book" style={{ width: 330, height: 260 }}>
-                    {bookLive ? (
-                      <MagicBook3D width={330} height={260} live className="fade-in" />
-                    ) : (
-                      <BookLogo
-                        size={150}
-                        showText={false}
-                        className="drop-shadow-[0_18px_28px_rgba(107,28,111,0.18)]"
-                      />
-                    )}
-                  </div>
-                  {/* Reflective light-pool pedestal beneath the tome. */}
-                  <div className="hero-portal__pedestal" aria-hidden="true" />
+                <div className="hero-portal__illustration">
+                  <StorefrontHero />
                 </div>
 
-                {/* Rim-light sweep (deferred) + inner vignette (static, cheap)
-                    sit above everything. */}
-                {decorReady && <div className="hero-portal__sheen" aria-hidden="true" />}
+                {/* Inner vignette (static, cheap) sits above the illustration. */}
                 <div className="hero-portal__vignette" aria-hidden="true" />
               </div>
 

@@ -1119,97 +1119,16 @@ button:focus {
   isolation: isolate;
 }
 
-/* Palette-matched to the scene's own sky so the WebGL canvas's feathered edges
-   melt into the surround; deeper plum at the rim frames the tome. */
-.hero-portal__sky {
+/* Holds the StorefrontHero SVG illustration, filling the same window the
+   WebGL scene used to occupy. */
+.hero-portal__illustration {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(120% 96% at 50% 30%, #b9a6e0 0%, #a487cf 34%, #6f4a93 74%, #46285f 100%),
-    linear-gradient(180deg, transparent 55%, rgba(246,217,200,0.28) 100%);
 }
-
-/* Slow drifting aurora ribbons (deferred; normal blend to avoid the extra
-   compositing pass mix-blend-mode forces). */
-.hero-portal__aurora {
-  position: absolute;
-  inset: -20% -30%;
-  background:
-    radial-gradient(38% 60% at 30% 30%, rgba(150,232,255,0.36), transparent 70%),
-    radial-gradient(42% 66% at 72% 40%, rgba(188,158,255,0.40), transparent 70%),
-    radial-gradient(36% 54% at 52% 66%, rgba(255,214,120,0.28), transparent 72%);
-  filter: blur(10px);
-  opacity: 0.65;
-  animation: portalAurora 14s ease-in-out infinite;
-}
-
-.hero-portal__stars {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.hero-portal__star {
-  position: absolute;
-  border-radius: 50%;
-}
-
-/* Warm shaft of candlelight rising up the centre, behind the tome. Static from
-   first paint (it lights the fallback logo); its slow pulse only runs once the
-   frame is live. Normal blend keeps it off the expensive compositing path. */
-.hero-portal__shaft {
-  position: absolute;
-  left: 50%;
-  top: 8%;
-  width: 46%;
-  height: 84%;
-  transform: translateX(-50%);
-  background: radial-gradient(50% 62% at 50% 66%, rgba(255,214,120,0.5) 0%, rgba(255,196,90,0.16) 40%, transparent 74%);
-  filter: blur(6px);
-}
-.hero-portal__frame--live .hero-portal__shaft {
-  animation: portalShaft 5s ease-in-out infinite;
-}
-
-.hero-portal__stage {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.hero-portal__book {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Reflective light-pool pedestal grounding the floating world. */
-.hero-portal__pedestal {
-  position: absolute;
-  left: 50%;
-  bottom: 12px;
-  z-index: 1;
-  width: 62%;
-  height: 30px;
-  transform: translateX(-50%);
-  background: radial-gradient(50% 100% at 50% 50%, rgba(255,222,140,0.55) 0%, rgba(241,187,26,0.18) 46%, transparent 72%);
-  filter: blur(3px);
-}
-.hero-portal__frame--live .hero-portal__pedestal {
-  animation: portalPedestal 5s ease-in-out infinite;
-}
-
-/* Rim-light sweep — a diagonal gleam that crosses on entrance and idles slowly. */
-.hero-portal__sheen {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background: linear-gradient(115deg, transparent 34%, rgba(255,255,255,0.28) 48%, rgba(255,247,224,0.12) 54%, transparent 66%);
-  transform: translateX(-120%);
-  animation: portalSheen 7.5s ease-in-out 0.8s infinite;
+.storefront-hero {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 /* Inner vignette unifies the composition and hides any canvas-edge seam. */
@@ -1315,25 +1234,99 @@ button:focus {
   0%, 100% { opacity: 0.7; transform: scale(0.97); }
   50% { opacity: 1; transform: scale(1.06); }
 }
-@keyframes portalAurora {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.8; }
-  33% { transform: translate3d(6%, -3%, 0) scale(1.08); opacity: 1; }
-  66% { transform: translate3d(-5%, 2%, 0) scale(1.03); opacity: 0.88; }
-}
-@keyframes portalShaft {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
-}
-@keyframes portalPedestal {
-  0%, 100% { opacity: 0.7; transform: translateX(-50%) scaleX(0.94); }
-  50% { opacity: 1; transform: translateX(-50%) scaleX(1.06); }
-}
-@keyframes portalSheen {
-  0% { transform: translateX(-120%); }
-  16%, 100% { transform: translateX(120%); }
-}
 @keyframes portalSeal {
   to { transform: rotate(360deg); }
+}
+
+/* ───── Storefront hero illustration (components/StorefrontHero.tsx) ─────
+   All compositor-only (opacity/transform) — see the PR that fixed globals.css's
+   box-shadow/background-position animations elsewhere in this file. Reduced
+   motion is handled by the global safety net further up (it also covers SVG
+   elements), so nothing here needs its own guard. */
+@keyframes storefrontSunPulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+.storefront-sun {
+  transform-origin: 330px 46px;
+  animation: storefrontSunPulse 6s ease-in-out infinite;
+}
+
+@keyframes storefrontCloudDriftA {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(14px); }
+}
+@keyframes storefrontCloudDriftB {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-10px); }
+}
+.storefront-cloud--a { animation: storefrontCloudDriftA 22s ease-in-out infinite; }
+.storefront-cloud--b { animation: storefrontCloudDriftB 18s ease-in-out infinite; }
+
+@keyframes storefrontSway {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50% { transform: rotate(1.2deg); }
+}
+.storefront-tree--left { animation: storefrontSway 7s ease-in-out infinite; }
+.storefront-tree--right { animation: storefrontSway 8.5s ease-in-out infinite 0.6s; }
+
+@keyframes storefrontLeafFall {
+  0% { opacity: 0; transform: translate(0, -8px) rotate(0deg); }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translate(18px, 220px) rotate(160deg); }
+}
+.storefront-leaf {
+  animation: storefrontLeafFall 9s linear infinite;
+  transform-box: fill-box;
+}
+
+@keyframes storefrontSheen {
+  0%, 60% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+.storefront-sheen {
+  animation: storefrontSheen 8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes storefrontGlow {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+.storefront-glow {
+  animation: storefrontGlow 5s ease-in-out infinite;
+  transform-box: fill-box;
+}
+
+@keyframes storefrontOpenPulse {
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+.storefront-open-sign {
+  animation: storefrontOpenPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes storefrontOvalSway {
+  0%, 100% { transform: translate(137px, 168px) rotate(-1.5deg); }
+  50% { transform: translate(137px, 168px) rotate(1.5deg); }
+}
+.storefront-oval-sign {
+  animation: storefrontOvalSway 4.4s ease-in-out infinite;
+  transform-origin: 137px 168px;
+}
+
+@keyframes storefrontMoteRise {
+  0% { opacity: 0; transform: translateY(0) scale(0.8); }
+  20% { opacity: 0.9; }
+  80% { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-64px) scale(1.1); }
+}
+.storefront-mote {
+  animation: storefrontMoteRise 6s ease-in infinite;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 /* On narrow screens scale the whole portal down so the fixed-width tome slot
