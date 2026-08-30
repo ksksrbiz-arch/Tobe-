@@ -636,11 +636,14 @@ export default function StorefrontHero({ className = "" }: { className?: string 
         ))}
         <rect x="0" y="322" width="400" height="3" fill="#4A4348" opacity="0.6" />
         <rect x="0" y="325" width="400" height="11" fill="url(#sf-asphalt)" />
-        {/* painted stall lines, running off toward the viewer */}
-        {[18, 96, 174, 252, 330].map((x) => (
+        {/* Painted stall lines, leaning away toward the viewer. skewX maps
+            x -> x + y*tan(-13deg), which is a 75-unit shift left at this
+            height, so each x is pre-compensated: the listed values are where
+            the line actually lands, not where it is authored. */}
+        {[26, 100, 174, 248, 322].map((x) => (
           <rect
             key={`s${x}`}
-            x={x}
+            x={x + 75.3}
             y="326"
             width="2.4"
             height="10"
