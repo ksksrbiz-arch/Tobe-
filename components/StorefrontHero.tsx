@@ -6,8 +6,9 @@
  * squeezing the whole facade into this near-square frame it is composed as a
  * cropped "hero shot": the fascia sign, the address numerals, the narrow
  * off-centre door with its SUITE 1 placard, the hanging oval window sign, a
- * handful of big storefront panes, the low brick wainscot, and the book carts
- * the shop actually sets out on the sidewalk. Glass stays the dominant surface,
+ * handful of big storefront panes, the pale parapet band over the dark siding,
+ * the low brick wainscot with its bright mortar joints, and the bench and book
+ * carts the shop actually sets out on the sidewalk. Glass stays the dominant surface,
  * with the dark board-and-batten fascia a thin band above it, as in the photos.
  *
  * Lit as golden hour rather than midday: a plum-to-amber sky, dark reflective
@@ -15,7 +16,8 @@
  * spilling out onto the walk. That reads warmer and more inviting than a
  * daylight elevation, and puts the illustration on the site's own purple/gold
  * palette instead of fighting it with cool blue. Depth comes from the soffit
- * overhang shadow across the top of the glass and the recessed entry bay.
+ * overhang shadow across the top of the glass, the recessed entry bay, and the
+ * sky and street trees reflected back off the glass surface.
  *
  * This replaces the WebGL MagicBook3D scene that used to fill the hero window:
  * no three.js boot, no canvas, so it paints instantly and identically for every
@@ -45,7 +47,7 @@ export default function StorefrontHero({ className = "" }: { className?: string 
       viewBox="0 0 400 336"
       className={`storefront-hero ${className}`}
       role="img"
-      aria-label="Illustration of the To Be Read storefront at 7931 — the Clackamas Book Exchange building at golden hour, its wide windows glowing warm over a red brick base and spilling light onto the sidewalk, with a hanging oval shop sign and carts of books out front"
+      aria-label="Illustration of the To Be Read storefront at 7931 — the Clackamas Book Exchange building at golden hour, its wide windows glowing warm over a red brick base and spilling light onto the sidewalk, with a hanging oval shop sign, a wooden bench, and carts of books out front"
     >
       <defs>
         {/* ---------- sky, sun, foliage ---------- */}
@@ -84,6 +86,12 @@ export default function StorefrontHero({ className = "" }: { className?: string 
           <stop offset="0%" stopColor="#6A5566" />
           <stop offset="100%" stopColor="#2E2434" />
         </linearGradient>
+        {/* Pale roofline band above the dark siding, catching the low sun. */}
+        <linearGradient id="sf-parapet" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#FFE2AE" />
+          <stop offset="55%" stopColor="#E8CBA4" />
+          <stop offset="100%" stopColor="#B99B7E" />
+        </linearGradient>
         {/* Beam and mullions are lit from below by the windows, so they glow
             warm rather than sitting flat white. */}
         <linearGradient id="sf-beam" x1="0" y1="0" x2="0" y2="1">
@@ -92,9 +100,9 @@ export default function StorefrontHero({ className = "" }: { className?: string 
           <stop offset="100%" stopColor="#FFE9C0" />
         </linearGradient>
         <linearGradient id="sf-mullion" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#FFEFD4" />
-          <stop offset="55%" stopColor="#E8D5BC" />
-          <stop offset="100%" stopColor="#B8A492" />
+          <stop offset="0%" stopColor="#9E8B7C" />
+          <stop offset="45%" stopColor="#E4D0B6" />
+          <stop offset="100%" stopColor="#FFEFD4" />
         </linearGradient>
         <linearGradient id="sf-signface" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#FFFDF9" />
@@ -115,9 +123,9 @@ export default function StorefrontHero({ className = "" }: { className?: string 
         {/* The shop's own light, pouring out. Much stronger than the daytime
             version — this is now the brightest thing in the frame. */}
         <linearGradient id="sf-interior" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FFD98A" stopOpacity="0.55" />
-          <stop offset="45%" stopColor="#FFC864" stopOpacity="0.82" />
-          <stop offset="100%" stopColor="#FFB347" stopOpacity="0.95" />
+          <stop offset="0%" stopColor="#FFD98A" stopOpacity="0.26" />
+          <stop offset="45%" stopColor="#FFC864" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#FFB347" stopOpacity="0.66" />
         </linearGradient>
         <linearGradient id="sf-ceiling" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#FFF4D2" stopOpacity="0.95" />
@@ -131,7 +139,7 @@ export default function StorefrontHero({ className = "" }: { className?: string 
         </linearGradient>
         {/* Warm light pooling on the sidewalk under each window bay. */}
         <linearGradient id="sf-spill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FFC66A" stopOpacity="0.5" />
+          <stop offset="0%" stopColor="#FFC66A" stopOpacity="0.32" />
           <stop offset="100%" stopColor="#FFC66A" stopOpacity="0" />
         </linearGradient>
         {/* Shadow cast by the soffit overhang onto the facade below it. */}
@@ -156,6 +164,12 @@ export default function StorefrontHero({ className = "" }: { className?: string 
           <stop offset="0%" stopColor="#A85C48" />
           <stop offset="100%" stopColor="#5E2E26" />
         </linearGradient>
+        {/* The rect behind the brick courses is what shows through the joints,
+            so it carries the pale mortar the photos make so prominent. */}
+        <linearGradient id="sf-mortar" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#D6C6B0" />
+          <stop offset="100%" stopColor="#7A6A5E" />
+        </linearGradient>
         <linearGradient id="sf-walk" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#8A7F7A" />
           <stop offset="100%" stopColor="#5F5757" />
@@ -164,6 +178,11 @@ export default function StorefrontHero({ className = "" }: { className?: string 
           <stop offset="0%" stopColor="#3A3540" />
           <stop offset="100%" stopColor="#252230" />
         </linearGradient>
+        <radialGradient id="sf-lamp" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FFE6A8" stopOpacity="0.55" />
+          <stop offset="45%" stopColor="#F1BB1A" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#F1BB1A" stopOpacity="0" />
+        </radialGradient>
         <radialGradient id="sf-vignette" cx="50%" cy="46%" r="72%">
           <stop offset="55%" stopColor="#2A0A30" stopOpacity="0" />
           <stop offset="100%" stopColor="#2A0A30" stopOpacity="0.46" />
@@ -231,7 +250,9 @@ export default function StorefrontHero({ className = "" }: { className?: string 
         ))}
 
         {/* ══════════ fascia band (thin, dark, carries the signage) ══════════ */}
-        <rect x="0" y="58" width="400" height="7" fill="url(#sf-coping)" />
+        {/* cream parapet band, then its shadow line, then the dark siding */}
+        <rect x="0" y="52" width="400" height="9" fill="url(#sf-parapet)" />
+        <rect x="0" y="61" width="400" height="4" fill="url(#sf-coping)" />
         <rect x="0" y="65" width="400" height="55" fill="url(#sf-fascia)" />
         {/* board-and-batten vertical seams */}
         {Array.from({ length: 25 }, (_, i) => (
@@ -290,10 +311,9 @@ export default function StorefrontHero({ className = "" }: { className?: string 
             <ellipse
               cx={cx}
               cy="137"
-              rx="18"
-              ry="9"
-              fill="#FCE8A6"
-              opacity="0.28"
+              rx="22"
+              ry="11"
+              fill="url(#sf-lamp)"
               className="storefront-glow"
               style={{ animationDelay: `${cx / 260}s` }}
             />
@@ -360,9 +380,20 @@ export default function StorefrontHero({ className = "" }: { className?: string 
             <circle cx="92" cy="188" r="6" />
             <path d="M82 226 Q82 198 92 198 Q102 198 102 226 Z" />
           </g>
+          {/* Reflected sky band and street trees riding on the glass surface —
+              the thing that most separates real storefront glass from a flat
+              tinted panel in the reference photos. */}
+          <g opacity="0.2">
+            <rect x="4" y="136" width="114" height="14" fill="#F7C169" opacity="0.55" />
+            <ellipse cx="26" cy="156" rx="26" ry="13" fill="#1A2618" />
+            <ellipse cx="60" cy="150" rx="17" ry="9" fill="#22331F" />
+            <ellipse cx="98" cy="158" rx="21" ry="11" fill="#1A2618" />
+            <rect x="4" y="163" width="114" height="3" fill="#1C2A1A" opacity="0.6" />
+          </g>
           {/* reflections */}
           <path d="M4 128 L58 128 L18 278 L4 278 Z" fill="url(#sf-reflect)" />
           <path d="M74 128 L92 128 L52 278 L34 278 Z" fill="#FFFFFF" opacity="0.07" />
+          <path d="M96 128 L102 128 L62 278 L56 278 Z" fill="#FFF6E0" opacity="0.16" />
           <rect
             x="-60"
             y="128"
@@ -430,10 +461,20 @@ export default function StorefrontHero({ className = "" }: { className?: string 
             ))}
           </g>
           {/* a reading lamp glow deep in the room */}
-          <ellipse cx="352" cy="196" rx="26" ry="20" fill="#F1BB1A" opacity="0.22" className="storefront-glow" style={{ animationDelay: "2.4s" }} />
+          <ellipse cx="352" cy="196" rx="34" ry="26" fill="url(#sf-lamp)" className="storefront-glow" style={{ animationDelay: "2.4s" }} />
+          <g opacity="0.19">
+            <rect x="180" y="136" width="216" height="14" fill="#F7C169" opacity="0.55" />
+            <ellipse cx="206" cy="157" rx="28" ry="13" fill="#1A2618" />
+            <ellipse cx="252" cy="151" rx="19" ry="10" fill="#22331F" />
+            <ellipse cx="316" cy="158" rx="30" ry="14" fill="#1A2618" />
+            <ellipse cx="366" cy="152" rx="20" ry="10" fill="#22331F" />
+            <rect x="180" y="164" width="216" height="3" fill="#1C2A1A" opacity="0.6" />
+          </g>
           {/* reflections: sky at the top, sweep across */}
           <path d="M180 128 L268 128 L206 278 L180 278 Z" fill="url(#sf-reflect)" />
           <path d="M298 128 L318 128 L256 278 L236 278 Z" fill="#FFFFFF" opacity="0.06" />
+          <path d="M324 128 L331 128 L269 278 L262 278 Z" fill="#FFF6E0" opacity="0.15" />
+          <path d="M212 128 L217 128 L155 278 L150 278 Z" fill="#FFF6E0" opacity="0.11" />
           <rect
             x="120"
             y="128"
@@ -446,9 +487,26 @@ export default function StorefrontHero({ className = "" }: { className?: string 
           />
         </g>
 
+        {/* ---------- window framing: slim white mullions ---------- */}
+        {/* verticals */}
+        {[0, 56, 114].map((x) => (
+          <rect key={`l${x}`} x={x} y="128" width="5" height="150" fill="url(#sf-mullion)" />
+        ))}
+        {[176, 230, 284, 338, 391].map((x) => (
+          <rect key={`r${x}`} x={x} y="128" width="5" height="150" fill="url(#sf-mullion)" />
+        ))}
+        {/* lower rail */}
+        <rect x="0" y="252" width="118" height="5" fill="url(#sf-mullion)" />
+        <rect x="176" y="252" width="220" height="5" fill="url(#sf-mullion)" />
+        {/* sill */}
+        <rect x="0" y="272" width="118" height="7" fill="url(#sf-mullion)" />
+        <rect x="176" y="272" width="220" height="7" fill="url(#sf-mullion)" />
+
         {/* ---------- hanging oval sign (inside the right-hand glass) ----------
             Outer <g> carries the static placement; the animated class sits on
-            the inner <g>, which only ever rotates. */}
+            the inner <g>, which only ever rotates. It is drawn after the mullions
+            so it hangs clear of them — a sign strung across a structural post is
+            both unreadable and not what the shop actually does. */}
         <line x1="234" y1="130" x2="238" y2="146" stroke="#C7BCAB" strokeWidth="1.2" opacity="0.8" />
         <line x1="278" y1="130" x2="274" y2="146" stroke="#C7BCAB" strokeWidth="1.2" opacity="0.8" />
         <g transform="translate(256,146)">
@@ -497,20 +555,6 @@ export default function StorefrontHero({ className = "" }: { className?: string 
           </g>
         </g>
 
-        {/* ---------- window framing: slim white mullions ---------- */}
-        {/* verticals */}
-        {[0, 56, 114].map((x) => (
-          <rect key={`l${x}`} x={x} y="128" width="5" height="150" fill="url(#sf-mullion)" />
-        ))}
-        {[176, 230, 284, 338, 391].map((x) => (
-          <rect key={`r${x}`} x={x} y="128" width="5" height="150" fill="url(#sf-mullion)" />
-        ))}
-        {/* lower rail */}
-        <rect x="0" y="252" width="118" height="5" fill="url(#sf-mullion)" />
-        <rect x="176" y="252" width="220" height="5" fill="url(#sf-mullion)" />
-        {/* sill */}
-        <rect x="0" y="272" width="118" height="7" fill="url(#sf-mullion)" />
-        <rect x="176" y="272" width="220" height="7" fill="url(#sf-mullion)" />
 
         {/* Overhang shadow — the soffit above physically shades the top of the
             glass. Sells the building as having depth rather than being a flat
@@ -518,7 +562,7 @@ export default function StorefrontHero({ className = "" }: { className?: string 
         <rect x="0" y="131" width="400" height="26" fill="url(#sf-overhang)" />
 
         {/* ══════════ brick wainscot ══════════ */}
-        <rect x="0" y="279" width="400" height="30" fill="url(#sf-brick)" />
+        <rect x="0" y="279" width="400" height="30" fill="url(#sf-mortar)" />
         <g>
           {Array.from({ length: BRICK_ROWS }, (_, row) => (
             <g key={row} transform={`translate(${row % 2 === 0 ? -4 : -14}, ${279 + row * BRICK_H})`}>
@@ -586,8 +630,25 @@ export default function StorefrontHero({ className = "" }: { className?: string 
         {/* ══════════ sidewalk + parking lot ══════════ */}
         <rect x="0" y="309" width="400" height="16" fill="url(#sf-walk)" />
         <rect x="0" y="309" width="400" height="1.5" fill="#C9BBA8" opacity="0.6" />
+        {/* expansion joints in the concrete walk */}
+        {[52, 118, 184, 250, 316, 382].map((x) => (
+          <rect key={`j${x}`} x={x} y="310" width="1.2" height="12" fill="#4A4348" opacity="0.45" />
+        ))}
         <rect x="0" y="322" width="400" height="3" fill="#4A4348" opacity="0.6" />
         <rect x="0" y="325" width="400" height="11" fill="url(#sf-asphalt)" />
+        {/* painted stall lines, running off toward the viewer */}
+        {[18, 96, 174, 252, 330].map((x) => (
+          <rect
+            key={`s${x}`}
+            x={x}
+            y="326"
+            width="2.4"
+            height="10"
+            fill="#E7E2D4"
+            opacity="0.3"
+            transform="skewX(-13)"
+          />
+        ))}
         <rect x="46" y="325" width="26" height="11" fill="#C8C0C4" opacity="0.28" transform="skewX(-8)" />
         <rect x="256" y="325" width="26" height="11" fill="#C8C0C4" opacity="0.28" transform="skewX(-8)" />
 
@@ -598,7 +659,7 @@ export default function StorefrontHero({ className = "" }: { className?: string 
           <path d="M6 309 L118 309 L138 336 L-14 336 Z" fill="url(#sf-spill)" />
           <path d="M180 309 L394 309 L414 336 L160 336 Z" fill="url(#sf-spill)" />
           {/* narrower, brighter wedge from the doorway */}
-          <path d="M124 309 L172 309 L186 336 L110 336 Z" fill="#FFD489" opacity="0.22" />
+          <path d="M124 309 L172 309 L186 336 L110 336 Z" fill="#FFD489" opacity="0.15" />
         </g>
 
         {/* contact shadows along the walk */}
@@ -699,12 +760,29 @@ export default function StorefrontHero({ className = "" }: { className?: string 
           ))}
         </g>
 
-        {/* small bench under the right-hand window, as in the sunny photo */}
-        <g opacity="0.95">
-          <rect x="252" y="288" width="34" height="3.4" rx="1" fill="#4A3527" />
-          <rect x="254" y="291" width="2.6" height="18" fill="#3B2B20" />
-          <rect x="281" y="291" width="2.6" height="18" fill="#3B2B20" />
-          <rect x="252" y="278" width="34" height="3" rx="1" fill="#4A3527" />
+        {/* Slatted wooden bench under the right-hand window — it sits right
+            there in both daylight photos, and it's the one piece of furniture
+            that says "sit and read" rather than "shop front". */}
+        <g>
+          <ellipse cx="266" cy="309" rx="30" ry="3.4" fill="#180620" opacity="0.34" />
+          {/* back slats */}
+          <rect x="240" y="266" width="52" height="4" rx="1.4" fill="#6B4A31" />
+          <rect x="240" y="272.5" width="52" height="4" rx="1.4" fill="#5D3F29" />
+          <rect x="240" y="279" width="52" height="4" rx="1.4" fill="#6B4A31" />
+          {/* back posts */}
+          <rect x="241" y="266" width="3" height="24" fill="#4A3527" />
+          <rect x="288" y="266" width="3" height="24" fill="#4A3527" />
+          {/* seat */}
+          <rect x="236" y="288" width="60" height="4.4" rx="1.4" fill="#7A5537" />
+          <rect x="236" y="292.4" width="60" height="2" fill="#3B2B20" opacity="0.6" />
+          {/* arms */}
+          <rect x="236" y="282" width="5" height="3" rx="1" fill="#6B4A31" />
+          <rect x="291" y="282" width="5" height="3" rx="1" fill="#6B4A31" />
+          {/* legs */}
+          <rect x="240" y="292" width="3.4" height="17" fill="#4A3527" />
+          <rect x="288.6" y="292" width="3.4" height="17" fill="#4A3527" />
+          {/* sun-catch along the seat front, matching the low light */}
+          <rect x="236" y="288" width="60" height="1.4" rx="0.7" fill="#FFD9A0" opacity="0.45" />
         </g>
 
         {/* warm dust motes rising through the sunlight */}
