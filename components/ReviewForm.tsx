@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Star, Check, Loader2, ChevronDown } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 const NAME_MAX = 60;
 const TITLE_MAX = 120;
@@ -158,6 +159,7 @@ export default function ReviewForm() {
         return;
       }
       setStatus("done");
+      trackEvent("review_submitted", { rating });
     } catch {
       setError("Couldn't reach the server. Please try again.");
       setStatus("error");

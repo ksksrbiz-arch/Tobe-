@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUp, BookOpen } from "lucide-react";
 import { getMotionSafeScrollBehavior } from "@/lib/motion";
+import { trackEvent } from "@/lib/analytics";
 
 export default function FloatingButtons() {
   const [showTop, setShowTop] = useState(false);
@@ -21,6 +22,7 @@ export default function FloatingButtons() {
   };
 
   const handleTrade = () => {
+    trackEvent("trade_cta_click", { placement: "floating_button" });
     const el = document.querySelector("#trade");
     if (el) {
       el.scrollIntoView({ behavior: getMotionSafeScrollBehavior() });

@@ -7,6 +7,7 @@ import {
   TRADE_POLICY_REDEMPTION,
   TRADE_POLICY_ROLLOVER,
 } from "@/lib/tradePolicy";
+import { trackEvent } from "@/lib/analytics";
 
 // Upper bound for a sensible book list price. Anything larger is almost
 // certainly a typo (an extra digit), so we nudge the user instead of computing
@@ -262,6 +263,11 @@ export default function TradeCreditEstimator() {
         credit: data.credit,
       });
       setCalcId((n) => n + 1);
+      trackEvent("trade_estimate", {
+        method: "isbn",
+        list_price: data.listPrice,
+        credit_value: data.credit ?? data.listPrice * 0.25,
+      });
     } catch {
       setError("Couldn't reach the estimator. Check your connection and try again.");
     } finally {
@@ -287,6 +293,11 @@ export default function TradeCreditEstimator() {
       source: "manual",
     });
     setCalcId((n) => n + 1);
+    trackEvent("trade_estimate", {
+      method: "manual_price",
+      list_price: val,
+      credit_value: val * 0.25,
+    });
   }, [priceInput]);
 
   const result = book

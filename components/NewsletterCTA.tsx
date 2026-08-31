@@ -6,6 +6,7 @@ import { Send, BookOpen, Loader2, CheckCircle2, Sparkles, ArrowUpRight } from "l
 import { toast } from "sonner";
 import Reveal from "./Reveal";
 import { EMAIL_ENABLED } from "@/lib/flags";
+import { trackEvent } from "@/lib/analytics";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -63,6 +64,8 @@ export default function NewsletterCTA() {
       setStatus("success");
       setEmail("");
       toast.success("You're subscribed! Welcome to the TBR family.");
+      // GA4 recommended event name for a lead/signup conversion.
+      trackEvent("generate_lead", { lead_type: "newsletter_signup" });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Something went wrong — please try again.";
       setStatus("error");
