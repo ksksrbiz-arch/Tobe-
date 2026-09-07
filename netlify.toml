@@ -9,6 +9,31 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+# GSC showed http://tobereadshop.com/ indexed and ranking *separately* from
+# the canonical https://tobereadshop.com/ (449 vs 57 clicks over the last 3
+# months) — the in-app canonical tag (lib/seo.ts SITE_URL) can't fix this on
+# its own because Google was serving the http:// result directly, splitting
+# ranking signals across two URLs. Force every non-canonical host/scheme
+# combination to 301-redirect to the canonical https apex at the edge, ahead
+# of the Next.js app, so crawlers only ever see one URL for a given page.
+[[redirects]]
+  from = "http://tobereadshop.com/*"
+  to = "https://tobereadshop.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.tobereadshop.com/*"
+  to = "https://tobereadshop.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.tobereadshop.com/*"
+  to = "https://tobereadshop.com/:splat"
+  status = 301
+  force = true
+
 [build.environment]
   # Firebase API keys are safe to expose publicly; they are meant for client-side use
   # and are restricted via Firebase Security Rules, not secrecy.
